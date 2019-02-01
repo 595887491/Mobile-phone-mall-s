@@ -1,0 +1,109 @@
+<volist name="lists" id="list">
+    <div class="mypackeg ma-to-20 getmore">
+        <div class="packeg p">
+            <div class="maleri30">
+                <div class="fl">
+                    <h1><span></span><span class="bgnum"></span></h1>
+                    <p class="bgnum">
+                        <if condition="$list['order_status_desc'] == '已完成'">
+                            <img src="__STATIC__/images/cf_order_right.png" style="width: .6rem;height: .6rem" alt="">
+                            <elseif condition="$list['order_status_desc'] == '已取消'">
+                                <img src="__STATIC__/images/cf_order_errow.png" style="width: .6rem;height: .6rem" alt="">
+                                <else/>
+                                <img src="__STATIC__/images/cf_order_wiat.png" style="width: .6rem;height: .6rem" alt="">
+                        </if>
+                        <span>订单编号</span> &nbsp;<span>{$list.order_sn}</span></p>
+                </div>
+                <div class="fr">
+                    <span>{$list['order_status_desc']}</span>
+                </div>
+            </div>
+        </div>
+        <div class="shop-mfive p">
+            <div class="" style="margin-left: .64rem;">
+                <foreach  name="list.goods_list" item="good">
+                    <div class="sc_list se_sclist paycloseto" style="padding-right: .64rem;">
+                        <a <if condition="$list.receive_btn eq 1">href="{:U('/Mobile/Order/order_detail',array('id'=>$list['order_id'],'waitreceive'=>1))}" <else/> href="{:U('/Mobile/Order/order_detail',array('id'=>$list['order_id']))}"</if>>
+                        <div class="shopimg fl">
+                            <!--<img src="{$good[goods_id]|goods_thum_images=200,200}">-->
+                            <img src="{$good[original_img]}">
+
+                        </div>
+                        <div class="deleshow fr">
+                            <div class="deletes">
+                                <span class="similar-product-text fl">{$good[goods_name]}</span>
+                                <!--<div class="fr">-->
+                                <!--<p class="sc_pri" id="cf_order_p"><span>￥</span><span>{$good[member_goods_price]}</span></p>-->
+                                <!--<p class="sc_pri" id="cf_p"><span>￥</span><span >{$good[goods_price]}</span></p>-->
+                                <!--</div>-->
+                            </div>
+                            <div class="deletes">
+                                <span class="similar-product-text" id="cf_product_text">{$good.spec_key_name}</span>
+                            </div>
+                            <!--<div class="prices  wiconfine " id="cf_price_or">-->
+
+                            <!--</div>-->
+
+                            <!--<div class="prices  wiconfine" id="cd_price_dis">-->
+
+                            <!--</div>-->
+                            <!--数量-->
+                            <!--<div class="qxatten  wiconfine cf_prices">-->
+                            <!--<p class="weight"><span>x</span>&nbsp;<span>{$good[goods_num]}</span></p>-->
+                            <!--</div>-->
+                            <div class="buttondde">
+                                <if condition="($list[return_btn] eq 1) and ($good[is_send] lt 2)">
+                                    <a href="{:U('Mobile/Order/return_goods',['rec_id'=>$good['rec_id']])}">申请售后</a>
+                                </if>
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                </foreach>
+            </div>
+        </div>
+
+        <div class="shop-rebuy-price p">
+            <div class="" style="margin-left: .64rem;">
+                        <span class="price-alln">
+                            <!--<span class="red">￥{$list['order_amount']}</span><span class="threel">共{$list.goods_list|count}件</span>-->
+                            <span class="red">共{$list.count_goods_num}件商品</span><span class="threel" id="goodsnum">合计: <span class="cf_span_pic">￥{$list['total_amount']}</span> </span>
+                        </span>
+                <div class="clearfix" style="padding-right: .64rem;">
+                    <if condition="$list.pay_btn eq 1">
+                        <a class="shop-rebuy paysoon" style="border: 1px solid #FF407E; background-color:#FF407E;color: white;" href="{:U('Mobile/Cart/cart4',array('order_id'=>$list['order_id']))}">立即付款</a>
+                    </if>
+
+                    <!--再次购买-->
+                    <if condition="$list['order_status_desc'] == '已完成' || $list['order_status_desc'] == '待发货' || $list['order_status_desc'] == '待收货' ">
+                        <a class="shop-rebuy paysoon" style="border: 1px solid #FF407E; background-color:#FF407E;color: white;" href="{:U('Mobile/Cart/cart4',array('order_id'=>$list['order_id']))}">再次购买</a>
+                    </if>
+                    <if condition="$list['order_status_desc'] == '已取消'" >
+                        <a class="shop-rebuy paysoon" style="border: 1px solid #FF407E; background-color:#FF407E;color: white;" href="{:U('Mobile/Order/order_detail',array('id'=>$list['order_id']))}">再次购买</a>
+                    </if>
+
+                    <if condition="$list.cancel_btn eq 1">
+                        <if condition="$list.pay_status eq 0">
+                            <a class="shop-rebuy " onClick="cancel_order({$list.order_id})">取消订单</a>
+                        </if>
+                        <if condition="$list.pay_status eq 1">
+                            <a class="shop-rebuy" href="{:U('Order/refund_order', ['order_id'=>$list['order_id']])}">取消订单</a>
+                        </if>
+                    </if>
+
+                    <if condition="$list.receive_btn eq 1">
+                        <a class="shop-rebuy paysoon" style="border: 1px solid #FF407E; color:#FF407E ;background-color: white"  onclick="orderConfirm({$list.order_id})">确认收货</a>
+                    </if>
+                    <if condition="$list.comment_btn eq 1">
+                        <a class="shop-rebuy" href="{:U('/Mobile/Order/comment')}">去评价</a>
+                    </if>
+                    <if condition="$list.shipping_btn eq 1">
+
+                            <a class="shop-rebuy" class="shop-rebuy" href="{:U('Mobile/Order/express',array('order_id'=>$list['order_id']))}">查看物流</a>
+
+                    </if>
+                </div>
+            </div>
+        </div>
+    </div>
+</volist>

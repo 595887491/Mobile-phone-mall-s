@@ -1,0 +1,60 @@
+<volist name="$info" id="v">
+    <a href="{:U('Mobile/User/getVirtualOrderInfo')}?order_id={$v.order_id}">
+        <div class="cardList">
+            <div class="clearFix cardListCon">
+                <div class="fl cardListLeft">
+                    <img src="{$v.original_img}" alt="">
+                </div>
+                <div class="fl cardListRight">
+                    <P class="titleP">{$v.goods_name}</P>
+                    <p class="titleNum">数量: {$v.goods_num}</p>
+                    <p class="titleAll">总价: <span>¥{$v.goods_price}</span></p>
+                </div>
+                <div  class="cardState">
+                    <if condition="$v.is_comment eq 0 &&  $v.is_consume eq 1 ">
+                        <span style="color: #F2790E">待评价</span>
+                    </if>
+                    <if condition="$v.order_status eq 3 ">
+                        <span style="color: #5B5858">已取消</span>
+                    </if>
+                    <if condition="$v.pay_status eq 0 && $v.order_status eq 0">
+                        <span style="color: #F2790E">待付款</span>
+                    </if>
+
+                    <if condition="$v.is_comment eq 3">
+                        <span style="color: #5B5858">已退款</span>
+                    </if>
+                    <if condition="$v.is_consume eq 0 &&  $v.is_consume eq 0 && $v.pay_status eq 1">
+                        <span style="color: #FF407E">未消费</span>
+                    </if>
+                    <if condition="$v.is_consume eq 1 && $v.is_comment eq 1">
+                        <span style="color: #5B5858">已完成</span>
+                    </if>
+                </div>
+            </div>
+            <!--按钮-->
+            <div class="cardBtn">
+                <if condition="$v.pay_status eq 0 && $v.order_status eq 0">
+                    <a href="{:U('Cart/cart4')}?order_id={$v.order_id}">
+                        <button class="fr">去付款</button>
+                    </a>
+                </if>
+                <if condition="$v.is_consume eq 0 &&  $v.is_consume eq 0">
+                    <a href="{:U('Mobile/User/getVirtualOrderInfo')}?order_id={$v.order_id}">
+                        <button class="fr">查看卡券</button>
+                    </a>
+                </if>
+                <if condition="$v.is_comment eq 3 || ($v.is_comment eq 1 && $v.is_consume eq 1) || $v.order_status eq 3">
+                    <a href="{:U('Virtual/goodsInfo')}?id={v.goods_id}">
+                        <button class="fr">再来一单</button>
+                    </a>
+                </if>
+                <if condition="$v.is_comment eq 0 &&  $v.is_consume eq 1 ">
+                    <a href="{:U('Mobile/Order/add_comment')}?rec_id={$v.rec_id}">
+                        <button class="fr">去评价</button>
+                    </a>
+                </if>
+            </div>
+        </div>
+    </a>
+</volist>

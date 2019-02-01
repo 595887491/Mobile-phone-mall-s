@@ -1,0 +1,367 @@
+<include file="public/layout" />
+<load href="__ROOT__/public/plugins/Ueditor/ueditor.config.js"/>
+<load href="__ROOT__/public/plugins/Ueditor/ueditor.all.min.js"/>
+<script type="text/javascript" charset="utf-8" src="__ROOT__/public/plugins/Ueditor/lang/zh-cn/zh-cn.js"></script>
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+
+<style type="text/css">
+html, body {overflow: visible;}
+</style>  
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+  <div class="fixed-bar">
+    <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+      <div class="subject">
+        <h3>文章管理 - 新增文章</h3>
+        <h5>网站系统文章索引与管理</h5>
+      </div>
+    </div>
+  </div>
+  <form class="form-horizontal" action="{:U('Article/aticleHandle')}" id="add_post" method="post">    
+    <div class="ncap-form-default">
+      <dl class="row">
+        <dt class="tit">
+          <label><em>*</em>标题</label>
+        </dt>
+        <dd class="opt">
+          <input type="text" value="{$info.title}" name="title" class="input-txt">
+          <span class="err" id="err_title"></span>
+          <p class="notic"></p>
+        </dd>
+        
+      </dl>
+      <dl class="row">
+        <dt class="tit">
+          <label for="cat_id"><em>*</em>所属分类</label>
+        </dt>
+        <dd class="opt">
+        <select class="small form-control" name="cat_id" id="cat_id">
+            <option value="0">选择分类</option>
+            {$cat_select} 
+        </select>        
+          <span class="err" id="err_cat_id"></span>
+          <p class="notic">当选择发布"商城公告"时，还需要设置下面的"出现位置"项</p>
+        </dd>
+      </dl>    
+	  <dl class="row">
+        <dt class="tit">
+          <label for="articleForm">seo关键字</label>
+        </dt>
+        <dd class="opt">
+          <input type="text" name="keywords"  value="{$info.keywords}" class="input-txt">
+          <span class="err"></span>
+          <p class="notic">用于seo 搜索引擎友好</p>
+        </dd>
+      </dl>        
+      <dl class="row">
+        <dt class="tit">
+          <label for="articleForm">链接</label>
+        </dt>
+        <dd class="opt">
+          <input type="text" name="link"  value="{$info.link}" class="input-txt">
+          <span class="err" id="err_link"></span>
+          <p class="notic">当填写"链接"后点击文章标题将直接跳转至链接地址，不显示文章内容。链接格式请以http://开头</p>
+        </dd>
+      </dl>
+	  <dl class="row">
+        <dt class="tit">
+          <label for="articleForm">发布时间</label>
+        </dt>
+        <dd class="opt">
+            <input type="text" class="input-txt" id="publish_time" name="publish_time"  value="{$info.publish_time|date="Y-m-d",###}">        
+            <span class="add-on input-group-addon">
+                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+            </span> 
+          <span class="err"></span>
+        </dd>
+      </dl>       
+      <dl class="row">
+        <dt class="tit">
+          <label>显示</label>
+        </dt>
+        <dd class="opt">
+          <div class="onoff">
+            <label for="article_show1" class="cb-enable <if condition="$info[is_open] eq 1">selected</if>">是</label>
+            <label for="article_show0" class="cb-disable <if condition="$info[is_open] eq 0">selected</if>">否</label>
+            <input id="article_show1" name="is_open" value="1" type="radio" <if condition="$info[is_open] eq 1"> checked="checked"</if>>
+            <input id="article_show0" name="is_open" value="0" type="radio" <if condition="$info[is_open] eq 0"> checked="checked"</if>>
+          </div>
+          <p class="notic"></p>
+        </dd>
+      </dl>
+      <dl class="row">
+        <dt class="tit">网页描述</dt>
+        <dd class="opt">
+	      <textarea class="input-txt" id="post_description" name="description" title="">{$info.description}</textarea>
+          <span class="err"></span>
+          <p class="notic"></p>
+        </dd>
+      </dl>
+      <dl class="row">
+        <dt class="tit">
+          <label><em>*</em>文章内容</label>
+        </dt>
+        <dd class="opt">          
+            <textarea class="span12 ckeditor" id="post_content" name="content" title="">
+                {$info.content}
+            </textarea>          
+            <span class="err"  id="err_content"></span>
+            <p class="notic"></p>
+        </dd>
+      </dl>
+    <dl class="row">
+        <dt class="tit">
+            <label>图片上传</label>
+        </dt>
+        <dd class="opt">
+            <div class="input-file-show">
+                    <span class="show">
+                        <a id="img_a" target="_blank" class="nyroModal" rel="gal" href="{$info.thumb}">
+                            <i id="img_i" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$info.thumb}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>
+                        </a>
+                    </span>
+                    <span class="type-file-box">
+                        <input type="text" id="thumb" name="thumb" value="{$info.thumb}" class="type-file-text">
+                        <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
+                        <input class="type-file-file" onClick="GetUploadify(1,'','article','img_call_back')" size="30" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+                    </span>
+            </div>
+            <span class="err"></span>
+            <p class="notic">请上传图片格式文件</p>
+        </dd>
+    </dl>
+
+
+        <dl class="row">
+            <dt class="tit">
+                <label>视频上传</label>
+            </dt>
+            <dd class="opt">
+                <div class="input-file-show">
+                    <span class="show">
+                        <i class="fa fa-file-video-o"></i>
+                    </span>
+                    <span class="type-file-box">
+                        <input type="text" id="video" name="cf_videos" value="{$info.cf_videos}" class="type-file-text">
+                        <input type="button" name="button" value="选择上传..." class="type-file-button">
+                        <input class="type-file-file" onClick="GetUploadify(1,'','article','video_call_back','Flash')" size="30" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+                    </span>
+                </div>
+                <button class="" onclick="rm_video()">删除</button>
+                <span class="err"></span>
+                <p class="notic">请上传视频格式文件</p>
+            </dd>
+
+        </dl>
+
+
+
+        <!-- 文章相册-->
+        <dl class="row">
+            <dt class="tit">
+                <label>附加图片上传</label>
+            </dt>
+            <dd class="opt">
+            <div class="tab-pane" id="tab_goods_images">
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <foreach name="$info.cf_pics" item="vo" key="k" >
+                                <div style="width:100px; text-align:center; margin: 5px; display:inline-block;" class="goods_xc">
+                                    <input type="hidden" value="{$vo}" name="cf_pics[]">
+                                    <a onClick="" href="{:config('aliyun_oss.Oss_cdn')}{$vo}" target="_blank"><img width="100" height="100" src="{:config('aliyun_oss.Oss_cdn')}{$vo}"></a>
+                                    <br>
+                                    <a href="javascript:void(0)" onClick="ClearPicArr2(this,'{$vo}')">删除</a>
+                                </div>
+                            </foreach>
+
+                            <div class="goods_xc" style="width:100px; text-align:center; margin: 5px; display:inline-block;">
+                                <input type="hidden" name="cf_pics[]" value="" />
+                                <a href="javascript:void(0);" onClick="GetUploadify(10,'','goods','call_back2');"><img src="/public/images/add-button.jpg" width="100" height="100" /></a>
+                                <br/>
+                                <a href="javascript:void(0)">&nbsp;&nbsp;</a>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            </dd>
+        </dl>
+        <!-- 文章相册-->
+
+        <!--添加商品-->
+        <dl class="row">
+            <dt class="tit">
+                <label>选择商品</label>
+            </dt>
+            <dd class="opt">
+                <input type="text" id="goods_id" readonly name="cf_relate_goods" value="{$info.cf_relate_goods}" class="input-txt">
+                <button class="" onclick="rm_goods_id()">删除</button>
+                <p class="notic">
+                    <a onclick="selectGoods($('#goods_id').val())" class="ncap-btn" id="select_goods_button"><i class="fa fa-search"></i>选择商品</a>
+                </p>
+            </dd>
+        </dl>
+        <!--添加商品-->
+
+
+
+
+
+
+
+      <div class="bot"><a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a></div>
+    </div>
+        <input type="hidden" name="act" value="{$act}">
+        <input type="hidden" name="article_id" value="{$info.article_id}">
+  </form>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('#publish_time').layDate(); 
+    });
+    
+    var url="{:url('Ueditor/index',array('savePath'=>'article'))}";
+    var ue = UE.getEditor('post_content',{
+        serverUrl :url,
+        zIndex: 999,
+        initialFrameWidth: "80%", //初化宽度
+        initialFrameHeight: 300, //初化高度            
+        focus: false, //初始化时，是否让编辑器获得焦点true或false
+        maximumWords: 99999, removeFormatAttributes: 'class,style,lang,width,height,align,hspace,valign',//允许的最大字符数 'fullscreen',
+        pasteplain:false, //是否默认为纯文本粘贴。false为不使用纯文本粘贴，true为使用纯文本粘贴
+        autoHeightEnabled: true
+    });
+
+    $(document).on("click", '#submitBtn', function () {
+        verifyForm();
+    });
+    function verifyForm(){
+        $('span.err').hide();
+        $.ajax({
+            type: "POST",
+            url: "{:U('Article/aticleHandle')}",
+            data: $('#add_post').serialize(),
+            dataType: "json",
+            error: function () {
+                layer.alert("服务器繁忙, 请联系管理员!");
+            },
+            success: function (data) {
+                if (data.status === 1) {
+                    layer.msg(data.msg, {icon: 1,time: 1000}, function() {
+                        location.href = "{:U('Admin/Article/articleList')}";
+                    });
+                } else if(data.status === 0) {
+                    layer.msg(data.msg, {icon: 2,time: 1000});
+                    $.each(data.result, function(index, item) {
+                        $('#err_' + index).text(item).show();
+                    });
+                } else {
+                    layer.msg(data.msg, {icon: 2,time: 1000});
+                }
+            }
+        });
+    }
+
+
+    function img_call_back(fileurl_tmp)
+    {
+        var img_url = '{:config('aliyun_oss.Oss_cdn')}'+fileurl_tmp;
+        $("#thumb").val(fileurl_tmp);
+        $("#img_a").attr('href', img_url);
+        $("#img_i").attr('onmouseover', "layer.tips('<img src="+img_url+">',this,{tips: [1, '#fff']});");
+    }
+
+    function video_call_back(fileurl_tmp)
+    {
+        $("#video").val(fileurl_tmp);
+    }
+
+
+    /*
+  * 以下是图片上传方法
+  */
+    // 上传商品图片成功回调函数
+    function call_back(fileurl_tmp){
+        $("#original_img").val(fileurl_tmp);
+        $("#original_img2").attr('href', fileurl_tmp);
+    }
+
+    // 上传商品相册回调函数
+    function call_back2(paths){
+
+        var  last_div = $(".goods_xc:last").prop("outerHTML");
+        for (var i=0;i<paths.length ;i++ )
+        {
+            $(".goods_xc:eq(0)").before(last_div);	// 插入一个 新图片
+            $(".goods_xc:eq(0)").find('a:eq(0)').attr('href',paths[i]).attr('onclick','').attr('target', "_blank");// 修改他的链接地址
+            $(".goods_xc:eq(0)").find('img').attr('src','{:config(\'aliyun_oss.Oss_cdn\')}'+ paths[i]);// 修改他的图片路径
+            $(".goods_xc:eq(0)").find('a:eq(1)').attr('onclick',"ClearPicArr2(this,'"+paths[i]+"')").text('删除');
+            $(".goods_xc:eq(0)").find('input').val(paths[i]); // 设置隐藏域 要提交的值
+        }
+    }
+    /*
+     * 上传之后删除组图input
+     * @access   public
+     * @val      string  删除的图片input
+     */
+    function ClearPicArr2(obj,path)
+    {
+        $.ajax({
+            type:'GET',
+            url:"{:U('Admin/Uploadify/delupload')}",
+            data:{action:"del", filename:path},
+            success:function(){
+                $(obj).parent().remove(); // 删除完服务器的, 再删除 html上的图片
+            }
+        });
+        // 删除数据库记录
+        $.ajax({
+            type:'GET',
+            url:"{:U('Admin/Goods/del_goods_images')}",
+            data:{filename:path},
+            success:function(){
+                //
+            }
+        });
+    }
+
+    // 选择商品
+    function selectGoods($goodIdStr){
+        var url = "/index.php/admin/Promotion/search_goods/tpl/article_select_goods/prom_type/article/goods_id/"+$goodIdStr;
+        layer.open({
+            type: 2,
+            title: '选择商品',
+            shadeClose: true,
+            maxmin: true, //开启最大化最小化按钮
+            shade: 0.2,
+            area: ['90%', '90%'],
+            content: url,
+        });
+    }
+    function call_back(goodsItem){
+        var val = $('#goods_id').val();
+
+        $('#goods_id').val(goodsItem + val);
+
+        layer.closeAll('iframe');
+    }
+    
+    function rm_video() {
+        $("#video").val('');
+        event.preventDefault();
+    }
+
+    function rm_goods_id() {
+            $("#goods_id").val('');
+            event.preventDefault();
+        }
+
+</script>
+</body>
+</html>

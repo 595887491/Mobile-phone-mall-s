@@ -1,0 +1,142 @@
+<include file="public/header" title="绑定手机号" body=""/>
+<include file="public/header_nav" title="绑定手机号"  href="{:U('Mobile/User/userinfo')}"/>
+<link rel="stylesheet" href=__STATIC__/css/change_new_moblie.css">
+<style>
+    .loginsingup-input{    padding: 0 .64rem;}
+    .loginsingup-input .lsu-submit input{background-color: #FF407E;border-radius: .2rem;}
+    .v-identity .v-cont-wrap{border: none;width: 11.6rem;}
+    .loginsingup-input .lsu input{width: 10rem;}
+    .v-identity .v-til{line-height: 1.1rem;}
+    .v-identity .v-cont-wrap>.m_phone{width: 3.5rem;height: 1.2rem;line-height: 1.2rem;margin-top: -.2rem;
+        background-color: #FF407E;color: #fff;padding: 0;border-radius: .15rem;text-align: center;}
+</style>
+    <div style="width: 100%;text-align: center;margin-top: .7rem;height:3rem">
+        <img src="__STATIC__/images/cmobile.png"  style="text-align: center;width: 12rem;height: 2.5rem" alt="">
+    </div>
+    <div style="width: 100%;height: .3rem;background: #f3f5f7"></div>
+    <div class="loginsingup-input">
+        <form method="post" >
+            <div class="lsu">
+                <span class="fl" style="padding-top: .05rem;">手机号：</span>
+                <input type="text" name="mobile" id="tel" value="{$mobile}" placeholder="请输入您的手机号" />
+            </div>
+            <div class="v-identity m-t-40" style="border-bottom: 1px solid #dbdbdb;">
+                <span class="v-til">验证码：</span>
+                <div class="v-cont-wrap">
+                    <input type="text" name="mobile_code" id="tpcode" value="" placeholder="请输入验证码">
+                    <a  class="m_phone" href="javascript:void(0);" rel="mobile" id="fcode" onclick="sendcode(this)">获取验证码</a>
+                </div>
+            </div>
+            <div class="lsu-submit">
+                <input type="button" onclick="nextstep()" value="绑定" />
+            </div>
+        </form>
+    </div>
+
+<script>
+    var referer = "{$referer}";
+    //手机验证
+    function checkMobilePhone(mobile){
+        if(mobile == ''){
+            layer.open({content:'请输入手机号！',time:3,skin:"msg"});
+            return false;
+        }else  if(!checkMobile(mobile)) {
+            layer.open({content:'手机号码格式不对！',time:3,skin:"msg"});
+            return false;
+        }
+    }
+
+    //发送短信验证码
+    function sendcode(obj){
+        var tel = $.trim($('#tel').val());
+
+        var obj = $(obj);
+        if(tel == ''){
+            layer.open({content:'请输入你的号码！',time:3,skin:"msg"});
+            return false;
+        }
+
+        var s = {$tpshop_config['sms_sms_time_out']|default=60};
+        //改变按钮状态
+        obj.unbind('click');
+        //添加样式
+        obj.attr('id','fetchcode');
+        callback();
+        //循环定时器
+        var T = window.setInterval(callback,1000);
+        function callback()
+        {
+            if(s <= 0){
+                //移除定时器
+                window.clearInterval(T);
+                obj.bind('click',sendcode)
+                obj.removeAttr('id','fetchcode');
+                obj.text('获取验证码');
+            }else{
+                obj.text(--s + '秒');
+            }
+        }
+        $.ajax({
+            url : "/index.php?m=Home&c=Api&a=send_validate_code&scene=4&type=mobile&send="+tel,
+            type:'post',
+            dataType:'json',
+            data:{type:obj.attr('rel'),send:tel},
+            success:function(res){
+                if(res.status==1){
+                    //成功
+                    layer.open({content:res.msg,time:3,skin:"msg"});
+                    // showErrorMsg(res.msg);
+                }else{
+                    //失败
+                    layer.open({content:res.msg,time:3,skin:"msg"});
+                    // showErrorMsg(res.msg);
+                    //移除定时器
+                    window.clearInterval(T);
+                    obj.removeAttr('id','fetchcode');
+                    obj.text('获取验证码');
+                }
+            }
+        })
+    }
+
+    //第一步验证
+    function nextstep(){
+        var tpcode = $('#tpcode').val();
+        var tel = $('#tel').val();
+        var reg = /^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/;
+        if(tpcode == ''){
+            layer.open({content:'验证码不能为空！',time:3,skin:"msg"});
+            return false;
+        }
+        if(tpcode.length != 4){
+            layer.open({content:'验证码错误！',time:3,skin:"msg"});
+            return false;
+        }
+        if(!reg.test(tel)){
+            layer.open({content:'请输入正确手机号！',time:3,skin:"msg"});
+            return false;
+        }
+        $.ajax({
+            url:"{:U('mobile/User/setMobile')}",
+            type:'post',
+            dataType:'json',
+            data:{
+                mobile:tel,
+                mobile_code:tpcode,
+                validate:0
+            },
+            success:function(data){
+                if(data.code==1){
+                    // is_check = true;
+                    layer.open({content:'修改成功！',time:3,skin:"msg"});
+                    window.location.href='{:U("Mobile/User/userinfo")}';
+                }else{
+                    layer.open({content:data.msg,time:3,skin:"msg"});
+                    return false;
+                }
+            }
+        })
+    }
+</script>
+</body>
+</html>

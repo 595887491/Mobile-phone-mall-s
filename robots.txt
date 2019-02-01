@@ -1,0 +1,10 @@
+#robots.txtforTPshop
+User-agent: *
+Disallow: /install/ 
+Disallow: /plugins/ 
+Disallow: /application/
+Disallow: /backup/
+Disallow: /public/
+Disallow: /static/ 
+Disallow: /template/ 
+Disallow: /router.php

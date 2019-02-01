@@ -1,0 +1,226 @@
+body{
+    background-color: white;
+}
+.code_back_img{
+    width: 100%;
+    height: 26rem;
+}
+.user_code{
+    width: 8rem;
+    height: 8rem;
+    position: absolute;
+    top: 11.2rem;
+    left: 5.2rem;
+    z-index: 99;
+
+}
+.user_code img{
+    width:5.5rem;
+    height: 5.5rem;
+    box-shadow: 0 0.1rem 0.5rem 1.5px #eee;
+}
+.user_code p {
+    font-size: .6rem;
+    color: #BFC1CD;
+    margin-top: .5rem;
+    margin-left: 1.3rem;
+}
+.user_img{
+    width: 6rem;
+    height:4rem;
+    position: absolute;
+    top: 8rem;
+    left: 6.5rem;
+}
+
+.user_img img{
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    text-align: center;
+}
+.user_img p{
+    font-size: .7rem;
+    color: #1E1B1B;
+    margin-left: .8rem;
+    margin-top: .5rem;
+}
+.classreturn{
+    box-shadow: none;
+}
+.nickname{
+    position: absolute;
+    top: 17.6rem;
+    font-size: .7rem;
+    text-align: center;
+    width: 100%;
+    height: 2rem;
+    left: 0;
+}
+.loginsignup {
+    position: fixed;
+    top: 0;
+    z-index: 9999;
+}
+#cf_socll .mslide li{position: static;}
+.mslide .dot{
+    bottom: .6rem;
+}
+.mslide .dot span{
+    width: .2rem;
+    height: .2rem;
+    border-radius:45%;
+    background-color: #BFC1CD;
+    margin-left: .3rem;
+    border: 1px solid #BFC1CD;
+}
+.dh nav a{
+    width: 20%;
+}
+.mslide .dot{
+    position: fixed;
+    /*left: 50%;*/
+    bottom: 1.5rem;
+}
+.mslide .dot .cur{
+    width: .6rem;
+    height: .2rem;
+    border-radius: 15%;
+    background-color: #FF407E;
+}
+.banner{
+    height: 23rem;
+}
+.bgTop{
+    width: 100%;
+    height: 16rem;
+}
+.mslide{
+    height: 23rem;
+}
+.bgTop img{
+    width: 100%;.
+height:11rem;
+}
+.bgBottom img{
+    position: static;
+    height: 4.05rem;
+    width: 100%;
+}
+.bgBottom{
+    position: absolute;
+    /* top: 17rem; */
+    bottom: -4rem;
+    /* left: 4rem; */
+    width: 100%;
+    text-align: center;
+    height: 8rem;
+
+}
+.uploadPic{
+    font-size: .7rem;
+    position: absolute;
+    top: 8rem;
+    left: 5.3rem;
+
+}
+.uploadPic input{
+    /*display: none;*/
+}
+.uploadPic button{
+    width: 5.5rem;
+    height: 1.6rem;
+    line-height: 1.6rem;
+    text-align: center;
+    background-color: #FF407E;
+    color: #fff;
+    border: none;
+}
+.smallPhoto{
+    position: fixed;
+    right: .5rem;
+    z-index: 99999;
+    line-height: .9rem;
+    top: .5rem;
+}
+.smallPhoto img{
+    width: .9rem;
+    height: .8rem;
+}
+.file {
+    position: relative;
+    display: inline-block;
+    background: #FF407E;
+    border: 1px solid #FF407E;
+    border-radius: 4px;
+    padding: .5rem 1rem;
+    overflow: hidden;
+    color: #fff;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 20px;
+}
+.file input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+}
+.file:hover {
+    background: #FF407E;
+    border-color: #FF407E;
+    color: #ffffff;
+    text-decoration: none;
+}
+.filePhoto {
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    color: #fff;
+    text-decoration: none;
+    text-indent: 0;
+}
+.filePhoto input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+}
+.container {
+    overflow: visible;
+    padding: 0;
+    position: fixed;
+    top: .4rem;
+    right: 2rem;
+    z-index: 10000;
+
+}
+.mslide li img{position: static;}
+.modal-content{margin-top: 7rem;}
+#avatarInput{display: block;position: absolute;top:0;right: 0;}
+.btn{
+    color: #fff;
+    font-size: .6rem;
+    /*opacity: .6;*/
+    padding: .3rem .5rem;
+}
+.modal{
+    background: rgba(0,0,0,.7);
+}
+.modal-content{
+    background-color: transparent;
+}
+.row{margin: 0 -1rem;}
+.modal-body{padding: 0;}
+.modal-dialog{margin: 0;}
+.modal-content{ box-shadow: 0 3px 9px transparent;border:none;}
+@media (min-width: 992px){
+    .modal-lg {
+        width: 100%;
+    }
+}
+.btn-block:hover{
+    border: none;
+}

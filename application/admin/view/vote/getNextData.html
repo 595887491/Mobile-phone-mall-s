@@ -1,0 +1,73 @@
+<table>
+    <tbody>
+    <if condition="empty($act_list) eq true">
+        <tr data-id="0">
+            <td class="no-data" align="center" axis="col0" colspan="50">
+                <i class="fa fa-exclamation-circle"></i>没有符合条件的记录
+            </td>
+        </tr>
+        <else/>
+        <volist name="act_list" id="list">
+            <tr data-id="{$list.id}">
+                <td class="sign" axis="col0">
+                    <div style="text-align: center; width: 50px;">{$list.id}</div>
+                </td>
+                <td align="left" abbr="nickname" axis="col3" class="">
+                    <div style="text-align: left; width: 100px;" class="">{$list.act_name}</div>
+                </td>
+                <td align="left" abbr=content axis="col4" class="">
+                    <div style="text-align: left; width: 200px;" class="">{:date('m-d H:i',$list.start_time)} ~ {:date('m-d H:i',$list.end_time)}</div>
+                </td>
+                <td align="left" abbr=content axis="col4" class="">
+                    <div style="text-align: left; width: 200px;" class="">{$list.number}</div>
+                </td>
+                <td align="left" abbr=content axis="col4" class="">
+                    <div style="text-align: left; width: 200px;" class="">
+                        <if condition="$list.status == 0">
+                                未开始
+                            <elseif condition="$list.status == 1">
+                                进行中
+                            <elseif condition="$list.status == 2">
+                                等待开奖
+                            <elseif condition="$list.status == 3">
+                                活动结束
+                        </if>
+                    </div>
+                </td>
+                <td align="center" abbr="article_time" axis="col6" class="">
+                    <div style="text-align: center; width: 120px;">
+                        <if condition='$list[is_online] eq 1'>
+                            <span class="yes" onClick="changeTableVal('cf_vote_activity','id','{$list.id}','is_online',this,1)" ><i class="fa fa-check-circle"></i>是</span>
+                            <else />
+                            <span class="no" onClick="changeTableVal('cf_vote_activity','id','{$list.id}','is_online',this,1)" ><i class="fa fa-ban"></i>否</span>
+                        </if>
+                    </div>
+                </td>
+                <td align="center" abbr="article_time" axis="col6" class="">
+                    <div style="text-align: center; width: 300px;" class="">
+                        <a class="btn red"  href="{:U('Admin/Vote/voteFoundList',[ 'vote_id' => $list['id'] ] )}" ><i class="fa fa-trash-o"></i>参与用户</a>
+                        <a class="btn red"  href="{:U('Admin/Vote/add',[ 'id' => $list['id'] ])}" ><i class="fa fa-trash-o"></i>编辑</a>
+                        <a class="btn red"  href="javascript:void(0);" onclick="publicHandle('{$list[id]}','del')" ><i class="fa fa-trash-o"></i>删除</a>
+                    </div>
+                </td>
+                <td align="" class="" style="width: 100%;">
+                    <div>&nbsp;</div>
+                </td>
+            </tr>
+        </volist>
+    </if>
+    </tbody>
+</table>
+<div class="row">
+    <div class="col-sm-6 text-left"></div>
+    <div class="col-sm-6 text-right">{$page}</div>
+</div>
+<script>
+    $(".pagination  a").click(function(){
+        var page = $(this).data('p');
+        ajax_get_table('search-form2',page);
+    });
+
+    $( 'h5', '.ftitle').empty().html("(共{$pager->totalRows}条记录)");
+
+</script>

@@ -1,0 +1,67 @@
+/*.global_banner{width: 100%;height: 4.4rem;background:url("../../images/bannerRank.png") no-repeat;background-size: 100% 100%;}*/
+/*.global_suspension{width: 94%;height: 4.24rem;background-color: #fff;border-radius: .1rem;margin: 0 auto;*/
+/*box-shadow: 0 0 .5rem .06rem #DADEE1;margin-top: -1rem;}*/
+/*.global_choiceness {width: 94%;margin:  0 auto;padding: .75rem 0;}*/
+.banner img{ height: 8.7rem;}
+.se_sclist .deleshow .bot::after{display: block;content:'';visibility: hidden;clear: both;height: 0;}
+#header{-webkit-box-shadow: 0 0.1rem 0.5rem 1px transparent;position: fixed;top:0;left: 0;width: 100%;z-index: 99;
+background-color: #fff;}
+.global_suspension {width: 94%;border-radius: .2rem;background-color: #fff;margin: 0 auto;padding-top: .8rem;padding-bottom:.4rem;
+    box-shadow: 0 0 .5rem .1rem rgba(0,0,0,.3);margin-top: -2rem;position: relative;}
+.global_suspension .top{}
+.global_suspension .top img{display: block;width: 4rem;margin: 0 auto;}
+.global_suspension >ul {width: 100%;white-space: nowrap;overflow-y: scroll;font-size: 0;margin-top: .6rem;-webkit-overflow-scrolling: touch;}
+.global_suspension >ul::-webkit-scrollbar {display:none;}
+.global_suspension >ul li{width:4rem;height: 6rem;border-radius: .1rem;overflow: hidden;display: inline-block;margin-left: .3rem;}
+.global_suspension >ul li img{width: 100%;height: 100%;}
+.global_suspension >ul li:last-child{margin-right: .3rem;}
+.se_sclist .deleshow .deletes .similar-product-txt{height: auto;display:block;line-height: 1.2; overflow: hidden;text-overflow: ellipsis;white-space: nowrap;
+    margin-bottom: .34133rem; font-size: .6rem;color: #1E1B1B;margin-top: .2rem;font-weight: bold;min-height: .8rem;}
+.se_sclist .deleshow{height: auto;}
+.addimgchan .maleri30{margin: 0;}
+.addimgchan .se_sclist .deleshow{height: auto;}
+.addimgchan .se_sclist .deleshow .weight{float: left;}
+.se_sclist .deleshow .deletes .similar-product-text{line-height: 1.2;height: 1.35rem;font-size: .57rem;}
+.se_sclist .deleshow .bot{margin-top: .8rem;}
+.sc_list{padding-top: 0;}
+.addmhg .orderlistshpop{overflow: hidden;}
+.global_screen{ padding: 1.6rem .42rem .12rem .42rem;}
+.global_screen::after{content: '';display: block;visibility: hidden;clear: both;height: 0;}
+.global_screen>p{font-size: .7rem;font-weight: 700;color: #1E1B1B;float: left;text-indent: .14rem;}
+.global_screen>div{float: right;}
+#goods_list{padding-top: 0;margin-top: 0;}
+.pos2{position: static;top:0;left: 0;}
+.search_list_dump ul li{width: 33.333%;}
+.storenav{width: 45%;}
+.storenav ul li{line-height: normal;height: auto;}
+.storenav{background-color: transparent;border-bottom: none;}
+.mask-filter-box{z-index: 100;}
+.screen_wi{z-index: 999;}
+.activeRed span{color: #FF407E;}
+.floatNav{position: fixed;background-color: #fff;top:1.86rem;left: 0;width: 100%;z-index: 999;
+border-bottom: 1px solid #EDEEF4;padding:.55rem .42rem;}
+.addimgchan .se_sclist .shopimg{width: 100%;height: 7.3rem;}
+.addimgchan .se_sclist .shopimg img{height: 100%;width: 100%;}
+.banner_brand{width: 100%;height: 8.7rem;background: url("../../images/pinpai_header_bj.png")no-repeat;background-size: 100% 100%;
+padding-top: 1.8rem;}
+.banner_brand .logo{width: 3rem;height: 3rem;border-radius: 2rem;overflow: hidden;margin: 0 auto;}
+.banner_brand .logo img{width: 100%;height: 100%;}
+.banner_brand p{font-size: .65rem;color: #fff;text-align: center;}
+.banner_brand .lick_name{padding-top: .8rem;}
+.banner_brand .brand{font-size: .65rem;color: #fff;padding-top: .3rem;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

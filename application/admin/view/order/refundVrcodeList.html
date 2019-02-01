@@ -1,0 +1,352 @@
+<include file="public/layout" />
+<script type="text/javascript" src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>卡券退款单列表</h3>
+            </div>
+            <ul class="tab-base nc-row">
+                <li><a <if condition="($Request.param.prom_type neq 6) and ($Request.param.prom_type neq 5)">class="current"</if> href="{:U('Order/refund_order_list')}"><span>全部</span></a></li>
+                <li><a <if condition="$Request.param.prom_type eq 6">class="current"</if> href="{:U('Order/refund_order_list',['prom_type'=>6])}"><span>拼团退款单</span></a></li>
+                <li><a <if condition="$Request.param.prom_type eq 5">class="current"</if> href="{:U('Order/refundVrcodeList',['prom_type'=>5])}"><span>卡券退款单</span></a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+            <li>未发货时用户操作取消的订单卡券密码</li>
+            <li>已付款并取消订单列表</li>
+        </ul>
+    </div>
+    <div class="flexigrid">
+        <div class="mDiv" style="margin-bottom: 10px;">
+            <div class="ftitle">
+                <h3>卡券退款单列表</h3>
+                <h5></h5>
+            </div>
+            <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+
+            <form class="navbar-form form-inline"  method="post" action=""  name="search-form2" id="search-form2">
+                <input type="hidden" name="user_ids" value="">
+                <input type="hidden" name="order_by" value="be_partner_start">
+                <input type="hidden" name="sort" value="desc">
+                <input type="hidden" name="export" id="export" value="0">
+
+
+                <div class="sDiv" style="padding-top: 10px;width: 100%">
+
+                    <div class="sDiv2">
+                        <select name="refund_lock" onchange="ajax_get_table('search-form2',1)" class="select" style="width:100px;margin-right:5px;margin-left:5px">
+                            <option value="" >处理状态</option>
+                            <option value="1" <if $search.refund_lock ==1>selected="selected"</if>>待处理</option>
+                            <option value="3" <if $search.refund_lock ==3>selected="selected"</if>>已退款</option>
+                            <option value="4" <if $search.refund_lock ==4>selected="selected"</if>>已拒绝</option>
+                        </select>
+                    </div>
+                    <div class="sDiv2">
+                        <input type="text" size="30" id="add_time_begin" name="startTime" value="{$search.startTime}" class="qsbox"  placeholder="下单开始时间">
+                    </div>
+                    <div class="sDiv2">
+                        <input type="text" size="30" id="add_time_end" name="endTime" value="{$search.endTime}" class="qsbox"  placeholder="下单结束时间">
+                    </div>
+
+                    <div class="sDiv2" id="searchText">
+                        <input type="text" size="30" style="width:220px;" name="keywords" class="qsbox" placeholder="订单编号、用户ID、手机号" value="{$search.searchValue}">
+                    </div>
+                    <div class="sDiv2">
+                        <input type="button"  onclick="ajax_get_table('search-form2',1)" class="btn" value="搜索">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="hDiv">
+            <div class="hDivBox" id="ajax_return">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th axis="col0">
+                            <div style="width: 24px;"><i class="ico-check sign"></i></div>
+                        </th>
+                        <th align="center" abbr="order_sn" axis="col3" class="">
+                            <div style="text-align: left; width: 160px;" class="orderState">订单编号</div>
+                        </th>
+                        <th align="center"  axis="col4" class="">
+                            <div style="text-align: left; width: 120px;" class="">商品信息</div>
+                        </th>
+                        <th align="center" abbr="user_id" axis="col6" class="">
+                            <div style="text-align: left; width: 80px;" class="userSort">用户ID</div>
+                        </th>
+                        <th align="center" axis="col4" class="">
+                            <div style="text-align: left; width: 100px;" class="">用户信息</div>
+                        </th>
+                        <th align="center"  axis="col4" class="">
+                            <div style="text-align: left; width: 100px;" class="sortNum">退款金额</div>
+                        </th>
+                        <th align="center" abbr="add_time" axis="col6" class="">
+                            <div style="text-align: center; width: 180px;" class="sortAdd">下单时间</div>
+                        </th>
+                        <th align="center" abbr="pay_time" axis="col6" class="">
+                            <div style="text-align: center; width: 180px;" class="sortPay">支付时间</div>
+                        </th>
+                        <th align="center" axis="col4" class="">
+                            <div style="text-align: left; width: 100px;" class="orderState">订单状态</div>
+                        </th>
+                        <th align="left" axis="col1" class="">
+                            <div style="text-align: center; width: 60px;">操作</div>
+                        </th>
+
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="tDiv">
+            <div style="clear:both"></div>
+        </div>
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+
+            </div>
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+        <!--分页位置-->
+    </div>
+</div>
+<script type="text/javascript">
+    function form_submit(v){
+        $('#export').val(v);
+        var selected_ids = '';
+        $('.trSelected' , '#flexigrid').each(function(i){
+            selected_ids += $(this).data('order-id')+',';
+        });
+        if(selected_ids != ''){
+            $('input[name="order_ids"]').val(selected_ids.substring(0,selected_ids.length-1));
+        }
+        $('#search-form2').submit();
+        $('#export').val(0);
+    }
+
+    $(document).ready(function(){
+
+        // 起始位置日历控件
+        laydate.skin('molv');//选择肤色
+        laydate({
+            elem: '#add_time_begin',
+            format: 'YYYY-MM-DD', // 分隔符可以任意定义，该例子表示只显示年月
+            festival: true, //显示节日
+            istime: false,
+            choose: function(datas){ //选择日期完毕的回调
+                compare_time($('#add_time_begin').val(),$('#add_time_end').val());
+            }
+        });
+
+        // 结束位置日历控件
+        laydate({
+            elem: '#add_time_end',
+            format: 'YYYY-MM-DD', // 分隔符可以任意定义，该例子表示只显示年月
+            festival: true, //显示节日
+            istime: false,
+            choose: function(datas){ //选择日期完毕的回调
+                compare_time($('#add_time_begin').val(),$('#add_time_end').val());
+            }
+        });
+
+        // 点击刷新数据
+        $('.fa-refresh').click(function(){
+            location.href = location.href;
+        });
+
+        ajax_get_table('search-form2',1);
+
+        $('.ico-check ' , '.hDivBox').click(function(){
+            $('tr' ,'.hDivBox').toggleClass('trSelected' , function(index,currentclass){
+                var hasClass = $(this).hasClass('trSelected');
+                $('tr' , '#flexigrid').each(function(){
+                    if(hasClass){
+                        $(this).addClass('trSelected');
+                    }else{
+                        $(this).removeClass('trSelected');
+                    }
+                });
+            });
+        });
+
+
+    });
+
+    //选项卡
+    $('.typeTab li ').click(function() {
+        var v = $(this).val();
+        $("input[name='typeTab']").val(v);
+        ajax_get_table('search-form2',1);
+        $(".typeTab li").eq($(this).index()).addClass("currentChange").siblings().removeClass('currentChange');
+    });
+
+    // 点击刷新数据
+    var ssort = 'sasc';
+    var on_sclick = 0;
+    $('.hDivBox > table>thead>tr>th').hover(
+        function () {
+            if(typeof($(this).attr('abbr')) == "undefined"){
+                return false;
+            }
+            $(this).addClass('thOver');
+            if($(this).hasClass('sorted')){
+                if(ssort == 'sasc'){
+                    $(this).find('div').removeClass('sasc');
+                    $(this).find('div').addClass('sdesc');
+                }else{
+                    $(this).find('div').removeClass('sdesc');
+                    $(this).find('div').addClass('sasc');
+                }
+            }else{
+                $(this).find('div').addClass(ssort);
+            }
+        }, function () {
+            if(typeof($(this).attr('abbr')) == "undefined"){
+                return false;
+            }
+            if(on_sclick == 0){
+                if($(this).hasClass('sorted')){
+                    if(ssort == 'sdesc'){
+                        $(this).find('div').removeClass('sasc');
+                        $(this).find('div').addClass('sdesc');
+                    }else{
+                        $(this).find('div').removeClass('sdesc');
+                        $(this).find('div').addClass('sasc');
+                    }
+                }else{
+                    $(this).find('div').removeClass(ssort);
+                }
+            }
+            $(this).removeClass("thOver");
+            on_sclick = 0;
+        }
+    );
+    $('.hDivBox > table>thead>tr>th').click(function(){
+
+        if(!$(this).hasClass("currentDom")){
+            $(this).parent().find("th").removeClass("currentDom");
+            $(this).addClass("currentDom");
+            $("input[name='sort']").val("desc");
+        }
+
+
+        if(typeof($(this).attr('abbr')) == "undefined"){
+            return false;
+        }
+        if($(this).hasClass('sorted')){
+            $(this).find('div').removeClass(ssort);
+            if(ssort == 'sdesc'){
+                ssort = 'sasc';
+            }else{
+                ssort = 'sdesc';
+            }
+            $(this).find('div').addClass(ssort);
+            on_sclick = 1;
+        }else{
+            $('.hDivBox > table>thead>tr>th').removeClass('sorted');
+            $('.hDivBox > table>thead>tr>th').find('div').removeClass(ssort);
+            $(this).addClass('sorted');
+            $(this).find('div').addClass(ssort);
+            var hDivBox_th_index = $(this).index();
+            var flexigrid_tr =   $('#flexigrid > table>tbody>tr')
+            flexigrid_tr.each(function(){
+                $(this).find('td').removeClass('sorted');
+                $(this).children('td').eq(hDivBox_th_index).addClass('sorted');
+            });
+        }
+
+
+        if( $(this).children("div").hasClass("sasc") ){
+            $("input[name='sort']").val("desc");
+        }else {
+            $("input[name='sort']").val("asc");
+        }
+
+        sort($(this).attr('abbr'));
+
+
+    });
+
+    $('.fa-refresh').click(function(){
+        location.href = location.href;
+    });
+
+    //选中全部
+    $('.hDivBox .sign').click(function(){
+        var sign = $('#flexigrid > table>tbody>tr');
+        if($(this).parent().hasClass('trSelected')){
+            sign.each(function(){
+                $(this).removeClass('trSelected');
+            });
+            $(this).parent().removeClass('trSelected');
+        }else{
+            sign.each(function(){
+                $(this).addClass('trSelected');
+            });
+            $(this).parent().addClass('trSelected');
+        }
+    });
+
+    //ajax 抓取页面
+    function ajax_get_table(tab,page){
+        cur_page = page; //当前页面 保存为全局变量
+        $.ajax({
+            type : "POST",
+            url:"/index.php/Admin/order/refundVrcodeList/p/"+page,//+tab,
+            data : $('#'+tab).serialize(),// 你的formid
+            success: function(data){
+                $("#flexigrid").html('');
+                $("#flexigrid").append(data);
+
+                // 表格行点击选中切换
+                $('#flexigrid > table>tbody >tr').click(function(){
+                    $(this).toggleClass('trSelected');
+                });
+
+            }
+        });
+    }
+
+    // 点击排序
+    function sort(field){
+        $("input[name='order_by']").val(field);
+        //切换顺序
+        var v = $("input[name='sort']").val() == 'desc' ? 'asc' : 'desc';
+        $("input[name='sort']").val(v);
+
+        ajax_get_table('search-form2',cur_page);
+    }
+
+
+
+    //绑定change事件，当下拉框内容发生变化时启动事件
+    $("#chosed").bind("change",function(){
+        var searchValue = $('#chosed option:selected').val();
+        if (searchValue == 'user'){
+            $("#searchText").html("<input type=\"text\" size=\"30\" style=\"width:220px;\" name=\"keywords\" class=\"qsbox\" value=\"{$search.searchValue}\" placeholder=\"用户ID、昵称、手机号\">");
+        }
+        if (searchValue == 'goods'){
+            $("#searchText").html("<input type=\"text\" size=\"30\" style=\"width:220px;\" name=\"keywords\" class=\"qsbox\"  value=\"{$search.searchValue}\" placeholder=\"商品名称、商品ID\">");
+        }
+    });
+
+
+
+
+
+
+</script>
+</body>
+</html>

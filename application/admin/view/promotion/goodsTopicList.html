@@ -1,0 +1,280 @@
+<include file="public/layout" />
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<style>
+	.nav{margin-top: 30px}
+	.timer button:hover{opacity: 1;}
+	.nav li {float: left;width: 100px;text-align: center;border: 1px solid #ddd;line-height: 33px;border-radius: 5px 5px 0 0;z-index: 99;
+		background-color:rgba(242, 242, 242, 1);border-bottom: none;transition: .3s;margin-left: 5px;cursor: pointer;position: relative;}
+	.nav li:first-of-type{margin-left: 0;}
+	/*.nav{border-bottom: 1px solid #ddd;}*/
+	.nav li a,.member-nav li a{color: #999;display: block;width: 100%;height: 100%;}
+	.nav li.checkeds{background-color: #fff;}
+	.nav li.checkeds a{color: #1890FF;}
+	.clearfix{clear: both;overflow: hidden;}
+	.flexigrid .tDiv{border: none;background-color: #fff;}
+	.flexigrid{border: 1px solid #C8C8C8;margin-top: -1px;}
+	.top_btn{border: none;background: transparent;color: #999;height: 20px;cursor: pointer;outline:none;}
+	._top{display: block;content: '';clear: both;overflow: hidden;font-size: 0;}
+	._top li{float: left;padding: 0 10px;}
+	._top li.checked button{color:#1890FF;}
+	#search{width: 230px;height: 23px;border-radius: 5px 0 0 5px;}
+	.search_btn{height: 29px;background: rgba(24, 144, 255, 1);color: #fff;border: none;outline: none;cursor: pointer;
+	width: 70px;}
+</style>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+	<div class="fixed-bar">
+		<div class="item-title">
+			<div class="subject">
+				<h3>商品专题管理</h3>
+				<h5>网站系统优惠促销专题与管理</h5>
+			</div>
+		</div>
+	</div>
+	<!-- 操作说明 -->
+	<div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+		<div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+			<h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+			<span title="收起提示" id="explanationZoom" style="display: block;"></span>
+		</div>
+		<ul>
+			<li>优惠促销管理, 由平台设置管理.</li>
+		</ul>
+	</div>
+	<ul class="nav clearfix">
+		<li <if condition="empty($type)">class="checkeds"</if>><a href="{:U('Admin/Promotion/goodsTopicList')}">普通专题</a></li>
+		<li <if condition="$type">class="checkeds"</if>><a href="{:U('Admin/Promotion/goodsTopicList')}?type=1">精选活动</a></li>
+	</ul>
+	<div class="flexigrid">
+		<div class="tDiv" style="margin: 20px 0;">
+			<div class="tDiv2">
+				<a href="{:U('Promotion/addGoodsTopic',['type' => $type])}">
+					<div class="fbutton">
+						<div title="添加专题" class="add">
+							<span><i class="fa fa-plus"></i>添加专题</span>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div style="clear:both"></div>
+		</div>
+		<ul style="margin: 30px 15px;" class="_top">
+			<li<if condition="$status === ''"> class="checked"</if>><button class="top_btn" onclick="javascript:window.location.href = '{$url}';">全部专题</button></li>
+			<li<if condition="$status == 1"> class="checked"</if> style="border: 1px solid #999;border-top:none;border-bottom: none;"><button class="top_btn" onclick="javascript:window.location.href = '{$url}?status=1';">上架中</button></li>
+			<li<if condition="$status === 0"> class="checked"</if>><button class="top_btn" onclick="javascript:window.location.href = '{$url}?status=0';">已下架</button></li>
+			<li style="float: right;"><input type="text" name="search" id="search" value="{$keywords}"/><button class="search_btn" onclick="search()">搜索</button></li>
+		</ul>
+		<div class="hDiv">
+			<div class="hDivBox">
+				<table cellspacing="0" cellpadding="0">
+					<thead>
+					<tr>
+						<th class="sign" axis="col0">
+							<div style="width: 24px;"><i class="ico-check"></i></div>
+						</th>
+						<th align="left" abbr="article_title" axis="col1" class="" onclick="idSort()">
+							<div style="text-align: left; width: 45px;" class="">专题ID</div>
+						</th>
+						<th align="left" abbr="article_title" axis="col3" class="">
+							<div style="text-align: left; width: 240px;" class="">专题名称</div>
+						</th>
+						<th align="left" abbr="ac_id" axis="col4" class="">
+							<div style="text-align: center; width: 80px;" class="">专题图片</div>
+						</th>
+						<th align="left" abbr="ac_id" axis="col4" class="">
+							<div style="text-align: center; width: 80px;" class="">商品数量</div>
+						</th>
+						<th align="left" abbr="ac_id" axis="col4" class="">
+							<div style="text-align: center; width: 80px;" class="">专题链接</div>
+						</th>
+						<th align="left" abbr="ac_id" axis="col4" class="">
+							<div style="text-align: center; width: 130px;" class="">添加时间</div>
+						</th>
+						<th align="left" abbr="ac_id" axis="col4" class="">
+							<div style="text-align: center; width: 130px;" class="">专题状态</div>
+						</th>
+						<if condition="$type">
+							<th align="left" abbr="ac_id" axis="col4" class="">
+								<div style="text-align: center; width: 130px;" class="">排序</div>
+							</th>
+						</if>
+						<th align="left" axis="col1" class="handle">
+							<div style="text-align: center; width: 150px;">操作</div>
+						</th>
+						<th style="width:100%" axis="col7">
+							<div></div>
+						</th>
+					</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+		<div class="bDiv" style="height: auto;">
+			<div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+				<table>
+					<tbody>
+					<foreach name="topic_list" item="vo" key="k" >
+						<tr id="{$vo.topic_id}">
+							<td class="sign">
+								<div style="width: 24px;"><i class="ico-check"></i></div>
+							</td>
+							<td align="left" class="">
+								<div style="text-align: left; width: 45px;">{$vo.topic_id}</div>
+							</td>
+							<td align="left" class="">
+								<div style="text-align: left; width: 240px;">{$vo.topic_name}</div>
+							</td>
+							<td align="left" class="">
+								<div style="width: 80px;height: 40px;">
+									<img width="80px" src="{$vo.topic_img}">
+								</div>
+							</td>
+							<td align="left" class="">
+								<div style="text-align: left; width: 80px;">{$vo.goods_num}</div>
+							</td>
+							<td align="left" class="">
+								<div style="text-align: center; width: 80px;"><a href="javascript:;" onclick="layer.alert('{:U('Mobile/Goods/goodsTopic',array('topic_id'=>$vo.topic_id))}');">链接</a></div>
+							</td>
+							<td align="left" class="">
+								<div style="text-align: left; width: 130px;">{:date('Y-m-d H:i:s',$vo.add_time)}</div>
+							</td>
+							<td align="left" class="">
+								<div style="text-align: center; width: 130px;">
+									<if condition="$vo.status">
+										<a style="color:red" href="javascript:changeStatus({$vo.topic_id},{$vo.status});">下线</a>
+										<else/>
+										<a href="javascript:changeStatus({$vo.topic_id},{$vo.status});">上线</a>
+									</if>
+								</div>
+							</td>
+							<if condition="$type">
+								<td align="left" class="">
+									<input type="text" value="{$vo.show_order}" id="sort" onblur="changerSort({$vo.topic_id});">
+								</td>
+							</if>
+							<td align="left" class="handle">
+								<div style="text-align: left; width: 170px; max-width:170px;">
+									<a class="btn blue goods_list" data-url="{:U('Promotion/get_goods',array('case'=>'topic', 'topic_id'=>$vo['topic_id']))}"><i class="fa fa-search"></i>查看商品</a>
+									<a class="btn blue" href="{:U('Promotion/addGoodsTopic',array('topic_id'=>$vo['topic_id'],'type' => $type))}"><i class="fa fa-pencil-square-o"></i>编辑</a>
+									<a class="btn red  del" data-id="{$vo['topic_id']}"><i class="fa fa-trash-o"></i>删除</a>
+								</div>
+							</td>
+							<td align="" class="" style="width: 100%;">
+								<div>&nbsp;</div>
+							</td>
+						</tr>
+					</foreach>
+					</tbody>
+				</table>
+			</div>
+			<div class="iDiv" style="display: none;"></div>
+		</div>
+		<!--分页位置-->
+		{$page->show()} </div>
+</div>
+<script>
+	$(document).ready(function(){
+		// 表格行点击选中切换
+		$('#flexigrid > table>tbody >tr').click(function(){
+			$(this).toggleClass('trSelected');
+		});
+
+		// 点击刷新数据
+		$('.fa-refresh').click(function(){
+			location.href = location.href;
+		});
+
+	});
+
+	$('.goods_list').click(function(){
+		var url = $(this).attr('data-url');
+		layer.open({
+			type: 2,
+			title: '活动关联商品列表',
+			shadeClose: true,
+			shade: 0.5,
+			area: ['70%', '72%'],
+			content: url,
+		});
+	});
+    $(document).on('click','.del',function () {
+        var topic_id = $(this).data('id');
+        layer.confirm('确认删除？', {btn: ['确定','取消'] }, function(){
+            $.ajax({
+                url:"{:U('Promotion/delGoodsTopic')}",
+                data:{topic_id:topic_id},
+                dataType:'json',
+                success:function(data){
+                    if(data.status == 1){
+                        layer.msg(data.msg,{icon:1},function () {
+                            location.reload();
+                        });
+                    } else {
+                        layer.msg(data.msg,{icon:2})
+					}
+                }
+            })
+            }, function(index){
+                layer.close(index);
+                return false;// 取消
+            }
+        );
+    });
+    function changeStatus(id,status) {
+		if (status) {
+		    status = 0;
+		}else {
+		    status = 1;
+		}
+
+		$.post('{:U("Admin/Promotion/changeGoodsTopicStatus")}',{topic_id:id,status:status},function (data) {
+			if (data.code == 1) {
+                layer.msg(data.msg,{icon:1,time: 1000},function () {
+					window.location.reload();
+                })
+			}else{
+                layer.msg(data.msg,{icon:2})
+			}
+        });
+    }
+    
+    function idSort() {
+		var sort = '{$sort}';
+		if (sort == 'asc') {
+		    sort = 'desc';
+		}else {
+		    sort = 'asc'
+		}
+		window.location.href = '{:U("Admin/Promotion/goodsTopicList")}?sort='+sort+'&p={$p}&status={$status}&type={$type}';
+    }
+
+    function changerSort(id) {
+        var sort = $('#sort').val();
+        $.post(
+            '{:U("Admin/Promotion/changeGoodsTopicSort")}',
+            {topic_id:id,show_order:sort},
+            function (data) {
+                if (data.code == 1) {
+                    layer.msg(data.msg,{icon:1,time: 1000},function () {
+                        window.location.reload();
+                    })
+                }else{
+                    layer.msg(data.msg,{icon:2})
+                }
+            }
+        );
+    }
+
+    function search() {
+        var sort = '{$sort}';
+        if (sort == 'asc') {
+            sort = 'desc';
+        }else {
+            sort = 'asc'
+        }
+        window.location.href = '{:U("Admin/Promotion/goodsTopicList")}?sort='+sort+'&p={$p}&type={$type}&status={$status}&keywords='+encodeURI($('#search').val())
+    }
+</script>
+</body>
+</html>

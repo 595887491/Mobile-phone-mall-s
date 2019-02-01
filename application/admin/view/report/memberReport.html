@@ -1,0 +1,408 @@
+<include file="public/layout" />
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<style>
+    .page{background: #fafafa;}
+    #app::after, .nav::after,.title-data::after,.title-data ul li::after,.title-data ul li .db::after, .e-chart-nav::after
+    ,.flexigrid::after,.member_bf::after{display: block;clear: both;visibility: hidden;height: 0;font-size: 0;content: '';}
+    #app .name{line-height: 40px;padding-right: 10px;}
+    .fl{float: left;}
+    .fr{float: right;}
+    .el-cascader .el-input input[type="text"]{height: 40px;line-height: 40px;}
+    .nav{margin-top: 30px;}
+    .nav li {float: left;width: 100px;text-align: center;border: 1px solid #ddd;line-height: 33px;border-radius: 5px 5px 0 0;
+        background-color:rgba(242, 242, 242, 1);border-bottom: none;transition: .3s;}
+    .nav li a{color: #999;}
+    .nav li.checked{background-color: #fff;}
+    .nav li:last-child{margin-left: 15px;}
+    .sell-statistics{background-color: #fff;padding: 10px 20px;border-bottom: 1px solid rgba(235, 235, 235, 1);}
+    .sell-statistics .title{background: rgba(242, 242, 242, 1);padding: 5px 10px;border-radius: 3px;color: #999;}
+    .sell-statistics .title span{margin-left: 25px;}
+    .sell-statistics .title span:first-of-type{margin-left: 0;}
+    .title-data{margin-top: 20px;margin-bottom: 35px;}
+    .title-data>ul>li{float: left;width: 15%;padding: 5px 5px 10px 15px;border: 1px solid rgba(235, 235, 235, 1);
+        background-color: rgba(255, 255, 255, 1);margin-left:3.7%;border-radius: 5px;}
+    .title-data>ul>li:first-of-type,.e-chart-nav li:first-of-type{margin-left: 0;}
+    .title-data>ul>li .db{font-size: 12px;color: #CCCCCC;}
+    .title-data>ul>li .db .up {background: url("__PUBLIC__/static/images/new/u48.png")no-repeat;color: #00CC00;padding-left: 10px;background-position: 3px 7px;}
+    .title-data>ul>li .db .down{background: url("__PUBLIC__/static/images/new/u44.png")no-repeat;color: #FE5500;padding-left: 10px;background-position: 3px 7px;}
+    .k_help {width: 18px;height: 18px;cursor: pointer;position: absolute;right: 5px;top:5px;}
+    .e-chart-nav li{float: left;padding: 5px 10px;border-radius: 3px; background-color: rgba(242, 242, 242, 1);border-color: rgba(235, 235, 235, 1);
+        font-size: 12px;color: #999999;margin-left: 15px;cursor: pointer;}
+    .flexigrid{background: #fff;}
+    .flexigrid .sDiv{float: none;float: left; margin-left: 30px;}
+    .k_help_bx{position: absolute;right: -87px;top:-34px;display: none;color: #fff;background: rgba(0,0,0,.5);padding: 10px 15px;border-radius:3px;}
+    .member_bf li{display: inline-block;text-align: center;width: 30%;}
+    .member_bf{margin-top: 20px;}
+    .member_bf li .c1{color: #333333;margin-top: 15px;}
+    .c2{color: #666;}
+    .rig{margin-right: 10px;margin-top: 27px;}
+    .e-chart-nav li.active{color: #0ba4da;}
+</style>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>统计报表 - 会员统计</h3>
+                <h5>网站会员概况</h5>
+            </div>
+        </div>
+    </div>
+    <!--选项卡-->
+    <ul class="nav">
+        <li><a href="{:U('Report/saleReport')}">销售统计</a></li>
+        <li class="checked"><a href="javascript:;">会员统计</a></li>
+    </ul>
+    <!--content-->
+    <div class="sell-statistics">
+        <div class="title">
+           <span>
+                累计会员数：<span class="c2">{$total.count}人</span>
+           </span>
+            <span>
+               累计合伙人：<span>{$total.p_count}人</span>
+           </span>
+            <span>
+              累计服务商：<span>{$total.a_count}人</span>
+           </span>
+            <span>
+               下单率：<span>{$total.float}</span>
+           </span>
+            <span>
+               日均IP：<span>--</span>
+           </span>
+        </div>
+
+        <div class="title-data">
+            <ul>
+                <li>
+                    <img src="__PUBLIC__/static/images/new/u389.png" alt="" class="fl rig" style="">
+                    <div class="fl">
+                        <p style="font-size: 12px;color: #989898;">今日新增会员数</p>
+                        <p style="font-size: 28px;color: #666666;padding: 7px 0 ">{$today.count}</p>
+                        <div class="db">
+                            <span class="fl" style="">同比昨日{$yestoday.count}</span>
+                            <div class="fl <if condition='$today.count egt $yestoday.count'>up<else/>down</if>">
+                                <span>{$add.count}</span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <img src="__PUBLIC__/static/images/new/u390.png" alt="" class="fl rig" style="">
+                    <div class="fl">
+                        <p style="font-size: 12px;color: #989898;">今日新增合伙人</p>
+                        <p style="font-size: 28px;color: #666666;padding: 7px 0 ">
+                            {$today.p_count}
+                        </p>
+                        <div class="db">
+                            <span class="fl" style="">同比昨日{$yestoday.p_count}</span>
+                            <div class="fl <if condition='$today.p_count egt $yestoday.p_count'>up<else/>down</if>">
+                                <span>{$add.p_count}</span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <img src="__PUBLIC__/static/images/new/u391.png" alt="" class="fl rig" style="">
+                    <div class="fl">
+                        <p style="font-size: 12px;color: #989898;">今日新增服务商
+                        </p>
+                        <p style="font-size: 28px;color: #666666;padding: 7px 0 ">
+                            {$today.a_count}
+                        </p>
+                        <div class="db">
+                            <span class="fl" style="">同比昨日 {$yestoday.a_count}</span>
+                            <div class="fl <if condition='$today.a_count egt $yestoday.a_count'>up<else/>down</if>">
+                                <span>{$add.a_count}</span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li  style="position: relative;">
+                        <p style="font-size: 12px;color: #989898;text-align: center;">会员下单率
+                            <img src="__PUBLIC__/static/images/new/u36.png" alt="" class="k_help"></p>
+
+                          <ul class="member_bf">
+                              <li>
+                                  <p>今日</p>
+                                  <p class="c1">{$today.float}</p>
+                              </li>
+                              <li>
+                                  <p>近一周</p>
+                                  <p class="c1">{$lastWeekFloat}</p>
+                              </li>
+                              <li>
+                                  <p>近一月</p>
+                                  <p class="c1">{$lastMonthFloat}</p>
+                              </li>
+                          </ul>
+                    <div class="k_help_bx">
+                        周期内(去重)活跃(登录)用户/总用户数
+                    </div>
+                </li>
+                <li>
+                    <img src="__PUBLIC__/static/images/new/u406.png" alt="" class="fl rig" style="">
+                    <div class="fl">
+                        <p style="font-size: 12px;color: #989898;">今日IP访问数</p>
+                        <p style="font-size: 28px;color: #666666;padding: 7px 0 ">
+                            --
+                        </p>
+                        <div class="db">
+                            <span class="fl" style="">同比昨日--</span>
+                            <div class="fl up">
+                                <span>0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="flexigrid">
+            <ul class="e-chart-nav fl">
+                <li onclick="timeline(-1,'{$todayS}');" class="<if condition='$Request.param.days eq -1'>active</if>">今日</li>
+                <li onclick="timeline(1,'{$yestodayS}','{$todayS}');"class="<if condition='$Request.param.days eq 1'>active</if>">昨日</li>
+                <li onclick="timeline(7,'{$daysAgo_7}');"class="<if condition='$days eq 7 || $Request.param.days eq 7'>active</if>">最近7日</li>
+                <li onclick="timeline(30,'{$daysAgo_30}');"class="<if condition='$Request.param.days eq 30'>active</if>">最近30天</li>
+                <!--<li>-->
+                <!--<div class="layui-form">-->
+                <!--<div class="layui-form-item">-->
+                <!--<div class="layui-inline">-->
+                <!--<label class="layui-form-label">日期范围</label>-->
+                <!--<div class="layui-input-inline">-->
+                <!--<input type="text" class="layui-input" id="test6" placeholder=" - ">-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</li>-->
+            </ul>
+
+            <form class="navbar-form form-inline" id="search-form" method="get" action="{:U('Report/memberReport')}" onSubmit="return check_form();">
+                <div class="sDiv">
+                    <div class="sDiv2" style="margin-right: 10px;">
+                        <input type="text" size="30" name="start_time" id="start_time" value="{$start_time}" placeholder="起始时间" class="qsbox">
+                        <input type="button" class="btn" value="起始时间">
+                    </div>
+                    <div class="sDiv2" style="margin-right: 10px;">
+                        <input type="text" size="30" name="end_time" id="end_time" value="{$end_time}" placeholder="截止时间" class="qsbox">
+                        <input type="button" class="btn" value="截止时间">
+                    </div>
+                    <div class="sDiv2">
+                        <input class="btn" value="搜索" type="submit">
+                    </div>
+                    <input name="a_user" type="hidden" value="{$Request.param.a_user}"/>
+                    <input name="days" type="hidden" value="{$Request.param.days}"/>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="flexigrid">
+        <if condition="$Request.param.days != -1 && $Request.param.days != 1">
+        <h3 style="font-size: 18px;line-height: 60px;margin-left: 20px;">数据趋势图</h3>
+        <div id="statistics" style="height: 400px;"></div>
+        </if>
+        <h3 style="font-size: 18px;line-height: 60px;margin-left: 20px;">数据明细</h3>
+        <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th class="sign" axis="col0">
+                            <div style="width: 24px;"><i class="ico-check"></i></div>
+                        </th>
+                        <th align="center" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: center; width: 120px;" class="">日期</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 100px;" class="">会员</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 100px;" class="">合伙人</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 100px;" class="">服务商</div>
+                        </th>
+                        <th style="width:100%" axis="col7">
+                            <div></div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <table>
+                    <tbody>
+                    <foreach name="lists" item="vo" key="k" >
+                        <tr>
+                            <td class="sign">
+                                <div style="width: 24px;"><i class="ico-check"></i></div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 120px;">{$vo.date}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">{$vo.user}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">{$vo.p_user}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">{$vo.a_user}</div>
+                            </td>
+                            <td align="" class="" style="width: 100%;">
+                                <div>&nbsp;</div>
+                            </td>
+                        </tr>
+                    </foreach>
+                    </tbody>
+                </table>
+            </div>
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+    </div>
+</div>
+<script src="__PUBLIC__/js/echart/echarts.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/js/echart/macarons.js"></script>
+<script src="__PUBLIC__/js/echart/china.js"></script>
+<script src="__PUBLIC__/dist/js/app.js" type="text/javascript"></script>
+<script>
+    $('#start_time').layDate();
+    $('#end_time').layDate();
+    // 帮助
+    $('.k_help').hover(function () {
+        $('.k_help_bx').show()
+    },function () {
+        $('.k_help_bx').hide()
+    })
+</script>
+<script type="text/javascript">
+    <if condition="$Request.param.days != -1 && $Request.param.days != 1">
+    var res = {$result};
+    var myChart = echarts.init(document.getElementById('statistics'),'macarons');
+    option = {
+        tooltip : {
+            trigger: 'axis'
+        },
+        toolbox: {
+            show : true,
+            feature : {
+                mark : {show: true},
+                dataView : {show: true, readOnly: false},
+                magicType: {show: true, type: ['line', 'bar']},
+                restore : {show: true},
+                saveAsImage : {show: true}
+            }
+        },
+        calculable : true,
+        legend: {
+            data:['会员数','合伙人','服务商','购买率'],
+            selected:{'合伙人':false,'服务商':false,'购买率':false}//初始化只显示第一个
+        },
+        xAxis : [
+            {
+                type : 'category',
+                data : res.time
+            }
+        ],
+        yAxis : [
+            {
+                type : 'value',
+                name : '人数',
+                axisLabel : {
+                    formatter: '{value}'
+                }
+            },
+            {
+                type : 'value',
+                name : '购买率',
+                axisLabel : {
+                    formatter: '{value} %'
+                }
+            }
+        ],
+        series : [
+            {
+                name:'会员数',
+                type:'line',
+                data:res.user
+            },
+            {
+                name:'合伙人',
+                type:'line',
+                data:res.p_user
+            },
+            {
+                name:'服务商',
+                type:'line',
+                data:res.a_user
+            },
+            {
+                name:'购买率',
+                type:'line',
+                yAxisIndex: 1,
+                data:res.shipping_arr
+            }
+        ]
+    };
+    myChart.setOption(option);
+    </if>
+    $(document).ready(function(){
+        // 表格行点击选中切换
+        $('#flexigrid > table>tbody >tr').click(function(){
+            $(this).toggleClass('trSelected');
+        });
+
+        // 点击刷新数据
+        $('.fa-refresh').click(function(){
+            location.href = location.href;
+        });
+
+        // 起始位置日历控件
+        laydate.skin('molv');//选择肤色
+        laydate({
+            elem: '#start_time',
+            format: 'YYYY-MM-DD', // 分隔符可以任意定义，该例子表示只显示年月
+            festival: true, //显示节日
+            istime: false,
+            choose: function(datas){ //选择日期完毕的回调
+                compare_time($('#start_time').val(),$('#end_time').val());
+            }
+        });
+
+        // 结束位置日历控件
+        laydate({
+            elem: '#end_time',
+            format: 'YYYY-MM-DD', // 分隔符可以任意定义，该例子表示只显示年月
+            festival: true, //显示节日
+            istime: false,
+            choose: function(datas){ //选择日期完毕的回调
+                compare_time($('#start_time').val(),$('#end_time').val());
+            }
+        });
+
+    });
+
+    function check_form(){
+        var start_time = $.trim($('#start_time').val());
+        var end_time =  $.trim($('#end_time').val());
+        if(start_time == '' ^ end_time == ''){
+            layer.alert('请选择完整的时间间隔', {icon: 2});
+            return false;
+        }
+        return true;
+    }
+    var endTime = "{$end_time}";
+    function timeline(days,start,end){
+        $("input[name=days]").val(days);
+        $('#start_time').val(start);
+        end?$('#end_time').val(end):$('#end_time').val(endTime);
+        $("#search-form").submit();
+    }
+</script>
+</body>
+</html>

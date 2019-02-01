@@ -1,0 +1,52 @@
+<include file="public/header" title="确认收货成功" body=""/>
+<include file="public/header_nav" title="确认收货成功" href="javascript:history.back(-1)" />
+<style>
+    .mae .shopprice .fon_or{width: 11.36rem;}
+    .sonfbst{    border-bottom: 1px solid #EDEEF4;
+        border-top: 1px solid #EDEEF4;}
+    .mae .maleri30{margin-left: 0;}
+    .quedbox{    margin-left: .64rem; border-bottom: 1px solid #EDEEF4;}
+    .shopprice .fon_or{margin-left: 0;}
+    .compj{border: 1px solid #FF407E;color: #FF407E;}
+    .euresucess img{ width: 3.22667rem;
+        height:3.22667rem;}
+    .euresucess{padding: 2.28rem 0;}
+    .shopprice .img_or img{    width: 3.13333rem;height: 3.13333rem;}
+</style>
+<div class="euresucess">
+    <img src="__STATIC__/images/order_confirm_success.png"/>
+    <p style="color: #BFC1CD;">确认收货成功</p>
+</div>
+<div class="sonfbst">
+    <div class="maleri30">
+        <span><i class="fbs"></i>立即发表评价晒图，最多可获得50积分</span>
+    </div>
+</div>
+<div class="quedbox bg_white">
+    <div class="fukcuid mae">
+        <div class="maleri30">
+            <foreach name="order_goods.result" item="goods">
+                <div class="shopprice p">
+                    <div class="img_or fl"><img src="{$goods[original_img]}"></div>
+                    <div class="fon_or fr">
+                        <h2 class="similar-product-text">
+                            <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$goods[goods_id]))}">{$goods[goods_name]}</a>
+                            <p>{$goods[spec_key_name]}</p>
+                        </h2>
+                        <if condition="$goods['is_send'] eq 1">
+                            <a class="compj" href="{:U('Mobile/Order/add_comment',['rec_id'=>$goods[rec_id]])}">去评价</a>
+                        </if>
+                        <if condition="$goods['is_send'] gt 1">
+                            <a class="compj" href="{:U('Mobile/Order/order_detail',array('id'=>I('id')))}">已完成售后</a>
+                        </if>
+                        <if condition="$goods['is_send'] eq 0">
+                            <a class="compj">未发货</a>
+                        </if>
+                    </div>
+                </div>
+            </foreach>
+        </div>
+    </div>
+</div>
+</body>
+</html>

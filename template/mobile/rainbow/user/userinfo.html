@@ -1,0 +1,365 @@
+<include file="public/header" title="设置" body="g4"/>
+<link rel="stylesheet" href="__STATIC__/css/cf_user_info.css">
+<style>
+	.classreturn .content .search span{font-size: .7rem;color: #1E1B1B; }
+	.list7 .myorder .fr i{margin-top: .64733rem;}
+	#cf_bottom{    border-bottom: 1px solid #F0F2F5; }
+	.setting .close a{background-color: #FF407E;color: #F2F2F2;font-size: .8rem;margin-top: 3rem;line-height: 1.9rem;}
+</style>
+<div class="classreturn loginsignup ">
+	<div class="content">
+		<div class="ds-in-bl return">
+			<a href="{:U('Mobile/User/index')}"><img src="__STATIC__/images/return.png" alt="返回"></a>
+		</div>
+		<div class="ds-in-bl search center">
+			<span>设置</span>
+		</div>
+		<!--<div class="ds-in-bl menu">-->
+			<!--<a href="javascript:void(0);"><img src="__STATIC__/images/class1.png" alt="菜单"></a>-->
+		<!--</div>-->
+	</div>
+</div>
+<div class="flool tpnavf">
+	<div class="footer">
+		<ul>
+			<li>
+				<a class="yello" href="{:U('Index/index')}">
+					<div class="icon">
+						<i class="icon-shouye iconfont"></i>
+						<p>首页</p>
+					</div>
+				</a>
+			</li>
+			<li>
+				<a href="{:U('Goods/categoryList')}">
+					<div class="icon">
+						<i class="icon-fenlei iconfont"></i>
+						<p>分类</p>
+					</div>
+				</a>
+			</li>
+			<li>
+				<!--<a href="shopcar.html">-->
+				<a href="{:U('Cart/index')}">
+					<div class="icon">
+						<i class="icon-gouwuche iconfont"></i>
+						<p>购物车</p>
+					</div>
+				</a>
+			</li>
+			<li>
+				<a href="{:U('User/index')}">
+					<div class="icon">
+						<i class="icon-wode iconfont"></i>
+						<p>我的</p>
+					</div>
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>
+		<div class="floor my p setting">
+			<div class="content">
+				<div class="floor list7">
+						<div id="cf_flag">
+						<div class="myorder p" id="cf_jump"  onclick="removeLoc()">
+							<div class="content30">
+									<div class="fr">
+										<a onclick="cf_history()">
+											<span style="color: #F22256; font-size: .5rem">跳过</span>
+										</a>
+
+											<!--<i class="Mright"></i>-->
+									</div>
+							</div>
+						</div>
+						<div class="cf_user_comment" id="cf_user" >
+							<!--<div class="content30">-->
+								<h1  id="cf_mobile"></h1>
+								<p class="cf_num">注册手机号码</p>
+								<p class="cf_perfect">为了您的账户安全,请尽量完善个人资料!</p>
+									<!--<i class="Mright"></i>-->
+							<!--</div>-->
+						<!--</div>-->
+
+						</div>
+					</div>
+					<!--//请设置您的头像-->
+					<div class="myorder he p">
+						<div class="content30">
+							<div class="order">
+								<div class="fl">
+									<span>请设置您的头像</span>
+									<span class="bridh"></span>
+								</div>
+								<div class="fr">
+									<!--<a href="">-->
+										<div class="hendicon">
+											<span></span>
+											<form id="head_pic" method="post" enctype="multipart/form-data">
+											<label class="file" style="cursor:pointer;">
+											<div class="around" id="fileList">
+												<img src="{$user.head_pic|default='__STATIC__/images/user68.jpg'}"/>
+												<input  type="file" accept="image/*" name="head_pic"  onchange="handleFiles(this)" style="display:none">
+											</div></label>
+											</form>
+										</div>
+									<!--</a>-->
+								</div>
+							</div>
+						</div>
+					</div>
+					<!--请设置您的用户名-->
+					<div class="myorder p">
+						<div class="content30">
+							<a href="{:U('Mobile/User/userinfo',array('action'=>'nickname'))}">
+								<div class="order">
+									<div class="fl">
+										<span>请设置您的用户名</span>
+									</div>
+									<div class="fr">
+                                        <span>{$user.nickname}</span>
+										<i class="Mright"></i>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+					<!--邮箱-->
+					<div class="myorder p bo" id="cf_bottom">
+						<div class="content30">
+							<a href="{:U('Mobile/User/userinfo',array('action'=>'email'))}">
+								<div class="order">
+									<div class="fl">
+										<span>绑定邮箱</span>
+									</div>
+									<div class="fr">
+										<span>{$user.email}</span>
+										<i class="Mright"></i>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+					<!--性别-->
+					<div class="myorder p">
+						<div class="content30">
+							<a href="{:U('Mobile/User/userinfo',array('action'=>'sex'))}">
+								<div class="order">
+									<div class="fl">
+										<span>性别</span>
+									</div>
+									<div class="fr">
+                                        <span>{$sex[$user.sex]}</span>
+										<i class="Mright"></i>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+					<!--s认证-->
+					<div class="myorder p">
+						<div class="content30">
+
+								<div class="order">
+									<div class="fl">
+										<span>实名认证</span>
+									</div>
+									<if condition="$isAuth eq 1">
+
+											<div class="fr">
+												<span>已认证</span>
+												<i class="Mright"></i>
+											</div>
+
+									<else/>
+										<a href="{:U('Mobile/User/realNameOauth')}">
+											<div class="fr">
+												<span>未认证</span>
+												<i class="Mright"></i>
+											</div>
+										</a>
+									</if>
+								</div>
+
+						</div>
+					</div>
+
+					<!--<div class="myorder p ma-to-20">-->
+						<!--<div class="content30">-->
+							<!--<a href="{:U('Mobile/User/password')}">-->
+								<!--<div class="order">-->
+									<!--<div class="fl">-->
+										<!--<span>修改密码</span>-->
+									<!--</div>-->
+									<!--<div class="fr">-->
+										<!--<i class="Mright"></i>-->
+									<!--</div>-->
+								<!--</div>-->
+							<!--</a>-->
+						<!--</div>-->
+					<!--</div>-->
+
+					<!--支付密码-->
+                    <div class="myorder p">
+                        <div class="content30">
+                            <a href="{:U('Mobile/User/paypwd')}">
+                                <div class="order">
+                                    <div class="fl">
+                                        <span>支付密码</span>
+                                    </div>
+                                    <div class="fr">
+                                        <i class="Mright"></i>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+					<!--收货地址-->
+					<!--<div class="myorder p">-->
+						<!--<div class="content30">-->
+							<!--<a href="{:U('Mobile/User/address_list')}">-->
+								<!--<div class="order">-->
+									<!--<div class="fl">-->
+										<!--<span>收货地址</span>-->
+									<!--</div>-->
+									<!--<div class="fr">-->
+										<!--<i class="Mright"></i>-->
+									<!--</div>-->
+								<!--</div>-->
+							<!--</a>-->
+						<!--</div>-->
+					<!--</div>-->
+					<!--<div class="myorder p bo">
+						<div class="content30">
+							<a href="{:U('Mobile/User/authinfo')}">
+								<div class="order">
+									<div class="fl">
+										<span>实名认证</span>
+									</div>
+									<div class="fr">
+										<i class="Mright"></i>
+									</div>
+								</div>
+							</a>
+						</div>
+					&lt;!&ndash;</div>&ndash;&gt;
+				</div>-->
+			</div>
+			<div class="close">
+                <!--<if condition="!$is_wx">-->
+				<a href="{:U('User/logout')}"  id="logout" onclick="removeLoc()">安全退出</a>
+                <!--</if>-->
+				<a id="asubmit" style="display:none;" href="javascript:;" onclick="javascript:$('#head_pic').submit();">保存头像</a>
+			</div>
+		</div>
+      </div>
+<script>
+//显示上传照片
+window.URL = window.URL || window.webkitURL;
+function handleFiles(obj) {
+    fileList = document.getElementById("fileList");
+    var files = obj.files;
+    img = new Image();
+    if(window.URL){
+        img.src = window.URL.createObjectURL(files[0]); //创建一个object URL，并不是你的本地路径
+        img.width = 60;
+        img.height = 60;
+        img.onload = function(e) {
+            window.URL.revokeObjectURL(this.src); //图片加载后，释放object URL
+        }
+        if(fileList.firstElementChild){
+            fileList.removeChild(fileList.firstElementChild);
+        }
+        $('#fileList').find('img').remove();
+        fileList.appendChild(img);
+    }else if(window.FileReader){
+        //opera不支持createObjectURL/revokeObjectURL方法。我们用FileReader对象来处理
+        var reader = new FileReader();
+        reader.readAsDataURL(files[0]);
+        reader.onload = function(e){
+            img.src = this.result;
+            img.width = 60;
+            img.height = 60;
+            $('#fileList').find('img').remove();
+            fileList.appendChild(img);
+        }
+    }else
+    {
+        //ie
+        obj.select();
+        obj.blur();
+        var nfile = document.selection.createRange().text;
+        document.selection.empty();
+        img.src = nfile;
+        img.width = 60;
+        img.height = 60;
+        img.onload=function(){
+
+        }
+        $('#fileListfileList').find('img').remove();
+        fileList.appendChild(img);
+    }
+    $('#asubmit').show();
+    $('#logout').hide();
+    $('#head_pic').submit();
+}
+
+$(function(){
+    var ua = window.navigator.userAgent.toLowerCase();
+    if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+    	// $('#logout').hide();
+    }
+
+    // 获取 状态 判断 显示是否跳过
+    //获取cookie
+    function getCookie(cname){
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++) {
+            var c = ca[i].trim();
+            if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
+        }
+        return "";
+    }
+	var loc = localStorage.getItem('isFirst');
+    var cf_frist  = getCookie('is_first_login');
+
+    if (loc == 1 ||cf_frist == 1) {
+         $('#cf_flag').show();
+		 $('#logout').html('保存').attr('href',"{:U('Mobile/Index/index')}"); //首次进入是点击保存 跳转首页
+	 }
+	 else{
+         $('#cf_flag').hide();
+         $('#logout').html('安全退出').attr('href',"{:U('User/logout')}"); //跳转登录
+	 }
+	// 设置 电话号码 样式
+	var cf_mobile = getCookie('mobile').replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
+	$('#cf_mobile').html(cf_mobile);
+
+});
+function removeLoc() {
+    localStorage.removeItem('isFirst');
+}
+//获取cookie
+function getCookie(cname){
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i].trim();
+        if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
+    }
+    return "";
+}
+var cf_history_url = unescape(getCookie('refer_url'));
+function cf_history(){
+	if(cf_history_url){
+	    location.href= cf_history_url;
+	} else {
+        location.href="{:U('Mobile/Index/index')}";
+	}
+}
+
+</script>      
+	</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>问题详情</title>
+    <link rel="stylesheet" href="__STATIC__/css/style.css">
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<link rel="stylesheet" href="__STATIC__/css/cf_help_content.css">
+<style>
+
+</style>
+<body>
+<div class="content" style="border-bottom: 1px solid #f5f7f8;-webkit-box-shadow: 0 0.1rem 0.5rem 1px #eee;">
+    <a href="javascript:history.go(-1)" style="position: absolute;left: .5rem;top: .5rem"><img src="__STATIC__/images/return.png" alt="返回"></a>
+    <div style="text-align: center;height: 2.5rem;line-height: 2.6rem">
+        <span style="font-size: .8rem;color: #1E1B1B;">{$article_detail.title}</span>
+    </div>
+
+</div>
+<!--<if condition="$article_detail.title neq '关于尚美'">-->
+    <!--<div class="cf_title">-->
+        <!--<p>{$article_detail.title}</p>-->
+        <!--&lt;!&ndash;<span>{:date('Y.m.d',$article_detail.publish_time)}</span>&ndash;&gt;-->
+        <!--&lt;!&ndash;<span>浏览数量:{$article_detail.click}</span>&ndash;&gt;-->
+    <!--</div>-->
+<!--</if>-->
+<div style="">
+    <div class="editor_comment">
+        {$article_detail.content}
+    </div>
+</div>
+</body>
+</html>

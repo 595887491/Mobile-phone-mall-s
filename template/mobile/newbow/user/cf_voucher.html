@@ -1,0 +1,17 @@
+<include file="public/header" title="我的优惠券" body=""/>
+<include file="public/header_nav" title="我的优惠券" href="javascript:history.back(-1)"/>
+<link rel="stylesheet" href="__STATIC__/css/new/coupon.css">
+<div class="box" style="margin-top: .5rem;">
+    <a href="{:U('Mobile/User/coupon')}" class="clearfix">
+     <div class="fl left">
+         <img src="__STATIC__/images/cf_ovencher.png" alt="">
+         <span>我的优惠券</span>
+     </div>
+     <div class="fr right">
+         <span>{$coupon_count}</span>
+         <i class="iconfont">&#xe6ab;</i>
+     </div>
+    </a>
+</div>
+</body>
+</html>

@@ -1,0 +1,721 @@
+<include file="public/header" title="确认订单" body=""/>
+<include file="public/header_nav" title="确认订单" href="javascript:goBacks()"/>
+<script src="__PUBLIC__/js/md5.min.js"></script>
+<link rel="stylesheet" href="__STATIC__/css/new/cart2.css">
+<link rel="stylesheet" href="__STATIC__/css/new/team_order.css">
+<link rel="stylesheet" href="__STATIC__/css/new/team_info.css">
+<link rel="stylesheet" href="__STATIC__/css/new/goodsInfo.css">
+<link rel="stylesheet" href="__STATIC__/css/new/Virtual_goodsInfo.css">
+
+<form name="cart2_form" id="cart2_form" method="post" style="">
+    <input type="hidden" name="coupon_id" value=""/>
+    <input type="hidden" id="wap_invoice_title" name="invoice_title" value="个人">
+    <input type="hidden" id="wap_taxpayer" name="taxpayer" value="">
+    <!--立即购买才会用到-s-->
+    <input type="hidden" name="action" value="buy_now">
+    <input type="hidden" name="goods_id" value="{$Request.param.goods_id}">
+    <input type="hidden" name="item_id" value="{$Request.param.item_id}">
+    <input type="hidden" name="team_id" value="{$Request.param.team_id}">
+    <input type="hidden" name="goods_num" value="{$Request.param.goods_num}">
+    <input type="hidden" name="found_id" value="{$Request.param.found_id}">
+    <input type="hidden" name="auth_code" value="{$Think.config.AUTH_CODE}"/>
+    <!--立即购买才会用到-e-->
+    <!--商品信息-s-->
+    <div class="ord_list fill-orderlist p">
+        <div class="maleri30">
+            <div class="shopprice">
+                <div class="img_or fl">
+                    <!--<img src="__STATIC__/images/team_pt.png" alt="" class="pt" >-->
+                    <img src="{$goods.original_img}" class="shop"/>
+                </div>
+                <div class="fon_or fl">
+                    <div style="height: 2rem;">
+                      <h2 class="similar-product-text">{$goods.goods_name}</h2>
+                    </div>
+                    <!--<div>{$goods.goods_remark}</div>-->
+                    <div class="price_or">
+                        <p class="red">
+                        <span style="color: #FF407E;vertical-align:sub;">¥</span>
+                        <span style="font-size: .7rem;color: #FF407E;font-weight: bold;" id="prices">{$goods.shop_price}</span>
+                        <span style="color: #BFC1CD;font-size: .52rem;vertical-align: -.13rem;margin-left: .15rem;">原价:￥{$goods.market_price}</span>
+                        <!--<span class="fr" style="font-size: .55rem;color: #1E1B1B;">x{$cart[goods_num]}</span>-->
+                    </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--商品信息-e-->
+    <!--支持配送,发票信息-s-->
+    <div class="information_dr">
+
+        <!--获取数据-->
+        <form name="buy_goods_form" method="post" id="buy_goods_form">
+                <input type="hidden" name="goods_id" value="{$goods.goods_id}"><!-- 商品id -->
+                <input type="hidden" name="goods_prom_type" value="{$goods.prom_type}"/><!-- 活动类型 -->
+                <input type="hidden" name="shop_price" value="{$goods.shop_price}"/><!-- 活动价格 -->
+                <input type="hidden" name="store_count" value="{$goods.store_count}"/><!-- 活动库存 -->
+                <input type="hidden" name="market_price" value="{$goods.market_price}"/><!-- 商品原价 -->
+                <input type="hidden" name="prom_id" value="{$goods.prom_id}"/><!-- 活动ID -->
+                <input type="hidden" name="found_id" value=""/><!-- 活动ID -->
+            </form>
+          <div style="background: #fff;">
+             <div class="buy_num clearfix">
+              <p class="fl" style="margin-top: .3rem;">购买数量 <span style="font-size: .5rem;color: #BFC1CD;">（每人限购{$goods.virtual_limit}件）</span></p>
+              <!--选择数量-->
+              <div class="plus fr">
+                  <span class="mp_minous" onclick="altergoodsnum(-1);" style="font-weight: bold;">－</span>
+                  <span class="mp_mp" style="width: 1.7rem;">
+                     <input type="tel" style="" class="num buyNum" id="number" residuenum="{$goods.virtual_limit}" name="goods_num" readonly="readonly" value="1" min="1" max="{$goods.virtual_limit}" onblur="altergoodsnum(0)">
+                    </span>
+                  <span class="mp_plus" onclick="altergoodsnum(1);" style="font-weight: bold;">＋</span>
+              </div>
+          </div>
+         </div>
+
+        <div style="background: #fff;">
+            <div class="buy_num clearfix buy_money" style="">
+               <p class="fl">小计</p>
+                <p class="fr"><span>￥</span><span id="statistics_money"></span></p>
+            </div>
+        </div>
+        <div>
+            <div>
+
+            </div>
+        </div>
+     <if condition="$user_money">
+        <div class="" style="background-color: #fff;">
+            <!--使用余额、积分-s-->
+             <div id="balance-li" class="invoice list7" style="border: none;">
+                    <div class="myorder p">
+                        <div class="content30">
+                            <label for="">
+                                <div class="incorise" style="font-size: .6rem;">
+                                    <div class="che fl" onclick="useMoney(this)">
+                                        <div class="radio fl" style="width: auto;margin-top: .6rem;margin-right: .15rem;" >
+                                            <!--配送方式-->
+                                            <i><input type="checkbox" name="balance"  style="opacity: 0;width: .2rem;"></i>
+                                        </div>
+                                        <span>使用余额：</span>
+                                    </div>
+
+                                    <div class="fr">
+                                        <input type="hidden" id="user_money" value="" data-meney="{$user_money}"  data-type="user_money" name="user_money">
+                                        <span>
+                                        可用余额为:{$user_money}
+                                   </span>
+                                        <i class="iconfont" onclick="open_popup(event)" style="font-size: .7rem;vertical-align: middle;">&#xa622;</i>
+                                    </div>
+                                    <!--<i class="iconfont usejfye" onClick="wield(this);">&#xe6bb;</i>-->
+                                    <!--使用券码说明弹窗-->
+                                    <div class="popup_outside" style="">
+                                        <div class="popup_inside">
+                                            <p class="title">
+                                                <span>使用余额说明</span>
+                                                <i class="iconfont" onclick="close_popup(this)">&#xa94c;</i>
+                                            </p>
+                                            <div class="cf_details">
+                                                <p>（一）余额可用来购买商城商品。结算时，您可直接用余额抵扣相应的订单金额；可用于余额结算的金额仅包含现金支付的部分，虚拟商品（如礼品卡等）、运费均不参与计算。</p>
+                                                <p>（二）未支付的订单取消后，我们会将该订单中使用的余额退还到您的账户中。</p>
+                                                <p>（三）已支付的订单取消后，我们会将该订单中使用的余额退还到您的账户中。</p>
+                                                <p>（四）普通用户不可进行余额提现。</p>
+                                                <p>（五） 使用余额时需要输入支付密码， 如果未设置，则会提示先设置支付密码</p>
+                                                <p> （六）您可以在“我的”中直接查看到您的余额和余额明细。</p>
+                                                <p> （七）通过不正当手段（包括但不限于侵犯第三人合法权益、作弊、扰乱系统、实施网络攻击、批量注册、用机器注册账户、用机器模拟客户端）获得余额奖励的，尚美缤纷商城有权取消与作弊行为相关账户的奖励及相关交易订单，追回作弊所得的不正当经济利益，关闭作弊账户或与之相关的所有账户，并保留取消后续使用尚美缤纷商城服务/产品的权利，必要时会依据严重程度追究相关法律责任。</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="myorder myorder-2 p" id="paypwd_view"  style="display: none">
+                        <div class="content30">
+                            <label>
+                                <div class="incorise">
+                                    <span>支付密码：</span>
+                                    <input type="hidden" name="payPwd"/>
+                                    <!--解决google浏览器识别text+password,自动填充已保存的账户密码-->
+                                    <input type="password" id="payPwd" placeholder="请输入支付密码"/>
+                                    <if condition="empty($user['paypwd'])">
+                                        <a class="go-set-password" href="{:U('Mobile/User/paypwd')}">去设置支付密码?</a>
+                                    </if>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            <!--使用余额、积分-e-->
+        </div>
+     </if>
+    </div>
+    <!--支持配送,发票信息-s-->
+
+    <!--提交订单-s-->
+    <div class="mask-filter-div" onclick="close_dialog();" style="display: none;"></div>
+    <div style="height:2.13333rem; margin-top: .5rem;"></div>
+    <div class="payit   fillpay" style="">
+        <div class="fr submit_price">
+            <a href="javascript:submit_order()" style="font-size: .65rem;">提交订单</a>
+        </div>
+        <div class="fl" style="float: left;">
+            <p><span class="pmo">实付款：</span><span style="font-size: .65rem;font-weight: bold;">¥ </span><span id="payables" style="font-weight: bold;">{$goods.shop_price}</span><span></span></p>
+        </div>
+    </div>
+    <!--提交订单-e-->
+</form>
+</if>
+</div>
+<!--优惠券弹窗-e-->
+<!--验证密码弹窗-->
+<div class="validate_password_box" style="">
+    <div class="validate_head">
+        <i class="iconfont" onclick="cf_close()">&#xa678;</i>
+        <p>请输入密码</p>
+    </div>
+    <div class="validate_password_wrap">
+        <input type="password" readonly="readonly">
+        <input type="password" readonly="readonly">
+        <input type="password" readonly="readonly">
+        <input type="password" readonly="readonly">
+        <input type="password" readonly="readonly">
+        <input type="password" readonly="readonly">
+    </div>
+    <div class="set-password">
+        <a href="javascript:setPwd()">去设置支付密码</a>
+        <a href="javascript:setPwd()" class="fr">忘记密码?</a>
+    </div>
+    <ul class="keyboard">
+        <li class="keyboard-num">1</li>
+        <li class="keyboard-num">2</li>
+        <li class="keyboard-num">3</li>
+        <li class="keyboard-num">4</li>
+        <li class="keyboard-num">5</li>
+        <li class="keyboard-num">6</li>
+        <li class="keyboard-num">7</li>
+        <li class="keyboard-num">8</li>
+        <li class="keyboard-num">9</li>
+        <li style="background: #ddd;pointer-events: none;"></li>
+        <li class="keyboard-num">0</li>
+        <li  style="background: #ddd;" class="keyboard-delete">
+            <i class="iconfont">&#xc60f;</i>
+        </li>
+    </ul>
+</div>
+
+<!--返回弹窗-->
+<div class="return_popup" style="display: none;">
+    <div class="return_pop">
+        <p>忍心丢下心仪的商品？</p>
+        <!--<i class="iconfont" onclick="close_return(this)">&#xa94c;</i>-->
+        <div class="return-button">
+            <a href="javascript:close_return(this)">我再想想</a>
+            <a href="javascript:goBack()">去意已决</a>
+        </div>
+    </div>
+</div>
+<!--遮罩-->
+<script>
+    function goBacks() {
+        $('.return_popup').show();
+    }
+    function close_return(obj) {
+        $('.return_popup').hide();
+    }
+    function goBack() {
+        history.go(-1);
+    }
+</script>
+<script>
+   $(function () {
+       $('#prices').text($('#prices').text());
+       $('#statistics_money').text($('#prices').text());
+   });
+    function prices(n,m) {
+        var money = $('#prices').text();
+        flag = money*n-m;
+        if(flag>0) {
+            money= parseFloat((money*n-m).toFixed(2));
+        }
+        else {
+            // m = money*n;
+            // console.log(m)
+            money = 0;
+        }
+        $('#payables').text(money)
+        $('#statistics_money').text(parseFloat($('#prices').text()*n).toFixed(2))
+    }
+
+    /**
+     * 加减数量
+     * n 点击一次要改变多少
+     * maxnum 允许的最大数量(库存)
+     * number ，input的id
+     */
+    function altergoodsnum(n){
+        var num = parseInt($('#number').val());
+        var maxnum = parseInt($('#number').attr('max')) == 0 ? 10000 :parseInt($('#number').attr('max'));
+        var maxN = {$goods.virtual_limit} == 0 ? 10000 :parseInt($('#number').attr('max'));
+        if(maxnum > maxN) {
+            maxnum = maxN;
+        }
+        num += n;
+        num <= 0 ? num = 1 :  num;
+        if(num >= maxnum){
+            $(this).addClass('no-mins');
+            num = maxnum;
+        }
+        if(num ==1){
+            $('.mp_minous').addClass('no-mins').css('color','#E5E5E5');
+        }
+        else {
+            $('.mp_minous').removeClass('no-mins').css('color','#686868');
+        }
+        $('#store_count').text(maxnum-num); //更新库存数量
+        $('#number').val(num)
+
+        var m ={$user_money};
+        var money = $('#prices').text();
+
+        if($("input[name='balance']").prop('checked')== true) {
+             m ={$user_money};
+             prices(num,m)
+        }
+        else {
+            m = 0;
+            prices(num,m)
+        }
+    }
+
+</script>
+<script>
+    //选择配送
+    function checkShipping(obj){
+        if(!$(obj).hasClass('check_t')){
+            $(obj).addClass('check_t').siblings('.che').removeClass('check_t');
+            //取消选中
+            $(obj).find('input').prop('checked',true);
+            $(obj).siblings('.che').find('input').prop('checked',false);
+            $(obj).find('._txt').css({'color':'#FF407E'});
+            $(obj).siblings('.che').find('._txt').css({'color':'#5B5858'});
+        }
+        // 获取选中的 ID
+        $('.che').each(function (i,v) {
+            if($(v).find(':radio').prop('checked') == true){
+                var flag =  $(v).find(':radio').val()
+                // if(flag == 0){
+                //     $('.cf_zt').show()
+                //     $('.cf_kd').hide()
+                // }
+                // else {
+                //     $('.cf_kd').show()
+                //     $('.cf_zt').hide()
+                // }
+            }
+        })
+        ajax_order_price();
+    }
+
+    //实用余额
+    function useMoney(obj) {
+        if($(obj).hasClass('check_t')){
+            //改变颜色
+            $(obj).removeClass('check_t').siblings('.che').addClass('check_t');;
+            //取消选中
+            $(obj).find('input').prop('checked',false);
+            $(obj).siblings('.che').find('input').prop('checked',true);
+        }else {
+            //改变颜色
+            $(obj).addClass('check_t').siblings('.che').removeClass('check_t');
+            //勾选选中
+            $(obj).find('input').prop('checked',true);
+            $(obj).siblings('.che').find('input').prop('checked',false);
+        }
+        if($("input[name='balance']").prop('checked')== true){
+            $('#user_money').val({$user_money});
+            var n = {$user_money};
+            var num =$('#number').val();
+            prices(num,n);
+        }
+        else {
+            $('#user_money').val(0);
+            var num =$('#number').val();
+            prices(num,0);
+        }
+    }
+    // 打开弹窗
+    function open_popup(event) {
+        // $('.popup_outside').show();
+        event.preventDefault();
+        event.cancelBubble = true;
+        $(event.target).parent().next('.popup_outside').show();
+        $("#user_money").blur();
+        // $(event.target).next('.popup_inside').css({'transform':'translateX(0%)'})
+    }
+    // 关闭弹窗
+    function close_popup(obj) {
+        // $('.popup_outside').fadeOut(500);
+        event.preventDefault();
+        event.cancelBubble = true;
+        $(obj).closest('.popup_outside').hide();
+    }
+    function  cf_close() {
+        $('.mask-filter-div').fadeOut(300);
+        $('.validate_password_box').animate({'bottom':'-100%','opacity':'0'},300)
+    }
+    //支付密码
+    $(document).on('blur', '#payPwd', function () {
+        var payPwd = md5($("input[name='auth_code']").val() + $.trim($('#payPwd').val()));
+        $('input[name="payPwd"]').val(payPwd);
+    })
+    // $(document).ready(function () {
+    //     ajax_order_price(); // 计算订单价钱
+    // });
+    //手写键盘
+    $('.keyboard .keyboard-num').each(function (i,v) {
+        $(v).on('click',function () {
+            // console.log($(v).text())
+            var inp = $('.validate_password_wrap input');
+
+            if(!inp.eq(0).val()) {
+                inp.eq(0).val($(v).text())
+            }
+            else if(!inp.eq(1).val()) {
+                inp.eq(1).val($(v).text())
+            }
+            else if(!inp.eq(2).val()) {
+                inp.eq(2).val($(v).text())
+            }
+            else if(!inp.eq(3).val()) {
+                inp.eq(3).val($(v).text())
+            }
+            else if(!inp.eq(4).val()) {
+                inp.eq(4).val($(v).text())
+            }
+            else if(!inp.eq(5).val()) {
+                inp.eq(5).val($(v).text())
+                var arr = [];
+                $('.validate_password_wrap input').each(function (i, v) {
+                    arr.push($(v).val());
+                })
+                var str = arr.join('');
+                var payPwd = md5($("input[name='auth_code']").val() + str);
+                $('input[name="payPwd"]').val(payPwd);
+                sessionStorage.setItem('md5',str);
+
+                var m ={$user_money};
+                var passWord = sessionStorage.getItem('md5');
+                var money = $('#prices').text();
+                var goods_num =$('#number').val() ,
+                    goods_id = "{$goods.goods_id}",
+                    virtual_limit= "{$goods.virtual_limit}",
+                    user_money = m>money*goods_num ? money*goods_num :{$user_money},
+                    pay_pwd = passWord;
+                $.ajax({
+                    type: "POST",
+                    url: "/Mobile/Virtual/addOrder",//+tab,
+                    data: {goods_num:goods_num,goods_id:goods_id,virtual_limit:virtual_limit,user_money:user_money,pay_pwd:pay_pwd},
+                    dataType: "json",
+                    success: function (data) {
+                        if (window.history && history.  replaceState){
+                            window.history.replaceState(null, null,'/');
+                        }
+                        if(data.status == -1) {
+                            layer.open({content:data.msg,skin:'msg',time:2});
+                            return
+                        }
+                        if(data.status == 2) {
+                            layer.open({content:'订单提交成功，跳转支付页面!',skin:'msg',time:2});
+                            location.href = data.result;
+                        }else {
+                            layer.open({content:'订单提交成功，跳转支付页面!',skin:'msg',time:2});
+                            location.href = "/index.php?m=Mobile&c=Cart&a=cart4&order_id=" + data.result;
+                        }
+                    }
+                });
+            }
+        })
+    })
+    //删除
+    $('.keyboard-delete').on('click',function () {
+        var inp = $('.validate_password_wrap input');
+        if(inp.eq(5).val()) {
+            inp.eq(5).val('')
+            return
+        }
+        else if(inp.eq(4).val()) {
+            inp.eq(4).val('')
+            return
+        }
+        else if(inp.eq(3).val()) {
+            inp.eq(3).val('')
+            return
+        }
+        else if(inp.eq(2).val()) {
+            inp.eq(2).val('')
+            return
+        }
+        else if(inp.eq(1).val()) {
+            inp.eq(1).val('')
+            return
+        }
+        else if(inp.eq(0).val()) {
+            inp.eq(0).val('')
+            return
+        }
+    })
+
+    //兑换优惠券
+    function wield(obj) {
+        var couponCode = $('#couponCode').val();
+        if (couponCode != '') {
+            $.ajax({
+                type: "POST",
+                url: '/index.php?m=Home&c=Cart&a=cartCouponExchange&t=' + Math.random(),
+                data: {coupon_code: couponCode},
+                dataType: "json",
+                success: function (data) {
+                    if (data.status != 1) {
+                        showErrorMsg(data.msg);
+                        // 登录超时
+                        if (data.status == -100) {
+                            location.href = "{:U('Mobile/User/login')}";
+                            return false;
+                        }
+                        $("input[name=couponCode]").val('');
+                    } else {
+                        showErrorMsg(data.msg);
+                        window.location.reload();
+                    }
+                }
+            });
+        } else {
+            showErrorMsg('请输入兑换码！');
+        }
+    }
+    var minMoney, shippingFee ;
+    // // 获取订单价格
+    // function ajax_order_price() {
+    //     $.ajax({
+    //         type: "POST",
+    //         url: '/Mobile/Virtual/addOrder',
+    //         data: $('#cart2_form').serialize(),
+    //         dataType: "json",
+    //         success: function (data) {
+    //             if (data.status == -3 || data.status == -4) {
+    //                 layer.open({'content':data.msg, time:2,skin:'msg'});
+    //                 refresh_price(data);
+    //                 $('.submit_price a').addClass("disable");
+    //             } else if (data.status == -1) {
+    //                 layer.open({'content':data.msg, time:2,skin:'msg'});
+    //                 $('.submit_price a').addClass("disable");
+    //             } else if (data.status != 1) {
+    //                 //执行有误
+    //                 $('#coupon_div').show();
+    //                 layer.open({content:data.msg, time:2,skin:'msg'});
+    //                 $('.submit_price a').addClass("disable");
+    //                 // 登录超时
+    //                 if (data.status == -100) {
+    //                     location.href = "{:U('Mobile/User/login')}";
+    //                     return false;
+    //                 }
+    //             } else {
+    //                 $('.submit_price a').removeClass("disable");
+    //                 refresh_price(data);
+    //             }
+    //             shippingFee = data.result.shipping_price;
+    //             minMoney = data.result.goods_price + data.result.shipping_price - data.result.order_prom_amount;
+    //         }
+    //     });
+    // }
+    // function refresh_price(data) {
+    //     console.log(data)
+    //     if (data.result.user_money > 0) {
+    //         $("#user_money").val(data.result.user_money); //余额输入框
+    //     }
+    //     $("#balance").text(data.result.user_money);// 余额
+    //     $("#pointsFee").text(data.result.integral_money);// 积分支付
+    //     $("#order_prom_amount").text(data.result.order_prom_amount);// 订单 优惠活动
+    //     $("#postFee").text(data.result.shipping_price); // 物流费
+    //     if (data.result.coupon_price == null) {
+    //         $("#couponFee").text(0);// 优惠券
+    //     } else {
+    //         $("#couponFee").text(data.result.coupon_price);// 优惠券
+    //     }
+    //     $("#payables").text(data.result.order_amount);// 应付
+    // }
+
+    // 提交订单
+    // ajax_return_status = 1; // 标识ajax 请求是否已经回来 可以进行下一次请求
+    function submit_order() {
+        localStorage.setItem('history','coupon');
+        var isflag = "{$is_set_pwd}";
+        // if (ajax_return_status == 0)
+        //     return false;
+        // ajax_return_status = 0;
+
+        // layer.open({type: 2,content: '订单提交中',skin:'msg'});
+        if($("input[name='balance']").prop('checked')== true) {
+            if(isflag) {
+                console.log(2)
+                show_pay_password();
+                // $('.mask-filter-div').fadeIn(300);
+                // $('.validate_password_box').animate({'bottom':'0','opacity':'1'},300)
+            }
+            else {
+                setPwd();
+                var m ={$user_money};
+                var passWord = sessionStorage.getItem('md5');
+                var money = $('#prices').text();
+                var goods_num =$('#number').val() ,
+                    goods_id = "{$goods.goods_id}",
+                    virtual_limit= "{$goods.virtual_limit}",
+                    user_money = m>money*goods_num ? money*goods_num :{$user_money},
+                    pay_pwd = passWord;
+                $.ajax({
+                    type: "POST",
+                    url: "/Mobile/Virtual/addOrder",//+tab,
+                    data: {goods_num:goods_num,goods_id:goods_id,virtual_limit:virtual_limit,user_money:user_money,pay_pwd:pay_pwd},
+                    dataType: "json",
+                    success: function (data) {
+                        if (window.history && history.replaceState){
+                            window.history.replaceState(null, null,'/');
+                        }
+                        if(data.status == -1){
+                            layer.open({content:data.msg,skin:'msg',time:2});
+                            return
+                        }
+                        if(data.status == 2) {
+                            layer.open({content:'订单提交成功，跳转支付页面!',skin:'msg',time:2});
+                            location.href = data.result;
+                        }else {
+                            layer.open({content:'订单提交成功，跳转支付页面!',skin:'msg',time:2});
+                            location.href = "/index.php?m=Mobile&c=Cart&a=cart4&order_id=" + data.result;
+                        }
+                    }
+                });
+            }
+        }
+        else {
+            var money = $('#prices').text();
+            var goods_num =$('#number').val() ,
+                goods_id = "{$goods.goods_id}",
+                virtual_limit= "{$goods.virtual_limit}",
+                user_money = 0,
+                pay_pwd ='';
+            $.ajax({
+                type: "POST",
+                url: "/Mobile/Virtual/addOrder",//+tab,
+                data: {goods_num:goods_num,goods_id:goods_id,virtual_limit:virtual_limit,user_money:user_money,pay_pwd:pay_pwd},
+                dataType: "json",
+                success: function (data) {
+                    if (window.history && history.replaceState){
+                        window.history.replaceState(null, null,'/');
+                    }
+                    layer.open({content:'订单提交成功，跳转支付页面!',skin:'msg',time:2});
+                    location.href = "/index.php?m=Mobile&c=Cart&a=cart4&order_id=" + data.result;
+                }
+            });
+        }
+
+        // layer.open({type: 2,content: '订单提交中',skin:'msg'});
+
+    }
+    function setPwd() {
+        $('.validate_password_box').animate({'bottom':'-100%','opacity':'0'},300);
+        setPayPwd();
+    }
+
+    function setPayPwd(){
+        if ($("iframe[name=paypwd]").length > 0) {
+            $('.mask-filter-div').fadeIn(300);
+            $("iframe[name=paypwd]").show();
+        } else {
+            var iframe = "<iframe name='paypwd' style='width: 100%;height: 75%; position: fixed; bottom: 0; border: none; z-index:999;overflow: scroll;padding: 0 5%;' src=\"{:U('User/paypwd',array('referer'=>'cart2'))}\"></iframe>";
+            $("body").append(iframe);
+            $('.mask-filter-div').fadeIn(300)
+        }
+    }
+    //设置支付密码回调
+    function call_back(msg){
+        $('.mask-filter-div').fadeOut(300);
+        $("iframe[name=paypwd]").hide();
+        if (msg) {
+            showErrorMsg(msg);
+            show_pay_password();
+        }
+    }
+    // 显示支付密码输入框
+    function show_pay_password() {
+        $('.mask-filter-div').fadeIn(300);
+        $('.validate_password_box').animate({'bottom':'0','opacity':'1'},300);
+        $('.validate_password_wrap input').each(function (i,v) {
+            $(v).val('')
+        })
+        $('.validate_password_wrap input').eq(0).focus();
+    }
+
+    $(function () {
+        // get_invoice();
+        $('.submits_de').click(function () {
+            $('.mask-filter-div').hide();
+            $('.losepay').hide();
+        })
+
+        //显示隐藏使用发票信息
+        $('.invoiceclickin').click(function () {
+            // get_invoice();
+            $('#invoice').toggle(300);
+        })
+    })
+    //优惠券
+    $(function () {
+        $(document).on('click', '.coupon_click', function () {
+            // cover();
+            $('.mask-filter-div').fadeIn(300)
+            $('.coupongg').animate({'bottom':'0'},300);
+            $('html,body').addClass('ovfHiden');
+            $('body').addClass('cf_ani')
+            // var coupon_length = {$userCouponNum['usable_num'] |default = '0'};
+        })
+    })
+
+    //关闭优惠券弹窗
+    function closer() {
+        // undercover();
+        $('.mask-filter-div').fadeOut(500)
+        $('.newchoosecar').animate({'bottom':'-200%'},500);
+        $('html,body').removeClass('ovfHiden');
+        $('body').removeClass('cf_ani')
+    }
+    function receiveCoupon(id){
+        var thatBox = $(".cuptyp[data-couponid="+id+"]");
+        $.ajax({
+            url:"{:U('Mobile/Activity/getCoupon')}",
+            data:{coupon_id:id},
+            type:'POST',
+            dataType:'json',
+            success:function(res){
+                if (res.status == 1) {
+                    layer.open({content: '领取成功',time: 2,skin:'msg'});
+                    thatBox.data('couponid',res.user_coupon_id);
+                    thatBox.addClass('JS_click_event');
+                    thatBox.find('.cf_is_getCart').show();
+                    thatBox.find('.cf_qgg').remove();
+                } else {
+                    layer.open({content: res.msg,skin: 'msg',time: 2});
+                }
+            }
+        })
+    }
+    function close_dialog(){
+        if ($("iframe[name=paypwd]").length > 0) {
+            $(".mask-filter-div").fadeOut(300);
+            $("iframe[name=paypwd]").hide();//设置支付密码弹窗
+            $('.validate_password_box').animate({'bottom':'-100%','opacity':'0'},300);//虚拟键盘
+        }
+    }
+</script>
+</body>
+</html>

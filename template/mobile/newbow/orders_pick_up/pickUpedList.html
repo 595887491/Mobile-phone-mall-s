@@ -1,0 +1,79 @@
+<!DOCTYPE>
+<html>
+<head>
+    <title>已验证订单</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" />
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/rem.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <script type="text/javascript" src="__PUBLIC__/static/js/jquery.validation.min.js"></script>
+    <!--<link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>-->
+    <link rel="stylesheet" href="__STATIC__/css/new/team_base.css">
+    <link rel="stylesheet" href="__STATIC__/css/new/verifiyInviteCode.css">
+    <link rel="stylesheet" href="__STATIC__/css/new/orderPickUpCode.css">
+</head>
+
+<body style="background-color: #F1F5F8;">
+<!--header-->
+<div class="headerRank">
+    <a href="javascript:history.back()" class="back">
+        <img src="__STATIC__/images/return.png" alt="返回"></a>
+    </a>
+    <div class="txt">
+        已验证订单
+    </div>
+    <!--<a href="{:U('Mobile/Index/index')}" class="myTeam" style="padding-top: .2rem;">-->
+    <!--<img src="__STATIC__/images/homeIndex.png" alt="">-->
+    <!--</a>-->
+</div>
+<div style="height: .88rem;"></div>
+<!--header-->
+<if condition="!$list">
+<!--没有内容时-s--->
+<div class="comment_con" >
+    <div class="none">
+        <img src="__STATIC__/images/cf_order.png" style="pointer-events: none;display: block;width: 65%;margin: 0 auto;margin-top: .5rem;">
+        <br><br>
+        <p style="color: #BFC1CD;font-size: .3rem;text-align: center;">客官大大！暂无订单!</p>
+        <div class="paiton">
+            <div class="maleri30">
+                <a class="soon" href="{:U('Mobile/Index/index')}"><span>去逛逛</span></a>
+            </div>
+        </div>
+    </div>
+</div>
+<else/>
+<div class="order-wrap">
+    <div class="order" style="margin-top: .1rem;"></div>
+</div>
+</if>
+</body>
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script>
+    /**
+     * ajax加载更多数据
+     */
+    var ajax_pending = false;//进行中
+    var has_more_data = true;//还有数据
+    var  page = 0;
+    function ajax_sourch_submit() {
+        if (ajax_pending || has_more_data == false) return;
+        ajax_pending = true;
+        ++page;
+        $.ajax({
+            type : "GET",
+            url:"/index.php?m=Mobile&c=OrdersPickUp&a=pickUpedList&p="+page,
+            success: function(data) {
+                ajax_pending = false;
+                if ($.trim(data) != '') {
+                    $('.order').append(data);
+                } else {
+                    has_more_data = false;
+                }
+            }
+        });
+    }
+    ajax_sourch_submit();
+</script>
+</html>

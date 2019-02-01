@@ -1,0 +1,53 @@
+<include file="public/header" title="{$title}收益统计" />
+<include file="public/header_nav" title="{$title}收益统计" href="javascript:history.back(-1)"/>
+<link rel="stylesheet" href="__STATIC__/css/new/earningsDetails.css">
+<div style="height: 1.87733rem;"></div>
+<notempty name="data">
+<div class="contents">
+    <foreach name="data" item="v" key="k">
+        <a href="javascript:;" class="earnings-list">
+            <span>{:date('m月d日',$k)}</span>
+            <span class="fr">
+                 <span>{$v}</span>
+                 <!--<i class="iconfont">&#xe6ab;</i>-->
+            </span>
+        </a>
+    </foreach>
+</div>
+    <else/>
+    <div class="cf_empty">
+        <img src="__STATIC__/images/empty_earnings_details.png" alt="" style="pointer-events: none;">
+        <p>客官大大！暂无相关信息</p>
+    </div>
+</notempty>
+
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script type="text/javascript">
+    /**
+     * 加载更多商品
+     **/
+    var  page = 1;
+    var haveMore = 1,ajax_returned = 1;
+    function ajax_sourch_submit()
+    {
+        if (haveMore == 0 || ajax_returned == 0) return;
+        ajax_returned =0;
+        ++page;
+        $.ajax({
+            type : "get",
+            url:"/index.php?m=Mobile&c=Goods&a=goodsTopic&topic_id={$info.topic_id}&p="+page,
+            success: function(data) {
+                ajax_returned = 1;
+                if ($.trim(data) == '') {
+                    haveMore = 0;
+                    $('#getmore').hide();
+                    $('.noMore').show();
+                } else {
+                    $("#goods_list").append(data);
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

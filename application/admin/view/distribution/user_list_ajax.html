@@ -1,0 +1,70 @@
+<table style="width: 100%;">
+    <tbody>
+    <if condition="empty($user_data) eq true">
+        <tr data-id="0">
+            <td class="no-data" align="center" axis="col0" colspan="50">
+                <i class="fa fa-exclamation-circle"></i>没有符合条件的记录
+            </td>
+        </tr>
+        <else/>
+        <volist name="$user_data" id="list">
+            <tr data-user-id="{$list.user_id}" id="{$list.user_id}">
+                <td class="sign" axis="col0">
+                    <div style="min-width: 24px; max-width: 24px;"><i class="ico-check"></i></div>
+                </td>
+                <td align="left" abbr="user_id" axis="col3" class="">
+                    <div style="text-align: center; min-width: 60px;" class="">{$list.user_id}</div>
+                </td>
+                <td align="left" abbr="nickname" axis="col4" class="">
+                    <div style="text-align: left; min-width: 170px;line-height: 22px;" class="clearfix">
+                        <div class="avatar fl"><img src="{$list.head_pic}"></div>
+                        <div class="fl" style="margin-left: 10px;">
+                            <p>{$list.nickname}</p>
+                            <p>{$list.mobile}</p>
+                        </div>
+                    </div>
+                </td>
+                <td align="center" abbr="article_time" axis="col6" class="">
+                    <div style="text-align: center; min-width: 60px;" class="">{$list.firstUserNum|default=0}</div>
+                </td>
+                <td align="center" abbr="article_time" axis="col6" class="">
+                    <div style="text-align: center; min-width: 60px;" class="">{$list.secondUserNum|default=0}</div>
+                </td>
+                <td align="center" abbr="article_time" axis="col6" class="">
+                    <div style="text-align: center; min-width: 60px;" class="">{$list.overSecondUserNum|default=0}</div>
+                </td>
+                <td align="center" abbr="article_time" axis="col6" class="" addr="{:U('Admin/distribution/agentReportDetail',array('agent_id'=>$list['user_id'],'act'=>'earns_detail'))}">
+                    <div style="text-align: center; min-width: 60px;" class="">{:round($list.share_money,2)}</div>
+                </td>
+                <!--合伙人列表展示成为合伙人时间-->
+                <if condition="$Request.param.user_type eq 0">
+                <td align="center" abbr="article_time" axis="col6" class="">
+                    <div style="text-align: center; min-width: 120px;" class="">{:date('Y-m-d H:i',$list.be_partner_start)}</div>
+                </td>
+                </if>
+                <td align="center" abbr="article_time" axis="col6" class="">
+                    <div style="text-align: center; min-width: 120px;" class="">{:date('Y-m-d H:i',$list.reg_time)}</div>
+                </td>
+                <td align="center" abbr="article_time" axis="col6" class="">
+                    <div style="text-align: center; min-width: 120px;" class="">{:date('Y-m-d H:i',$list.last_login)}</div>
+                </td>
+            </tr>
+        </volist>
+    </if>
+    </tbody>
+</table>
+<div class="userList">
+    <span style="line-height: 30px;" class="fl">总共 <span>{$count}</span> 条记录</span>
+    {$page}
+</div>
+
+<script>
+
+    // 点击分页触发的事件
+    $(".userList .pagination  a").click(function(){
+        cur_page = $(this).data('p');
+        ajax_get_table('search-form2',cur_page);
+    });
+
+    $('.ftitle>h5').empty().html("(共{$pager->totalRows}条记录)");
+</script>

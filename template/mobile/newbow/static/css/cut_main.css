@@ -1,0 +1,94 @@
+body {
+  background-color: #BFC1CD;
+}
+/*.cropper-crop-box{*/
+  /*width: 15rem!important;*/
+  /*left: 1rem!important;*/
+/*}*/
+
+/*.avatar-body {*/
+  /*padding-right: 15px;*/
+  /*padding-left: 15px;*/
+/*}*/
+
+/*.avatar-upload {*/
+  /*overflow: hidden;*/
+/*}*/
+
+/*.avatar-upload label {*/
+  /*display: block;*/
+  /*float: left;*/
+  /*clear: left;*/
+  /*width: 100px;*/
+/*}*/
+
+/*.avatar-upload input {*/
+  /*display: block;*/
+  /*margin-left: 110px;*/
+/*}*/
+
+/*.avater-alert {*/
+  /*margin-top: 10px;*/
+  /*margin-bottom: 10px;*/
+/*}*/
+
+/*.avatar-wrapper {*/
+  /*height: 13rem;*/
+  /*width: 100%;*/
+  /*!*margin-top: 15px;*!*/
+  /*box-shadow: inset 0 0 5px rgba(0,0,0,.25);*/
+  /*background-color: #fcfcfc;*/
+  /*overflow: hidden;*/
+/*}*/
+
+.avatar-wrapper img {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+/*.avatar-preview {*/
+  /*float: left;*/
+  /*margin-top: 15px;*/
+  /*margin-right: 15px;*/
+  /*border: 1px solid #eee;*/
+  /*border-radius: 4px;*/
+  /*background-color: #fff;*/
+  /*overflow: hidden;*/
+/*}*/
+
+/*.avatar-preview:hover {*/
+  /*border-color: #ccf;*/
+  /*box-shadow: 0 0 5px rgba(0,0,0,.15);*/
+/*}*/
+
+.avatar-preview img {
+  width: 100%;
+}
+@media (min-width: 750px) {
+  .avatar-preview {
+    float: none;
+  }
+}
+
+/*.avatar-btns {*/
+  /*margin-top: 30px;*/
+  /*margin-bottom: 15px;*/
+/*}*/
+
+/*.avatar-btns .btn-group {*/
+  /*margin-right: 5px;*/
+/*}*/
+
+.loading {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: #fff url("../img/loading.gif") no-repeat center center;
+  opacity: .9;
+  filter: alpha(opacity=9);
+  z-index: 20;
+}

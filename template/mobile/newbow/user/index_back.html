@@ -1,0 +1,431 @@
+<include file="public/header" title="个人中心" body="g4"/>
+<link rel="stylesheet" type="text/css" href="__STATIC__/css/cf_user_index.css?v={$web_version}"/>
+<link rel="stylesheet" href="__STATIC__/js/plauy/reset.css">
+<link rel="stylesheet" href="__STATIC__/js/plauy/waterfall.css">
+<if condition ="$user[show_complete_info] && $Think.session.user.user_id">
+    <div class="Easy">
+        <p class="fl">完善个人资料领30元优惠礼包</p>
+         <div class="fr">
+            <a href="{:U('mobile/User/completeUserInfo')}" class="fl">立即领取</a>
+             <div  class="fl" onclick="close_Easy()" style="padding-left: .5rem;">
+                <img src="__STATIC__/images/cf_close.png" alt="">
+             </div>
+         </div>
+    </div>
+</if>
+    <div class="myhearder">
+        <div class="person">
+            <!--头像-->
+            <div class="fl personicon">
+                <if condition="$user[head_pic]">
+                    <div class="personicon">
+                        <img src="{$user[head_pic]|default='http://cdn.cfo2o.com/data/avatar/user_head_default.png'}"/>
+                    </div>
+                    <else/>
+                    <div class="personicon">
+                        <a href="{:U('Mobile/User/login')}">
+                            <img src="http://cdn.cfo2o.com/data/avatar/user_head_default.png"/>
+                        </a>
+                    </div>
+                </if>
+            </div>
+            <div class="fl lors">
+             <if condition="$user.nickname">
+                 <span >{$user['nickname']}</span><br>
+                 <if condition="$user_identity['partner'] eq 0 && $user_identity['agent'] eq 0"><span  class="cf_nickstaut">普通会员</span></if>
+                 <if condition="$user_identity['partner'] eq 1 && $user_identity['agent'] eq 0"><span  class="cf_nickstaut">合伙人</span></if>
+                 <if condition="$user_identity['partner'] eq 0 && $user_identity['agent'] eq 1"><span  class="cf_nickstaut">服务商</span></if>
+                 <if condition="$user_identity['partner'] eq 1 && $user_identity['agent'] eq 1"><span  class="cf_nickstaut">服务商</span></if>
+                 <!--<span class="cf_nickstaut">普通会员</span>-->
+                 <else />
+                 <a href="{:U('Mobile/User/login')}">
+                     <span style="position: absolute;top: .9rem;color: white">未登录</span>
+                 </a>
+             </if>
+
+                <if condition="$first_nickname neq ''">
+                    <br />
+                    <span style="font-size:20px">由({$first_nickname})推荐</span>
+                </if>
+            </div>
+            <!--</a>-->
+        </div>
+        <!--消息-->
+        <div class="set">
+            <div class="cf_user_set">
+                <a href="{:U('Mobile/User/message_notice')}">
+                    <img src="__STATIC__/images/cf_user_more.png" style="width: 1rem" alt="消息通知">
+                    <if condition="$msg_num neq 0">
+                        <span class="notice">{$msg_num}</span>
+                    </if>
+                </a>
+            </div>
+            <div class="cf_user_set">
+                <a href="{:U('Mobile/User/userinfo')}">
+                    <img src="__STATIC__/images/cf_user_.sz.png" style="width: 1rem" alt="设置">
+                </a>
+            </div>
+        </div>
+         <!--二维码-->
+        <div class="cf_user_code">
+            <a href="{:U('Mobile/Distribut/qr_code',array('user_id'=>session('user')['user_id']))}">
+                <img src="__STATIC__/images/cf_user_m.png" alt="" style=" width: 4rem;">
+            </a>     
+        </div>
+    </div>
+
+    <div class="floor my p">
+        <div class="content">
+            <!--资金管理-s-->
+            <div class="floor w3">
+                <ul>
+                    <li>
+                        <a href="{:U('Mobile/Distribution/touchbalanceDetail')}">
+                            <h2><notempty name="$user['user_money']">{$user['user_money']}<else/>0</notempty></h2>
+                            <p>余额</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{:U('Mobile/User/coupon')}">
+                            <h2><notempty name="$user['have_coupon_count']">{$user['have_coupon_count']}<else/>0</notempty></h2>
+                            <p>卡券</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{:U('Mobile/User/points_list')}">
+                            <h2><notempty name="$user['pay_points']">{$user['pay_points']}<else/>0</notempty></h2>
+                            <p>积分</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!--资金管理-e-->
+            <!--分享 开始-->
+            <if condition="$user_identity['partner'] eq 0 && $user_identity['agent'] eq 0">
+                <div class="floor myorder ma-to-20 p" style="height: 2.2rem;line-height: 2.2rem">
+                    <div class="content30">
+                        <div class="order">
+                            <div class="fl">
+                                <img src="__STATIC__/images/cf_user_line.png"/>
+                                <span>成为合伙人</span>
+                            </div>
+                            <div class="fr">
+                                <a href="{:U('distribution/commonUserIndex')}">
+                                    <span style="color: #D50D16;font-size: .55rem">推荐好友入驻赢取更多惊喜</span>
+                                    <i class="Mright" style="margin-top: .74rem"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <else/>
+                <div class="floor myorder ma-to-20 p" style="height: 2.2rem;line-height: 2.2rem">
+                    <div class="content30">
+                        <div class="order">
+                            <div class="fl">
+                                <img src="__STATIC__/images/cf_user_line.png"/>
+                                <span>分享中心</span>
+                            </div>
+                            <div class="fr">
+                                <a href="{:U('distribution/index')}">
+                                    <span style="color: #D50D16;font-size: .55rem">推荐好友入驻赢取更多惊喜</span>
+                                    <i class="Mright" style="margin-top: .74rem"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </if>
+            <!--分享 结束-->
+
+            <!--排行旁开始-->
+            <if condition="$user_identity['partner'] eq 0 && $user_identity['agent'] eq 0">
+                <else/>
+                <if condition="$rankActivity neq ''">
+                    <div class="rankActive" style="height: auto">
+                        <adv limit="1" item="v" pid="51334">
+                            <a href="{$v.ad_link}">
+                                <img src="{$v[ad_code]}" title="{$v[title]}" style="{$v[style]}"/>
+                            </a>
+                        </adv>
+                    </div>
+                </if>
+            </if>
+            <!--排行旁结束-->
+
+            <!--订单管理模块-s-->
+            <div class="floor myorder ma-to-20 p">
+                <div class="content30">
+                    <div class="order">
+                        <div class="fl">
+                            <img src="__STATIC__/images/cf_user_line.png"/>
+                            <span>我的订单</span>
+                        </div>
+                        <div class="fr">
+                            <a href="{:U('Mobile/Order/order_list')}">
+                                <span>全部订单</span>
+                                <i class="Mright"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--付款-->
+            <div class="floor floor_order" style="padding-bottom: .4rem">
+                <ul class="cf_floor_ul" style="margin-top: .3rem">
+                    <li>
+                        <a href="{:U('/Mobile/Order/order_list',array('type'=>'WAITPAY'))}">
+                          <if condition="$user.waitPay">
+                              <span>{$user.waitPay}</span>
+                          </if>
+                            <img src="__STATIC__/images/cf_o_01.png" alt="" />
+                            <p>待付款</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{:U('/Mobile/Order/order_list',array('type'=>'WAITSEND'))}">
+                            <if condition="$user.waitSend">
+                                <span>{$user.waitSend}</span>
+                            </if>
+
+                            <img src="__STATIC__/images/cf_o_02.png" alt="" />
+                            <p>待发货</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{:U('/Mobile/Order/order_list',array('type'=>'WAITRECEIVE'))}">
+                            <if condition="$user.waitReceive">
+                                <span>{$user.waitReceive}</span>
+                            </if>
+
+                            <img src="__STATIC__/images/cf_o_03.png" alt="" />
+                            <p>待收货</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{:U('Mobile/Order/comment',array('status'=>0))}">
+                            <if condition="$user.uncomment_count">
+                                <span>{$user.uncomment_count}</span>
+                            </if>
+                            <img src="__STATIC__/images/cf_o_04.png" alt="" />
+                            <p>待评价</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{:U('Mobile/Order/return_goods_list',array('type'=>1))}">
+                            <if condition="$user.return_count">
+                                <span>{$user.return_count}</span>
+                            </if>
+                            <img src="__STATIC__/images/cf_o_05.png" alt="" />
+                            <p>退款/退货</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!--订单管理模块-e-->
+            <!--列表开始-->
+            <div class="cf_order_list">
+                <ul style="clear: both;overflow: hidden;">
+                    <li>
+                        <a href="{:U('Mobile/team/myTeam')}">
+                            <div>
+                                <img src="__STATIC__/images/cf_user_o.png"/><br><br>
+                                <span>拼团订单</span><br><br>
+                                <span style="color:#BFC1CD;font-size: .4rem">好货好价</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <!--{:U('Mobile/Distribut/qr_code',array('user_id'=>session('user')['user_id']))}-->
+                        <a href="{:U('Mobile/User/getVirtualOrdeList')}">
+                            <div>
+                                <img src="__STATIC__/images/user_order.png"/><br><br>
+                                <span>卡券订单</span><br><br>
+                                <span style="color:#BFC1CD;font-size: .4rem">美年体检</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{:U('Mobile/Goods/integralMall')}">
+                            <div>
+                                <img src="__STATIC__/images/cf_user_mall.png"/><br><br>
+                                <span>积分商城</span><br><br>
+                                <span style="color:#BFC1CD;font-size: .4rem">积分兑换好礼</span>
+                            </div>
+                        </a>
+                    </li>
+
+                    <li>
+                        <!--href="{:U('Mobile/Help/lists')}"-->
+                        <a onclick="jumpSever()">
+                            <div>
+                                <img src="__STATIC__/images/cf_user_service.png"/><br><br>
+                                <span>客服与帮助</span><br><br>
+                                <span style="color:#BFC1CD;font-size: .4rem">只为优质的您</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+
+                <ul style="margin-top: 1rem; padding-top: .5rem;border-top: 1px solid #F0F2F5;clear: both;overflow: hidden;">
+                    <li>
+                        <a href="{:U('Mobile/User/collect_list')}">
+                            <div >
+                                <span><notempty name="$user['collect_count']">{$user['collect_count']}<else/>0</notempty></span><br><br><br>
+                                <span>收藏</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{:U('Mobile/User/visit_log')}">
+                            <div>
+                                <!--<img src="__STATIC__/images/cf_ulist_02.png"/>-->
+                                <span><notempty name="$user['visit_count']">{$user['visit_count']}<else/>0</notempty></span><br><br><br>
+                                <span>足迹</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{:U('Mobile/Activity/coupon_list')}">
+                            <div>
+                                <span><notempty name="$user['coupon_count']">{$user['coupon_count']}<else/>0</notempty></span><br><br><br>
+                                <span>领券中心</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{:U('Mobile/User/address_list')}">
+                            <div>
+                                <span><notempty name="$user['address_count']">{$user['address_count']}<else/>0</notempty></span><br><br><br>
+                                <span>地址管理</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+     <!--为你推荐-->
+<div class="floor guesslike">
+    <div class="banner" >
+        <img src="__STATIC__/images/cf_user_like.png" alt="为你推荐"/>
+    </div>
+
+    <div class="likeshop" style="background-color: #f1f5f8">
+        <div id="J_ItemList">
+            <ul class="product single_item info" id="container" style="clear: both;overflow: hidden;width: 96%;margin: 0 auto;">
+
+            </ul>
+        </div>
+    </div>
+</div>
+    <!--底部导航-start-->
+<include file="public/footer_nav"/>
+    <!--底部导航-end-->
+<script src="__STATIC__/js/style.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="__STATIC__/js/plauy/handlebars.js"></script>
+<script type="text/javascript" src="__STATIC__/js/plauy/waterfall.js"></script>
+<script>
+    function close_Easy() {
+        $.ajax({
+            url:'/Api/User/cancleCompleteUserInfo',
+            success:function (data) {
+                if(data.code == 1) {
+                    $('.Easy').hide();
+                }
+            }
+        })
+    }
+</script>
+<script>
+
+    var hei =10;
+    $(function () {
+        var u = navigator.userAgent;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        if(isAndroid || !isiOS){  //安卓
+            hei = 10
+        }else{  //苹果
+            hei = 30
+        }
+    })
+
+    // 默认加载 猜你喜欢数据  判断加载多少页
+    $(function () {
+        var d= localStorage.getItem('date');
+        // console.log(d)
+        if(d){
+            $('#container').append(d);
+        }
+        $('#container').waterfall({
+            itemCls: 'item',
+            colWidth: $('body').width()/2,
+            gutterWidth: 0,
+            gutterHeight: hei,
+            minCol: 2,
+            maxCol: 2,
+            fitWidth:true,
+            checkImagesLoaded: false,
+
+            dataType: 'html',
+            path: function(page) {
+                sessionStorage.setItem("newPage", page);
+                return "/index.php?m=Mobile&c=Index&a=ajaxGetMore&p="+page;
+            }
+        });
+    })
+
+    var before_request = 1; // 上一次请求是否已经有返回来, 有才可以进行下一次请求
+    var page = 0;
+    function ajax_sourch_submit(){
+        if(before_request == 0)// 上一次请求没回来 不进行下一次请求
+            return false;
+        before_request = 0;
+        page++;
+
+        $('#container').waterfall({
+            itemCls: 'item',
+            colWidth: $('body').width()/2,
+            gutterWidth: 0,
+            gutterHeight: hei,
+            minCol: 2,
+            maxCol: 2,
+            fitWidth:true,
+            checkImagesLoaded: false,
+
+            dataType: 'html',
+            path: function(page) {
+                return "/index.php?m=Mobile&c=Index&a=ajaxGetMore&p="+page;
+            }
+        });
+        // $.ajax({
+        //     type : "get",
+        //     url:"/index.php?m=Mobile&c=Index&a=ajaxGetMore&p="+page,
+        //     success: function(data)
+        //     {
+        //         if(data){
+        //             $("#J_ItemList>ul").append(data);
+        //             before_request = 1;
+        //         }else{
+        //             $('.get_more').hide();
+        //         }
+        //     }
+        // });
+    }
+    $(function(){
+        $(document).scroll(function(){
+            if($(document).height() - $(document).scrollTop() - $(window).height() <400 )
+            {
+                ajax_sourch_submit()
+            }
+        });
+    })
+    
+    function jumpSever() {
+        location.href ="{:U('Mobile/Help/lists')}";
+    }
+</script>
+</body>
+</html>

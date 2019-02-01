@@ -1,0 +1,279 @@
+<include file="public/header" title="登录" body=""/>
+<if condition="$isWechat eq 1">
+
+    <else/>
+    <include file="public/header_nav" title="登录" href="javascript:history.back(-1)"/>
+</if>
+
+
+
+<link rel="stylesheet" type="text/css" href="__STATIC__/css/cf_reg.css"/>
+<style>
+    #verify_code_img{
+        padding: .55467rem .21333rem;
+        width: 4.6rem;
+        height: 2.9rem;
+        color: white;
+        border-radius: .128rem;
+    }
+</style>
+<div class="logo-wrap-bg" style="text-align: center;margin-top: -.5rem">
+    <a class="login-logo-wrap" style="width: auto;height: auto;" href="#">
+        <img src="__STATIC__/images/cf_logo.png" alt="LOGO" style="display: inline-block;width: 36%"/>
+    </a>
+</div>
+
+<!--注册表单-s-->
+<div class="loginsingup-input">
+    <form action="" method="post" id="regFrom" >
+    	<input type="hidden" name="is_bind" value="{$Request.param.is_bind}">
+        <div class="lsu">
+            <span class="ico ico-telephone"></span>
+            <input type="text" name="username" id="username" value="" placeholder="请输入手机号"  class="c-form-txt-normal">
+            <span id="mobile_phone_notice"></span>
+        </div>
+        <if condition="$regis_sms_enable eq 1">
+            <div class="lsu">
+                <span class="ico ico-v-code"></span>
+                <input class="v-code-input" type="text" id="mobile_code" value="" name="mobile_code" placeholder="请输入验证码" >
+                <a class="btn-text-message " id="cf_btn" rel="mobile" onClick="sendcode(this)">获取验证码</a>
+            </div>
+        </if>
+        <!--<div class="lsu">-->
+            <!--<span class="ico ico-password"></span>-->
+            <!--<input type="password" name="password" id="password" value="" placeholder="请设置6-20位登录密码" class="c-form-txt-normal" onBlur="check_password(this.value);">-->
+            <!--<span id="password_notice"></span>-->
+        <!--</div>-->
+        <!--<div class="lsu">-->
+            <!--<span class="ico ico-password"></span>-->
+            <!--<input type="password" id="password2" name="password2" value="" placeholder="确认密码" onBlur="check_confirm_password(this.value);">-->
+            <!--<span id="confirm_password_notice"></span>-->
+        <!--</div>-->
+        <!--&lt;!&ndash;<div class="lsu boo zc_se">&ndash;&gt;-->
+            <!--&lt;!&ndash;<input type="text"  value="" name="verify_code" placeholder="请输入验证码" >&ndash;&gt;-->
+            <!--&lt;!&ndash;<img src="/index.php?m=Home&c=User&a=verify" id="verify_code_img" onclick="verify()">&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--<if condition="$tpshop_config['basic_invite'] eq 1" >-->
+        <!--<div class="lsu">-->
+            <!--<span class="ico ico-referee"></span>-->
+            <!--<input type="text" name="invite" id="invite" value="" placeholder="推荐人手机号(选填)"  class="c-form-txt-normal" >-->
+            <!--<span id="invite_phone_notice"></span>-->
+        <!--</div>-->
+        <!--</if>-->
+        <div class="lsu-submit" id="cf_logo">
+            <input type="button" name="" id="cf_sub" class="" onclick="checkSubmit()" value="登 录"/>
+        </div>
+        <div class="signup-find">
+            <p class="recept" style="opacity: .6">点击登录即自动注册，且同意<a href="{:U('Mobile/Article/detail',['article_id'=>1415])}">《开源用户注册协议》</a></p>
+            <p class="recept" id="cf_more_comment">新用户注册即送30元代金券，完善个人资料，邀请好友注册将会获取更多的代金券哦！</p>
+        </div>
+    </form>
+    <!--第三方登陆-s-->
+    <div class="thirdlogin" id="cf_external">
+        <h4>第三方登陆</h4>
+        <div class="third-login-list">
+            <div onclick="cfWarrant()">
+                <a class="item-ico ico-wechat-login"></a>
+            </div>
+            <!--<tpshop sql="select * from __PREFIX__plugin where type='login' AND status = 1" item="v" key="k">-->
+                <!--<if condition="$v['code'] eq 'weixin' AND is_weixin() neq 1">-->
+                    <!--<a class="item-ico ico-wechat-login" href="{:U('LoginApi/login',array('oauth'=>'weixin'))}" target="_blank" title="weixin"></a>-->
+           <!--</if>-->
+                <!--<if condition="$v['code'] eq 'qq' AND is_qq() neq 1">-->
+                    <!--<a class="item-ico ico-qq-login" href="{:U('LoginApi/login',array('oauth'=>'qq'))}" target="_blank" title="QQ"></a>-->
+                <!--</if>-->
+                <!--<if condition="$v['code'] eq 'alipay' AND is_alipay() neq 1">-->
+                    <!--<a class="item-ico ico-alipay-login" href="{:U('LoginApi/login',array('oauth'=>'alipay'))}"></a>-->
+                <!--</if>-->
+            <!--</tpshop>-->
+        </div>
+    </div>
+    <!--第三方登陆-e-->
+</div>
+
+<!--注册表单-s-->
+<script type="text/javascript">
+    // 判断是否微信登陆  是否显示第三方登录
+    function isWeiXin() {
+        var ua = window.navigator.userAgent.toLowerCase();
+        // console.log(ua);
+        if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    // 点击微信图标 获取授权登录
+    function cfWarrant() {
+        if(isWeiXin()){     //是微信浏览器打开
+           // alert(111);
+            location.href="{:U('Mobile/User/wechatOauth')}"
+
+
+        }else{             //不是微信浏览器打开
+           alert('不是微信浏览器打开')
+            // location.href="{:U('Mobile/User/wechatOauth')}"
+
+        }
+    }
+
+    //获取cookie
+    function getCookie(cname){
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++) {
+            var c = ca[i].trim();
+            if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
+        }
+        return "";
+    }
+    var cf_history_url = unescape(getCookie('refer_url'));
+    // console.log(cf_history_url);
+
+    //提交表单
+    function checkSubmit() {
+
+        $.ajax({
+            type:'POST',
+            url:"/index.php?m=Mobile&c=User&a=reg",
+            dataType:'JSON',
+            data:$('#regFrom').serialize(),
+            success:function(data){
+
+                var cf_first_login =  data.result.is_first_login;
+                localStorage.setItem('isFirst',cf_first_login); //
+                var cf_status_url = data.result.redirect_url;
+                if(data.status == 1){
+                    if (data.result.is_first_login == 1) {
+                        location.href= cf_status_url;
+                    } else {
+                        if(cf_history_url){
+                            // alert(1111);
+                            location.href = cf_history_url
+                        }else {
+                            location.href = "{:U('/Mobile/User/index')}"
+                        }
+                    }
+
+                }else{
+                    showErrorMsg(data.msg);
+                }
+            }
+        })
+
+    }
+    var flag = false;
+
+    //密码
+    // function check_password(password) {
+    //     var password = $.trim(password);
+    //     if(password == '')
+    //         showErrorMsg("*登录密码不能包含空格");
+    //        flag = false;
+    //     }else if (password.length < 6) {
+    //         showErrorMsg('*登录密码不能少于 6 个字符。');
+    //        flag = false;
+    //     }
+    // }
+    //
+    // //验证确认密码
+    // function check_confirm_password(confirm_password) {
+    //     var password1 = $.trim($('#password').val());
+    //     var password2 = $.trim(confirm_password);
+    //     if (password1 == '') {
+    //         showErrorMsg("*确认密码不能包含空格");
+    //        flag = false;
+    //     }
+    //     if (password2.length < 6) {
+    //         showErrorMsg('*登录密码不能少于 6 个字符。');
+    //        flag = false;
+    //     }
+    //     if (password2 != password1) {
+    //         showErrorMsg('*两次密码不一致');
+    //        flag = false;
+    //     }else{
+    //         flag = true;
+    //     }
+    // }
+
+    function countdown(obj) {
+        var s = {$tpshop_config['sms_sms_time_out']|default=60};
+        //改变按钮状态
+        obj.disabled = true;
+        callback();
+        //循环定时器
+        var T = window.setInterval(callback,1000);
+        function callback()
+        {
+            if(s <= 0){
+                //移除定时器
+                window.clearInterval(T);
+                obj.disabled=false;
+                obj.innerHTML='获取验证码';
+            }else{
+                if(s<=10){
+                    obj.innerHTML = '0'+ --s + '秒后再获取';
+                }else{
+                    obj.innerHTML = --s+ '秒后再获取';
+                }
+            }
+        }
+    }
+
+    //发送短信验证码
+    function sendcode(obj) {
+        var mobile = $('#username').val();
+        if (mobile == '') {
+            showErrorMsg('手机不能空');
+            flag = false;
+        } else if (checkMobile(mobile)) { //判断手机格式
+            // $.ajax({
+            //     type: "GET",
+            //     url: "/index.php?m=Home&c=Api&a=issetMobile",//+tab,
+            //     data: {mobile: mobile},// 你的formid 搜索表单 序列化提交
+            //     success: function (data) {
+            //         if (data == '0') {
+            //
+            $.ajax({
+                url: '/index.php?m=Home&c=Api&a=send_validate_code&t=' + Math.random(),
+                type: 'post',
+                dataType: 'json',
+                data: {type: $(obj).attr('rel'), send: $.trim($('#username').val()), scene: 1},
+                success: function (res) {
+                    if (res.status == 1) {
+                        //成功
+                        countdown(obj)
+                        showErrorMsg(res.msg);
+                    } else {
+                        //失败
+                        showErrorMsg(res.msg);
+                    }
+                }
+            })
+            flag = true;
+            //         } else {
+            //             // showErrorMsg('* 手机号已存在');
+            //             flag = false;
+            //         }
+            //     }
+            // });
+
+        } else {
+            showErrorMsg('* 手机号码格式不正确');
+            flag = false;
+        }
+    }
+
+    /**
+     * 提示弹窗
+     * */
+    function showErrorMsg(msg){
+        layer.open({content:msg,time:2,skin:'msg'});
+    }
+    // 普通 图形验证码
+    //    function verify(){
+    //        $('#verify_code_img').attr('src','/index.php?m=Home&c=User&a=verify&type=user_reg&r='+Math.random());
+    //    }
+</script>
+	</body>
+</html>

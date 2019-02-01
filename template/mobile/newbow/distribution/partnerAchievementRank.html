@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>合伙人成就值排行</title>
+    <link rel="stylesheet" href="__STATIC__/css/style.css">
+    <link rel="stylesheet" href="__STATIC__/css/partnerAchievementRank.css">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/categoryList.css"/>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/mobile-util.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
+</head>
+<include file="public/header_nav" title="合伙人成就排行" href="javascript:history.back(-1)"/>
+<body>
+<div class="cf_top">
+    <i class="iconfont" onclick="opened()">&#xa622;</i>
+    <!--边框-->
+    <if condition="$data.ranking eq 1">
+        <img class="header_normal" src="__STATIC__/images/partner_frist.png" alt="">
+    </if>
+    <if condition="$data.ranking eq 2">
+        <img  class="header_normal" src="__STATIC__/images/partner_second.png" alt="">
+    </if>
+    <if condition="$data.ranking neq 1 || $data.ranking neq 2">
+        <img  class="header_normal" src="__STATIC__/images/paetner_me.png" alt="">
+    </if>
+    <!--用户头像-->
+    <img class="header_w" src="{$data.head_pic}?x-oss-process=style/s150x150" alt="">
+    <p class="ft100">{$data.user_nickname}</p>
+
+    <p >评估周期: <span>{$data.start_time}</span> 至 <span>{$data.end_time}</span> </p>
+</div>
+
+<!--横向列表-->
+<div class="partner_list">
+    <ul>
+        <li>
+            <span>{$data.partner_count}</span><br>
+            <span>合伙人数量</span>
+        </li>
+        <li>
+            <span>{$data.order_deal_success}</span><br>
+            <span>订单成交金额</span>
+        </li>
+        <li>
+            <span id="avg_achievement"></span><br>
+            <span>平均成就值</span>
+        </li>
+
+    </ul>
+</div>
+
+<!--列表内容-->
+<div class="partner_lists">
+    <foreach name="$data['partner_list_data']"  item="v" key="k">
+        <div class="ranking_list">
+            <div class="ranking_list_left">
+                <div class="avatar fl">
+                    <if condition='$v["rank"] eq 1'>
+                        <img src="__STATIC__/images/partner_01.png" class="avatar_img" style="width: 100%;height: 2.6rem" alt="第一名">
+                    </if>
+                    <if condition='$v["rank"] eq 2'>
+                        <img src="__STATIC__/images/partner_02.png" class="avatar_img"  style="width: 100%;height: 2.6rem" alt="第二名">
+                    </if>
+                    <if condition='$v["rank"] eq 3'>
+                        <img src="__STATIC__/images/partner_03.png" class="avatar_img"  style="width: 100%;height: 2.6rem" alt="第三名">
+                    </if>
+                    <if condition='$v["rank"] gt 3'>
+                        <img src="__STATIC__/images/partner_04.png" class="avatar_img"  style="width: 100%;height: 2.6rem" alt="第四名">
+                    </if>
+                    <img class="header_sec" src="{$v.head_pic}?x-oss-process=style/s150x150" style="z-index: -1" alt="用户头像">
+                </div>
+                <if condition='$v["rank"] eq 1'>
+                    <div class="member_bf cf_member" >1</div>
+                </if>
+                <if condition='$v["rank"] eq 2'>
+                    <div class="member_bf cf_member" >2</div>
+                </if>
+                <if condition='$v["rank"] eq 3'>
+                    <div class="member_bf cf_member">3</div>
+                </if>
+                <if condition='$v["rank"] gt 3'>
+                    <div class="member_bf cf_member">{$v["rank"]}</div>
+                </if>
+
+
+                <div class="msg fl">
+                    <p class="clearfixs">
+                        <span class="c1">{$v.nickname}</span>
+                    </p>
+                    <p>
+                        <span>订单成交金额: {$v.order_deal_success}</span>
+                        <span class="fr" style="font-size: .7rem;color:#1E1B1B">{$v.partner_kpi}</span>
+                    </p>
+                    <p>
+                        <span>一级会员: {$v.first_child_nums} </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </foreach>
+</div>
+
+<!--说明弹窗-->
+<div class="success_box">
+    <div class="success">
+        <i class="iconfont" onclick="closed(event)">&#xa94c;</i>
+        <p class="title">成就值说明</p>
+        <div class="content">
+            <p class="details" style="padding:0 .3rem">
+                合伙人的成就值（KPI）  =  (k1*40% + k2*20% +k3*20 + k4*20)* 100 / KPI <sub>max</sub> <br>
+                其中：<br>
+                k1= 我的一级会员总数/所有合伙人的一级会员总数;<br>
+                k2= 我的购买过商品的一级会员数量/所有合伙人的一级会员总数 ;<br>
+                k3 =  我的一级会员订单总额/所有合伙人的一级会员订单总额 ;<br>
+                k4 =  我的自购订单总额/（所有合伙人的自购订单总额<br>
+                KPI<sub>max</sub> = 为所有合伙人中最大的成就值。<br>
+            </p>
+            <p style="margin-top: 1rem;font-size: .6rem;color: #5B5858; "> 本期：{$data.start_time}至{$data.end_time}</p>
+        </div>
+
+        <div class="btn">
+            <a href="javascript:;" onclick="closed(event)">朕知道了</a>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function closed(event) {
+        $(event.target).closest('.success_box').hide();
+        $(event.target).closest('.success_box_plan1').hide();
+        $(event.target).closest('.success_box_plan2').hide();
+    }
+
+    function opened() {
+        $('.success_box').show();
+    }
+
+    /**
+     * 继续加载 提现明细
+     * */
+    var before_request = 1; // 上一次请求是否已经有返回来, 有才可以进行下一次请求
+    var page = 1;
+    function ajax_sourch_submit(){
+        if(before_request == 0)// 上一次请求没回来 不进行下一次请求
+            return false;
+        before_request = 0;
+        page++;
+        $.ajax({
+            type : "get",
+            url:"{:U('Mobile/distribution/partnerAchievementRank')}"+"?p="+page,
+            success: function(data)
+            {
+                if(data){
+                    $(".partner_lists").append(data);
+                    before_request = 1;
+                }else{
+                    $('.get_more').hide();
+                }
+            }
+        });
+    }
+    $(function(){
+        $(document).scroll(function(){
+            if($(document).height() - $(document).scrollTop() - $(window).height() <400 )
+            {
+                ajax_sourch_submit()
+            }
+        });
+
+    });
+
+    var avg = {$data['avg_achievement']};
+    var num = avg.toFixed(2);
+    $('#avg_achievement').text(num)
+
+</script>
+</body>
+</html>

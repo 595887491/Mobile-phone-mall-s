@@ -1,0 +1,213 @@
+<include file="public/header" title="资金管理" body=""/>
+<include file="public/header_nav" title="我的钱包" href="{:U('/Mobile/User/index')}"/>
+<style>
+    body{
+        background-color:white;
+    }
+    .cf_account{
+        background-color: white;
+        overflow: hidden;
+    }
+    .cf_account_abo{
+        text-align: center;
+        color: #1E1B1B;
+        margin-top: 1rem;
+        font-size:.4rem;
+    }
+    .cf_account_abo h2{
+        color: #1E1B1B;
+    }
+    .cf_account_img{
+        text-align: center;
+        width: 100%;
+        margin-top:4.5rem;
+    }
+    .cf_account_img img{
+        width: 4rem;
+        height: 4rem;
+    }
+    .tpnavf{
+        position: relative;
+        z-index: 999;
+    }
+    .cf_comment{
+        width: 2.5rem;
+        height: 1.2rem;
+        line-height: 1rem;
+        border: 1px solid #1E1B1B;
+        border-radius: .5rem;
+        font-size: .6rem;
+        text-align: center;
+        position: absolute;
+        right: .5rem;
+        top:2.6rem;
+
+    }
+    .cf_comment_more{
+        width: 90%;
+        height: 1.8rem;
+        background-color: #FF407E;
+        color: white;
+        font-size: .7rem;
+        line-height: 1.8rem;
+        border-radius: 1rem;
+        text-align: center;
+        margin-left: 4.5%;
+        margin-top: 3rem;
+
+    }
+    .cf_comment_more p{
+        color: white;
+    }
+    .cf_record{
+        width: 90%;
+        height: 1.8rem;
+        /*background-color: #FF407E;*/
+        color: white;
+        font-size: .7rem;
+        line-height: 1.8rem;
+        border-radius: 1rem;
+        text-align: center;
+        margin-left: 4.5%;
+    }
+</style>
+<div class="cf_account">
+    <div class="cf_comment ">
+        <a href="{:U('Mobile/User/account_list')}">
+             <span>明 细</span>
+        </a>
+    </div>
+
+    <div class="cf_account_img">
+        <img src="__STATIC__/images/cf_mongey.png" alt="">
+    </div>
+
+    <div class="cf_account_abo">
+        <h2>可用余额</h2>
+        <h1>{$user['user_money']}</h1>
+    </div>
+
+    <div class="cf_comment_more">
+        <a href="{:U('Mobile/User/withdrawals')}">
+            <!--<img src="__STATIC__/images/tx.png"/>-->
+            <p>申 请 提 现</p>
+        </a>
+    </div>
+     <div class="cf_record">
+         <a href="{:U('Mobile/User/withdrawals_list')}">
+             <span>提现记录</span>
+         </a>
+     </div>
+
+
+
+    <!--<div class="scgz">-->
+        <!--<ul>-->
+            <!--<li>-->
+                <!--<a href="{:U('Mobile/User/recharge')}">-->
+                    <!--<img src="__STATIC__/images/cz.png"/>-->
+                    <!--<p>账户充值</p>-->
+                <!--</a>-->
+            <!--</li>-->
+            <!--<li>-->
+                <!--<a href="{:U('Mobile/User/withdrawals')}">-->
+                    <!--<img src="__STATIC__/images/tx.png"/>-->
+                    <!--<p>申请提现</p>-->
+                <!--</a>-->
+            <!--</li>-->
+            <!--<if condition="$tpshop_config['basic_rechargevip_on_off'] eq 1">-->
+                <!--<li>-->
+                    <!--<a href="{:U('Mobile/User/rechargevip')}">-->
+                        <!--<img src="__STATIC__/images/tx.png"/>-->
+                        <!--<p> VIP充值</p>-->
+                    <!--</a>-->
+                <!--</li>-->
+            <!--</if>-->
+        <!--</ul>-->
+    <!--</div>-->
+<!--</div>-->
+<!--<div class="floor my p">-->
+    <!--<div class="content">-->
+        <!--<div class="floor w3">-->
+        <!--<ul>-->
+        <!--<li>-->
+        <!--<a href="">-->
+        <!--<p>红包</p>-->
+        <!--<h2>0</h2>-->
+        <!--</a>-->
+        <!--</li>-->
+        <!--<li>-->
+        <!--<a href="">-->
+        <!--<p>银行卡</p>-->
+        <!--<h2>0</h2>-->
+        <!--</a>-->
+        <!--</li>-->
+        <!--<li>-->
+        <!--<a href="{:U('Mobile/User/points')}">-->
+        <!--<p>当前积分</p>-->
+        <!--<h2>{$user.pay_points}</h2>-->
+        <!--</a>-->
+        <!--</li>-->
+        <!--</ul>-->
+        <!--</div>-->
+        <!--<div class="floor list7 ma-to-20">-->
+            <!--<div class=" ">-->
+
+                    <!--<a href="{:U('Mobile/User/account_list')}">-->
+                        <!--<div class="order">-->
+                            <!--<div class="fl">-->
+                                <!--<span>余额明细</span>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</a>-->
+
+            <!--</div>-->
+            <!--<div class="myorder p">-->
+                <!--<div class="content30">-->
+                    <!--<a href="{:U('Mobile/User/points_list')}">-->
+                        <!--<div class="order">-->
+                            <!--<div class="fl">-->
+                                <!--<span>积分明细</span>-->
+                            <!--</div>-->
+                            <!--<div class="fr">-->
+                                <!--<i class="Mright"></i>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</a>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="myorder p">-->
+                <!--<div class="content30">-->
+                    <!--<a href="{:U('Mobile/User/recharge_list')}">-->
+                        <!--<div class="order">-->
+                            <!--<div class="fl">-->
+                                <!--<span>充值记录</span>-->
+                            <!--</div>-->
+                            <!--<div class="fr">-->
+                                <!--<i class="Mright"></i>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</a>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="myorder p">-->
+                <!--<div class="content30">-->
+                    <!--<a href="{:U('Mobile/User/withdrawals_list')}">-->
+                        <!--<div class="order">-->
+                            <!--<div class="fl">-->
+                                <!--<span>提现记录</span>-->
+                            <!--</div>-->
+                            <!--<div class="fr">-->
+                                <!--<i class="Mright"></i>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</a>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    </div>
+    <!--底部导航-start-->
+    <include file="public/footer_nav"/>
+    <!--底部导航-end-->
+    </body>
+    </html>

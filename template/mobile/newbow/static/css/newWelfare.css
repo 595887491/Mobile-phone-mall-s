@@ -1,0 +1,152 @@
+.clearFix{
+    clear: both;
+    overflow: hidden;
+}
+.classreturn{
+    box-shadow: none;
+}
+.newWelfare{
+    margin-top: 1.9rem;
+}
+.newWelfare img{
+    width: 100%;
+    height: 7.3rem;
+}
+.firstGiftList{
+    background-color: #22085A;
+    padding-bottom: 1rem;
+}
+.newCoupon{
+    text-align: center;
+    margin-bottom: .5rem;
+}
+.newCoupon img{
+    width: 93%;
+    height: 2.4rem;
+    margin-top: .35rem;
+}
+.screen{
+    height: 2rem;
+    position: relative;
+}
+.screenLeft{
+    margin-top: .8rem;
+}
+.screenLeft  span{
+    font-size: .75rem;
+    color: #D0AEFE;
+    font-weight: bold;
+    margin-left: .5rem;
+}
+.storenav{
+    width:60%;
+}
+.search_list_dump ul li{
+    width: 24%;
+}
+.red{
+    color: #F8EDFF;
+}
+.storenav ul li>a>span,.storenav ul li{
+    color: #D0AEFE;
+}
+
+.guessList{
+    margin-top: -.15rem;
+}
+.guessItem{
+    background-color: #fff;
+    float: left;
+    width: 45%;
+    margin-left: 3.2%;
+    font-size: .65rem;
+    padding-bottom: .6rem;
+    margin-top: .4rem;
+    border-radius: .2rem;
+    position: relative;
+    height: 12rem;
+}
+.guessItem img{
+    width: 100%;
+    /*border-radius: .1rem;*/
+}
+.guessItem .guessItemImg{
+    border-top-left-radius: .2rem;
+    border-top-right-radius: .2rem;
+}
+.guessTitle{
+    /*margin-left: .24rem;*/
+    margin-top: .3rem;
+    font-size: .6rem;
+    color: #1E1B1B;
+    height: .6rem;
+    /*overflow:hidden;*/
+    text-overflow:ellipsis;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:1;
+    white-space:nowrap;
+    font-weight: bold;
+    padding: 0 .3rem;
+    word-break:break-all;
+}
+.guessCom{
+    font-size: .5rem;
+    color: #1E1B1B;
+    margin-top: .3rem;
+    /*margin-left: .24rem;*/
+    padding: 0 .3rem;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+    white-space:normal;
+    line-height: .8rem;
+    height: 1.71rem;
+    word-break:break-all;
+}
+.guessItem .guessItemPic{
+    height: 1.5rem;
+    margin-left: .24rem;
+    margin-top: .6rem;
+}
+.freeShop{
+    position: absolute;
+    top: .1rem;
+    left: 0;
+}
+.freeShop img{
+    height: .8rem;
+    width: 2.5rem;
+}
+.loginsignup{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+}
+.screenTop{
+    position: fixed;
+    top: 1.85rem;
+    left: 0;
+    z-index: 9999;
+    width: 100%;
+    background-color: #170441;
+}
+.noHave{
+    width: 100%;
+    text-align: center;
+    font-size: .6rem;
+}
+.noHave img{
+    width: 100%;
+}
+.noHave div{
+    text-align: center;
+    /*font-size: .26rem;*/
+    color: #1E1B1B;
+}
+.noHave div span{
+    font-size: .6rem;
+}

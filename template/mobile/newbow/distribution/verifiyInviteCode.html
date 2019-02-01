@@ -1,0 +1,217 @@
+<!DOCTYPE>
+<html>
+<head>
+    <title>申请合伙人</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/jjj.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <!--<link rel="stylesheet" href="__STATIC__/css/style.css">-->
+
+    <!--地址选择插件-->
+    <script src="__STATIC__/ICalendar/mobileSelect.js"></script>
+    <link rel="stylesheet" href="__STATIC__/ICalendar/mobileSelect.css">
+    <!--<link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>-->
+    <link rel="stylesheet" href="__STATIC__/css/new/team_base.css">
+    <link rel="stylesheet" href="__STATIC__/css/new/verifiyInviteCode.css">
+</head>
+<style>
+
+
+</style>
+<body>
+<!--header-->
+<div class="headerRank">
+    <a onclick="goBack()" class="back">
+        <img src="__STATIC__/images/return.png" alt="返回">
+    </a>
+    <div class="txt">
+        <if condition="$user_identity['partner']['status'] eq 5 || $user_identity['partner']['status'] eq 6 || !$user_identity['partner']">
+            <span>申请合伙人</span>
+            <else />
+            <span>合伙人续费</span>
+        </if>
+    </div>
+    <!--<a href="{:U('Mobile/Team/myTeam')}" class="myTeam">我的拼团</a>-->
+</div>
+<div style="height: .88rem;"></div>
+<!--header-->
+<div style="height: .1rem;background: #F1F5F8;"></div>
+<div class="step">
+   <div class="step-wrap">
+       <img src="__STATIC__/images/new/step1.png" alt="" >
+   </div>
+    <ul>
+        <li style="left: 0;color: #FF407E;">选择服务商</li>
+        <li style="left:37%">阅读合伙人协议</li>
+        <li style="right: 0;">支付领赠品</li>
+    </ul>
+</div>
+
+
+    <!--正常申请-->
+    <!--<div class="get_code_wrap">-->
+        <!--<div class="get_code_input">-->
+            <!--<input type="text" placeholder="输入合伙人邀请码" value="{$invite_partner_code}" id="code">-->
+            <!--<div class="code_wrap" onclick="scanQRCode()">-->
+                <!--<img src="__STATIC__/images/new/saoyisao.png" alt="" class="sao_code">-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<p>合伙人邀请码是用户申请合伙人的凭证，由服务商持有，你可联系自己的服务商获取</p>-->
+        <!--<p style="margin-top: .1rem;">无法联系服务商？请 <a href="{:U('Mobile/Help/lists')}">联系客服</a></p>-->
+        <!--<a href="javascript:;" class="next_step">下一步</a>-->
+    <!--</div>-->
+
+    <!--选择服务商  过期续费-->
+    <div class="get_code_wrap">
+        <div class="get_code_input">
+            <span style="font-weight: bold">服务商:</span>
+            <img src="__STATIC__/images/new/bianji.png" alt="" style="margin-left: .2rem;width: .3rem">
+            <span style="text-decoration: underline " id="trigger3">点击选择服务商</span>
+        </div>
+        <p>请选择你所在区域的服务商，以便为你提供更快捷的服务！服务商选定后，将为你提供为期1年的服务，次年续费合伙人时可重新选择。</p>
+        <p style="margin-top: .5rem">尚美缤纷服务商为合伙人提供不限于以下服务：</p>
+        <p>1.解答合伙人在使用过程中遇到的问题</p>
+        <p>2.为合伙人发展会员提供支持</p>
+        <p>3.定期组织合伙人，维护合伙人的活跃度</p>
+        <p>4.其他帮助</p>
+        <a href="javascript:;" class="next_step_two">下一步</a>
+    </div>
+
+<include file="public/wx_share"/>
+<script>
+    // 判断历史记录
+    function goBack() {
+        var historyUrl = document.referrer;
+        var locurl ='https://"+location.host+"/Mobile/distribution/applyAgreement.html';
+        var arr = historyUrl.split('?')[0];
+        console.log(historyUrl);
+        console.log(arr);
+        if(locurl == arr){
+            location.href = "{:U('/Mobile/User/index')}"
+        }else {
+            window.history.go( -1 );
+        }
+    }
+
+    var conmment = '{$agent_region_name}'?'{$agent_region_name}':'';
+    console.log(conmment);
+    if(conmment != ''){
+        $('#trigger3').text(conmment);
+    }
+    var code_id ;
+    // 地址插件配置
+    var mobileSelect4 = new MobileSelect({
+        trigger: '#trigger3',
+        title: '选择服务商',
+        wheels: [
+            {data:[
+                    {
+                        id:'1',
+                        value:'',
+                        childs:[
+                            {id:'A1',value:''},
+                        ]
+                    }
+                ]}
+        ],
+        position:[0,0,0],
+        callback:function(indexArr, data){
+            console.log(data); //返回选中的json数据
+            for(var i = 0 ;i<data.length;i++) {
+                // console.log(data[data.length-1].id);
+                if(data[i].id ==0) {
+                    code_id = data[i-1].id
+                    $('#trigger3').text(data[i-1].value);
+                }
+                if(data[i].id !=0) {
+                    code_id = data[data.length - 1].id
+                    $('#trigger3').text(data[data.length-1].value)
+                }
+
+            }
+            // console.log($('#trigger3').text());
+            // sessionStorage.setItem('Bargain-province-id',data[0].id);
+            // sessionStorage.setItem('Bargain-city-id',data[1].id);
+            // sessionStorage.setItem('Bargain-district-id',data[2].id);
+        }
+    });
+   // 点击选择 服务商
+    $('#trigger3').click(function () {
+        $.ajax({
+            type: "POST",
+            url: "/mobile/distribution/getRegion",
+            data: {},
+            dataType: "json",
+            success: function(res){
+                mobileSelect4.updateWheels(res);
+            }
+        });
+
+    })
+    // var isWechat = "{$isWechat}" ? 1 : 0;
+    function scanQRCode() {
+        wx.scanQRCode({
+            needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+            scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+            success: function (res) {
+                var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+            }
+        });
+    }
+    // function scanQRCode() {
+    //     if (isWechat) {
+    //         wx.scanQRCode({
+    //             needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+    //             scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+    //             success: function (res) {
+    //                 alert(res);
+    //                 var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+    //             }
+    //         });
+    //     } else {
+    //         layer.open({content:'请使用微信扫一扫',time:2,skin:'msg'});
+    //     }
+    // }
+    $('.next_step').on('click',function () {
+        var code =$('#code').val();
+        if(!code) {
+            layer.open({content:'请输入合伙人邀请码',skin:'msg',time:2})
+        }else {
+            $.ajax({
+                type:'POST',
+                url:"{:U('Mobile/distribution/applyAgreement')}"+"?invite_partner_code="+code,
+                success:function (res) {
+                    if(JSON.parse(res).code == -1) {
+                        layer.open({content:JSON.parse(res).msg,skin:'msg',time:2})
+                    }else {
+                        location.href="{:U('Mobile/distribution/applyAgreement')}"+"?invite_partner_code="+code
+                    }
+                }
+            })
+        }
+    })
+    $('.next_step_two').on('click',function () {
+        console.log(code_id);
+        var codePanter =$('#trigger3').text();
+        console.log(codePanter);
+        if(codePanter == '') {
+            layer.open({content:'请选择服务商',skin:'msg',time:2})
+        }else {
+            $.ajax({
+                type:'POST',
+                url:"{:U('Mobile/distribution/applyAgreement')}"+"?invite_partner_code="+code_id,
+                success:function (res) {
+                    if(JSON.parse(res).code == -1) {
+                        layer.open({content:JSON.parse(res).msg,skin:'msg',time:2})
+                    }else {
+                        location.href="{:U('Mobile/distribution/applyAgreement')}"+"?invite_partner_code="+code_id
+                    }
+                }
+            })
+        }
+    })
+</script>
+</body>
+</html>

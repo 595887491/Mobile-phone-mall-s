@@ -1,0 +1,633 @@
+<include file="public/layout" />
+<script type="text/javascript" src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<style>
+    @font-face {
+        font-family: 'iconfont';  /* project id 709796 */
+        src: url('//at.alicdn.com/t/font_709796_h9es25uvbou.eot');
+        src: url('//at.alicdn.com/t/font_709796_h9es25uvbou.eot?#iefix') format('embedded-opentype'),
+        url('//at.alicdn.com/t/font_709796_h9es25uvbou.woff') format('woff'),
+        url('//at.alicdn.com/t/font_709796_h9es25uvbou.ttf') format('truetype'),
+        url('//at.alicdn.com/t/font_709796_h9es25uvbou.svg#iconfont') format('svg');
+    }
+    .iconfont {
+        font-family: "iconfont" !important;
+        font-size: 20px;
+        font-style: normal;
+        -webkit-font-smoothing: antialiased;
+        -webkit-text-stroke-width: 0.2px;
+        -moz-osx-font-smoothing: grayscale;}
+    .flexigrid .tDiv{border: none;background: transparent;}
+    .flexigrid .fbutton{border-right: dotted 0px transparent;}
+    .clearfix{clear: both;overflow: hidden;}
+    .fl{float: left;}
+    .fr{float: right;}
+    .flexigrid .bDiv td div{height: auto;padding: 0;margin: 0;}
+    .flexigrid .bDiv td>div{padding: 10px 8px;line-height: 42px;}
+    .flexigrid .bDiv td div.avatar{  width: 34px;height: 34px;margin-top: 5px;border-radius:34px;border: 1px solid #ddd;overflow: hidden;}
+    .avatar img{width: 100%;height: 100%;}
+    .flexigrid .mDiv{margin: 15px 0 30px;border: none;}
+    .flexigrid .bDiv a.btn{margin-top: 10px;}
+    .details_wrap{margin-top: 20px;border: 1px solid #ddd;border-radius: 5px;padding: 10px 10px 50px 10px;}
+    .details_wrap .titile{border-left: 3px solid #2cbca3;line-height: 15px;padding-left: 8px;}
+    .details_wrap ul li{float: left;}
+    .details_wrap ul{margin-top: 20px;}
+    .details_wrap ul li .avatar{width: 57px;height: 57px;border-radius: 50px;border: 1px solid #ddd;}
+    .details_wrap ul li:nth-child(2){border-left: 1px solid #ddd;border-right: 1px solid #ddd;}
+    .details_wrap ul li div>p{color:#CCCCCC;}
+    .details_wrap ul li div>p>span{color: #333;font-size: 14px;}
+    .earing{padding: 0 30px;}
+    .earing p:first-of-type,.timer p:first-of-type{margin-top: 0;}
+    .earing p,.timer p{margin-top: 10px;}
+    .timer button{margin-left: 35px;margin-top: 20px;;opacity: .8;transition: .3s;border: none;font-size: 14px;border-radius: 3px;cursor:pointer;display: block;padding: 10px;background: red;color: #fff;}
+    .nav{margin-top: 30px}
+    .timer button:hover{opacity: 1;}
+    .nav li {float: left;width: 100px;text-align: center;border: 1px solid #ddd;line-height: 33px;border-radius: 5px 5px 0 0;z-index: 99;
+        background-color:rgba(242, 242, 242, 1);border-bottom: none;transition: .3s;margin-left: 5px;cursor: pointer;position: relative;}
+    .nav li:first-of-type{margin-left: 0;}
+    /*.nav{border-bottom: 1px solid #ddd;}*/
+    .nav li a,.member-nav li a{color: #999;display: block;width: 100%;height: 100%;}
+    .nav li.checkeds{background-color: #fff;}
+    .flexigrid{border: 1px solid #ddd;margin-top:-1px;padding: 10px;}
+    .member-nav::after{display: block;content: '';font-size: 0;height: 0;clear: both;overflow: hidden;}
+    .member-nav li{float: left;width: 80px;text-align: center;margin-left: 10px;color: #999;line-height: 30px;cursor: pointer;}
+    .member-nav li:first-of-type{margin-left: 0;}
+    .member-nav li:hover{border-bottom: 2px solid #555;color: #555;}
+    .member-nav li.checkeds{border-bottom: 2px solid #555;color: #555;}
+    .member-nav li.checkeds a{color: #000;}
+    .flexigrid .sDiv2 .qsbox{width: 130px;}
+    .id-box::after{display: block;height: 0;clear: both;overflow: hidden;content: '';}
+    .details_wrap ul li div>p>span.iDentity{padding: 5px;background: #ddd;font-size: 12px;margin-left: 10px;color: #fff;}
+    .relieve{position: fixed;width:300px; background: #fff;top:50%;left:40%;z-index: 999999;padding:30px 10px;
+    box-shadow: 0 0 20px 1px #e1e1e8;text-align: center;font-size: 16px;margin-top: -65px;display: none;}
+    .relieve>p i{font-size: 16px;color: #FAAD14;}
+    .relieve .btn{margin-top: 20px;}
+    .relieve .btn a{display: inline-block;padding:5px 15px;border:1px solid #ddd;border-radius: 5px;font-size: 12px;color: #585858;}
+    .relieve .btn a.yes-btn{background: rgba(24, 144, 255, 1);color: #fff;margin-left: 30px;}
+</style>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h5><a href="javascript:;">服务商列表</a>><a href="javascript:;">服务商详情</a></h5>
+            </div>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style=" width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+            <li>服务商详情</li>
+        </ul>
+    </div>
+    <div class="details_wrap">
+        <p class="titile">基本信息</p>
+        <ul class="clearfix">
+            <li>
+                <div class="clearfix" style="color: #666666;">
+                    <div class="avatar fl">
+                        <img src="{$agent_info['head_pic']}" alt="">
+                    </div>
+                    <div class="fl" style="margin-left: 20px;">
+                        <div>
+                            <span style="font-size: 18px;">{$agent_info['user_name']}</span>
+                            <i class="iconfont">&#xe650;</i>
+                            <span>{$agent_info['id_card_name']}</span>
+                            <span>{:substr_replace($agent_info['id_card_num'],str_repeat('*',strlen($agent_info['id_card_num']) - 8),4,-4)}</span>
+                        </div>
+                        <p style="color: #666666;margin-top: 20px;">{$agent_info['mobile']}</p>
+                        <if condition="$agent_info['agent_level'] == 1">市代理
+                            <elseif condition="$agent_info['agent_level'] == 2">区县代理
+                                <else/>镇/办事处代理
+                        </if>
+                    </div>
+                </div>
+            </li>
+            <li style="margin: 0 50px;">
+                <div class="clearfix earing">
+                    <div class="fl">
+                        <p style="text-indent: 1em;">累计收益：<span>￥{$agent_info['total_earnings']}</span></p>
+                        <p>待返利收益：<span>￥{$agent_info['wait_earnings']}</span></p>
+                        <p>已返利收益：<span>￥{$agent_info['have_earnings']}</span></p>
+                    </div>
+                    <div class="fl" style="margin-left: 40px;">
+                        <p>已提现：<span>￥{$agent_info['have_pick_money']}</span></p>
+                        <p></p>
+                        <p>未提现：<span>￥{$agent_info['can_pick_money']}</span></p>
+                    </div>
+                </div>
+
+            </li>
+            <li>
+                <div class="clearfix timer">
+                    <div class="fl">
+                        <p>身份状态：<span style="color: #008000;">
+                            <if condition="$agent_info['agent_status'] == 1">正常
+                                <elseif condition="$agent_info['status'] == 2">已过期
+                                <else/>已解除</if></span>
+                        </p>
+                        <p>加入时间：<span>{:date('Y-m-d H:i',$agent_info['be_agent_start'])}</span></p>
+                        <p>过期时间：<span>{:date('Y-m-d H:i',$agent_info['be_agent_end'])}</span></p>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <ul class="nav clearfix">
+        <li class="checkeds"><a href="javascript:goTab(1)">会员明细</a></li>
+        <li class="Etab"><a href="javascript:goTab(2)">收益明细</a></li>
+        <li><a href="javascript:goTab(3)">提现明细</a></li>
+    </ul>
+
+    <div class="flexigrid members">
+        <div class="mDiv">
+            <ul class="member-nav fl">
+                <li class="checkeds"><a href="javascript:change_user_tab(0);">合伙人</a> </li>
+                <li><a href="javascript:change_user_tab(1);">一级会员</a></li>
+                <li><a href="javascript:change_user_tab(2);">二级会员</a></li>
+                <li><a href="javascript:change_user_tab(3);">缤纷会员</a></li>
+            </ul>
+            <form class="navbar-form form-inline"  method="post" action="" name="search-form2" id="search-form2">
+                <input type="hidden" name="agent_id" value="{$agent_id}">
+                <input type="hidden" name="act" id="act" value="user_detail">
+                <input type="hidden" name="user_type" id="user_type" value="0">
+                <input type="hidden" name="order_by" id ="order_by" value="reg_time">
+                <input type="hidden" name="sort" value="desc">
+                <!--用于查看结算统计 包含了哪些订单-->
+                <div class="sDiv">
+                    <div class="sDiv2">
+                        <input type="text" size="30" name="keywords" id="keywords" class="qsbox" placeholder="用户ID、手机号、昵称">
+                    </div>
+                    <div class="sDiv2">
+                        <input type="button" onclick="ajax_get_table('search-form2',1)"  class="btn" value="搜索">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="hDiv">
+            <div class="hDivBox" id="ajax_return">
+                <table cellspacing="0" cellpadding="0" style="width: 100%;">
+                    <thead>
+                    <tr>
+                        <th axis="col0">
+                            <div style="min-width: 24px;"><i class="ico-check"></i></div>
+                        </th>
+                        <th align="center" abbr="user_id" axis="col3" class="">
+                            <div style="text-align: center; min-width: 60px;" class="">用户ID</div>
+                        </th>
+                        <th align="center"  axis="col4" class="">
+                            <div style="text-align: center; min-width: 170px;" class="">用户信息</div>
+                        </th>
+                        <th align="center" abbr="firstUserNum" axis="col6" class="">
+                            <div style="text-align: center; min-width: 60px;" class="">一级会员</div>
+                        </th>
+                        <th align="center" abbr="secondUserNum" axis="col6" class="">
+                            <div style="text-align: center; min-width: 60px;" class="">二级会员</div>
+                        </th>
+                        <th align="center" abbr="overSecondUserNum" axis="col6" class="">
+                            <div style="text-align: center; min-width: 60px;" class="">缤纷会员</div>
+                        </th>
+                        <th align="center" abbr="share_money" axis="col6" class="">
+                            <div style="text-align: center; min-width: 60px;" class="">贡献收益</div>
+                        </th>
+                        <th id="becomePartnerTime" align="center" abbr="share_money" axis="col6" class="">
+                            <div style="text-align: center; min-width: 120px;" class="">加入合伙人时间</div>
+                        </th>
+                        <th align="center" abbr="reg_time" axis="col6" class="">
+                            <div style="text-align: center; min-width: 120px;" class="">注册时间</div>
+                        </th>
+                        <th align="center" abbr="last_login" axis="col6" class="">
+                            <div style="text-align: center; min-width: 120px;" class="">最近登陆时间</div>
+                        </th>
+                        <th align="left" axis="col1" class="handle">
+                            <div style="text-align: center; width: 150px;">操作</div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+
+            </div>
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+        <!--分页位置-->
+    </div>
+
+    <div class="flexigrid earnings" style="display: none;">
+        <div class="mDiv">
+            <p style="color: #555;" class="fl">收益: <span style="color: #111;font-size: 20px;" id="total_earns"></span></p>
+            <form class="navbar-form form-inline"  method="post" action="" name="search-form2" id="search-form-earns">
+                <input type="hidden" name="act" value="earns_detail">
+                <input type="hidden" name="agent_id" value="{$agent_id}">
+                <input type="hidden" name="order_by" value="add_time">
+                <input type="hidden" name="sort" value="desc">
+                <div class="sDiv">
+                    <div class="sDiv2">
+                        <select name="member_level" id="member_level" class="select sDiv3" style="margin-right:5px;margin-left:5px">
+                            <option value="0" selected>全部</option>
+                            <option value="1">一级会员</option>
+                            <option value="2">二级会员</option>
+                            <option value="3">合伙人订单</option>
+                            <option value="4">发展合伙人</option>
+                        </select>
+                    </div>
+                    <div class="sDiv2" style="margin-right: 10px;">
+                        <input type="text" size="30" name="start_time" id="start_time" value="" placeholder="申请起始时间" class="qsbox">
+                        <input type="button" class="btn" value="申请起始时间">
+                    </div>
+                    <div class="sDiv2" style="margin-right: 10px;">
+                        <input type="text" size="30" name="end_time" id="end_time" value="" placeholder="申请截止时间" class="qsbox">
+                        <input type="button" class="btn" value="申请截止时间">
+                    </div>
+                    <div class="sDiv2">
+                        <input type="text" size="30" name="keywords" id="earns_keywords" class="qsbox" placeholder="用户ID、手机号、昵称">
+                        <input type="button" onclick="ajax_get_table('search-form-earns',1,'flexigridEarns')"  class="btn" value="搜索">
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+        <div class="hDiv">
+            <div class="hDivBox" id="ajax_earnings">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th align="left" abbr="divide_money" axis="col3" class="">
+                            <div style="text-align: center; min-width:80px;" class="">收益</div>
+                        </th>
+                        <th align="left"  axis="col4" class="">
+                            <div style="text-align: center; min-width: 170px;" class="">收益来源</div>
+                        </th>
+                        <th align="center" axis="col6" class="">
+                            <div style="text-align: center; min-width: 60px;" class="">用户ID</div>
+                        </th>
+                        <th align="center" axis="col6" class="">
+                            <div style="text-align: center; min-width: 260px;" class="">用户信息</div>
+                        </th>
+                        <th align="center" abbr="add_time" axis="col6" class="">
+                            <div style="text-align: center; min-width: 160px;" class="">时间</div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigridEarns" cellpadding="0" cellspacing="0" border="0">
+
+            </div>
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+        <!--分页位置-->
+
+    </div>
+
+    <div class="flexigrid withdraw" style="display: none;">
+        <div class="mDiv">
+            <p style="color: #555;" class="fl">提现金额: <span style="color: #111;font-size: 20px;" id="withdraw_money"></span></p>
+            <form class="navbar-form form-inline"  method="post" action="" name="search-form2" id="search-form-withdraw">
+                <input type="hidden" name="agent_id" value="{$agent_id}">
+                <input type="hidden" name="act" value="withdraw_detail">
+                <input type="hidden" name="order_by" value="create_time">
+                <input type="hidden" name="sort" value="desc">
+                <div class="sDiv">
+                    <div class="sDiv2" style="margin-right: 10px;">
+                        <input type="text" size="30" name="start_time" id="withdraw_start_time" value="" placeholder="申请起始时间" class="qsbox">
+                        <input type="button" class="btn" value="申请起始时间">
+                    </div>
+                    <div class="sDiv2" style="margin-right: 10px;">
+                        <input type="text" size="30" name="end_time" id="withdraw_end_time" value="" placeholder="申请截止时间" class="qsbox">
+                        <input type="button" class="btn" value="申请截止时间">
+                    </div>
+                    <div class="sDiv2">
+                        <input type="button" onclick="ajax_get_table('search-form-withdraw',1,'flexigridWithdraw')"  class="btn" value="搜索">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="hDiv">
+            <div class="hDivBox" id="ajax_withdraw">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th align="left"  axis="col3" class="">
+                            <div style="text-align: center; min-width:120px;" class="">提现金额</div>
+                        </th>
+                        <th align="left"  axis="col4" class="">
+                            <div style="text-align: center; min-width: 170px;" class="">提现渠道</div>
+                        </th>
+                        <th align="center" axis="col6" class="">
+                            <div style="text-align: center; min-width: 60px;" class="">渠道详情</div>
+                        </th>
+                        <th align="center" axis="col6" class="">
+                            <div style="text-align: center; min-width: 260px;" class="">状态</div>
+                        </th>
+                        <th align="center" abbr="create_time" axis="col6" class="">
+                            <div style="text-align: center; min-width: 160px;" class="">提现申请时间</div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigridWithdraw" cellpadding="0" cellspacing="0" border="0">
+
+            </div>
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+        <!--分页位置-->
+    </div>
+</div>
+
+<div class="relieve">
+    <p><i class="iconfont">&#xe616;</i>
+        确认解除该用户的服务商身份？</p>
+   <div class="btn">
+       <a href="javascript:;" class="no-btn">取消</a>
+       <a href="javascript:;" class="yes-btn">确认</a>
+   </div>
+</div>
+<script type="text/javascript">
+    $('#start_time').layDate();
+    $('#end_time').layDate();
+    $('#withdraw_start_time').layDate();
+    $('#withdraw_end_time').layDate();
+    $(function () {
+        $('.isRelieve-btn').on('click',function () {
+            $('.relieve').fadeIn();
+        });
+        $('.no-btn').on('click',function () {
+            $('.relieve').fadeOut();
+        });
+
+        $('.yes-btn').on('click',function () {
+            layer.open({content:'暂不能解除身份，正在研发。'});
+            $('.relieve').fadeOut();
+        });
+        $('.nav').on('click','li',function (event) {
+            var index = $(this).index();
+            event.stopPropagation();
+            $('.nav li').removeClass('checkeds');
+            $(this).addClass('checkeds');
+            $('.page .flexigrid').hide().eq(index).show();
+        })
+
+        $('.member-nav').on('click','li',function (event) {
+            event.stopPropagation();
+            var index = $(this).index();
+            $(this).addClass('checkeds').siblings().removeClass('checkeds')
+        })
+    });
+
+    // 删除操作
+    function del(id) {
+        $.post('/index.php/Admin/Distribution/canclePartnerIdentity',{agent_id:id},function (data) {
+            if (data.code == 1) {
+                layer.msg('操作成功',{icon:1,time:2000},function () {
+                    location.reload();
+                });
+            }else{
+                layer.msg('操作失败',{icon:2});
+            }
+        });
+    }
+
+    $(document).ready(function(){
+        // 点击刷新数据
+        $('.fa-refresh').click(function(){
+            location.href = location.href;
+        });
+
+        //全选
+        $('.ico-check ' , '.hDivBox').click(function(){
+            $('tr' ,'.hDivBox').toggleClass('trSelected' , function(index,currentclass){
+                var hasClass = $(this).hasClass('trSelected');
+                $('tr' , '#flexigrid').each(function(){
+                    if(hasClass){
+                        $(this).addClass('trSelected');
+                    }else{
+                        $(this).removeClass('trSelected');
+                    }
+                });
+            });
+        });
+
+    });
+    // 点击刷新数据
+    var ssort = 'sdesc';
+    var on_sclick = 0;
+    $('.hDivBox > table>thead>tr>th').hover(
+        function () {
+            if(typeof($(this).attr('abbr')) == "undefined"){
+                return false;
+            }
+            $(this).addClass('thOver');
+            if($(this).hasClass('sorted')){
+                if(ssort == 'sdesc'){
+                    $(this).find('div').removeClass('sdesc');
+                    $(this).find('div').addClass('sasc');
+                }else{
+                    $(this).find('div').removeClass('sasc');
+                    $(this).find('div').addClass('sdesc');
+                }
+            }else{
+                $(this).find('div').addClass(ssort);
+            }
+        }, function () {
+            if(typeof($(this).attr('abbr')) == "undefined"){
+                return false;
+            }
+            if(on_sclick == 0){
+                if($(this).hasClass('sorted')){
+                    if(ssort == 'sdesc'){
+                        $(this).find('div').removeClass('sasc');
+                        $(this).find('div').addClass('sdesc');
+                    }else{
+                        $(this).find('div').removeClass('sdesc');
+                        $(this).find('div').addClass('sasc');
+                    }
+                }else{
+                    $(this).find('div').removeClass(ssort);
+                }
+            }
+            $(this).removeClass("thOver");
+            on_sclick = 0;
+        }
+    );
+    $('.hDivBox > table>thead>tr>th').click(function(){
+        if(typeof($(this).attr('abbr')) == "undefined"){
+            return false;
+        }
+        if($(this).hasClass('sorted')){
+            $(this).find('div').removeClass(ssort);
+            if(ssort == 'sdesc'){
+                ssort = 'sasc';
+            }else{
+                ssort = 'sdesc';
+            }
+            $(this).find('div').addClass(ssort);
+            on_sclick = 1;
+        }else{
+            $('.hDivBox > table>thead>tr>th').removeClass('sorted');
+            $('.hDivBox > table>thead>tr>th').find('div').removeClass(ssort);
+            $(this).addClass('sorted');
+            $(this).find('div').addClass(ssort);
+            var hDivBox_th_index = $(this).index();
+            var flexigrid_tr =   $('#flexigrid > table>tbody>tr')
+            flexigrid_tr.each(function(){
+                $(this).find('td').removeClass('sorted');
+                $(this).children('td').eq(hDivBox_th_index).addClass('sorted');
+            });
+        }
+
+        if( $(this).children("div").hasClass("sasc") ){
+            $("input[name='sort']").val("desc");
+        }else {
+            $("input[name='sort']").val("asc");
+        }
+
+        sort($(this).attr('abbr'));
+    });
+
+    $('.fa-refresh').click(function(){
+        location.href = location.href;
+    });
+    ajax_get_table('search-form2',1);
+
+
+    //选中全部
+    $('.hDivBox .sign').click(function(){
+        var sign = $('#flexigrid > table>tbody>tr');
+        if($(this).parent().hasClass('trSelected')){
+            sign.each(function(){
+                $(this).removeClass('trSelected');
+            });
+            $(this).parent().removeClass('trSelected');
+        }else{
+            sign.each(function(){
+                $(this).addClass('trSelected');
+            });
+            $(this).parent().addClass('trSelected');
+        }
+    });
+
+    function change_act_tab(act,id_name,sort) {
+        $('#keywords').val('');
+        $('#member_level').val('');
+        $('#start_time').val('');
+        $('#end_time').val('');
+        $('#withdraw_start_time').val('');
+        $('#withdraw_end_time').val('');
+        $('#earns_keywords').val('');
+        $('#act').val(act);
+        $('#order_by').val(sort);
+        cur_page = 1;
+        ajax_get_table('search-form2',1,id_name);
+    }
+
+    function change_user_tab(type) {
+        $('#user_type').val(type);
+        ajax_get_table('search-form2',1);
+    }
+
+    //ajax 抓取页面
+    function ajax_get_table(tab,page,id_name='flexigrid'){
+        if ($("input[name=user_type]").val() == 0){
+            $("#becomePartnerTime").show();//合伙人列表显示成为合伙人时间
+        } else {
+            $("#becomePartnerTime").hide();
+        }
+        cur_page = page; //当前页面 保存为全局变量
+
+        console.log("获取分页");
+        $.ajax({
+            type : "POST",
+            url:"/index.php/Admin/Distribution/agentReportDetail/p/"+page,//+tab,
+            data : $('#'+tab).serialize(),// 你的formid
+            success: function(data){
+                $("#"+id_name).html('');
+                $("#"+id_name).append(data);
+
+                // 表格行点击选中切换
+                $('#'+id_name+' > table>tbody >tr').click(function(){
+                    $(this).toggleClass('trSelected');
+                });
+            }
+        });
+    }
+
+    // 点击排序
+    function sort(field){
+        $("input[name='order_by']").val(field);
+        var v = $("input[name='sort']").val() == 'desc' ? 'asc' : 'desc';
+        $("input[name='sort']").val(v);
+        if (field == 'add_time' || field == 'divide_money') {
+            ajax_get_table('search-form2',cur_page,'flexigridEarns');
+            return;
+        }
+
+        //不同类型不同tag
+        if($("input[name='act']").val() === "earns_detail"){
+            ajax_get_table('search-form-earns',cur_page,'flexigridEarns');
+        }else{
+            ajax_get_table('search-form2',cur_page);
+        }
+
+
+
+    }
+
+    function exportReport(){
+        var selected_ids = '';
+        $('.trSelected' , '#flexigrid').each(function(i){
+            selected_ids += $(this).data('user-id')+',';
+        });
+        if(selected_ids != ''){
+            $('input[name="user_ids"]').val(selected_ids.substring(0,selected_ids.length-1));
+        }
+        $('#search-form2').submit();
+    }
+
+
+    function goTab(id) {
+
+        $('input[name="order_by"]').val('');
+        $('input[name="sort"]').val('');
+
+        if(id == 1) {
+            change_act_tab('user_detail','flexigrid','reg_time');
+        }
+        if(id == 2) {
+            change_act_tab('earns_detail','flexigridEarns','add_time');
+        }
+        if(id == 3) {
+            change_act_tab('withdraw_detail','flexigridWithdraw','create_time');
+        }
+
+    }
+
+
+    function tabSearch(id,key) {
+        $(".Etab").trigger("click");
+        $("#earns_keywords").val(key);
+        ajax_get_table('search-form-earns',1,'flexigridEarns');
+    }
+
+
+</script>
+</body>
+</html>

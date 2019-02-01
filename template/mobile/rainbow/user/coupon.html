@@ -1,0 +1,250 @@
+<include file="public/header" title="我的优惠券" body=""/>
+<include file="public/header_nav" title="我的优惠券" href="javascript:history.back(-1)"/>
+<style>
+    .two-bothshop ul li {width: 33%;}
+    .cp_alo .pon_top{
+        background-color: transparent;
+    }
+    .cp_alo .pon_top{
+        background-color: transparent;
+        padding-left: .8rem;
+    }
+    .cp_alo .pon_dow{
+        background-color: transparent;
+
+    }
+    .coupon_csswri ul li{
+        width: 100%;
+    }
+
+    .cp_alo .pon_top p{
+        font-size: .7rem;
+    }
+    .cf_title{
+      font-size: .62rem;
+    }
+    #cf_price{
+        position: absolute;
+        font-size: 3rem;
+        color: #1E1B1B;
+        top: 1.5rem;
+        /*left: 2rem;*/
+    }
+    #cf_price_y{
+        font-size: 1rem;
+        position: relative;
+        top: -1rem;
+        /*left:-1rem;*/
+    }
+    .cf_title_price{
+        /*font-size: .7rem;*/
+        color: #5B5858;
+        position: absolute;
+        top: 3rem;
+        left: 5.6rem;
+    }
+    .cp_alo .pon_dow .usecoupon{
+        position: relative;
+        left: 5.5rem;
+        top: -2.5rem;
+        font-size: .6rem;
+        color: #FF407E;
+        border: none;
+    }
+    .xd_time{
+        padding: .4rem 0;
+        position: relative;
+        /*top: -2rem;*/
+        left: .8rem;
+
+    }
+    .cp_alo .pon_dow{
+        height: 1.5rem;
+    }
+    .cp_alo .pon_top{
+        height: 2.8rem;
+    }
+    .coupon_csswri ul li{
+        margin-top: .6rem;
+    }
+    .cp_alo .pon_top:after{
+        content: "";
+        background: url(../images/coupon_a.png);
+        background-size: .256rem;
+        background-repeat: repeat-x;
+        width: 100%;
+        height: .08533rem;
+        position: absolute;
+        bottom: -.02133rem;
+        left: 0;
+    }
+    .coupon_csswri ul li{float: none;height: 5.5rem;padding: 0 .64rem;line-height: 1.2rem;}
+    .two-bothshop ul li a{display: block;width: 2.2rem;margin: 0 auto;height: 1.70667rem;}
+    .two-bothshop ul li a span{font-size: .6rem;color: #1E1B1B;}
+    /*.two-bothshop ul .red{color: #1E1B1B;border-color:#fff;}*/
+    .two-bothshop ul .red a{border-bottom: 2px solid #FF407E;}
+    .two-bothshop ul .red a span{color: #FF407E;}
+    .coupon_csswri ul li:nth-child(2n){float: none;}
+    .coupon_csswri{background-color: #fff;margin-top: .4rem;padding: .5rem 0;}
+    .coupon_csswri ul li:first-of-type{margin-top: 0;}
+    .usecoupon{font-size: .55rem;color: #FF407E;}
+    .fosi{font-size: 1.2rem;margin-top: -0.3rem;}
+    .money{font-size: 2.5rem;font-weight: 500;margin-left: .2rem;padding-right: .4rem;}
+    ._title{font-size: .7rem;padding-top: .5rem;color: #5B5858;}
+    .x_time{color: #5B5858;font-size: .5rem;}
+    .line{height: .4rem;background-color: #F3F5F7;}
+    .coupon_csswri ul .overdue{opacity: .5}
+    .none{margin: 0;}
+    .none img{width: 100%;height: 100%;}
+</style>
+<div class="two-bothshop">
+    <div class="maleri30 clearfix">
+        <ul>
+            <li  <if condition="$Request.param.type eq ''">class="red"</if>">
+                <a href="{:U('User/coupon')}"><span>未使用</span></a>
+            </li>
+            <li  <if condition='$Request.param.type eq 1'>class="red"</if>">
+                <a href="{:U('User/coupon',array('type'=>1))}"><span>已使用</span></a>
+            </li>
+            <li  <if condition='$Request.param.type eq 2'>class="red"</if>">
+                <a href="{:U('User/coupon',array('type'=>2))}"><span>已过期</span></a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="line"></div>
+<div class="coupon_csswri">
+    <if condition="count($coupon_list) eq 0">
+        <!--没有内容时-s--->
+        <div class="comment_con p" >
+            <div class="none">
+                <img src="__STATIC__/images/cf_conpon.png">
+                <br><br>
+                <span style="color: #BFC1CD;font-size: .6rem">客官大大！暂无卡券！</span>
+            </div>
+        </div>
+        <!--没有内容时-e--->
+    </if>
+    <div class="maleri30">
+        <ul id="user_goods_ka_1">
+            <volist name="coupon_list" id="coupon">
+                <!--未使用-->
+                <if condition="$Request.param.type eq null">
+                    <li>
+                        <div class="clearfix">
+                            <p class="cf_title fl">{$coupon.name}</p>
+                            <div class="pon_dow fr">
+                                <!--<p>{$tpshop_config['shop_info_store_name']}</p>-->
+                                <!--<p>{$coupon.use_scope}</p>-->
+
+                                <if condition="$coupon.use_type eq 2">
+                                    <a class="usecoupon" href="{:U('Goods/goodsList',['id'=>$coupon.category_id])}">
+                                        <elseif condition="$coupon.use_type eq 1">
+                                            <a class="usecoupon" href="{:U('Goods/goodsInfo',['id'=>$coupon.goods_id])}">
+                                                <else/>
+                                                <a class="usecoupon" href="/">立即使用</a>
+                                </if>
+
+
+                            </div>
+                        </div>
+                        <div class="clearfix" style="padding-top: 1.3rem;">
+                            <p class="fosi fl">¥</p><em class="money fl">{$coupon.money|intval}</em>
+                            <p  class="fl _title ">满 {$coupon.condition} 元可用</p>
+                        </div>
+                        <p class="x_time">限{$coupon.use_end_time|date='Y-m-d',###}前使用</p>
+                    </li>
+                </if>
+
+                <!--已使用-->
+                <if condition="$Request.param.type eq 1">
+                    <li>
+                        <div class="clearfix">
+                            <p class="cf_title fl">{$coupon.name}</p>
+                            <div class="pon_dow fr">
+                                <!--<p>{$tpshop_config['shop_info_store_name']}</p>-->
+                                <!--<p>{$coupon.use_scope}</p>-->
+
+                                <if condition="$coupon.use_type eq 2">
+                                    <a class="usecoupon" href="{:U('Goods/goodsList',['id'=>$coupon.category_id])}">
+                                        <elseif condition="$coupon.use_type eq 1">
+                                            <a class="usecoupon" href="{:U('Goods/goodsInfo',['id'=>$coupon.goods_id])}">
+                                                <else/>
+                                                <a class="usecoupon" href="/">已使用</a>
+                                </if>
+
+
+                            </div>
+                        </div>
+                        <div class="clearfix" style="padding-top: 1.3rem;">
+                            <p class="fosi fl">¥</p><em class="money fl">{$coupon.money|intval}</em>
+                            <p  class="fl _title ">满 {$coupon.condition} 元可用</p>
+                        </div>
+                        <p class="x_time">限{$coupon.use_end_time|date='Y-m-d',###}前使用</p>
+                    </li>
+                </if>
+
+                <!--已过期-->
+                <if condition="$Request.param.type eq 2">
+                    <li class="overdue">
+                        <div class="clearfix">
+                            <p class="cf_title fl">{$coupon.name}</p>
+                            <div class="pon_dow fr">
+                                <!--<p>{$tpshop_config['shop_info_store_name']}</p>-->
+                                <!--<p>{$coupon.use_scope}</p>-->
+
+                                <if condition="$coupon.use_type eq 2">
+                                    <a class="usecoupon" href="{:U('Goods/goodsList',['id'=>$coupon.category_id])}">
+                                        <elseif condition="$coupon.use_type eq 1">
+                                            <a class="usecoupon" href="{:U('Goods/goodsInfo',['id'=>$coupon.goods_id])}">
+                                                <else/>
+                                                <a class="usecoupon" href="/">已过期</a>
+                                </if>
+
+
+                            </div>
+                        </div>
+                        <div class="clearfix" style="padding-top: 1.3rem;">
+                            <p class="fosi fl">¥</p><em class="money fl">{$coupon.money|intval}</em>
+                            <p  class="fl _title ">满 {$coupon.condition} 元可用</p>
+                        </div>
+                        <p class="x_time">限{$coupon.use_end_time|date='Y-m-d',###}前使用</p>
+                    </li>
+                </if>
+            </volist>
+
+            <!--<if condition="$Request.param.type eq 1">-->
+            <!--<a class="usecoupon" >已使用</a>-->
+            <!--</if>-->
+            <!--<if condition="$Request.param.type eq 2">-->
+            <!--<a class="usecoupon" >已过期</a>-->
+            <!--</if>-->
+        </ul>
+    </div>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script>
+    var  page = 1;
+    /*** ajax 提交表单 查询订单列表结果*/
+    function ajax_sourch_submit()
+    {
+        page += 1;
+        $.ajax({
+            type : "GET",
+            url:"/index.php?m=Mobile&c=User&a=coupon&type={$Request.param.type}&is_ajax=1&p="+page,//+tab,
+//			url:"{:U('Mobile/User/coupon',array('type'=>$_GET['type']),'')}/is_ajax/1/p/"+page,//+tab,
+//			data : $('#filter_form').serialize(),// 你的formid 搜索表单 序列化提交
+            success: function(data)
+            {
+                if($.trim(data) == '')
+                    $('#getmore').hide();
+                else
+                    $("#user_goods_ka_1").append(data);
+            }
+        });
+    }
+</script>
+<script src="js/style.js" type="text/javascript" charset="utf-8"></script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+body{
+    width: 100%;
+    max-width: 100%;
+    background-color: #f1f5f8;
+}
+.content{
+    background-color: white;
+    margin: 0;
+}
+.cf_connent{
+    width: 100%;
+    height: 6rem;
+    clear: both;
+    overflow: hidden;
+    /*padding-right: .2rem;*/
+    padding-left: .5rem;
+    /*padding-bottom: .5rem;*/
+    padding-top: .5rem;
+    margin-top: .3rem;
+    background-color: white;
+}
+.cf_connent a{
+    text-decoration: none;
+}
+.cf_line p{
+    font-size: .85rem;
+    width: 13rem;
+    color: #1E1B1B;
+    line-height: 1.1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+
+}
+.cf_line_img{
+    margin-right: .5rem;
+}
+.cf_line_img img{
+    width: 5.75rem;
+    height: 4.3rem;
+}
+.cf_line_con{
+    position: relative;
+}
+.cf_line_con span{
+    color: #BFC1CD;
+    font-size: .65rem;
+}
+.cf_span_f{
+    position: absolute;
+    top: 3.8rem;
+}
+.cf_span_g{
+    position: absolute;
+    top:3.8rem;
+    left: 4.5rem;
+}
+.cf_video{
+    background-color: white;
+    margin-top: .5rem;
+    overflow: hidden;
+}
+.cf_video video{
+    /*height:7rem;*/
+    width: 100%;
+}
+.cf_video p{
+    font-size: .7rem;
+    /*font-weight: 600;*/
+    color: #1E1B1B;
+    margin-top:1rem;
+    margin-left: .5rem;
+    margin-bottom: .6rem;
+}
+.cf_video_play{
+    position: absolute;
+    top: 4rem;
+    left: 9rem;
+}
+.video_bottom{
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+
+}
+.video_bottom span{
+    font-size: .65rem;
+    color: #BFC1CD;
+    margin-left: .5rem;
+}
+.cf_comment{
+    margin-top: .5rem;
+    background-color: white;
+    overflow: hidden;
+    padding-bottom: 1.5rem;
+}
+.cf_comment p{
+    font-size: .7rem;
+    color: #1E1B1B;
+    margin-top:1rem;
+    margin-left: .5rem;
+    margin-bottom: .6rem;
+}
+.cf_comment div ul li{
+    float: left;
+    width: 30%;
+    height: 6rem;
+    margin-left: .5rem;
+    /*border: 1px solid red;*/
+}
+.cf_comment div ul li img{
+    width: 100%;
+    height: 6rem;
+}
+.cf_time_num{
+    position: relative;
+    top: 1rem;
+    margin-bottom: .5rem;
+}
+.cf_time_num span{
+    font-size: .65rem;
+    color: #BFC1CD;
+    margin-left: .5rem;
+}
+.cf_span_data {
+    display: inline-block;
+    width: 2.5rem;
+    height: 1.2rem;
+    /* border: 1px solid; */
+    line-height: 1.2rem;
+    text-align: center;
+    background: #000;
+    opacity: 0.5;
+    color: white;
+    position: relative;
+    left: 17.25rem;
+    top: 2rem;
+    font-size: .6rem;
+    border-radius: 1rem 0 0 1rem;
+    /*text-align: right;*/
+}
+.classreturn{
+    width: 100%;
+
+}
+.classreturn .content .search{
+    font-size: .7rem;
+}

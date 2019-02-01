@@ -1,0 +1,34 @@
+<foreach name="favourite_goods" item="v">
+<if condition="isset($v['goods_id'])">
+	<li class="item">
+		<div class="similer-product products_kuang">
+			<a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v[goods_id]))}" title="{$v.goods_name}">
+				<img src="{$v[original_img]}?x-oss-process=style/s01" style=""/>
+					<if condition="$v['is_perfect']">
+						<span class="cf_span_pre">精选</span>
+					</if>
+					<!--|getSubstr=0,20  截取长度-->
+					<span class="similar-product-text">{$v[goods_name]}</span>
+				<if condition="$v['goods_remark']">
+					<span class="cf_span_comment">{$v.goods_remark}</span>
+				</if>
+			</a>
+			<span class="similar-product-price">
+				<span class="big-price"><span style="font-size: .5rem">¥</span> {$v[shop_price]}</span>
+				<a href="{:U('Goods/goodsList',['id'=>$v['cat_id']])}" title="{$v.goods_name}">
+					<span class="guess-button J_ping">看相似</span>
+				</a>
+		    </span>
+		</div>
+	</li>
+	<else/>
+	<li class="item" style="padding-bottom: 0">
+		<div class="similer-product products_kuang">
+			<a href="{$v['url']}">
+			<!--<img src="{$v[goods_id]|goods_thum_images=400,400}"/>-->
+			<img src="{$v[original_img]}?x-oss-process=style/s01" style="width:100%;height: 10rem"/>
+			</a>
+		</div>
+	</li>
+</if>
+</foreach>

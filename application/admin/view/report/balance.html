@@ -1,0 +1,313 @@
+<include file="public/layout" />
+<script type="text/javascript" src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<style>
+    .btn_today{
+        width:60px;
+        height: 28px;
+        color: #0ba4da;
+        border-radius: 5px ;
+        background-color: #fff;
+        border: 1px solid #0ba4da;
+    }
+    .fl{
+        float: left;
+    }
+    .fr{
+        float: right;
+    }
+    .flexigrid .tDiv2{
+        padding: 0;
+    }
+    .flexigrid .tDiv {
+        background-color: #fff;
+        border: none;
+        position: absolute;
+        z-index: 3;
+        overflow: hidden;
+        top: -0;
+        left: 165px;
+    }
+    .flexigrid .hDiv{
+        /*margin-top: 65px;*/
+    }
+    .flexigrid .mDiv{
+        padding-bottom: 8px;
+    }
+    .form-inline{
+        margin-right: 20px;
+    }
+    #add_time_begin{
+        margin-left: 10px;
+    }
+    #add_time_end{
+        margin-left: 10px;
+    }
+    .flexigrid .sDiv {
+        float: right;
+        position: relative;
+        overflow: hidden;
+        right: -10px;
+    }
+    .comment{
+        position: absolute;
+        bottom:20px;
+        z-index: 9999;
+    }
+    .comment span{
+        margin-left: 10px;
+        color: #999;
+    }
+    .comment em{
+        color: #1E1B1B;
+    }
+    .ftitle{
+        text-align: center;
+        padding-top: 5px;
+    }
+    .ftitle h5{
+        font-size: 14px;
+    }
+    .flexigrid .bDiv td div{margin-right: 0;}
+</style>
+
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>余额消费统计</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="flexigrid">
+        <div class="mDiv">
+            <div class="fl">
+                <input class="btn_today" type="button" value="今日" onclick="today_yestoday('search-form2',1,'today')"/>
+                <input class="btn_today" style="margin-left: 20px" type="button" value="昨日" onclick="today_yestoday('search-form2',1,'yestoday')"/>
+                <div class="tDiv">
+                    <div class="tDiv2">
+                        <div class="fbutton">
+                            <a href="{:U('Report/exportBalance')}">
+                                <div class="add" title="导出">
+                                    <span><i class="fa fa-share"></i>导出</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div style="clear:both"></div>
+                </div>
+            </div>
+
+            <form class="navbar-form form-inline fr"  id="search-form2" onsubmit="return false">
+                <input type="text" size="30" id="add_time_begin" name="start_time" value="" class="qsbox"  placeholder="开始时间">
+                <input type="text" size="30" id="add_time_end" name="end_time" value="" class="qsbox"  placeholder="结束时间">
+                <input type="hidden" name="time" id="times" value="today">
+                <input type="hidden" name="order_by" value="user_moneys">
+                <input type="hidden" name="sort" value="desc">
+                <input type="hidden" name="mobile" value="" id="input-mobile" />
+                <input type="hidden" name="user_id" value="" id="input-user-id" />
+                <div class="sDiv">
+                    <div class="sDiv2">
+                        <input type="text" id="search_key" size="30" class="qsbox" placeholder="手机或者用户ID">
+                        <input type="submit" class="btn" onclick="$('#times').val('');ajax_get_table('search-form2',1);" value="搜索">
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0" style="width: 100%;">
+                    <thead>
+                    <tr>
+                        <!--<th class="sgin" width="10px" style="width: 20px;">-->
+                            <!--<div><i class="ico-check"></i></div>-->
+                        <!--</th>-->
+                        <th align="center"  axis="col4">
+                            <div style="text-align: center; width:185px;" >时间</div>
+                        </th>
+                        <th align="center" axis="col2" >
+                            <div style="text-align: center; width: 185px;" >用户</div>
+                        </th>
+                        <th align="center" abbr="user_moneys" axis="col4" >
+                            <div style="text-align: center; width: 185px;" class="">消费余额</div>
+                        </th>
+                        <th align="center" abbr="order_nums" axis="col4">
+                            <div style="text-align: center; width: 75px;" >订单数量</div>
+                        </th>
+                        <th align="center" axis="col4" class="handle" >
+                            <div style="text-align: center; width: 150px;">操作</div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+        <div class="bDiv" style="height: auto;" id="ajax_return">
+
+        </div>
+    </div>
+
+
+</div>
+<script>
+    $(document).ready(function(){
+        laydate({
+                elem: '#add_time_begin', //需显示日期的元素选择器
+                format: 'YYYY-MM-DD'//日期格式
+            });
+        laydate({
+            elem: '#add_time_end', //需显示日期的元素选择器
+            format: 'YYYY-MM-DD' //日期格式
+        });
+        // 点击刷新数据
+        var ssort = 'sdesc';
+        var on_sclick = 0;
+        $('.hDivBox > table>thead>tr>th').hover(
+            function () {
+                if(typeof($(this).attr('abbr')) == "undefined"){
+                    return false;
+                }
+                $(this).addClass('thOver');
+                if($(this).hasClass('sorted')){
+                    if(ssort == 'sdesc'){
+                        $(this).find('div').removeClass('sdesc');
+                        $(this).find('div').addClass('sasc');
+                    }else{
+                        $(this).find('div').removeClass('sasc');
+                        $(this).find('div').addClass('sdesc');
+                    }
+                }else{
+                    $(this).find('div').addClass(ssort);
+                }
+            }, function () {
+                    if(typeof($(this).attr('abbr')) == "undefined"){
+                        return false;
+                    }
+                    if(on_sclick == 0){
+                        if($(this).hasClass('sorted')){
+                            if(ssort == 'sdesc'){
+                                $(this).find('div').removeClass('sasc');
+                                $(this).find('div').addClass('sdesc');
+                            }else{
+                                $(this).find('div').removeClass('sdesc');
+                                $(this).find('div').addClass('sasc');
+                            }
+                        }else{
+                            $(this).find('div').removeClass(ssort);
+                        }
+                    }
+                    $(this).removeClass("thOver");
+                    on_sclick = 0;
+            }
+        );
+        $('.hDivBox > table>thead>tr>th').click(function(){
+            if(typeof($(this).attr('abbr')) == "undefined"){
+                return false;
+            }
+            if($(this).hasClass('sorted')){
+                $(this).find('div').removeClass(ssort);
+                if(ssort == 'sdesc'){
+                    ssort = 'sasc';
+                }else{
+                    ssort = 'sdesc';
+                }
+                $(this).find('div').addClass(ssort);
+                on_sclick = 1;
+            }else{
+                $('.hDivBox > table>thead>tr>th').removeClass('sorted');
+                $('.hDivBox > table>thead>tr>th').find('div').removeClass(ssort);
+                $(this).addClass('sorted');
+                $(this).find('div').addClass(ssort);
+                var hDivBox_th_index = $(this).index();
+                var flexigrid_tr =   $('#flexigrid > table>tbody>tr')
+                flexigrid_tr.each(function(){
+                    $(this).find('td').removeClass('sorted');
+                    $(this).children('td').eq(hDivBox_th_index).addClass('sorted');
+                });
+            }
+            sort($(this).attr('abbr'));
+        });
+
+        $('.fa-refresh').click(function(){
+            location.href = location.href;
+        });
+        ajax_get_table('search-form2',1);
+    });
+
+    //选中全部
+    $('.hDivBox .sign').click(function(){
+        var sign = $('#flexigrid > table>tbody>tr');
+       if($(this).parent().hasClass('trSelected')){
+           sign.each(function(){
+               $(this).removeClass('trSelected');
+           });
+           $(this).parent().removeClass('trSelected');
+       }else{
+           sign.each(function(){
+               $(this).addClass('trSelected');
+           });
+           $(this).parent().addClass('trSelected');
+       }
+    });
+
+    function today_yestoday(tab,page,times) {
+        $('#times').val(times);
+        $('#add_time_begin').val('');
+        $('#add_time_end').val('');
+
+        cur_page = page; //当前页面 保存为全局变量
+        $.ajax({
+            type : "POST",
+            url:"/index.php/Admin/Report/balance/p/"+page,//+tab,
+            data : $('#'+tab).serialize(),// 你的formid
+            success: function(data){
+                $("#ajax_return").html('');
+                $("#ajax_return").append(data);
+            }
+        });
+    }
+
+    // ajax 抓取页面
+    function ajax_get_table(tab,page){
+        var search_key = $.trim($('#search_key').val());
+        if(search_key.length >= 0){
+            if(search_key.length < 11){
+                $('#input-user-id').val(search_key);
+                $('#input-mobile').val('');
+            }else if(checkMobile(search_key)){
+                $('#input-mobile').val(search_key);
+                $('#input-user-id').val('');
+            }else{
+                layer.alert('请输入正确的用户ID或者手机号码', {icon: 2});
+            }
+        }
+        cur_page = page; //当前页面 保存为全局变量
+        $.ajax({
+            type : "POST",
+            url:"/index.php/Admin/Report/balance/p/"+page,//+tab,
+            data : $('#'+tab).serialize(),// 你的formid
+            success: function(data){
+                $("#ajax_return").html('');
+                $("#ajax_return").append(data);
+            }
+        });
+    }
+
+    // 点击排序
+    function sort(field)
+    {
+        $("input[name='order_by']").val(field);
+        var v = $("input[name='sort']").val() == 'desc' ? 'asc' : 'desc';
+        $("input[name='sort']").val(v);
+        ajax_get_table('search-form2',cur_page);
+    }
+
+</script>
+</body>
+</html>

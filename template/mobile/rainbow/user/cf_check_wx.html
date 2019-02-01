@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+   <div id="app" class="center" v-cloak>
+    <a href="#">
+        <img class="wxPic" src="{$info.headimgurl}">
+    </a>
+    <p class="wxName">{$info.nickname}</p>
+    <p class="wxtxt">您还未绑定手机号码,绑定以后提高账号的安全性！</p>
+    <div class="allImport">
+        <img class="phoneImg" src="{$ectouch_themes}/allconfig/img/phone.png">
+        <input class="import" name="username" value="" type="text" id="mobile" placeholder="请输入您的手机号">
+    </div>
+    <div class="allImport">
+        <img class="msg" src="{$ectouch_themes}/allconfig/img/msg.png">
+        <input class="import" name="code" v-model="yzm" type="text" placeholder="请输入手机验证码">
+        <p class="getYzm" :disabled="disabled" @click="getYyzm" :style="{background:bg}">{{getYzm}}</p>
+    </div>
+    <input type="button" value="下 一 步" class="wx_user_sbm" @click="gosubmit" />
+    <input type="hidden" name="act" value="code_phone" id="acts" />
+    <input type="hidden" name="openid" value="{$info.openid}" id="openids" />
+    <input type="hidden" name="keys" value="{$keys}" id="keys">
+    <input type="hidden" name="keys" value="{$info.headimgurl}" id="wxpic">
+    <input type="hidden" name="keys" value="{$info.nickname}" id="wxname">
+    <div class="alertMeg" id="isshows" v-show="alertmeg">
+        <div class="corealert" id="isshows1">
+            <div class="alerttext">
+                该手机号码已被注册或绑定，您可以使用该手机号码直接登录，若有疑问，您可以联系客服为您处理相关问题！
+            </div>
+            <div class="thline1"></div>
+            <a href="/mobile/user.php">
+                <div class="knowte1">使用手机号码登录</div>
+            </a>
+            <a href="tel:028-85239228">
+                <div class="knowte2">联系客服028 - 85239228</div>
+            </a>
+            <a>
+                <div class="knowte3" @click="showOrhide">以后再说</div>
+            </a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

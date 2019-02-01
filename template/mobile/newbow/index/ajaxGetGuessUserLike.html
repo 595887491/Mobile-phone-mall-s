@@ -1,0 +1,10 @@
+<foreach name="$favourite_goods" item="v">
+	<a href="{:U('mobile/Goods/goodsInfo',['id'=>$v.goods_id])}">
+		<div class="guessItem">
+			<img class="lazy" data-original="{$v[original_img]}?x-oss-process=style/s340x340" alt="">
+			<p class="guessTitle">{$v['goods_remark']}</p>
+			<p class="guessCom">{$v['goods_name']}</p>
+			<div class="guessDiv"><span style="color: #FF407E">¥</span><span style="font-size: .34rem;color: #FF407E">{$v['shop_price']}</span><span style="color: #BFC1CD;margin-left: .2rem;text-decoration: line-through">¥{$v['market_price']}</span></div>
+		</div>
+	</a>
+</foreach>

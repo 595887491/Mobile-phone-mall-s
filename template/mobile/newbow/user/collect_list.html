@@ -1,0 +1,239 @@
+<include file="public/header" title="我的收藏" body=""/>
+<link rel="stylesheet" href="__STATIC__/css/new/completeUserInfo.css">
+<style>body{background-color: #F3F5F7;}</style>
+<div class="classreturn loginsignup ">
+    <div class="content">
+        <div class="ds-in-bl return">
+            <a href="javascript:history.go(-1)"><img src="__STATIC__/images/return.png" alt="返回"></a>
+        </div>
+        <div class="ds-in-bl search center">
+            <span>我的收藏</span>
+        </div>
+        <if condition="!empty($goods_list)" >
+           <div id="cf_compile" onclick="collect_delete()">编辑</div>
+        </if>
+    </div>
+</div>
+<if condition="empty($goods_list)" >
+    <!--没有收藏-s-->
+    <div class="comment_con p">
+        <div class="none"><img src="__STATIC__/images/cf_collect.png">
+           <p style="margin-top: 3rem;color: #BFC1CD;margin-bottom:2rem;">客官大大！暂无相关信息</p>
+        </div>
+        <a href="/" class="goto">去逛逛</a>
+    </div>
+    <!--没有收藏-e-->
+<else/>
+    <!--提交栏-s-->
+    <div class="orderlists_box">
+        <foreach name="goods_list" item="good">
+            <div class="orderlistshpop" data-collect-id="{$good[collect_id]}">
+                <div class="maleri30">
+                    <!--商品列表-s-->
+                    <div class="sc_list">
+                        <div class="radio fl cf_collect_delete" style="display: none">
+                            <!--商品勾选按钮-->
+                            <span onclick="checkGood(this)" class="che ">
+                                 <i>
+                                     <input name="checkItem" type="checkbox" style="display:none;" value="104">
+                                 </i>
+                            </span>
+                        </div>
+                        <div class="shopimg fl" style="margin-top: .5rem;padding-bottom: .5rem">
+                            <a href="{:U('Goods/goodsInfo',array('id'=>$good[goods_id]))}">
+                                <!--商品图片-->
+                                <img src="{$good.original_img}" />
+                            </a>
+                        </div>
+                        <div class="deleshow fr">
+                            <div class="deletes clearfix">
+                                <!--商品名-->
+                                <span class="similar-product-text fl" style="margin-bottom: .15rem;">
+                                        <a href="{:U('Mobile/Goods/goodsInfo' , ['id' => $good['goods_id']])}">{$good[goods_name]}</a>
+                                    </span>
+                            </div>
+                            <!--商品属性，规格-->
+                            <!--<p class="weight">属性</p>-->
+                            <div class="prices clearfix">
+                                <p class="price fl">
+                                    <!--<span style="color: #1E1B1B">¥</span>-->
+                                    <span id="cart_104_member_goods_price"><span style="font-size: .55rem;vertical-align: bottom;padding-right: .1rem;">¥</span>{$good[shop_price]}</span>
+                                </p>
+                            </div>
+                            <div class="cf_more_like">
+                                <a href="{:U('Mobile/Goods/goodsInfo' , ['id' => $good['goods_id']])}"><span class="guess-button dele-button J_ping">立即购买</span></a>
+                            </div>
+                        </div>
+                    <!--商品列表-e-->
+                    </div>
+            </div>
+          </div>
+        </foreach>
+        <div class="noting">没有更多了</div>
+  </div>
+</if>
+<!--底部导航-start-->
+    <div class="payit  payallb" style="background: #fff;border-top: 1px solid #ddd">
+        <div class="fl alllef">
+            <div class="radio fl">
+                    <span class="che alltoggle checkFull" onclick="checkGood(this)">
+                        <i id="all_checked" style="z-index: 9999"></i>
+                    </span>
+                <span class="all" style="z-index: -11">全选</span>
+            </div>
+        </div>
+        <div class="fr">
+            <a href="javascript:void(0);" style="display: block;" class="delete-goods">删除</a>
+        </div>
+    </div>
+<!--底部导航-end-->
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script  type="text/javascript" charset="utf-8">
+    $(function () {
+        var u = navigator.userAgent;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        if(isAndroid || !isiOS){  //安卓
+            $('#all_checked').css('margin-top','-.1rem');
+        }else{  //苹果
+            $('#all_checked').css('margin-top','0');
+        }
+    })
+    /**
+     * ajax加载更多
+     * */
+    var ajax_pending = false;//进行中
+    var has_more_data = true;//还有数据
+    var  page = 0;
+    function ajax_sourch_submit() {
+        if (ajax_pending || has_more_data == false) return;
+        ajax_pending = true;
+        ++page;
+        $.ajax({
+            type : "GET",
+            url:"/index.php/Mobile/User/collect_list?is_ajax=1&p="+page,//+tab,
+            success: function(data)
+            {
+                if($.trim(data) != '')
+                {
+                    $("#orderlistshpop").append(data);
+                }
+            }
+        });
+    }
+    //勾选商品
+    function checkGood(obj){
+        if($(obj).hasClass('check_t')){
+            //改变颜色
+            $(obj).removeClass('check_t');
+            //取消选中
+            $(obj).find('input').attr('checked',false);
+        }else {
+            //改变颜色
+            $(obj).addClass('check_t');
+            //勾选选中
+            $(obj).find('input').attr('checked',true);
+        }
+
+        //选中全选多选框
+        if($(obj).hasClass('checkFull')){
+            if($(obj).hasClass('check_t')){
+                $(".che").each(function(i,o){
+                    $(this).addClass('check_t');
+                    $(this).find('input').attr('checked',true);
+                })
+            }else{
+                $(".che").each(function(i,o){
+                    $(this).removeClass('check_t');
+                    $(this).find('input').attr('checked',false);
+                })
+            }
+        }
+    }
+    //多选框点击事件
+    $(function () {
+        $(document).on("click", '.che', function (e) {
+            checkGood($(this));
+            initCheckBox();
+        })
+    })
+    function collect_delete() {
+        if($('#cf_compile').html() == '编辑'){
+            $('#cf_compile').html('完成');
+            $('.sc_list .deleshow').css('width','9.17333rem');
+            $('.payit').animate({'bottom':'0','opacity':'1'},500)
+            $('.cf_collect_delete').css('display','block')
+
+            var j = 0;
+            var cart_ids =[];
+            $('input[name^="checkItem"]:checked').each(function () {
+                j++;
+                cart_ids.push($(this).closest('.orderlistshpop').attr('data-collect-id'))
+            });
+            // console.log(cart_ids)
+            $('.delete-goods').on('click',function () {
+                var j = 0;
+                var cart_ids =[];
+                $('input[name^="checkItem"]:checked').each(function () {
+                    j++;
+                    cart_ids.push($(this).closest('.orderlistshpop').attr('data-collect-id'))
+                });
+                if(cart_ids.length != 0) {
+                    layer.open({
+                        content: '确定要删除此商品吗?'
+                        ,btn: ['确定', '取消']
+                        ,yes: function(index){
+                            layer.close(index);
+                            $.ajax({
+                                type : "POST",
+                                url:"{:U('Mobile/User/cancel_collect')}",
+                                dataType:'json',
+                                data: {collect_ids: cart_ids.join(',')},
+                                success: function(data){
+                                    if(data.code == 1){
+                                        for (var i = 0; i < cart_ids.length; i++) {
+                                            $('#cart_list_' + cart_ids[i]).remove();
+                                        }
+                                        var store_div = $('.orderlistshpop');
+                                        location.reload();
+                                        if(store_div.length == 0){
+
+                                        }
+                                    }else{
+                                        layer.msg(data.msg,{icon:2});
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }
+                else {
+                    layer.open({content: '请选择要删除的商品！', time: 2,skin:'msg'});
+                }
+            })
+        }else {
+            $('#cf_compile').html('编辑');
+            $('.sc_list .deleshow').css('width','10.2rem');
+            $('.payit').animate({'bottom':'-3rem','opacity':'0'},500)
+            $('.cf_collect_delete').css('display','none')
+        }
+    }
+    /**
+     * 检测选项框
+     */
+    function initCheckBox(){
+        var checkBoxsFlag = true;
+        $("input[name^='checkItem']").each(function(i,o){
+            if ($(this).attr("checked") != 'checked') {
+                checkBoxsFlag = false;
+            }
+        })
+        if(checkBoxsFlag == false){
+            $('.checkFull').removeClass('check_t');
+        }else{
+            $('.checkFull').addClass('check_t');
+        }
+    }
+</script>
+</body>
+</html>

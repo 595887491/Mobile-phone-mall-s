@@ -1,0 +1,350 @@
+<include file="public/header" title="订单详情" body="g4"/>
+<include file="public/header_nav" title="订单详情" href="javascript:history.back(-1)"/>
+<style>
+.order-static{background: url("__STATIC__/images/order_static.png") no-repeat;background-size: cover;width: 100%;height: 3rem;
+font-size: .7rem;color: #fff;text-align: center;line-height: 3rem;}
+.order-static i{font-size: .8rem;vertical-align: middle;}
+    .order_s{padding: 0 .64rem;border-top: 1px solid #F0F2F5;margin-top: .5rem;font-size:.6rem;color: #1E1B1B;line-height: 1.5rem;}
+.edit_gtfix{color: #1E1B1B;font-size: .55rem;}
+.edit_gtfix .namephone {
+    width: 90%;
+    margin-top: .2rem;
+}
+.edit_gtfix .namephone .top{font-size: .6rem;}
+body{background-color: #F3F5F7;}
+.edit_gtfix .namephone .top .le{margin-left: 0;width: 7rem;}
+.edit_gtfix .namephone ._bot span{margin-left: 0;color: #1E1B1B;font-size: .6rem;line-height: .7rem;display: block;}
+.qqz{position: fixed;bottom: 0;left: 0;width: 100%;}
+.qqz a{border: 1px solid #BFC1CD;color: #1E1B1B; border-radius: .11333rem;height: 1.5rem;
+    display: inline-block;padding: 0;width: 4rem;text-align: center;line-height: 1.5rem;}
+.qqz .closeorder_butt{border-color: #F5316F;color: #F5316F;}
+.receiving{width: 80%;text-overflow: ellipsis;overflow: hidden;padding-top: .1rem; white-space: nowrap;text-align: left;}
+.shopprice .img_or img{ width: 3.43333rem;height: 3.43333rem;}
+.shopprice .fon_or,.shopprice .price_or{margin-top: .76267rem;}
+.shopprice .fon_or div span.bac{padding: 0;color: #BFC1CD;}
+.shopprice .fon_or h2{color: #1E1B1B;font-size: .62rem;}
+.shopprice .fon_or .num{font-size: .5rem;color: #1E1B1B;padding-left: .2rem;margin-top: .6rem;}
+.xx-list-top{border-bottom: 1px solid #F0F2F5;padding: .3rem 0;}
+.xx-list-bottom{border-top: 1px solid #F0F2F5;padding: .3rem 0;}
+.xx-list-top p,.xx-list-bottom p{color: #5B5858;}
+    .leave_msg{width: 80%;border: none;height: 2rem;outline: none;    margin-top: -.1rem;padding: .1rem;}
+.closeorder .con-lo{line-height: 1.5;}
+.losepay .con-lo{padding: .8rem .42667rem}
+.shopprice .fon_or{ width: 7.53333rem;padding-top: .1rem;}
+.losepay .qx-rebd{margin: 0;padding: 0;padding-bottom: 1rem;border: none;}
+.losepay .qx-rebd .are{background-color: #F5316F}
+</style>
+<div class="order-static">
+    <!--待支付-->
+    <if condition="$order_info.order_status_code eq 'WAITPAY'">
+     <i class="iconfont">&#xb678;</i>
+    </if>
+    <!--待发货-->
+    <if condition="$order_info.order_status_code eq 'WAITSEND'">
+     <i class="iconfont">&#xe6bf;</i>
+    </if>
+    <!--部分发货-->
+    <if condition="$order_info.order_status_code eq 'PORTIONSEND'">
+        <i class="iconfont">&#xe6bf;</i>
+    </if>
+    <!--待收货-->
+    <if condition="$order_info.order_status_code eq 'WAITRECEIVE'">
+        <i class="iconfont">&#xb636;</i>
+    </if>
+   <!--待评价-->
+    <if condition="$order_info.order_status_code eq 'WAITCCOMMENT'">
+        <i class="iconfont">&#xb605;</i>
+    </if>
+    <!--已取消-->
+    <if condition="$order_info.order_status_code eq 'CANCEL'">
+        <i class="iconfont">&#xb664;</i>
+    </if>
+    <!--已完成-->
+    <if condition="$order_info.order_status_code eq 'FINISH'">
+        <i class="iconfont">&#xb63e;</i>
+    </if>
+    <!--已作废-->
+    <if condition="$order_info.order_status_code eq 'CANCELLED'">
+        <i class="iconfont">&#xb664;</i>
+    </if>
+    <span>{$order_info.order_status_desc}</span>
+</div>
+<div class="edit_gtfix">
+        <div class="namephone">
+            <div class="top">
+                <div class="le fl" style="letter-spacing: .2rem;">收货人：<span style="margin-left: -.2rem;letter-spacing: 0;">{$order_info.consignee}</span></div>
+                <div class="lr fr">{$order_info.mobile}</div>
+            </div>
+            <div class="_bot">
+                <!--<i class="dwgp"></i>-->
+                <span>收货地址：{$region_list[$order_info['province']]},{$region_list[$order_info['city']]},{$region_list[$order_info['district']]},{$order_info.address}</span>
+            </div>
+        </div>
+        <div class="fr youjter">
+        </div>
+        <!--<div class="ttrebu">-->
+            <!--<img src="__STATIC__/images/tt.png"/>-->
+        <!--</div>-->
+    <if condition="$order_info.prom_type eq 4">
+    <div class="order_s" style=""><span >订单类型：</span><span class="bgnum"></span><span>预售订单</span></div>
+    </if>
+</div>
+
+<!--订单商品列表-s-->
+<div class="ord_list p" style="margin: .3rem  0;background-color: #fff;">
+    <div class="maleri30">
+        <volist name="order_info.goods_list" id="good">
+            <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$good[goods_id]))}">
+                <div class="shopprice">
+                    <div class="img_or fl">
+                        <img src="{$good[original_img]}"/>
+                    </div>
+                    <div class="fon_or fl">
+                        <h2 class="similar-product-text">{$good[goods_name]} {$good[goods_id]}</h2>
+                        <div><span class="bac">{$good['spec_key_name']}</span></div>
+                        <p class="num">x{$good['goods_num']}</p>
+                    </div>
+                    <div class="price_or fr">
+                        <p><span>￥</span><span style="font-size: .7rem;color: #FF407E;">{$good['member_goods_price']}</span></p>
+                    </div>
+                </div>
+            </a>
+        </volist>
+    </div>
+</div>
+<!--订单商品列表-e-->
+
+<div class="information_dr">
+    <div class="maleri30">
+        <!--<div class="tit">-->
+            <!--<h2>基本信息</h2>-->
+        <!--</div>-->
+        <div class="xx-list xx-list-top">
+            <p class="p">
+                <span class="fl">订单编号：</span>
+                <span class="fl">{$order_info.order_sn}</span>
+            </p>
+            <p class="p">
+                <span class="fl">下单时间：</span>
+                <span class="fl"><span>{:date('Y-m-d  H:i:s', $order_info.add_time)}</span></span>
+            </p>
+        </div>
+        <div class="xx-list xx-list-top">
+            <p class="p" style="padding-top: .11rem;">
+                <span class="fl" style="padding-top: .1rem;">收货地址：</span>
+                <span class="fl receiving">{$region_list[$order_info[province]]}&nbsp;{$region_list[$order_info[city]]}&nbsp;{$region_list[$order_info[district]]}&nbsp;{$order_info[address]}</span>
+            </p>
+            <p class="p">
+                <span class="fl" style="letter-spacing: .2rem;">收货人：</span>
+                <span class="fl" style=" margin-left: -.2rem;"><span>{$order_info.consignee}</span><span>{$order_info.mobile}</span></span>
+            </p>
+            <p class="p">
+                <span class="fl">配送方式：</span>
+                <span class="fl">{$order_info.shipping_name}</span>
+            </p>
+        </div>
+        <div class="xx-list xx-list-top">
+            <p class="p">
+                <span class="fl">支付方式：</span>
+                <span class="fl">
+                    <if condition="$order_info[pay_status] eq 1 and empty($order_info.pay_name)">
+                        在线支付
+                        <else/>
+                        {$order_info.pay_name}
+                    </if>
+                </span>
+            </p>
+        </div>
+        <div class="xx-list xx-list-top" style="border: none;">
+            <p class="p">
+                <span class="fl">买家留言：</span>
+                <textarea placeholder="选填" class="leave_msg">{$order_info.user_note}</textarea>
+                <!--<span class="fr">{$order_info.user_note}</span>-->
+            </p>
+        </div>
+        <if condition="$order_info.prom_type eq 4">
+            <if condition="$order_info.pre_sell_is_finished eq 2">
+                <div class="xx-list xx-list-bottom">
+                <p class="p">
+                    <span class="fl">订单关闭：</span>
+                    <span class="fl">商家取消活动，返还订金</span>
+                </p>
+                </div>
+            </if>
+            <if condition="$order_info.pre_sell_is_finished eq 1">
+                <if condition="time() gt $order_info.pre_sell_retainage_end">
+                    <div class="xx-list xx-list-bottom">
+                    <p class="p">
+                        <span class="fl">订单关闭：</span>
+                        <span class="fl">已过支付尾款时间</span>
+                    </p>
+                    </div>
+                </if>
+            </if>
+        </if>
+    </div>
+</div>
+<div class="information_dr ma-to-20">
+    <div class="maleri30">
+        <!--<div class="tit">-->
+            <!--<h2>价格信息</h2>-->
+        <!--</div>-->
+        <div class="xx-list" style="padding:.21333rem 0;">
+            <if condition="$order_info.prom_type neq 4">
+                <p class="p">
+                    <span class="fl">商品总价</span>
+                    <span class="fr"><span>￥</span><span>{$order_info.goods_price}</span>元</span>
+                </p>
+                <p class="p">
+                    <span class="fl">运费</span>
+                    <span class="fr"><span>￥</span><span>{$order_info.shipping_price}</span>元</span>
+                </p>
+                <p class="p">
+                    <span class="fl">优惠券</span>
+                    <span class="fr"><span>-￥</span><span>{$order_info.coupon_price}</span>元</span>
+                </p>
+                <p class="p">
+                    <span class="fl">活动优惠</span>
+                    <span class="fr"><span>-￥</span><span>{$order_info.order_prom_amount}</span>元</span>
+                </p>
+                <p class="p">
+                    <span class="fl">积分</span>
+                    <span class="fr"><span>-￥</span><span>{$order_info.integral_money}</span>元</span>
+                </p>
+            </if>
+            <p class="p">
+                <span class="fl">余额</span>
+                <span class="fr"><span>-￥</span><span>{$order_info.user_money}</span>元</span>
+            </p>
+            <!-- 预售商品 start -->
+            <if condition="$order_info.prom_type eq 4 AND $order_info.paid_money gt 0" >
+                <if condition="$order_info.pay_status eq 1">
+                    <p class="p">
+                        <span class="fl">已付尾款</span>
+                        <span class="fr"><span>-￥</span><span>{$order_info.order_amount}</span>元</span>
+                    </p>
+                </if>
+                <p class="p">
+                    <span class="fl">已付订金</span>
+                    <span class="fr"><span>-￥</span><span>{$order_info.paid_money}</span>元</span>
+                </p>
+                <p class="p">
+                    <span class="fl">发货时间</span>
+                    <span class="fr"><span>{$order_info.pre_sell_deliver_goods}</span></span>
+                </p>
+            </if>
+            <!-- 预售商品 end -->
+            <p class="p">
+                <span class="fl">应付总额</span>
+                <span class="fr"><span>￥</span><span>{$order_info.order_amount}</span>元</span>
+            </p>
+        </div>
+    </div>
+</div>
+<div style="height: 2.13333rem;margin-top: .3rem;"></div>
+<div class="qqz">
+    <div class="maleri30">
+        <a href="tel:{$tpshop_config['shop_info_phone']}">联系客服</a>
+
+        <div class="fr s">
+            <if condition="$order_info.pay_btn eq 1">
+                <a href="{:U('Mobile/Cart/cart4',array('order_id'=>$order_info['order_id']))}">立即付款</a>
+                <else/>
+                <!--<a>{$order_info.order_status_desc}</a>-->
+            </if>
+            <if condition="$order_info.cancel_btn eq 1">
+                <a class="closeorder_butt" >取消订单</a>
+            </if>
+            <if condition="$order_info.receive_btn eq 1">
+                <a href="{:U('Mobile/Order/order_confirm',array('id'=>$order_info['order_id']))}">收货确认</a>
+            </if>
+            <if condition="$order_info.shipping_btn eq 1">
+                <a href="{:U('Mobile/Order/express',array('order_id'=>$order_info['order_id']))}" >查看物流</a>
+            </if>
+            <if condition="$order_info.prom_type eq 4 AND $order_info.pay_status eq 2 AND $order_info.pre_sell_is_finished eq 1 AND (time() egt $order_info.pre_sell_retainage_start AND time() elt $order_info.pre_sell_retainage_end)">
+                <a href="{:U('/Mobile/Cart/cart4',array('order_id'=>$order_info[order_id]))}">支付尾款</a>
+            </if>
+        </div>
+
+    </div>
+</div>
+<!--取消订单-s-->
+<div class="losepay closeorder" style="display: none;">
+    <div class="maleri30">
+        <p class="con-lo">取消订单后,存在促销关系的子订单及优惠可能会一并取消。是否继续？</p>
+        <div class="qx-rebd clearfix">
+            <a class="ax">取消</a>
+            <if condition="$order_info.pay_status eq 0">
+                <a class="are" onclick="cancel_order({$order_info.order_id})">确定</a>
+            </if>
+            <if condition="$order_info.pay_status eq 1">
+                <a class="are" href="{:U('Order/refund_order', ['order_id'=>$order_info['order_id']])}">取消订单</a>
+            </if>
+        </div>
+    </div>
+</div>
+<!--取消订单-e-->
+
+<div class="mask-filter-div" style="display: none;"></div>
+
+<!--底部支付栏-s-->
+<!--<div class="payit ma-to-20">-->
+    <!--&lt;!&ndash;<div class="fl">&ndash;&gt;-->
+            <!--&lt;!&ndash;<p><span class="pmo">实付金额：</span>&ndash;&gt;-->
+                <!--&lt;!&ndash;<span>￥</span><span>{$order_info.order_amount+$order_info.shipping_price}</span>&ndash;&gt;-->
+            <!--&lt;!&ndash;</p>&ndash;&gt;-->
+            <!--&lt;!&ndash;<p class="lastime"><span>付款剩余时间：</span><span id="lasttime"></span></p>&ndash;&gt;-->
+            <!--&lt;!&ndash;&lt;!&ndash;<p class="deel"><a href="{:U('Mobile/User/order_del',array('order_id'=>$order_info.order_id))}">删除订单</a></p>&ndash;&gt;&ndash;&gt;-->
+    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--</div>-->
+<!--底部支付栏-d-->
+
+<script type="text/javascript">
+    //取消订单按钮
+    $('.closeorder_butt').click(function(){
+        $('.mask-filter-div').show();
+        $('.losepay').show();
+    })
+    //取消取消订单
+    $('.qx-rebd .ax').click(function(){
+        $('.mask-filter-div').hide();
+        $('.losepay').hide();
+    })
+
+    //确认取消订单
+    function cancel_order(id){
+        $.ajax({
+            type: 'GET',
+            dataType:'JSON',
+            url:"/index.php?m=Mobile&c=Order&a=cancel_order&id="+id,
+            success:function(data){
+                if(data.code == 1){
+                    layer.open({content:data.msg,time:2});
+                    location.href = "/index.php?m=Mobile&c=Order&a=order_detail&id="+id;
+                }else{
+                    layer.open({content:data.msg,time:2});
+                    location.href = "/index.php?m=Mobile&c=Order&a=order_detail&id="+id;
+                    return false;
+                }
+            },
+            error:function(){
+                layer.open({content:'网络异常，请稍后重试',time:3});
+            },
+        });
+        $('.mask-filter-div').hide();
+        $('.losepay').hide();
+    }
+
+
+    //        $('.loginsingup-input .lsu i').click(function(){
+    //            $(this).toggleClass('eye');
+    //            if ($(this).hasClass('eye')) {
+    //                $(this).siblings('input').attr('type','text')
+    //            } else{
+    //                $(this).siblings('input').attr('type','password')
+    //            }
+    //        });
+</script>
+</body>
+</html>

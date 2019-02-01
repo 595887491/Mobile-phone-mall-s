@@ -1,0 +1,91 @@
+<include file="public/header" title="{$info.topic_name}" />
+<include file="public/header_nav" title="{$info.topic_name}" href="{:U('Mobile/Index/index')}"/>
+<link rel="stylesheet" href="__STATIC__/css/new/goodsTopic.css">
+<div style="height: 1.87733rem;"></div>
+<!--banner-->
+<div class="banner">
+    <img src="{$info.topic_img}?x-oss-process=style/s01"  alt="banner" style="pointer-events: none;">
+</div>
+<!--商品详情s-->
+<div id="goods_list" class="clearfix addimgchan addmhg">
+    <foreach name="$goods_list" item="goods" key="k">
+    <div class="orderlistshpop p addimgchan">
+        <div class="maleri30">
+            <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$goods.goods_id))}" class="item">
+                <div class="sc_list se_sclist clearfix">
+                    <div class="shopimg fl">
+                        <img src="{$goods.original_img}?x-oss-process=style/s340x340">
+                    </div>
+                    <div class="deleshow fr">
+                        <div class="deletes">
+                            <span class="similar-product-text" style="height: auto;line-height: 1.2; overflow: hidden;text-overflow: ellipsis;
+    display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;">{$goods.goods_name}</span>
+                        </div>
+                        <!--<ul class="cf_discounts_box">-->
+                        <!--<li class="clor-jx">精选</li>-->
+                        <!--<li class="clor-mj">满减</li>-->
+                        <!--<li class="clor-zk">优惠券</li>-->
+                        <!--</ul>-->
+                        <div class="bot">
+                            <div class="prices fl">
+                                <p class="sc_pri"><span style="vertical-align: bottom;">¥</span><span>{$goods.shop_price}</span></p>
+                            </div>
+                            <p class="weight fr"><span>市场价 </span><span>¥</span>&nbsp;<span>{$goods.market_price}</span></p>
+                            <!--<p class="weight"><span>0</span><span>条评价</span></p>-->
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    </foreach>
+</div>
+<!--商品详情e-->
+<div class="noMore" style="display: none;text-align: center;font-size: .7rem;color: #999;background: #F3F5F7;line-height: 2rem;">没有更多了</div>
+<!--加载更多S-->
+<notempty name="goods_list">
+    <div class="loadbefore">
+        <img class="ajaxloading" src="__STATIC__/images/loading.gif" alt="loading...">
+    </div>
+</notempty>
+<!--加载更多E-->
+<!-- 微信浏览器 调用微信 分享js-->
+<script>
+    var ShareImgUrl = "{$info.topic_img}"; //分享图标
+    var ShareTitle = "尚美缤纷{$info.topic_name}"; //分享标题
+    var ShareDesc = "我在尚美缤纷发现了好多正品好货，绝对适合你，速来围观~"; //分享描述
+    // var ShareLink = "https://{$_SERVER[HTTP_HOST]}/index.php/mobile/Goods/goodsTopic/topic_id/{$topic_id}"; //分享链接
+    var ShareLink = "{:U('Mobile/Goods/goodsTopic',array('topic_id'=>$topic_id),'',true,true)}"; //分享链接
+</script>
+<include file="public/wx_share"/>
+<!-- 微信浏览器 调用微信 分享js  end-->
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script type="text/javascript">
+    /**
+     * 加载更多商品
+     **/
+    var  page = 1;
+    var haveMore = 1,ajax_returned = 1;
+    function ajax_sourch_submit()
+    {
+        if (haveMore == 0 || ajax_returned == 0) return;
+        ajax_returned =0;
+        ++page;
+        $.ajax({
+            type : "get",
+            url:"/index.php?m=Mobile&c=Goods&a=goodsTopic&topic_id={$info.topic_id}&p="+page,
+            success: function(data) {
+                ajax_returned = 1;
+                if ($.trim(data) == '') {
+                    haveMore = 0;
+                    $('#getmore').hide();
+                    $('.noMore').show();
+                } else {
+                    $("#goods_list").append(data);
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

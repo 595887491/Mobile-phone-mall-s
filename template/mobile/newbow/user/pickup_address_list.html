@@ -1,0 +1,105 @@
+<include file="public/header" title="自提点收货地址管理" body="pore_add"/>
+<include file="public/header_nav" title="自提点收货地址管理" href="javascript:history.back(-1)"/>
+<!--//如果用户有-->
+<if condition="count($address_list) gt 0">
+    <div class="jd_listaddless p">
+        <div class="maleri30">
+            <div class="choose_pick_up">
+                <div class="name fl">
+                    <h1>
+                        {$address_list[consignee]}
+                    </h1>
+                    <if condition="$address_list[is_default] eq 1">
+                        <span>默认</span>
+                    </if>
+                </div>
+                <div class="numberaddress fl">
+                        <span class="number">电话：
+                                 {$address_list[mobile]}
+                        </span>
+                    <input type="hidden" class="pickup_ids" data-province="{$address_list['province']}" data-city="{$address_list['city']}" data-district="{$address_list['district']}" data-twon="{$address_list['twon']}" data-address="{$address_list['address']}">
+                    <span class="similars">{$address_list['province_name']} {$address_list['city_name']} {$address_list['district_name']} {$address_list['address']}</span>
+                </div>
+            </div>
+            <div class="editdiv fl">
+                <if condition="$Request.param.source eq 'integral'">
+                    <a href="{:U('/Mobile/User/edit_pickup_address',array('id'=>$list[address_id],'source'=>$Request.param.source,'goods_id'=>$Request.param.goods_id,'goods_num'=>$Request.param.goods_num,'item_id'=>$Request.param.item_id))}">
+                        <i class="eedit"></i>
+                    </a>
+                    <else/>
+                    <a href="{:U('/Mobile/User/edit_pickup_address',array('id'=>$list[address_id],'source'=>$Request.param.source,'act_id'=>$Request.param.act_id,'goods_num'=>$Request.param.goods_num,'order_id'=>$Request.param.order_id,'goods_id'=>$Request.param.goods_id,'item_id'=>$Request.param.item_id))}">
+                        <i class="eedit"></i>
+                    </a>
+                </if>
+            </div>
+        </div>
+    </div>
+</if>
+
+<!--其余自提点地址-s-->
+<volist name="pickup_list" id="pickup_list">
+    <div class="jd_listaddless p">
+        <div class="maleri30">
+            <div class="choose_pick_up">
+                <div class="name fl">
+                    <h1>
+                        {$pickup_list[pickup_contact]}
+                    </h1>
+                </div>
+                <div class="numberaddress fl">
+                        <span class="number">电话：
+                                 {$pickup_list[pickup_phone]}
+                        </span>
+                    <input type="hidden" class="pickup_ids" data-province="{$pickup_list['province_id']}" data-city="{$pickup_list['city_id']}" data-district="{$pickup_list['district_id']}" data-twon="{$pickup_list['twon']}" data-address="{$pickup_list['pickup_address']}">
+                    <span class="similars">{$pickup_list['province_name']} {$pickup_list['city_name']} {$pickup_list['district_name']} {$pickup_list['pickup_address']}</span>
+                </div>
+            </div>
+
+            <div class="editdiv fl">
+                <if condition="$Request.param.source eq 'integral'">
+                    <a href="{:U('/Mobile/User/edit_pickup_address',array('id'=>$list[address_id],'source'=>$Request.param.source,'goods_id'=>$Request.param.goods_id,'goods_num'=>$Request.param.goods_num,'item_id'=>$Request.param.item_id))}">
+                        <i class="eedit"></i>
+                    </a>
+                    <else/>
+                    <a href="{:U('/Mobile/User/edit_pickup_address',array('id'=>$list[address_id],'source'=>$Request.param.source,'act_id'=>$Request.param.act_id,'goods_num'=>$Request.param.goods_num,'order_id'=>$Request.param.order_id,'goods_id'=>$Request.param.goods_id,'item_id'=>$Request.param.item_id))}">
+                        <i class="eedit"></i>
+                    </a>
+                </if>
+            </div>
+        </div>
+    </div>
+</volist>
+<!--其余自提点地址-e-->
+</body>
+</html>
+<script>
+    $(".choose_pick_up").click(function () {
+        var condition="{$Request.param.source}";
+        //选择替换当前自提点
+        var province_id=$(this).find('.pickup_ids').data('province');
+        var city_id=$(this).find('.pickup_ids').data('city');
+        var district_id=$(this).find('.pickup_ids').data('district');
+        var address=$(this).find('.pickup_ids').data('address');
+        var twon=$(this).find('.pickup_ids').data('twon');
+        $.ajax({
+            type: 'POST',
+            url: "{:U('Mobile/User/save_pickup')}",//+tab,
+            data: {province: province_id, city: city_id, district: district_id,address:address,twon:twon},
+            success: function (data) {
+                if(data.code=200){
+                    var address_id=data.address_id;
+                    if(condition=="cart2"){
+                        jump_url="/Mobile/Cart/cart2/address_id/"+address_id+"/goods_id/{$Request.param.goods_id}/goods_num/{$Request.param.goods_num}/item_id/{$Request.param.item_id}/action/{$Request.param.action}";
+                    }else if(condition=="pre_sell_cart"){
+                        jump_url="/Mobile/Cart/integral/address_id/"+address_id+"/act_id/{$Request.param.act_id}/goods_num/{$Request.param.goods_num}/";
+                    }else if(condition=="integral"){
+                        jump_url="/Mobile/Cart/integral/address_id/"+address_id+"/goods_id/{$Request.param.goods_id}/goods_num/{$Request.param.goods_num}/item_id/{$Request.param.item_id}";
+                    }else if(condition=="team"){
+                        jump_url="/Mobile/Team/order/address_id/"+address_id+"/order_id/{$Request.param.order_id}";
+                    }
+                    location.href=jump_url;
+                }
+            }
+        });
+    })
+</script>

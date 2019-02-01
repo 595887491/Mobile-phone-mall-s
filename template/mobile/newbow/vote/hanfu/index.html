@@ -1,0 +1,543 @@
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>寻找最美汉服</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" />
+    <link rel="stylesheet" type="text/css"href="__STATIC__/css/voteIndex.css" />
+</head>
+<style>
+    body{
+        background: url("__STATIC__/images/vote/bg.jpg") repeat-y;
+        background-size: 100%;
+    }
+    .voteTop{
+        background: url("__STATIC__/images/vote/vote_bg.jpg")no-repeat;
+        background-size: 100%;
+        height: 5.1rem;
+    }
+    .voteGoodBg{
+        text-align: center;
+        height: 4.54rem;
+        background: url("__STATIC__/images/vote/goods_bg.png") no-repeat;
+        background-size: 100%;
+        margin-top: .5rem;
+    }
+    .voteComment{
+        background: url("__STATIC__/images/vote/bian.png")no-repeat;
+        background-size: 100%;
+        height: 3.2rem;
+        width: 1.75rem;
+        left: 0;
+        top:0;
+        position: absolute;
+        z-index: 1;
+    }
+
+</style>
+<body>
+
+<!--bg-->
+<div class="voteTop">
+    <div class="votePos">
+        <div class="voteHeader" >
+            <div class="fl voteHeaderLeft" onclick="goBack()"><img src="__STATIC__/images/vote/vote_banck.png" alt=""></div>
+            <div class="fl voteHeaderMiddle">寻找最美汉服</div>
+            <div class="fr voteHeaderRight" onclick="jump()"><span>活动规则</span></div>
+        </div>
+        <div class="bgCover"></div>
+    </div>
+</div>
+<!--上传按钮-->
+<div class="voteCover">
+
+    <!--活动结束、等待开奖-->
+    <if condition="$status eq 2">
+        <div class="voteBtn">
+            <img src="__STATIC__/images/vote/voteCosle.png" alt="">
+        </div>
+        <else/>
+        <if condition="$found_info eq '' || $found_info['status'] eq 0">
+            <label for="file" style="display: inline;z-index: 99999" onclick="disableRoll()">
+                <a href="javascript:;" class="file">
+                    <div class="voteBtn">
+                        <img src="__STATIC__/images/vote/vote_button.png" alt="">
+                        <if condition="$user_id">
+                            <input type="file" name="file"  id="file">
+                            <else />
+                            <input type="file" name="file"  id="file" style="pointer-events: none;">
+                        </if>
+                    </div>
+                </a>
+            </label>
+        </if>
+        <if condition="$found_info neq ''&& $activity_info['status'] eq 1 && $found_info['status'] eq 1">
+            <!--查看奖品订单-->
+            <div class="voteBtn">
+                <a href="{:U('/Mobile/vote/voteMainInfo',['found_id'=>$found_info['found_id']])}">
+                    <img src="__STATIC__/images/vote/voteLook.png" alt="">
+                </a>
+                <div>当前排名 <span>{$found_info['user_rank']}</span></div>
+            </div>
+        </if>
+    </if>
+</div>
+
+<div class="voteBottom">
+    <div class="voteGoodBg">
+        <ul>
+            <foreach name="$activity_info['prize_setting']" item="v">
+                <a href="{:U('mobile/Goods/goodsInfo',['id'=>$v['goods_id']])}">
+                    <li>
+                        <p>{$v['name']}{$v['num']}名</p>
+                        <img src="{$v['goods_info']['original_img']}?x-oss-process=style/s340x340" alt="">
+                        <div>{$v['goods_intro']}</div>
+                    </li>
+                </a>
+            </foreach>
+        </ul>
+    </div>
+    <div class="joinVote">
+        <img src="__STATIC__/images/vote/vote_pople.png" class="homeJoin" alt="">
+        <ul>
+            <li class="activeVote">最新参加</li>
+            <li>投票排行</li>
+        </ul>
+        <img src="__STATIC__/images/vote/vote-xian.png" class="vote_xian" alt="">
+    </div>
+    <div class="voteList"></div>
+    <div class="voteList1" style="display: none;"></div>
+</div>
+
+<!--<label for="file" style="display: inline">-->
+    <!--<a href="javascript:;" class="file">-->
+        <!--<img src="__STATIC__/images/vote/vote_button.png" style="width: 2.5rem;z-index: 2222" alt="">-->
+        <!--<input type="file" name="file"  id="file">-->
+    <!--</a>-->
+<!--</label>-->
+<div ontouchstart=""  id="ov"  style="display: none">
+    <div id="clipArea"></div>
+    <!--<input type="file" id="file" >-->
+    <!--<button id="clipBtn">截取</button>-->
+    <!--<div id="view"></div>-->
+    <!--<button onclick="change()">旋转</button>-->
+    <div class="btnCat">
+        <button  onclick="cancelCat()">取消</button>
+        <img src="__STATIC__/images/vote/ratoVote.png"  onclick="change()" alt="">
+        <button id="clipBtn">截取</button>
+    </div>
+</div>
+
+<!--关注二维码弹窗-->
+<div class="voteCodeBg moveSol">
+    <div class="voteCode">
+        <div class="fristPop">温馨提示</div>
+        <img src="__STATIC__/images/cf_close.png" alt="" class="cf_close" onclick="closed(this)">
+        <div class="voteCodeFont">扫描关注公众号，可再投3次</div>
+        <div class="voteCodeImg">
+            <if condition="$user_id">
+                <img src="" alt="">
+            </if>
+        </div>
+    </div>
+</div>
+<!--投票成功的弹窗  -->
+<div class="votesuBg moveSol">
+    <div class="voteSu">
+        <div class="fristPop">投票成功</div>
+        <div class="secPop numVoteOne">今日剩余投票次数：<span></span></div>
+        <div class="secPop numVoteTwo" >今日投票次数已用完，明日可再投3次</div>
+        <div class="ownPop" >
+            <button class="ownPopOne" onclick="Continue()">继续投票</button>
+            <button class="ownPopTwo" onclick="goIndex()">去首页逛逛</button>
+        </div>
+    </div>
+</div>
+<!--登录提示弹窗-->
+<div class="votePopBg moveSol">
+    <div class="ordinary">
+        <div class="fristPop">未登录</div>
+        <div class="secPop">请登录后进行投票</div>
+        <div class="closePop" >
+            <ul>
+                <li class="activeDel" onclick="delPop()">取消</li>
+                <li onclick="jumpPop()" style="color: #043E37;font-size: .15rem;font-weight: bold">5秒极速登录</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript"></script>
+<script src="__STATIC__/js/jquery.lazyload.js"></script>
+<script src="__PUBLIC__/js/global.js"></script>
+<script src="__STATIC__/js/layer.js"  type="text/javascript"></script>
+<script src="__STATIC__/css/capable/hammer.min.js"></script>
+<script src="__STATIC__/css/capable/iscroll-zoom-min.js"></script>
+<script src="__STATIC__/css/capable/lrz.all.bundle.js"></script>
+<script src="__STATIC__/css/capable/PhotoClip.js"></script>
+
+<!--<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>-->
+
+<script>
+    var pc = new PhotoClip('#clipArea', {
+        size: [300,400],
+        outputSize: 750,
+        //adaptive: ['60%', '80%'],
+        file: '#file',
+        view: '#view',
+        ok: '#clipBtn',
+        maxZoom:0,
+        outputQuality:.9,
+        //img: 'img/mm.jpg',
+        loadStart: function() {
+            console.log('开始读取照片');
+            $('#ov').css('display','block');
+        },
+        loadComplete: function() {
+            console.log('照片读取完成');
+        },
+        done: function(dataURL) {
+            $.ajax({
+                type : "post",
+                url:"/mobile/Vote/uploadPic",//+tab,
+                data:{
+                    dataURL:dataURL
+                },
+                success: function(data){
+                    if(data.code == 1){
+                        var dataURL = data.data.my_photo;
+                        layer.open({content:'上传成功',time:2,skin:'msg'});
+                        setTimeout(function () {
+                            location.href = "{:U('/Mobile/vote/perferInfo')}"+"?dataUrl="+escape(dataURL);
+                        },2000)
+                    }else {
+                        layer.open({content:'上传失败',time:3,skin:'msg'});
+                    }
+                }
+            });
+        },
+        fail: function(msg) {
+            alert(msg);
+        }
+    });
+    // 弹窗登录
+    function delPop() {  //登录取消
+        $('.votePopBg').css('display','none')
+    }
+    function jumpPop() { //跳转登录页面
+        location.href = "{:U('/Mobile/User/login')}"
+    }
+
+    // 点击投票
+    var numVote;
+    function jumpCom(found_id){
+        // console.log(found_id);
+        $.ajax({
+            type : "GET",
+            url:"/Mobile/Vote/clickVote",
+            data:{
+                found_id:found_id
+            },
+            success: function(data) {
+               if(data.code == 200){
+                   numVote = data.voteCounts;
+                   if(data.count >0){
+                       $(".numVoteOne span").html(data.count+'次');
+                       $('.describe_'+found_id).html(numVote+'票');
+                       $('.votesuBg').css('display','block');
+                       $('.numVoteOne').css('display','block');
+                       $('.ownPopOne').css('display','block');
+                       $('.numVoteTwo').css('display','none');
+                       $('.ownPopTwo').css('display','none')
+                   }else {
+                       $('.describe_'+found_id).html(numVote+'票');
+                       $('.votesuBg').css('display','block');
+                       $('.numVoteTwo').css('display','block');
+                       $('.ownPopTwo').css('display','block');
+                       $('.numVoteOne').css('display','none');
+                       $('.ownPopOne').css('display','none')
+                   }
+               }
+               if(data.code == -400){
+                   var url = data.img;
+                   $('.voteCodeImg img').attr('src',url);
+                   $('.voteCodeBg').css('display','block')
+               }
+               if(data.code == -200){
+                   layer.open({content:data.msg,time:3,skin:'msg'});
+               }
+               if(data.code == -300){
+                   $('.votePopBg').css('display','block')
+               }
+               if(data.code == -500){
+                   layer.open({content:data.msg,time:3,skin:'msg'});
+               }
+            }
+        });
+        $(".moveSol").on("touchmove",function(){
+            event.preventDefault();
+        });
+    }
+    // 继续投票
+    function Continue(found_id) {
+        $('.votesuBg').css('display','none');
+        // $('.describ').html(numVote+'票')
+    }
+    // 遮罩 点击消失弹窗
+    $('.votesuBg').click(function () {
+        $('.votesuBg').css('display','none');
+    })
+    // 跳转首页
+    function goIndex() {
+        location.href = "{:U('/Mobile/Index/index')}"
+    }
+
+    // 关注二维码
+    function closed() {
+        $('.voteCodeBg').css('display','none')
+    }
+    // 点击切换tab
+    $('.joinVote ul li').click(function () {
+        // $('.invitedTab ul li a').eq($(this).index()).addClass("activeTab").siblings().removeClass('activeTab')
+        $(this).addClass("activeVote").siblings().removeClass('activeVote');
+    });
+
+
+    /**
+     * ajax加载更多数据
+     */
+    var  page;
+    // var datahtml = '';
+    page = 0;
+    var sort="found_time";
+    var dataDiv = '.voteList';
+    // var VoteDataPageOne = sessionStorage.getItem("VoteDataPageOne");
+    // var VoteDataPageTwo = sessionStorage.getItem("VoteDataPageTwo");
+    var ajax_pending = false;//进行中
+    var has_more_data = true;//还有数据
+    // if(VoteDataPageOne != '') {
+    //     page = VoteDataPageOne;
+    //     ajax_sourch_submit(sort,dataDiv);
+    // }else{
+    //     page =0;
+    //     ajax_sourch_submit(sort,dataDiv);
+    // }
+    // if(VoteDataPageTwo != '') {
+    //     page = VoteDataPageTwo;
+    //     ajax_sourch_submit(sort,dataDiv);
+    // }else{
+    //     page =0;
+    //     ajax_sourch_submit(sort,dataDiv);
+    // }
+    function ajax_sourch_submit(sort,dataDiv) {
+        if (ajax_pending || has_more_data == false) return;
+        ajax_pending = true;
+        page++;
+        $.ajax({
+            type : "GET",
+            url:"/index.php?m=Mobile&c=Vote&a=getFoundUsers&p="+page+"&sort="+sort,
+            success: function(data) {
+                ajax_pending = false;
+                if ($.trim(data) != '') {
+                    $(dataDiv).append(data);
+                    // datahtml += data;
+                    if(sort == 'found_time'){
+
+                        // $('.voteList').empty();
+                        // sessionStorage.setItem("VoteDataOne", datahtml);
+                        // sessionStorage.setItem("VoteDataPageOne", page);
+                        // sessionStorage.setItem("dataDiv", dataDiv);
+                        // sessionStorage.setItem("checkType", 1);
+                    }
+                    if(sort == 'vote_number'){
+
+                        // $('.voteList1').empty();
+                        // sessionStorage.setItem("VoteDataTwo", datahtml);
+                        // sessionStorage.setItem("VoteDataPageOne", page);
+                        // sessionStorage.setItem("dataDiv", dataDiv);
+                        // sessionStorage.setItem("checkType", 2);
+                    }
+                    // sessionStorage.setItem("VoteData", datahtml);
+                    // sessionStorage.setItem("VoteDataPage", page);
+                    // sessionStorage.setItem("dataDiv", dataDiv);
+                    $("img.lazy").lazyload({effect: "fadeIn"});
+                    $("img.lazy").lazyload({ threshold :200});
+                } else {
+                    has_more_data = false;
+                }
+            }
+        });
+    }
+
+    // 点击最新参与
+    $('.joinVote ul li:nth-child(1)').click(function () {
+        $('.voteList').empty();
+        has_more_data = true;
+        $('.voteList').show();
+        $('.voteList1').hide();
+        sort="found_time";
+        dataDiv ='.voteList';
+        page = 0;
+        // sessionStorage.clear("VoteData");
+        ajax_sourch_submit(sort,dataDiv);
+
+        // 初始化 懒加载
+        $("img.lazy").lazyload({effect: "fadeIn"});
+        $("img.lazy").lazyload({ threshold :200});
+
+    });
+
+    // 点击投票排行
+    $('.joinVote ul li:nth-child(2)').click(function () {
+        $('.voteList1').empty();
+        has_more_data = true;
+        $('.voteList').hide();
+        $('.voteList1').show();
+        sort ="vote_number";
+        dataDiv ='.voteList1';
+        page =0;
+        // sessionStorage.clear("VoteData");
+        ajax_sourch_submit(sort,dataDiv);
+        sessionStorage.setItem("checkType", 2);
+        // 初始化 懒加载
+        $("img.lazy").lazyload({effect: "fadeIn"});
+        $("img.lazy").lazyload({ threshold :200});
+    });
+
+    //调用加载更多
+    $(window).scroll(
+        function() {
+            var scrollTop = parseInt($(this).scrollTop());
+            var scrollHeight = parseInt($(document).height());
+            var windowHeight = parseInt($(this).height());
+            if (scrollTop + windowHeight >= scrollHeight-50) {
+               ajax_sourch_submit(sort,dataDiv)
+            }
+        }
+    );
+
+    // 判断是否有缓存 数据 猜你喜欢  返回到浏览位置
+    $(function () {
+        // var a = sessionStorage.getItem("VoteDataOne")?sessionStorage.getItem("VoteDataOne"):'';
+        // var b = sessionStorage.getItem("VoteDataTwo")?sessionStorage.getItem("VoteDataTwo"):'';
+        // var type = sessionStorage.getItem("checkType") ? sessionStorage.getItem("checkType")  : 1;
+        // var dataDiv = sessionStorage.getItem("dataDiv") ?sessionStorage.getItem("dataDiv") : '.voteList';
+        //
+        // if(a) {
+        //     $(dataDiv).empty();
+        //     $(dataDiv).append(a);
+        //     $('.joinVote ul li').each(function (i,v) {
+        //         $(v).removeClass('activeVote');
+        //         $('.joinVote ul li').eq(type+1).addClass('activeVote');
+        //     })
+        // }
+        // if(b) {
+        //     $(dataDiv).empty();
+        //     $(dataDiv).append(b);
+        //     $('.joinVote ul li').each(function (i,v) {
+        //         $(v).removeClass('activeVote');
+        //         $('.joinVote ul li').eq(type+1).addClass('activeVote');
+        //     })
+        // }
+    });
+    // 懒加载  相关配置
+    $(function () {
+        $("img.lazy").lazyload({effect: "fadeIn"});
+    })
+    $("img.lazy").lazyload({ threshold :200});
+    $("img.lazy1").lazyload({
+        placeholder : "/template/mobile/newbow/static/images/aa.png", //用图片提前占位
+        // placeholder,值为某一图片路径.此图片用来占据将要加载的图片的位置,待图片加载时,占位图则会隐藏
+        effect: "fadeIn", // 载入使用何种效果
+        // effect(特效),值有show(直接显示),fadeIn(淡入),slideDown(下拉)等,常用fadeIn
+        threshold: 200, // 提前开始加载
+        // threshold,值为数字,代表页面高度.如设置为200,表示滚动条在离目标位置还有200的高度时就开始加载图片,可以做到不让用户察觉
+        event: '',  // 事件触发时才加载
+        // event,值有click(点击),mouseover(鼠标划过),sporty(运动的),foobar(…).可以实现鼠标莫过或点击图片才开始加载,后两个值未测试…
+        container: $(".voteList"),  // 对某容器中的图片实现效果
+        // container,值为某容器.lazyload默认在拉动浏览器滚动条时生效,这个参数可以让你在拉动某DIV的滚动条时依次加载其中的图片
+        failurelimit : 10 // 图片排序混乱时
+        // failurelimit,值为数字.lazyload默认在找到第一张不在可见区域里的图片时则不再继续加载,但当HTML容器混乱的时候可能出现可见区域内图片并没加载出来的情况,failurelimit意在加载N张可见区域外的图片,以避免出现这个问题.
+    });
+    $(function() {
+        if ($(window).scrollTop() < 80) {
+            $('.voteHeaderMiddle ').css('display','none');
+        }
+
+        $(window).scroll(function() {
+            if ($(window).scrollTop() >= 80) {
+                $('.voteHeaderMiddle ').css('display','block');
+            } else {
+                $('.voteHeaderMiddle ').css('display','none');
+            }
+        });
+    });
+    //滚动事件 / 滑动头部过渡的效果
+    $(function(){
+        var $body = $('body');
+        var setCoverOpacity = function() {
+            $('.bgCover').css({
+                opacity: ((($(document).scrollTop() / $('.votePos').height()) > 1) ? 1 : ($(document).scrollTop() / $('.votePos').height()))
+            });
+        };
+        //初始化设置背景透明度
+        // setCoverOpacity();
+        //监听滚动条事件，改变透明度
+        $(window).scroll(function() {
+            setCoverOpacity();
+        });
+    });
+    // 取消裁剪
+    function cancelCat() {
+        $('#ov').css('display','none');
+    }
+    // 裁剪弹出是禁止滚动
+    var user_id = "{$user_id}"?"{$user_id}":'';
+    function disableRoll() {
+        if(user_id){
+            $('.votePopBg').css('display','none')
+        }else {
+            $('.votePopBg').css('display','block');
+        }
+        // 清除 缓存
+        // sessionStorage.clear("VoteData");
+        $("#ov").on("touchmove",function(){
+            event.preventDefault();
+        });
+    }
+    function jump() {
+        location.href = "{:U('/Mobile/vote/voteRule')}"
+    }
+    // 加载的图片必须要与本程序同源，否则无法截图
+    /*pc.load('img/mm.jpg');*/
+    var a = 0
+    function change() {
+        a+=90;
+        if(a >360){
+            a = 0
+        }
+        pc.rotate(a,500);
+
+    }
+
+    // 判断有无历史记录返回
+    function goBack() {
+        // var historyUrl = document.referrer;
+        // if(historyUrl !==''){
+        //     window.history.go( -1 );
+        // }else {
+            location.href = "{:U('/Mobile/index/index')}"
+        // }
+    }
+</script>
+<!--分享开始-->
+<script>
+    var ShareImgUrl ="{$cover}"; //分享图标
+    var ShareTitle = "尚美缤纷携千元大奖寻找最美汉服 "; //分享标题
+    var ShareDesc = "身着云杉霓裳，展现汉服风采；快来上传美照吧，迪奥香水已安排得明明白白~"; //分享描述
+    var ShareLink = "{:U('Mobile/vote/index','',true,true)}"; //分享描述
+</script>
+<include file="public/wx_share"/>
+<!--分享结束-->
+</body>
+</html>

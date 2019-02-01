@@ -1,0 +1,12 @@
+<foreach $article_datas as $v>
+    <a href="{:U('mobile/help/detail',['article_id' => $v['article_id']])}">
+        <li style="border-bottom: 2px solid #f5f7f8;height: 1.8rem;line-height: 1.8rem">
+            <div class="" style="position: absolute;left: .7rem;font-size: .65rem;color: #1E1B1B">
+                <span>{$v['title']}</span>
+            </div>
+            <div class="" style="position: absolute;right: 1rem">
+                <img src="__STATIC__/images/cf_left_more.png" style="width:.3rem;height: .5rem " alt="">
+            </div>
+        </li>
+    </a>
+</foreach>

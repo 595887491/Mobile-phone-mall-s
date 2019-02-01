@@ -1,0 +1,379 @@
+<include file="public/layout" />
+<script type="text/javascript" src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<style>
+    @font-face {
+        font-family: 'iconfont';  /* project id 709796 */
+        src: url('//at.alicdn.com/t/font_709796_h9es25uvbou.eot');
+        src: url('//at.alicdn.com/t/font_709796_h9es25uvbou.eot?#iefix') format('embedded-opentype'),
+        url('//at.alicdn.com/t/font_709796_h9es25uvbou.woff') format('woff'),
+        url('//at.alicdn.com/t/font_709796_h9es25uvbou.ttf') format('truetype'),
+        url('//at.alicdn.com/t/font_709796_h9es25uvbou.svg#iconfont') format('svg');
+    }
+    .flexigrid .tDiv{border: none;background: transparent;}
+    .flexigrid .fbutton{border-right: dotted 0px transparent;}
+
+    .flexigrid .bDiv td div{height: auto;padding: 0;margin: 0;}
+    .flexigrid .bDiv td>div{padding: 10px 8px;line-height: 42px;}
+    .flexigrid .bDiv td div.avatar{  width: 34px;height: 34px;margin-top: 5px;border-radius:34px;border: 1px solid #ddd;overflow: hidden;}
+    .avatar img{width: 100%;height: 100%;}
+    .details_wrap{margin-top: 20px;border: 1px solid #ddd;border-radius: 5px;padding: 10px 10px 50px 10px;}
+    .details_wrap .titile{border-left: 3px solid #2cbca3;line-height: 15px;padding-left: 8px;}
+    .details_wrap ul li{float: left;}
+    .details_wrap ul{margin-top: 20px;}
+    .details_wrap ul li:nth-child(2){border-left: 1px solid #ddd;border-right: 1px solid #ddd;}
+    .details_wrap ul li div>p{color:#CCCCCC;}
+    .details_wrap ul li div>p>span{color: #333;font-size: 14px;}
+    .earing p:first-of-type,.timer p:first-of-type{margin-top: 0;}
+    .earing p,.timer p{margin-top: 10px;}
+    .timer button{margin-left: 35px;margin-top: 20px;;opacity: .8;transition: .3s;border: none;font-size: 14px;border-radius: 3px;cursor:pointer;display: block;padding: 10px;background: red;color: #fff;}
+    .timer button:hover{opacity: 1;}
+    .nav li {float: left;width: 100px;text-align: center;border: 1px solid #ddd;line-height: 33px;border-radius: 5px 5px 0 0;z-index: 99;
+        background-color:rgba(242, 242, 242, 1);border-bottom: none;transition: .3s;margin-left: 5px;cursor: pointer;position: relative;}
+    .nav li:first-of-type{margin-left: 0;}
+    .nav li a,.member-nav li a{color: #999;display: block;width: 100%;height: 100%;}
+    .member-nav li{float: left;width: 80px;text-align: center;margin-left: 10px;color: #999;line-height: 30px;cursor: pointer;}
+    .member-nav li:first-of-type{margin-left: 0;}
+    .member-nav li:hover{border-bottom: 2px solid #555;color: #555;}
+    .member-nav li.checkeds a{color: #000;}
+
+    .box{margin-top: 30px;text-align: center;width:auto;line-height: 30px}
+    .box th{width:250px;text-align: center;background: #ebebeb}
+    .box td{text-align: center}
+    .clearfix{clear: both;overflow: hidden;margin-left: 45px;margin-right: 50px;font-size: 15px;line-height: 30px;}
+    .clearfix li{border: none;}
+</style>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h5><a href="{:url('Order/virtualOrderList')}">卡券订单列表</a>><a href="">卡券订单详情</a></h5>
+            </div>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <!--<div id="explanation" class="explanation" style=" width: 99%; height: 100%;">-->
+        <!--<div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>-->
+            <!--<h4 title="提示相关设置操作时应注意的要点">操作提示</h4>-->
+            <!--<span title="收起提示" id="explanationZoom" style="display: block;"></span>-->
+        <!--</div>-->
+        <!--<ul>-->
+            <!--<li>卡券订单详情</li>-->
+        <!--</ul>-->
+    <!--</div>-->
+    <div class="details_wrap">
+        <p class="titile">订单信息</p>
+        <ul class="clearfix">
+            <li>
+                <div class="clearfix" style="color: #666666;">
+                    订单编号:{$orderInfo.order_sn} <br/>
+                    下单时间:{$orderInfo.add_time | date='Y-m-d H:i:s',###} <br/>
+                    用户ID:{$orderInfo.user_id} <br/>
+
+                </div>
+            </li>
+            <li>
+                <div class="clearfix" style="color: #666666;">
+                    订单状态: {$orderInfo.consumption}
+                    <span>
+                     <if $orderInfo.pay_status eq 0>
+                         <span style="margin-left: 10px">-</span>
+                     </if>
+                      <if $orderInfo.pay_status eq 3>
+                         已支付/<span style="color: #FF0000">已退款</span>
+                     </if>
+                    <if ($orderInfo.pay_status eq 1 || $orderInfo.pay_status eq 2) && $orderInfo.order_status eq 0  >
+                        <span style="color: #1890FF">已支付</span> / 已消费 / 已评价 /  已完成
+                    </if>
+                        <if $consumption eq 1>
+                        已支付 / <span style="color: #1890FF">已消费</span> / 已评价 /  已完成
+                    </if>
+                        <if $orderInfo.is_comment eq 1 && $orderInfo.order_status neq 4>
+                        已支付 / 已消费 / <span style="color: #1890FF">已评价</span> /  已完成
+                    </if>
+                        <if $orderInfo.order_status eq 4 && $orderInfo.is_comment eq 1>
+                       已支付 / 已消费 / 已评价 /  <span style="color: #1890FF">已完成</span>
+                    </if>
+                    </span> <br/>
+                    支付时间:
+                    <if $orderInfo.pay_time==''>
+                        <span style="margin-left: 10px">-</span>
+                        <else />
+                        {$orderInfo.pay_time | date='Y-m-d H:i:s',###}
+                    </if> <br/>
+                    <div>
+                    <div style="float: left">用户信息:</div>
+                    <div style="float: left;margin-left: 5px">
+                        <img style="display: block;float: left" width="40px;"height="40px" src="{$orderInfo.head_pic|default='http://cdn.cfo2o.com/data/avatar/1523631369812.jpg'}" alt="">
+                        <div style="float: left;margin-left: 5px;">
+                            <div>{$orderInfo.nickname}</div>
+                            <div>{$orderInfo.mobile}</div>
+                        </div>
+                    </div>
+                     </div>
+                </div>
+            </li>
+            <li>
+                <div class="clearfix" style="color: #666666;">
+                    支付方式:
+                    <span style="margin-left: 10px">
+                        <if ($orderInfo.pay_name=='支付宝' || $orderInfo.pay_name=='手机网站支付宝') && $orderInfo.user_money==0 && $orderInfo.pay_status !=0>
+                             <img src="__PUBLIC__/static/images/u121.png" alt="">支付宝支付
+                            <elseif  ($orderInfo.pay_name=='支付宝' || $orderInfo.pay_name=='手机网站支付宝') && $orderInfo.user_money!=0 && $orderInfo.pay_status !=0 />
+                            <img src="__PUBLIC__/static/images/u121.png" alt=""><img src="__PUBLIC__/static/images/u123.png" alt="">
+                            支付宝+余额支付
+                            <elseif $orderInfo.pay_name=='微信支付'&& $orderInfo.user_money==0 && $orderInfo.pay_status !=0 />
+                            <img src="__PUBLIC__/static/images/u122.png" alt="">微信支付
+                            <elseif $orderInfo.pay_name=='微信支付'&& $orderInfo.user_money!=0 && $orderInfo.pay_status !=0 />
+                            <img src="__PUBLIC__/static/images/u122.png" alt=""><img src="__PUBLIC__/static/images/u123.png" alt="">
+                            微信+余额支付
+                            <elseif $orderInfo.pay_name==''&& $orderInfo.pay_status !=0  />
+                            <img src="__PUBLIC__/static/images/u123.png" alt="">
+                            余额支付
+                            <else/>
+                            -
+                        </if>
+                    </span> <br/>
+                </div>
+            </li>
+            <li>
+                <div class="clearfix" style="color: #666666;" >
+                    交易流水号: <span style="margin-left: 10px">{$orderInfo.transaction_id | default='-'}</span> <br/>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+    <div class="details_wrap">
+        <p class="titile">商品信息</p>
+        <table class="box" style=" margin-bottom: 20px;">
+            <thead>
+            <tr>
+                <th>商品ID</th>
+                <th>商品</th>
+                <th>购买数量</th>
+                <th>单价</th>
+                <th>总价</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{$orderInfo.goods_id}</td>
+                <td>
+                    <img width="20px" height="20px" src="{$orderInfo.original_img}" alt="">{$orderInfo.goods_name}
+                </td>
+                <td>{$orderInfo.goods_num}</td>
+                <td>￥{$orderInfo.goods_price}</td>
+                <td>￥{$orderInfo.goods_price * $orderInfo.goods_num}</td>
+            </tr>
+            </tbody>
+        </table> <br/>
+        <span>金额明细: &nbsp<span>总价:￥{$orderInfo.total_amount}</span>&nbsp&nbsp
+        <span>余额: &nbsp -￥{$orderInfo.user_money}</span>&nbsp&nbsp
+        <span>应付: <span style="color: #FF0000">￥{$orderInfo.order_amount}</span></span>
+        </span>
+    </div>
+    <div class="details_wrap">
+        <p class="titile">缤纷券密码</p>
+        <table class="box">
+            <thead>
+            <tr>
+                <th>密码编号</th>
+                <th>密码</th>
+                <th>密码状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <volist name="vrCode" id="vr" key="k">
+            <tr>
+                <td>密码{$k}</td>
+                <if $vr.vr_state == 0 && $vr.refund_lock == 0>
+                    <td>{$vr.vr_code | interval=''}</td>
+                    <td>
+                        <span style="color: #009900;">未消费</span>
+                        <span>有效期至:{$vr.vr_indate | date='Y-m-d H:i:s',###}</span>
+                    </td>
+                    <td>
+                        <a onclick="refund({$vr.rec_id})" href="javascript:void(0)" style="color: #666666">申请退款</a>
+                    </td>
+                </if>
+                <if $vr.vr_state == 1 && $vr.refund_lock == 0>
+                    <td>
+                        <div style="height: 1px;background:#666666;position: relative;top:16px"></div>
+                        {$vr.vr_code | interval=''}
+                    </td>
+                    <td>
+                        <span style="color: #1890FF;">已消费</span>
+                        <span>消费时间:{$vr.vr_usetime | date='Y-m-d H:i:s',###}</span>
+                    </td>
+                </if>
+                <if $vr.vr_state == 2 && $vr.refund_lock == 0>
+                    <td>
+                        <div style="height: 1px;background:#666666;position: relative;top:16px"></div>
+                        {$vr.vr_code | interval=''}
+                    </td>
+                    <td>
+                        <span style="color: #666666;">已过期</span>
+                        <span>过期时间:{$vr.vr_indate | date='Y-m-d H:i:s',###}</span>
+                    </td>
+                    <td>
+                        <a onclick="refund({$vr.rec_id})" href="javascript:void(0)" style="color: #666666">申请退款</a>
+                    </td>
+                </if>
+                <if $vr.refund_lock == 3>
+                    <td>
+                        <div style="height: 1px;background:#666666;position: relative;top:16px"></div>
+                        {$vr.vr_code | interval=''}
+                    </td>
+                    <td>
+                        <span style="color: #FF0000;">已退款</span>
+                        <span>退款时间:{$vr.vr_usetime | date='Y-m-d H:i:s',###}</span>
+                    </td>
+                </if>
+                <if $vr.refund_lock == 1>
+                    <td>
+                        <div style="height: 1px;background:#666666;position: relative;top:16px"></div>
+                        {$vr.vr_code | interval=''}
+                    </td>
+                    <td>
+                        <span style="color: #FF0000;">申请退款中</span>
+                        <span>申请退款时间:{$vr.vr_usetime | date='Y-m-d H:i:s',###}</span>
+                    </td>
+                </if>
+
+            </tr>
+            </volist>
+            </tbody>
+        </table> <br/>
+    </div>
+    <div class="details_wrap">
+        <p class="titile">体检人信息</p>
+        <table class="box">
+            <thead>
+            <tr>
+                <th>密码编号</th>
+                <th>姓名</th>
+                <th>性别</th>
+                <th>手机号</th>
+                <th>身份证</th>
+                <th>体检分院</th>
+                <th>体检日期</th>
+                <th>信息填写时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <php>
+                for($i=0;$i<$count;$i++){
+            </php>
+                <tr>
+                <td>密码{$i+1}</td>
+                    <if $testUserInfo[$i] ==null>
+                        <td><span style="color: #ff561b">未填写</span></td>
+                        <else/>
+                        <td>{$testUserInfo[$i]['content']->full_name}</td>
+                        <td>{$testUserInfo[$i]['content']->sex}</td>
+                        <td>{$testUserInfo[$i]['content']->mobile}</td>
+                        <td>{$testUserInfo[$i]['content']->id_no}</td>
+                        <td>{$testUserInfo[$i]['content']->hostpital}</td>
+                        <td>{$testUserInfo[$i]['content']->input_date}</td>
+                        <td>{$testUserInfo[$i]['add_time']| date='Y-m-d H:i:s',###}</td>
+                    </if>
+            </tr>
+           <php>}</php>
+
+            </tbody>
+        </table>
+    </div>
+    <div class="details_wrap">
+        <p class="titile">操作记录</p>
+        <table class="box">
+            <thead>
+            <tr>
+                <th>操作者</th>
+                <th>时间</th>
+                <th>支付状态</th>
+                <th>订单状态</th>
+                <th>描述</th>
+                <th>备注</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <volist name="log" id="g">
+                <tr>
+                    <if empty($log)>
+                        <td>暂无记录</td>
+                        <else/>
+                        <td>{$g.role_name}:{$g.user_name}</td>
+                        <td>{$g.log_time| date='Y-m-d H:i:s',###}</td>
+                        <td>
+                            <if $g.pay_status eq 0>
+                                <span style="color: #666666">未支付</span>
+                                <elseif $g.pay_status eq 1 />
+                                <span style="color: #009900">已支付</span>
+                                <elseif $g.pay_status eq 2 />
+                                <span style="color: #009900">部分支付</span>
+                                <elseif $g.pay_status eq 3 />
+                                <span style="color:#666666;">已退款</span>
+                                <elseif $g.pay_status eq 4 />
+                                <span style="color:#666666;">拒绝退款</span>
+                            </if>
+                        </td>
+                        <td>
+                            <if $g.order_status eq 0>
+                                <span style="color: #666666">待确认</span>
+                                <elseif $g.order_status eq 1 />
+                                <span style="color: #009900">已确认</span>
+                                <elseif $g.order_status eq 2 />
+                                <span style="color: #009900">已收货</span>
+                                <elseif $g.order_status eq 3 />
+                                <span style="color:#666666;">已取消</span>
+                                <elseif $g.order_status eq 4 />
+                                <span style="color:#009900;">已完成</span>
+                                <elseif $g.order_status eq 5 />
+                                <span style="color:#666666;">已作废</span>
+                            </if>
+                        </td>
+                        <td>{$g.status_desc}</td>
+                        <td>{$g.action_note}</td>
+                    </if>
+                </tr>
+            </volist>
+            </tbody>
+        </table> <br/>
+    </div>
+
+</div>
+
+
+</body>
+<script>
+//退款
+function refund(v) {
+    layer.confirm('确定申请退款吗？', {
+        btn: ['确定','不确定'] //按钮
+    }, function(){
+        $.ajax({
+            type : "POST",
+            url:"/index.php/Admin/Order/applyRefundVrCode",
+            data : {
+                rec_id:v
+            },
+            success: function(data){
+                if (data.data == 1){
+                    layer.msg(data.msg, {icon: 1});
+                }else{
+                    layer.msg(data.msg, {icon: 2});
+                }
+                setTimeout("location.reload()",1000);
+            }
+        });
+    });
+}
+
+</script>
+</html>

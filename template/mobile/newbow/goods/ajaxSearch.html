@@ -1,0 +1,179 @@
+<include file="public/header" title="搜索"  body=""/>
+<link rel="stylesheet" type="text/css" href="__STATIC__/css/jquery-ui.css"/>
+<script src="__STATIC__/js/jquery-ui.js" type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" href="__STATIC__/css/new/ajaxSearch.css">
+<div class="classreturn loginsignup" style="width: 100%;">
+	<div class="content" style="margin: 0;">
+		<div class="ds-in-bl return">
+			<a href="javascript:;" onclick="goBack()"><img src="__STATIC__/images/return.png" alt="返回"></a>
+     	</div>
+		<div class="classreturn" style="background: #fff;">
+			<div class="content">
+
+				<div class="p search_pl" style="margin: 0">
+					<div class="maleri30">
+						<div class="search2">
+							<form method="get" action="{:U('Goods/search')}" id="sourch_form">
+								<input name="goods_id" type="hidden" />
+								<div class="le_inp">
+									<i class="iconfont" style="font-size: .8rem;">&#xe60b;</i>
+									<input type="text" name="q" id="q"  onkeyup="ajaxsecrch();" placeholder="请输入搜索内容"/>
+								</div>
+								<!--<a href="javascript:;" onclick="ajaxsecrch()">-->
+									<!--&lt;!&ndash;<div class="ri_ss"><img src="__STATIC__/images/sea.png"/></div>&ndash;&gt;-->
+									<!--取消</a>-->
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<a href="javascript:;" class="cf_return" >搜索</a>
+	</div>
+	<div></div>
+	<ul class="ajax-data"></ul>
+</div>
+
+<div id="appendTo"></div>
+		<div class="near-le-ri p">
+			<div class="maleri30">
+				<span style="color: #5B5858;">热门搜索</span>
+			</div>
+		</div>
+		<div class="lb_showhide se_shien p" style="display: block;">
+			<div class="maleri30"  style="margin: 0 .24rem;">
+				<ul>
+					<foreach name="tpshop_config.hot_keywords" item="wd" key="k">
+						<li><a href="{:U('Goods/search',array('q'=>$wd))}" <if condition="$k eq 0">class="ht"</if>>{$wd}</a></li>
+					</foreach>
+				</ul>
+			</div>
+		</div>
+		<div class="near-le-ri p">
+			<div class="maleri30">
+				<span style="color: #5B5858;">历史搜索</span>
+				<img src="__STATIC__/images/dele.png" id="delete_cookie"/>
+			</div>
+		</div>
+		<div class="lb_showhide se_shien p" style="display: block;">
+			<div class="maleri30" style="margin: 0 .24rem;	">
+				<if condition="$search_history">
+				<ul id="searchWrap">
+					<foreach name="$search_history" item="wd">
+						<li><a href="{:U('Goods/search',array('q'=>$wd))}" <if condition="$k eq 0">class="ht"</if>>{$wd}</a></li>
+					</foreach>
+				</ul>
+				<else>
+				<p id="nomore" style="text-align: center;font-size: .5rem;color: #ddd;">暂无搜索历史~</p>
+				</if>
+			</div>
+		</div>
+        <!--底部导航-start-->
+        <!--底部导航-end-->
+</body>
+</html>
+<script>
+	//搜索历史赋值
+	var v ='{$search_history[0]}';
+    // var t=$("#q").val();
+    $("#q").val("").focus().val(v);
+   //苹果安卓不同样式
+    $(function () {
+        var u = navigator.userAgent;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        if(isAndroid || !isiOS){  //安卓
+            $('.search_pl .search2 .le_inp  i').css('top','-.1rem');
+        }else{  //苹果
+            $('.search_pl .search2 .le_inp  i').css('top','0');
+        }
+    })
+	function goBack() {
+        window.location.href= "{:U('Mobile/index/index')}";
+    }
+	//搜索
+	$('.cf_return').on('click',function () {
+	    if($('#q').val()) {
+            $('#sourch_form').submit();
+		}else layer.open({content:'请输入要搜索的商品',time:2,skin:'msg'})
+    })
+   //设置cookie
+	function setCookie(cname,cvalue,exdays){
+		var d = new Date();
+		d.setTime(d.getTime()+(exdays*24*60*60*1000));
+		var expires = "expires="+d.toGMTString();
+		document.cookie = cname+"="+cvalue+"; "+expires+";path=/";
+	}
+	//获取cookie
+	function getCookie(cname){
+		var name = cname + "=";
+		var ca = document.cookie.split(';');
+		for(var i=0; i<ca.length; i++) {
+			var c = ca[i].trim();
+			if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
+		}
+		return "";
+	}
+	function ajaxsecrch(){
+		var v =$.trim($('#q').val());
+        //点击关闭
+        $('#q').on('click',function () {
+            $('.ajax-data').hide();
+        })
+        // 失去焦点
+		if(v) {
+            $('.ajax-data').show();
+			$.ajax({
+				url: "{:U('Mobile/Goods/search_goods_by_keywords')}",
+				dataType: "json",
+				data: {
+					term: v
+				},
+				success: function (res) {
+                    var html = '';
+					for(var i=0;i<res.length;i++){
+					    // console.log(res[i].match(v))
+                        if( res[i].value.indexOf(v)>= 0){
+                            res[i].value = res[i].value.replace(v,"<span style='color:red;'>"+v+"</span>");
+						}
+				  		html+= "<li><a onclick='recordSearchVal();' href='/index.php/mobile/goods/goodsInfo/id/"+res[i].lable+"'>"+res[i].value+"</a></li>";
+					}
+                    $('.ajax-data').empty().html(html)
+
+					if(res.length ==0 ) {
+					    var emt =  "<li style='text-align: center;'>暂无结果~</li>";
+                        $('.ajax-data').empty().html(emt)
+					}
+				}
+			})
+		}
+		else {
+            $('.ajax-data').hide();
+		}
+	}
+	//解决ios keyup,keypress兼容问题
+    document.getElementById('q').addEventListener('input', function(e){ajaxsecrch()});
+    // 删除历史
+   	$('#delete_cookie').on('click',function () {
+       var getHistory =getCookie('searchVal');
+       var val = ''
+	   if(getHistory){
+		   layer.open({
+			   content:'确认删除全部历史记录？',
+			   btn: ['确认', '取消'],
+			   shadeClose: false, //默认：true，是否点击遮罩时关闭层
+			   yes: function() {
+				   setCookie("searchVal",val,0);
+				   location.reload();
+			   },
+			   no: function() {},
+		   });
+       }
+   	})
+	$(function(){
+		$('#q').focus();
+	});
+   	function recordSearchVal() {
+        $.getJSON("{:U('mobile/goods/recordSearchVal')}",{q:$('#q').val()});
+    }
+</script>

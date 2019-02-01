@@ -1,0 +1,229 @@
+<include file="public/layout" />
+<style>
+    .err{color:#F00; display:none;}
+</style>
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>分销2.0 - 添加服务商</h3>
+                <h5>后台手动添加一个服务商</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="handleposition" method="post">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>选择一个用户</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" id="user_name" readonly name="user_name" class="input-txt">
+                    <input type="hidden" name="user_id"/>
+                    <span class="err" id="err_user_id"></span>
+                    <p class="notic">
+                        <a onclick="selectUser()" class="ncap-btn"><i class="fa fa-search"></i>选择用户</a>
+                    </p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>服务商类型</label>
+                </dt>
+                <dd class="opt">
+                    <select id="agent_level" name="agent_level" onchange="fadeInOutSelect(this.value)">
+                        <option value="">==请选择==</option>
+                        <option value="1">市代理</option>
+                        <option value="2">区县代理</option>
+                        <option value="3">镇/街道代理</option>
+                        <option value="4">校园代理</option>
+                    </select>
+                    <span class="err" id="err_agent_level"></span>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>选择一个省</label>
+                </dt>
+                <dd class="opt">
+                    <select id="province_id" name="province_id">
+                        <volist name="province" id="p">
+                            <option value="{$p.id}" <if condition="$p.id eq 33007">selected</if>>{$p.name}</option>
+                        </volist>
+                    </select>
+                    <span class="err" id="err_province"></span>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>管辖区域</label>
+                </dt>
+                <dd class="opt">
+                    <select class="fade" onchange="get_area_agent('area_agent',this.value)" id="city_agent" name="city_id">
+                        <option  value="0">请选择</option>
+                    </select>
+                    <select class="fade" onchange="get_area_agent('town_agent',this.value)" id="area_agent" name="area_id">
+                        <option value="0">请选择</option>
+                    </select>
+                    <select class="fade" name="town_id" id="town_agent">
+                        <option  value="0">请选择</option>
+                    </select>
+                    <span class="err" id="err_city_id"></span>
+                    <span class="err" id="err_area_id"></span>
+                    <span class="err" id="err_town_id"></span>
+                    <p class="notic">管辖区域</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>开始时间</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" id="start_time" name="start_time" value="{$info.start_time}"  class="input-txt">
+                    <span class="err" id="err_start_time"></span>
+                    <p class="notic">服务商身份开始时间</p>
+                    <p class="hint" style="color:red"></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>结束时间</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" id="end_time" name="end_time" value="{$info.end_time}" class="input-txt">
+                    <span class="err" id="err_end_time"></span>
+                    <p class="notic">服务商身份结束时间</p>
+                </dd>
+            </dl>
+            <div class="bot"><a onclick="verifyForm()" class="ncap-btn-big ncap-btn-green">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#start_time').layDate();
+        $('#end_time').layDate();
+        $('#province_id').change();
+    })
+    var ajax_return_status = 1; // 标识ajax 请求是否已经回来 可以进行下一次请求
+    function verifyForm(){
+        $('span.err').hide();
+        if (ajax_return_status == 0) {
+            return false;
+        }
+        ajax_return_status = 0;
+        var formData = $('#handleposition').serialize();
+        $.ajax({
+            type: "POST",
+            url: "{:U('Admin/Distribution/saveAgent')}",
+            data: $('#handleposition').serialize(),
+            dataType: "json",
+            error: function () {
+                layer.alert("服务器繁忙, 请联系管理员!");
+            },
+            success: function (data) {
+                ajax_return_status = 1;
+                if (data.status == 1) {
+                    ajax_return_status = 1;
+                    layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+                        location.href = "{:U('Admin/Distribution/agentList')}";
+                    });
+                } else {
+                    layer.msg(data.msg, {icon: 2,time: 1000});
+                    if (data.result) {
+                        $.each(data.result, function (index, item) {
+                            $('#err_' + index).text(item).show();
+                        });
+                    }
+                    ajax_return_status = 1;
+                }
+            }
+        });
+    }
+    function selectUser(type){ //type 等于a 选择服务商
+        var url = "{:U('User/search_user_return_html')}";
+        if (type == 'a') {
+            var parent_id = $("input[name=parent_name]").val();
+            var agent_level = $("#agent_level").val();
+            url += '?user_id='+user_id+"&type=a&agent_level="+agent_level;
+        } else {
+            var user_id = $("input[name=user_id]").val();
+            url += '?user_id='+user_id;
+        }
+        layer.open({
+            type: 2,
+            title: '选择用户',
+            shadeClose: true,
+            shade: 0.2,
+            area: ['85%', '85%'],
+            content: url,
+        });
+    }
+    function call_back(userItem){
+        if (userItem.userType == 'a') {
+            $("input[name=parent_name]").val(userItem.nickname);
+            $("input[name=parent_id]").val(userItem.user_id);
+        } else {
+            $("input[name=user_name]").val(userItem.nickname);
+            $("input[name=user_id]").val(userItem.user_id);
+        }
+        layer.closeAll('iframe');
+    }
+    $('#province_id').change(function () {
+        if ($(this).val() == 0) {
+            $("city_agent").empty();
+            $("area_agent").empty();
+            $("town_agent").empty();
+            return ;
+        } else {
+            get_area_agent('city_agent',$(this).val());
+        }
+    });
+    // 获取该地区的子级地区
+    function get_area_agent(dom,area_id=0){
+        $('#district').empty().css('display','none');
+        var url = '/index.php?m=Home&c=Api&a=agentSubArea&area_id='+area_id;
+        $.ajax({
+            type : "GET",
+            dataType: 'json',
+            url  : url,
+            error: function(request) {
+                alert("服务器繁忙, 请联系管理员!");
+                return;
+            },
+            success: function(res) {
+                var html = '';
+                $.each(res,function (k,v) {
+                    var nickname = v.nickname== null? '未分配': v.nickname;
+                    html += '<option value="'+v.id+'">'+v.region_name+'-'+nickname+'</option>';
+                })
+                $('#'+dom).empty().html(html);
+                $('#'+dom).change();//触发change事件
+            }
+        });
+    }
+    
+    function fadeInOutSelect(value) {
+        if (value =='') {
+            $(".fade").show();
+        } else if (value == 1) {
+            $(".fade").hide();
+            $(".fade").eq(0).show();
+        } else if (value == 2) {
+            $(".fade").hide();
+            $(".fade").eq(0).show();
+            $(".fade").eq(1).show();
+        } else if (value == 3) {
+            $(".fade").show();
+        } else {
+            $(".fade").show();
+        }
+    }
+</script>
+</body>
+</html>

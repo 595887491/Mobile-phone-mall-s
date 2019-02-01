@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>{$form_alias}列表</title>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/rem.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
+    <link rel="stylesheet" href="__STATIC__/css/testUserList.css">
+</head>
+<body>
+<!--header-->
+<div class="headerRank">
+    <div class="headerRankCon">
+        <div class="fl texFl">
+            <a href="javascript:history.back()">
+                <img src="__STATIC__/images/return.png" alt="返回"></a>
+            </a>
+        </div>
+        <div class="tex">
+            <span>{$form_alias}列表</span>
+        </div>
+    </div>
+</div>
+<!--header-->
+<div style="height:.9rem;width: 100% "></div>
+<!--列表-->
+<div class="userList">
+  <div class="userListCom">
+      <p>共需添加 <span>{$testNum}</span> 位{$form_alias}信息</p>
+  </div>
+  <div class="listCom">
+      <volist name="$testInfo" id="v">
+          <a href="{:U('Mobile/User/getVirtualFormInfo')}?id={$v.id}">
+              <div class="listComOne">
+                  <span class="fl">{$v.content->full_name}</span>
+                  <img  class="fr" src="__STATIC__/images/cf_left_more.png" alt="">
+                  <span class="fr" style="text-align: right">{$v.content->mobile}</span>
+              </div>
+          </a>
+      </volist>
+      <for start="0" end="$need">
+      <a href="{:U('Mobile/Virtual/preferUserInfo')}?order_id={$orderId}&goods_num=1">
+          <div class="listComTwo">
+              <span class="fl" style="color: #1E1B1B;">添加{$form_alias}信息</span>
+              <img  class="fr" src="__STATIC__/images/cf_left_more.png" alt="">
+          </div>
+      </a>
+      </for>
+  </div>
+  <div class="commentList">
+      <p>若需要修改个人信息，可与您的专属顾问直接沟通，<br>电话：<span><a href="tel:{$contact_tel}" style="text-decoration: none;color:#1E1B1B;"></a>{$contact_tel}</span></p>
+  </div>
+</div>
+</body>
+</html>

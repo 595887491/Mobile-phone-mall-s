@@ -1,0 +1,125 @@
+<include file="public/header" title="完善资料" body=""/>
+<include file="public/header_nav" title="完善资料"  href="javascript:history.back()"/>
+<link rel="stylesheet" href="__STATIC__/css/new/completeUserInfo.css">
+    <div style="width: 100%;text-align: center;margin-top: 2.5rem;height:3rem;background-color: #fff">
+        <img src="__STATIC__/images/gift_bag_step1.png"  style="text-align: center;width: 12rem;height: 2.5rem" alt="">
+    </div>
+    <div style="width: 100%;height: .3rem;background: #f3f5f7"></div>
+    <div class="wrapper">
+      <div class="item-list">
+          <span class="fl name">性别</span>
+          <div class="radio fl">
+              <label for="2" class="">
+                  <input id="2" type="radio" name="sex" data-id="2">
+                  <span style="font-size: .65rem;"> 女</span>
+                  <i></i>
+              </label>
+          </div>
+          <div class="radio fl">
+              <label for="1" class="">
+                 <input id="1" type="radio" name="sex" data-id="1">
+                 <span style="font-size: .65rem;">男</span>
+                 <i></i>
+              </label>
+          </div>
+      </div>
+       <div class="item-list">
+           <span class="name">年龄</span>
+           <input type="text" name="age" placeholder="请输入您的年龄"  id="age" onkeyup="this.value=/^\d+\.?\d{0,2}$/.test(this.value) ? this.value : ''">
+       </div>
+       <div class="item-list" style="border: none;">
+           <span class="name fl">肤质</span>
+           <div class="fl" style="width: 12rem;">
+              <foreach name="$skin_datas" item="v" key="k">
+               <div data-id="{$k}" class="pf_list" >
+                   <div class="" >
+                       <p>{$v['name']}</p>
+                       <ul style="margin-top: -.2rem;">
+                           <php>unset($v['name']);</php>
+                           <foreach name="v" item="vo" key="ko">
+                               <li data-id="{$ko}" class="">{$vo.second_name}</li>
+                           </foreach>
+                       </ul>
+                   </div>
+               </div>
+           </foreach>
+           </div>
+       </div>
+        <a href="javascript:;" class="get-btn" onclick="skinQuality()">领礼包</a>
+   </div>
+<script>
+    //选择性别
+    $('.item-list').on('click','.radio',function (i) {
+        var $this = $(this);
+        if($this.find('input').prop('checked') == true) {
+            $('.item-list .radio').find('label').removeClass('check_t');
+            $this.find('label').addClass('check_t');
+        }
+    })
+    //选择肤质
+    $('.pf_list>div').each(function (i,v) {
+        $(v).find('li').on('click',function () {
+            var p_id = $(this).parents('.pf_list').data('id');
+            var id = $(this).data('id');
+            $(this).addClass('checked').siblings().removeClass('checked');
+        })
+    });
+    function skinQuality() {
+        var checked = 0;
+        var age = $('#age').val();
+        var sex;
+        $('.item-list .radio').each(function (i,v) {
+               if($(v).find('input').prop('checked') == true) {
+                   sex = $(v).find('input').data('id')
+               }
+               else {
+                   checked++
+               }
+        })
+        if(checked ==2) {
+            layer.open({content: '请选择性别', time: 2, skin: "msg"});
+            return false;
+        }
+        if( !age) {
+            layer.open({content: '请填写年龄', time: 2, skin: "msg"});
+            return false;
+        }
+        var ids = [], flag = true;
+        $('.pf_list>div').each(function (i, v) {
+            var checked_li = $(v).find('li.checked');
+            var p_id = checked_li.parents('.pf_list').data('id');
+            var id = checked_li.data('id');
+            if (typeof p_id == 'undefined' || typeof id == 'undefined') {
+                flag = false;
+            } else {
+                var str = p_id+','+id;
+                ids.push(str);
+            }
+        });
+        if (!flag) {
+            return layer.open({content: '请选择肤质类型', time: 2, skin: "msg"});
+        }
+        ids = ids.join('|');
+        $.ajax({
+            type: "post",
+            url: "{:U('mobile/User/userinfo')}",//+tab,
+            data: {skinQuality:ids,age:age,sex:sex},// 你的formid 搜索表单 序列化提交
+            success: function (data) {
+                if (data.code == 1) {
+                    layer.open({content: '提交成功！', time: 3, skin: "msg"});
+                    setTimeout(function () {
+                        location.href = '{:U("Mobile/User/completedUserInfo")}';
+                    }, 1200);
+                    return true;
+                }
+                else {
+                    layer.open({content: data.msg, time: 3, skin: "msg"});
+                    return false;
+                }
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

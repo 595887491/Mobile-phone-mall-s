@@ -1,0 +1,299 @@
+<include file="public/header" title="新人首单福利"/>
+<link rel="stylesheet" href="__STATIC__/css/new/goodsList.css">
+<link rel="stylesheet" href="__STATIC__/css/newWelfare.css">
+<style>
+    .storenav{
+        border: none;
+    }
+    .pos2{
+        position: absolute;
+        top: .1rem;
+        margin-left: 8.6rem;
+        background-color: #22085A;
+    }
+    .activeRed span{
+        color: #fff!important;
+    }
+    .search_list_dump ul li .bpr1{
+        margin-top: .2rem;
+    }
+</style>
+<div class="classreturn loginsignup " id="header">
+    <div class="content">
+        <div class="ds-in-bl return">
+            <a onclick="goBack()"><img src="__STATIC__/images/return.png" alt="返回"></a>
+        </div>
+        <div class="ds-in-bl search center">
+            <span>新人首单福利</span>
+        </div>
+    </div>
+</div>
+<!--header-->
+<if condition="$goods_list eq null ">
+    <div class="noHave">
+        <img src="__STATIC__/images/cf_order.png" style="pointer-events: none;width: 100%;">
+        <div>
+            <span>客官大大,暂无商品</span>
+        </div>
+    </div>
+    <else/>
+<!--banner-->
+<div class="newWelfare">
+    <img src="__STATIC__/images/newWelare.png" alt="">
+</div>
+<!--劵-->
+<div class="firstGiftList clearFix">
+    <if condition="$flag">
+        <div class="newCoupon">
+            <a href="{:U('Mobile/Index/newUserGift')}">
+                <img src="__STATIC__/images/newCoupon.png" alt="">
+            </a>
+        </div>
+        <else/>
+    </if>
+    <!--筛选标题-->
+    <div class="screen ">
+        <div class="fl screenLeft"><span>新人专属好货</span></div>
+        <!--排序按钮-s-->
+        <nav class="storenav p search_list_dump pos2" >
+            <ul>
+                <li class="activeRed" data-id ="">
+                    <a>
+                        <span class="lb">综合</span>
+                    </a>
+                </li>
+                <li data-id ="sales_sum">
+                    <a >
+                        <span class="dq">销量</span>
+                    </a>
+                </li>
+                <li data-id ="shop_price">
+                    <a >
+                        <span class="jg dq">价格</span>
+                    </a>
+                    <i  class="pr"></i>
+                    <input type="hidden" value="asc" class="pic">
+                </li>
+            </ul>
+        </nav>
+        <!--排序按钮-e-->
+    </div>
+    <!--筛选标题-->
+        <div class="guessList clearFix">
+            <foreach name="goods_list" item="vo" key="k">
+                <a href="{:U('Mobile/Goods/goodsInfo',['id'=>$vo['goods_id']] )}">
+                    <div class="guessItem">
+                        <img class="guessItemImg" src="{$vo.original_img}?x-oss-process=style/s340x340" alt="">
+                        <div class="freeShop"><img src="__STATIC__/images/freeShipp.png" alt=""></div>
+                        <p class="guessTitle">{$vo.goods_remark}</p>
+                        <p class="guessCom">{$vo.goods_name}</p>
+                        <div class="guessItemPic"><span style="color: #4E24A8">¥</span><span style="font-size: .7rem;color: #4E24A8;font-weight: 600">{$vo[shop_price]}</span><span style="color: #BFC1CD;margin-left: .2rem;text-decoration: line-through">¥{$vo[market_price]}</span></div>
+                    </div>
+                </a>
+            </foreach>
+        </div>
+
+    <!--商品列表-->
+
+</div>
+<div class="noMore" style="display: none;text-align: center;font-size: .6rem;color: #999;background: #F3F5F7;line-height: 2rem;">没有更多了</div>
+</if>
+<!--加载更多S-->
+<notempty name="goods_list">
+    <div class="loadbefore">
+        <img class="ajaxloading" src="__STATIC__/images/loading.gif" alt="loading...">
+    </div>
+</notempty>
+<!--加载更多E-->
+
+<!--分享开始-->
+<script>
+    // http://cdn.cfo2o.com/public/upload/other/logo_share.png
+    var ShareImgUrl ="https://{$_SERVER[HTTP_HOST]}__STATIC__/images/exemption_share.png"; //分享图标
+    var ShareTitle = "恭喜您，获得新人￥39元包邮的福利，立即查看>"; //分享标题
+    var ShareDesc = "[尚美缤纷]新用户还可领取￥188新人礼包，购物更实惠"; //分享描述
+    var ShareLink = "http://{$_SERVER[HTTP_HOST]}/index.php/mobile/Index/newUserFirstWelfare"; //分享链接
+</script>
+<include file="public/wx_share"/>
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script type="text/javascript">
+
+    // 滑动时固定筛选条
+    var scrollTops = parseInt($('.screen').offset().top);
+    //滚动 排序置顶
+    $(window).scroll(function () {
+        var scrollH = $(window).scrollTop();
+        if(scrollH > scrollTops) {
+            $('.screen').addClass('screenTop');
+            $('.pos2').css('background-color','#170441');
+        }
+        if(scrollH <= scrollTops) {
+            $('.screen').removeClass('screenTop');
+            $('.pos2').css('background-color','#22085A');
+        }
+    });
+    // 获取储存的状态
+    var dataValTwo,picTwo
+    dataValTwo = sessionStorage.getItem("dataVal"); //选中的状态
+    picTwo = sessionStorage.getItem("pic") //价格的升序和降序
+
+    var ajax_pending = false;//进行中
+    var has_more_data = true;//还有数据
+    var page = 1;
+    // 自动加载数据
+    $.ajax({
+        type : "GET",
+        url:"/index.php?m=Mobile&c=Index&a=newUserFirstWelfare&p="+page,
+        data:{
+            sort:dataValTwo,
+            sort_asc:picTwo,
+        },
+        success: function(data) {
+            ajax_pending = false;
+            if ($.trim(data) != '') {
+                $('.guessList').html(data);
+            } else {
+                has_more_data = false;
+            }
+        }
+    });
+    // 判断返回的数据的选中状态
+    if(dataValTwo == ''){
+        $(".storenav ul li:first-child").addClass("activeRed").siblings().removeClass('activeRed');
+    }
+    if(dataValTwo == 'sales_sum'){
+        $(".storenav ul li:nth-child(2)").addClass("activeRed").siblings().removeClass('activeRed');
+    }
+    if(dataValTwo == "shop_price"){
+        if (picTwo == 'asc') {
+            $(".storenav ul li .pr").removeClass("bpr1").addClass("bpr2");
+        }
+        if(picTwo == 'desc'){
+            $(".storenav ul li .pr").removeClass("bpr2").addClass("bpr1");
+        }
+        if(picTwo==''){
+            $(".storenav ul li .pr").removeClass("bpr1").addClass("bpr2");
+        }
+        $(".storenav ul li:last-child").addClass("activeRed").siblings().removeClass('activeRed');
+
+    }
+
+    // 点击筛选条件筛选
+    var pic, dataVal ;
+    $('.storenav ul li').click(function () {
+        var test;
+        $(".storenav ul li ").eq($(this).index()).addClass("activeRed").siblings().removeClass('activeRed');
+         pic = $('.pic').val();
+         dataVal = $(this).data('id');
+        if( dataVal == 'shop_price'){
+                if (pic == 'asc') {
+                    page=1;
+                    has_more_data = true;//还有数据
+                    test = 'desc';
+                    $(".storenav ul li .pr").removeClass("bpr1").addClass("bpr2");
+                }
+                if(pic == 'desc'){
+                    page=1;
+                    has_more_data = true;//还有数据
+                    test = 'asc';
+                    $(".storenav ul li .pr").removeClass("bpr2").addClass("bpr1");
+                }
+                if(pic==''){
+                    page=1;
+                    has_more_data = true;//还有数据
+                    test = 'desc';
+                    $(".storenav ul li .pr").removeClass("bpr1").addClass("bpr2");
+                }
+        }else {
+            $(".storenav ul li .pr").removeClass("bpr2");
+            $(".storenav ul li .pr").removeClass("bpr1")
+        }
+
+        if(dataVal == 'sales_sum'){
+            page=1;
+            has_more_data = true;//还有数据
+           pic  = "desc"
+           test = 'desc'
+        }
+        if(dataVal == ''){
+            page=1;
+            has_more_data = true;//还有数据
+            pic=""
+           test = ''
+        }
+
+        // 存储当前选中的状态
+        sessionStorage.setItem("dataVal",dataVal); //选中的状态
+        sessionStorage.setItem("pic",pic) //价格的升序和降序
+        $('.pic').val(test);
+        $.ajax({
+            type : "GET",
+            url:"/index.php?m=Mobile&c=Index&a=newUserFirstWelfare&p="+page,
+            data:{
+                sort:dataVal,
+                sort_asc:pic,
+            },
+            success: function(data) {
+                ajax_pending = false;
+                if ($.trim(data) != '') {
+                    $('.guessList').html(data);
+                    window.scrollTo(0,scrollTops-90);
+                } else {
+                    has_more_data = false;
+                }
+            }
+        });
+    });
+    /**
+     * ajax加载更多数据
+     */
+
+    function ajax_sourch_submit() {
+        if (ajax_pending || has_more_data == false) return;
+        ajax_pending = true;
+        ++page;
+        $.ajax({
+            type : "GET",
+            url:"/index.php?m=Mobile&c=Index&a=newUserFirstWelfare&p="+page,
+            data:{
+                sort:dataVal,
+                sort_asc:pic
+            },
+            success: function(data) {
+                ajax_pending = false;
+                if ($.trim(data) != '') {
+                    $('.guessList').append(data);
+                } else {
+                    has_more_data = false;
+
+                }
+            }
+        });
+    }
+
+    // 判断ios 和  安卓  兼容样式问题
+    $(function () {
+        var u = navigator.userAgent;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        if(isAndroid || !isiOS){  //安卓
+            $('.guessCom').css("height", ".7rem");
+            $('.guessTitle').css("height", ".56rem");
+
+        }else{  //苹果
+            $('.guessCom').css("height", ".8rem");
+        }
+    });
+
+    // 分享后 判断是否有上一级页面
+    function goBack(){
+        var his = document.referrer;
+        if(his) {
+            history.back(-1)
+        }else {
+            window.location.href = "{:U('Mobile/Index/index')}";
+        }
+    }
+</script>
+</body>
+</html>

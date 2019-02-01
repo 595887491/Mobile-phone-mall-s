@@ -1,0 +1,487 @@
+<include file="public/layout" />
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- 引入样式 -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<style>
+    .page{background: #fafafa;}
+#app::after, .nav::after,.title-data::after,.title-data ul li::after,.title-data ul li .db::after, .e-chart-nav::after
+,.flexigrid::after{display: block;clear: both;visibility: hidden;height: 0;font-size: 0;content: '';}
+#app .name{line-height: 40px;padding-right: 10px;}
+.fl{float: left;}
+.fr{float: right;}
+.el-cascader .el-input input[type="text"]{height: 40px;line-height: 40px;}
+    .nav{margin-top: 30px;}
+    .nav li {float: left;width: 100px;text-align: center;border: 1px solid #ddd;line-height: 33px;border-radius: 5px 5px 0 0;
+        background-color:rgba(242, 242, 242, 1);border-bottom: none;transition: .3s;}
+    .nav li a{color: #999;}
+    .nav li.checked{background-color: #fff;}
+    .nav li:last-child{margin-left: 15px;}
+    .sell-statistics{background-color: #fff;padding: 10px 20px;border-bottom: 1px solid rgba(235, 235, 235, 1);}
+    .sell-statistics .title{background: rgba(242, 242, 242, 1);padding: 5px 10px;border-radius: 3px;color: #999;}
+    .sell-statistics .title span{margin-left: 25px;}
+    .sell-statistics .title span:first-of-type{margin-left: 0;}
+    .title-data{margin-top: 20px;margin-bottom: 35px;}
+    .title-data ul li{float: left;width: 15%;padding: 5px 5px 10px 15px;border: 1px solid rgba(235, 235, 235, 1);
+        background-color: rgba(255, 255, 255, 1);margin-left:3.7%;border-radius: 5px;}
+    .title-data ul li:first-of-type,.e-chart-nav li:first-of-type{margin-left: 0;}
+    .title-data ul li .db{font-size: 12px;color: #CCCCCC;}
+    .title-data ul li .db .up {background: url("__PUBLIC__/static/images/new/u48.png")no-repeat;color: #00CC00;padding-left: 10px;background-position: 3px 7px;}
+    .title-data ul li .db .down{background: url("__PUBLIC__/static/images/new/u44.png")no-repeat;color: #FE5500;padding-left: 10px;background-position: 3px 7px;}
+    .k_help {width: 18px;height: 18px;cursor: pointer;}
+    .e-chart-nav li{float: left;padding: 5px 10px;border-radius: 3px; background-color: rgba(242, 242, 242, 1);border-color: rgba(235, 235, 235, 1);
+        font-size: 12px;color: #999999;margin-left: 15px;cursor: pointer;}
+    .flexigrid{background: #fff;}
+    .flexigrid .sDiv{float: none;float: left; margin-left: 30px;}
+    .k_help_bx{position: absolute;right: -32px;top:-34px;display: none;color: #fff;background: rgba(0,0,0,.5);padding: 10px 15px;border-radius:3px;}
+    .e-chart-nav li.active{color: #0ba4da;}
+</style>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>统计报表 - 财务概况</h3>
+                <h5>网站系统财务概况</h5>
+            </div>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+   <div class="checked-box">
+     <div id="app">
+         <span class="fl name">数据统计 :</span>
+         <div class="block fl">
+             <el-cascader
+                     :options="options"
+                     v-model="selectedOptions"
+                     @change="handleChange">
+             </el-cascader>
+         </div>
+     </div>
+   </div>
+    <!--选项卡-->
+    <ul class="nav">
+        <li class="checked"><a href="javascript:;">销售统计</a></li>
+        <li><a href="{:U('Report/memberReport')}">会员统计</a></li>
+    </ul>
+    <!--content-->
+    <div class="sell-statistics">
+       <div class="title">
+           <span>
+               累计销售额:￥{$total.total_amount}
+           </span>
+           <span>
+               累计订单数:{$total.total_order}
+           </span>
+           <span>
+               平均客单价:￥{$total.sign}
+           </span>
+           <span>
+               总退货金额:￥{$total.cancel_amount}
+           </span>
+           <span>
+               总退货数量:{$total.cancel_order}
+           </span>
+       </div>
+
+        <div class="title-data">
+             <ul>
+                 <li>
+                     <img src="__PUBLIC__/static/images/new/u20.png" alt="" class="fl" style="margin-top: 27px;">
+                     <div class="fl">
+                         <p style="font-size: 12px;color: #989898;">今日新增销售额</p>
+                         <p style="font-size: 28px;color: #666666;padding: 7px 0 ">￥{$today.today_amount}</p>
+                         <div class="db">
+                             <span class="fl" style="">同比昨日￥{$yestoday.today_amount}</span>
+                             <div class="fl <if condition='$today.today_amount egt $yestoday.today_amount'>up<else/>down</if>">
+                                 <span>{$add.today_amount}</span>
+                             </div>
+                         </div>
+                     </div>
+                 </li>
+                 <li>
+                     <img src="__PUBLIC__/static/images/new/u150.png" alt="" class="fl" style="margin-top: 27px;">
+                     <div class="fl">
+                         <p style="font-size: 12px;color: #989898;">今日新增订单数</p>
+                         <p style="font-size: 28px;color: #666666;padding: 7px 0 ">
+                             {$today.today_order}
+                             <span style="font-size: 13px;color: #333333;">(发货{$today.sended})</span>
+                         </p>
+                         <div class="db">
+                             <span class="fl" style="">同比昨日{$yestoday.today_order}</span>
+                             <div class="fl <if condition='$today.today_order egt $yestoday.today_order'>up<else/>down</if>">
+                                 <span>{$add.today_order}</span>
+                             </div>
+                         </div>
+                     </div>
+                 </li>
+                 <li style="position: relative;">
+                     <img src="__PUBLIC__/static/images/new/u28.png" alt="" class="fl" style="margin-top: 27px;">
+                     <div class="fl">
+                         <p style="font-size: 12px;color: #989898;">客单价
+                             <img src="__PUBLIC__/static/images/new/u36.png" alt="" class="fr k_help">
+                         </p>
+                         <p style="font-size: 28px;color: #666666;padding: 7px 0 ">
+                             ￥{$today.sign}
+                         </p>
+                         <div class="db">
+                             <span class="fl" style="">同比昨日￥{$yestoday.sign}</span>
+                             <div class="fl <if condition='$today.sign egt $yestoday.sign'>up<else/>down</if>">
+                                 <span>{$add.sign}</span>
+                             </div>
+                         </div>
+                     </div>
+                     <div class="k_help_bx">
+                         今日销售额/今日订单数
+                     </div>
+                 </li>
+                 <li>
+                     <img src="__PUBLIC__/static/images/new/u151.png" alt="" class="fl" style="margin-top: 27px;">
+                     <div class="fl">
+                         <p style="font-size: 12px;color: #989898;">未付款订单数</p>
+                         <p style="font-size: 28px;color: #666666;padding: 7px 0 ">
+                             {$today.nopay}
+                         </p>
+                         <div class="db">
+                             <span class="fl" style="">同比昨日{$yestoday.nopay}</span>
+                             <div class="fl <if condition='$today.nopay egt $yestoday.nopay'>up<else/>down</if>">
+                                 <span>{$add.nopay}</span>
+                             </div>
+                         </div>
+                     </div>
+                 </li>
+                 <li>
+                     <img src="__PUBLIC__/static/images/new/u35.png" alt="" class="fl" style="margin-top: 27px;">
+                     <div class="fl">
+                         <p style="font-size: 12px;color: #989898;">退货金额及数量</p>
+                         <p style="font-size: 28px;color: #666666;padding: 7px 0 ">
+                             ￥{$today.cancel_amount}
+                             <span style="font-size: 13px;color: #333333;">({$today.cancel_order}笔)</span>
+                         </p>
+                         <div class="db">
+                             <span class="fl" style="">同比昨日￥{$yestoday.cancel_amount}</span>
+                             <div class="fl <if condition='$today.cancel_amount egt $yestoday.cancel_amount'>up<else/>down</if>">
+                                 <span>{$add.cancel_amount}</span>
+                             </div>
+                         </div>
+                     </div>
+                 </li>
+             </ul>
+        </div>
+       <div class="flexigrid">
+           <ul class="e-chart-nav fl">
+               <li onclick="timeline(-1,'{$todayS}');" class="<if condition='$Request.param.days eq -1'>active</if>">今日</li>
+               <li onclick="timeline(1,'{$yestodayS}','{$todayS}');"class="<if condition='$Request.param.days eq 1'>active</if>">昨日</li>
+               <li onclick="timeline(7,'{$daysAgo_7}');"class="<if condition='$days eq 7 || $Request.param.days eq 7'>active</if>">最近7日</li>
+               <li onclick="timeline(30,'{$daysAgo_30}');"class="<if condition='$Request.param.days eq 30'>active</if>">最近30天</li>
+               <!--<li>-->
+               <!--<div class="layui-form">-->
+               <!--<div class="layui-form-item">-->
+               <!--<div class="layui-inline">-->
+               <!--<label class="layui-form-label">日期范围</label>-->
+               <!--<div class="layui-input-inline">-->
+               <!--<input type="text" class="layui-input" id="test6" placeholder=" - ">-->
+               <!--</div>-->
+               <!--</div>-->
+               <!--</div>-->
+               <!--</div>-->
+               <!--</li>-->
+           </ul>
+
+               <form class="navbar-form form-inline" id="search-form" method="get" action="{:U('Report/saleReport')}" onSubmit="return check_form();">
+                   <div class="sDiv">
+                       <div class="sDiv2" style="margin-right: 10px;">
+                           <input type="text" size="30" name="start_time" id="start_time" value="{$start_time}" placeholder="起始时间" class="qsbox">
+                           <input type="button" class="btn" value="起始时间">
+                       </div>
+                       <div class="sDiv2" style="margin-right: 10px;">
+                           <input type="text" size="30" name="end_time" id="end_time" value="{$end_time}" placeholder="截止时间" class="qsbox">
+                           <input type="button" class="btn" value="截止时间">
+                       </div>
+                       <div class="sDiv2">
+                           <input class="btn" value="搜索" type="submit">
+                       </div>
+                   </div>
+                   <input name="a_user" type="hidden" value="{$Request.param.a_user}"/>
+                   <input name="days" type="hidden" value="{$Request.param.days}"/>
+               </form>
+       </div>
+    </div>
+    <div class="flexigrid">
+        <if condition="$Request.param.days != -1 && $Request.param.days != 1">
+        <div id="statistics" style="height: 400px;"></div>
+        </if>
+        <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th class="sign" axis="col0">
+                            <div style="width: 24px;"><i class="ico-check"></i></div>
+                        </th>
+                        <th align="center" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: center; width: 120px;" class="">日期</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 100px;" class="">销售额</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 100px;" class="">订单数</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 100px;" class="">客单价</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">未付款订单数</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">退货金额及数量</div>
+                        </th>
+                        <th style="width:100%" axis="col7">
+                            <div></div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                <table>
+                    <tbody>
+                    <foreach name="list" item="vo" key="k" >
+                        <tr>
+                            <td class="sign">
+                                <div style="width: 24px;"><i class="ico-check"></i></div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 120px;">{$vo.day}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">{$vo.amount}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">{$vo.order_num}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">{$vo.sign}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">{$vo.nopay}</div>
+                            </td>
+                            <td align="center" class="">
+                                <div style="text-align: center; width: 100px;">{$vo.cancel_amount}|{$vo.cancel}</div>
+                            </td>
+                            <td align="" class="" style="width: 100%;">
+                                <div>&nbsp;</div>
+                            </td>
+                        </tr>
+                    </foreach>
+                    </tbody>
+                </table>
+            </div>
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+        <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th class="sign" axis="col0">
+                            <div style="width: 24px;"><i class="ico-check"></i></div>
+                        </th>
+                        <th align="center" abbr="article_title" axis="col3" class="">
+                            <div style="text-align: center; width: 120px;" class="">合计：{$subTotal.day_count}天</div>
+                        </th>
+                        <th align="center" abbr="ac_id" axis="col4" class="">
+                            <div style="text-align: center; width: 100px;" class="">￥{$subTotal.amount}</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 100px;" class="">{$subTotal.order_num}笔</div>
+                        </th>
+                        <th align="center" abbr="article_show" axis="col5" class="">
+                            <div style="text-align: center; width: 100px;" class="">￥{$subTotal.sign}</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">{$subTotal.nopay}笔</div>
+                        </th>
+                        <th align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">￥{$subTotal.cancel_amount}|{$subTotal.cancel}笔</div>
+                        </th>
+                        <th style="width:100%" axis="col7">
+                            <div></div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="__PUBLIC__/js/echart/echarts.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/js/echart/macarons.js"></script>
+<script src="__PUBLIC__/js/echart/china.js"></script>
+<script src="__PUBLIC__/dist/js/app.js" type="text/javascript"></script>
+<script>
+    var agent = {$agentArr};
+    new Vue({
+        el: '#app',
+        data:{
+                options: agent,
+                selectedOptions: [],
+                selectedOptions2: []
+        },
+        methods: {
+            handleChange:function(value) {
+                $("input[name='a_user']").val(value);
+                // $("#search-form").submit();
+            }
+        },
+    });
+    $('#start_time').layDate();
+    $('#end_time').layDate();
+
+    // 帮助
+    $('.k_help').hover(function () {
+        $('.k_help_bx').show()
+    },function () {
+        $('.k_help_bx').hide()
+    })
+</script>
+<script type="text/javascript">
+    <if condition="$Request.param.days != -1 && $Request.param.days != 1">
+    var res = {$result};
+    // var res = '';
+    var myChart = echarts.init(document.getElementById('statistics'),'macarons');
+    option = {
+        tooltip : {
+            trigger: 'axis'
+        },
+        toolbox: {
+            show : true,
+            feature : {
+                mark : {show: true},
+                dataView : {show: true, readOnly: false},
+                magicType: {show: true, type: ['line', 'bar']},
+                restore : {show: true},
+                saveAsImage : {show: true}
+            }
+        },
+        calculable : true,
+        legend: {
+            data:['销售额','订单数','客单价','未付款订单数','退货金额'],
+            selected:{'订单数':false,'客单价':false,'未付款订单数':false,'退货金额':false}//初始化只显示第一个
+        },
+        xAxis : [
+            {
+                type : 'category',
+                data : res.time
+            }
+        ],
+        yAxis : [
+            {
+                type : 'value',
+                name : '金额',
+                axisLabel : {
+                    formatter: '{value} ￥'
+                }
+            },
+            {
+                type : 'value',
+                name : '订单数',
+                axisLabel : {
+                    formatter: '{value}'
+                }
+            }
+        ],
+        series : [
+            {
+                name:'销售额',
+                type:'line',
+                data:res.amount
+            },
+            {
+                name:'订单数',
+                type:'bar',
+                yAxisIndex: 1,
+                data:res.order
+            },
+            {
+                name:'客单价',
+                type:'line',
+                data:res.sign
+            },
+            {
+                name:'未付款订单数',
+                type:'bar',
+                yAxisIndex: 1,
+                data:res.nopay
+            },
+            {
+                name:'退货金额',
+                type:'line',
+                data:res.cancel
+            }
+        ]
+    };
+    myChart.setOption(option);
+    </if>
+    $(document).ready(function(){
+        // 表格行点击选中切换
+        $('#flexigrid > table>tbody >tr').click(function(){
+            $(this).toggleClass('trSelected');
+        });
+
+        // 点击刷新数据
+        $('.fa-refresh').click(function(){
+            location.href = location.href;
+        });
+
+        // 起始位置日历控件
+        laydate.skin('molv');//选择肤色
+        laydate({
+            elem: '#start_time',
+            format: 'YYYY-MM-DD', // 分隔符可以任意定义，该例子表示只显示年月
+            festival: true, //显示节日
+            istime: false,
+            choose: function(datas){ //选择日期完毕的回调
+                compare_time($('#start_time').val(),$('#end_time').val());
+            }
+        });
+
+        // 结束位置日历控件
+        laydate({
+            elem: '#end_time',
+            format: 'YYYY-MM-DD', // 分隔符可以任意定义，该例子表示只显示年月
+            festival: true, //显示节日
+            istime: false,
+            choose: function(datas){ //选择日期完毕的回调
+                compare_time($('#start_time').val(),$('#end_time').val());
+            }
+        });
+
+    });
+
+    function check_form(){
+        var start_time = $.trim($('#start_time').val());
+        var end_time =  $.trim($('#end_time').val());
+        if(start_time == '' ^ end_time == ''){
+            layer.alert('请选择完整的时间间隔', {icon: 2});
+            return false;
+        }
+        return true;
+    }
+    var endTime = "{$end_time}";
+    function timeline(days,start,end){
+        $("input[name=days]").val(days);
+        $('#start_time').val(start);
+        end?$('#end_time').val(end):$('#end_time').val(endTime);
+        $("#search-form").submit();
+    }
+</script>
+</body>
+</html>

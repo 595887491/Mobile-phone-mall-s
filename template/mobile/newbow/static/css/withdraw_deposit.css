@@ -1,0 +1,104 @@
+.loginsingup-input{
+    padding: 0 .9rem;
+}
+.loginsingup-input .lsu-recharge>span, .loginsingup-input .lsu-v-code>span{
+    font-size: .65rem;
+    width: 4rem;
+    color: #1E1B1B;
+}
+.loginsingup-input .lsu input{
+    font-size: .6rem;
+    color: #1E1B1B;
+}
+.loginsingup-input .lsu select{
+    font-size: .6rem;
+    color: #1E1B1B;
+    width: 10rem;
+    height: 1rem;
+    border: none;
+    outline: none;
+    padding-left: .2rem;
+    background: transparent;
+}
+.cf_price{
+    position: absolute;
+    /*top: 10rem;*/
+    left: .5rem;
+}
+.loginsingup-input .lsu-submit input, .btn-goto-login{
+    background-color: #FF407E;
+    font-size: .7rem;
+    margin-top:1.5rem;
+    border-radius: .2rem;
+}
+.balance_success_bg{
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.5);
+    position: fixed;
+    top:0;
+    left: 0;
+    display: none;
+}
+.balance_success{
+    width: 80%;
+    height: 13.6rem;
+    background: white;
+    position: absolute;
+    top:7rem;
+    left: 1.6rem;
+    border-radius: .2rem;
+    /*box-shadow:0 0.1rem 0.5rem 1px #eee;*/
+    z-index: 999;
+    text-align: center;
+}
+.close_img{
+    position: absolute;
+    top: .7rem;
+    right: .6rem;
+}
+.success_img{
+    margin-top: 1.5rem;
+    width: 5.7rem;
+    height: 4.2rem;
+    text-align: center;
+    margin-left: .8rem;
+}
+.balance_success p{
+    font-size: .7rem;
+    color: #1E1B1B;
+    margin-top: .8rem;
+    text-align: center;
+}
+.balance_success span{
+    font-size: .65rem;
+    color: #5B5858;
+    margin-left: 1rem;
+}
+.comment_money p{
+    text-align: center;
+    width: 92%;
+    font-size: .5rem;
+    color: #5B5858;
+    line-height: .8rem;
+    margin-left: .5rem;
+}
+.success_btn{
+    margin-top: .5rem;
+    padding-top: .7rem;
+    border-top: 2px solid #F1F5F8;
+}
+.success_btn button{
+    width: 90%;
+    height: 1.6rem;
+    border: 1px solid #FF407E;
+    background: white;
+    color: #FF407E;
+    font-size: .7rem;
+    border-radius: .2rem;
+    /*margin-left: 1rem;*/
+}
+.loginsingup-input .lsu-v-code>input{
+    width: 5rem;
+}
+#cf_bank option{min-height: auto;}

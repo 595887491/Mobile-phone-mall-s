@@ -1,0 +1,151 @@
+<if condition="$full_page eq 1">
+<include file="public/header" title="我的会员" body="f3"/>
+<include file="public/header_nav" title="我的会员" href="javascript:history.back()"/>
+<link rel="stylesheet" href="__STATIC__/css/new/cf_member_list.css">
+    <!--服务商-->
+    <if condition="$data.identity['partner'] eq 0 && $data.identity['agent'] eq 1">
+         <div class="pjiscion p after-set-li">
+        <ul>
+            <a href="{:U('Mobile/Distribution/memberList',array('type'=>0))}">
+                <li <if condition='$Request.get.type eq 0'>class="red"</if>>
+                <div>
+                    <span>{$agentCount}</span>
+                    <p>服务商</p>
+                </div>
+                </li>
+            </a>
+            <a href="{:U('Mobile/Distribution/memberList',array('type'=>3))}">
+                <li <if condition='$Request.get.type eq 3'>class="red"</if>>
+                <div> <span>{$partnerNum}</span><p>合伙人</p>  </div>
+                </li>
+            </a>
+            <a href="{:U('Mobile/Distribution/memberList',array('type'=>1))}" >
+                <li <if condition='$Request.get.type eq 1'>class="red"</if>>
+                <div> <span>{$first_user_num}</span><p>一级会员</p></div>
+                </li>
+            </a>
+            <a href="{:U('Mobile/Distribution/memberList',array('type'=>2))}">
+                <li <if condition='$Request.get.type eq 2'>class="red"</if>>
+                <div> <span>{$second_user_num}</span><p>二级会员</p>  </div>
+                </li>
+            </a>
+        </ul>
+    </div>
+    </if>
+    <!--服务商和合伙人-->
+    <if condition="$data.identity['partner'] eq 1 && $data.identity['agent'] eq 1">
+        <div class="pjiscion p after-set-li">
+            <ul>
+                <a href="{:U('Mobile/Distribution/memberList',array('type'=>0))}">
+                    <li <if condition='$Request.get.type eq 0'>class="red"</if>>
+                    <div>
+                        <span>{$agentCount}</span>
+                        <p>服务商</p>
+                    </div>
+                    </li>
+                </a>
+                <a href="{:U('Mobile/Distribution/memberList',array('type'=>3))}">
+                    <li <if condition='$Request.get.type eq 3'>class="red"</if>>
+                    <div> <span>{$partnerNum}</span><p>合伙人</p>  </div>
+                    </li>
+                </a>
+                <a href="{:U('Mobile/Distribution/memberList',array('type'=>1))}" >
+                    <li <if condition='$Request.get.type eq 1'>class="red"</if>>
+                    <div> <span>{$first_user_num}</span><p>一级会员</p></div>
+                    </li>
+                </a>
+                <a href="{:U('Mobile/Distribution/memberList',array('type'=>2))}">
+                    <li <if condition='$Request.get.type eq 2'>class="red"</if>>
+                    <div> <span>{$second_user_num}</span><p>二级会员</p>  </div>
+                    </li>
+                </a>
+            </ul>
+        </div>
+    </if>
+    <!--合伙人-->
+    <if condition="$data.identity['partner'] eq 1 && $data.identity['agent'] eq 0">
+        <div class="pjiscion p after-set-li">
+            <ul>
+                <a href="{:U('Mobile/Distribution/memberList',array('type'=>1))}" >
+                    <li style="width: 50%;" <if condition='$Request.get.type eq 1'>class="red"</if>>
+                    <div> <span>{$first_user_num}</span><p>一级会员</p></div>
+                    </li>
+                </a>
+                <a href="{:U('Mobile/Distribution/memberList',array('type'=>2))}">
+                    <li style="width: 50%;" <if condition='$Request.get.type eq 2'>class="red"</if>>
+                    <div> <span>{$second_user_num}</span><p>二级会员</p>  </div>
+                    </li>
+                </a>
+            </ul>
+        </div>
+    </if>
+<div class="quedbox bg_white">
+</if>
+<!--加载更多S-->
+<notempty name="memberList">
+    <foreach name="memberList" item="user">
+        <div class="shopprice dapco p" style="">
+            <div class="img_or fl">
+                <img src="{$user.head_pic|default='http://cdn.cfo2o.com/data/avatar/user_head_default.png'}?x-oss-process=style/s150x150" />
+                <!--<if condition="$user.relative_level eq 1">-->
+                    <!--<div class="member_one cf_member"></div>-->
+                    <!--<elseif condition="$user.relative_level eq 2">-->
+                        <!--<div class="member_two cf_member"></div>-->
+                        <!--<else/>-->
+                        <!--<div class="member_bf cf_member"></div>-->
+                <!--</if>-->
+
+            </div>
+            <div class="right-wrap fr">
+                <div>
+                    <span class="name">{$user.nickname|default='匿名用户'}</span>
+                    <span class="fr">注册时间</span>
+                </div>
+                <div style="margin-top: .3rem;">
+                    <span style="color: #1E1B1B;">{$user.mobile}</span>
+                    <span class="fr">{$user.reg_time}</span>
+                </div>
+            </div>
+        </div>
+    </foreach>
+    <else/>
+    <if condition="$full_page eq 1">
+    <div class="cf_empty">
+        <img src="__STATIC__/images/empty_member_list.png" alt="" style="pointer-events: none;">
+        <p>客官大大！暂无相关信息</p>
+    </div>
+    </if>
+</notempty>
+<if condition="$full_page eq 1">
+</div>
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script type="text/javascript">
+    /**
+     * ajax加载更多商品
+     */
+    var  page = 1;
+    var ajax_pending = false;//进行中
+    var has_more_data = true;//还有数据
+    function ajax_sourch_submit()
+    {
+        if (ajax_pending || has_more_data == false) return;
+        ajax_pending = true;
+        // console.log(page)
+        ++page;
+        $.ajax({
+            type : "GET",
+            url:"/index.php?m=Mobile&c=Distribution&a=memberList&is_ajax=1&type={$Request.get.type}&p="+page,
+            success: function(data) {
+                ajax_pending = false;
+                if ($.trim(data) != '') {
+                    $('.quedbox').append(data);
+                }else {
+                    has_more_data = false;
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>
+</if>

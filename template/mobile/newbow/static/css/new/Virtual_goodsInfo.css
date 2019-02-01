@@ -1,0 +1,12 @@
+.price{background: #fff;color: #BFC1CD;border-bottom: 1px solid #EDEEF4;padding: .2rem;}
+.price .fl .money{font-size: .46rem;color: #FF407E;}
+.submit-btn{    width: 80%;}
+.details_footer .server{width: 25.3%;}
+
+.information_dr{margin-top: .2rem;}
+.buy_num {background: #fff;padding: .4rem 0;margin-left: .64rem;padding-right: .64rem;
+    border-bottom: 1px solid #EDEEF4;font-size: .62rem;}
+.plus span{border: 1px solid #D4D4D4;}
+.mp_minous, .mp_plus{background: #fff;}
+#number{font-size: .62rem;vertical-align: 0;}
+.buy_money{padding: .6rem 0;padding-right: .64rem;}

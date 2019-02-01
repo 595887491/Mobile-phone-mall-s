@@ -1,0 +1,22 @@
+<include file="public/header" title="新用户注册" />
+<include file="public/header_nav" title="新用户注册" href="javascript:history.back(-1)"/>
+<style>
+    .loginsignup{position: fixed;width: 100%;top:0;left: 0;}
+    .contents img{
+        margin-top: 1.81rem;
+        width: 100%;
+    }
+</style>
+<div class="contents">
+    <img src="http://cdn.cfo2o.com/public/upload/other/show_user_reg.png?x-oss-process=style/s01" alt="">
+</div>
+<script>
+    var ShareImgUrl = "http://{$_SERVER[HTTP_HOST]}__STATIC__/images/logo_share.png"; //分享图标
+    var ShareTitle = "新用户注册有礼"; //分享标题
+    var ShareDesc = "新用户注册即送30元礼包"; //分享描述
+</script>
+<!-- 微信浏览器 调用微信 分享js-->
+<include file="public/wx_share"/>
+<!-- 微信浏览器 调用微信 分享js  end-->
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>合伙人资料</title>
+    <link rel="stylesheet" href="__STATIC__/css/style.css">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/categoryList.css"/>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/mobile-util.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
+</head>
+<include file="public/header_nav" title="合伙人资料" href="javascript:history.back(-1)"/>
+<link rel="stylesheet" href="__STATIC__/css/new/agentPartnerNums.css">
+<body style="background: #F1F5F8;">
+<div class="header">
+ <div class="avatar">
+     <img src="{$partner_data.head_pic}?x-oss-process=style/s150x150" alt="">
+ </div>
+    <php>var_d</php>
+    <p>{$partner_data.nickname}</p>
+    <p>{$partner_data.mobile}</p>
+    <p class="money">贡献收益:{$partner_data.contribut_income}</p>
+    <p class="bott">
+        <span class="fl">注册时间:{$partner_data.reg_time}</span>
+        <span class="fr">最后登录:{$partner_data.last_login}</span>
+    </p>
+</div>
+<div class="box member">
+   <p class="head">会员中心</p>
+   <ul>
+       <li>
+           <p>{$partner_data.first_child_nums}</p>
+           <p>一级会员</p>
+       </li>
+       <li>
+           <p>{$partner_data.second_child_nums}</p>
+           <p>二级会员</p>
+       </li>
+       <li>
+           <p>{$partner_data.third_child_nums}</p>
+           <p>缤纷会员</p>
+       </li>
+   </ul>
+</div>
+
+<div class="box" style="margin-top: .4rem;">
+    <p class="head">收益中心</p>
+    <ul>
+        <li>
+            <p>{$partner_data.order_nums}</p>
+            <p>订单总数</p>
+        </li>
+        <li>
+            <p>{$partner_data.wallet_accumulate_income}</p>
+            <p>订单收益</p>
+        </li>
+        <li>
+            <p>{$partner_data.partner_kpi}</p>
+            <p>成就值</p>
+        </li>
+    </ul>
+</div>
+</body>
+
+</html>

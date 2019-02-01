@@ -1,0 +1,243 @@
+<!DOCTYPE>
+<html>
+<head>
+    <title>合伙人招募</title>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/rem.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <!--<link rel="stylesheet" href="__STATIC__/css/style.css">-->
+    <script src="__STATIC__/js/need/swiper-4.3.3.min.js"  type="text/javascript" ></script>
+    <link rel="stylesheet" href="__STATIC__/js/need/swiper-4.3.3.min.css">
+    <!--<link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>-->
+    <link rel="stylesheet" href="__STATIC__/css/new/team_base.css">
+    <link rel="stylesheet" href="__STATIC__/css/new/commonUserIndex.css">
+</head>
+<body>
+
+
+<if condition="empty($user_identity['partner']) ">
+    <!--正常合伙人流程-->
+    <div >
+        <section class="content_one">
+            <div class="head">
+                <a href="{:U('Mobile/User/index')}" class="fl">
+                    <img src="__STATIC__/images/new/back.png" alt="" style="margin-top: .1rem;">
+                </a>
+                <div id="scroll" class="scroll">
+                    <ul class="fl">
+                        <foreach name="$data['partner_info']" item="v">
+                            <li>
+                                <div class="avatar fl">
+                                    <img src="{$v.head_pic}?x-oss-process=style/s150x150" alt="">
+                                </div>
+                                <p>恭喜“{$v.nickname}”成为合伙人，获得￥374合伙人礼包</p>
+                            </li>
+                        </foreach>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <section class="content_two"></section>
+        <section class="content_three"></section>
+        <section class="content_four"></section>
+        <section class="content_five">
+            <ul class="goods">
+                <foreach name="$data['goods_data']" item="v">
+                    <li style="">
+                        <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v[goods_id]))}">
+                            <img src="{$v.original_img}?x-oss-process=style/s340x340" alt="">
+                            <p class="nickname">{$v.goods_remark}</p>
+                            <p class="detals">{$v.goods_name}</p>
+                            <p class="money">
+                                <span>￥</span>
+                                <span>{$v.shop_price}</span>
+                                <span>￥{$v.market_price}</span>
+                            </p>
+                        </a>
+                    </li>
+
+                </foreach>
+            </ul>
+        </section>
+    </div>
+    <else />
+    <!--合伙人续费-->
+    <div>
+        <!--合伙人过期 并且 宽限期已过 -->
+        <!--每天9毛线-->
+        <section class="content_one_state">
+            <div class="head">
+                <a href="{:U('Mobile/User/index')}" class="fl">
+                    <img src="__STATIC__/images/new/back.png" alt="" style="margin-top: .1rem;">
+                </a>
+                <div  class="scroll ">
+                    <span class="stateBtn">已过期</span>
+                    <span class="stateFont">你的合伙人身份将在 <span style="color: #FE8F53" class="endTime"></span>到期</span>
+                </div>
+            </div>
+        </section>
+
+        <!--已过期 宽限期 30天内-->
+        <!--30天续费-->
+        <if condition="$user_identity['partner']['in_grace_eriod'] eq 1 && $user_identity['partner']['status'] eq 4">
+            <section class="content_one_state1">
+                <div class="head">
+                    <a href="{:U('Mobile/User/index')}" class="fl">
+                        <img src="__STATIC__/images/new/back.png" alt="" style="margin-top: .1rem;">
+                    </a>
+                    <div  class="scroll ">
+                        <span class="stateBtn">已过期</span>
+                        <span class="stateFont">你的合伙人身份将在 <span style="color: #FE8F53" class="endTime"></span>到期</span>
+                    </div>
+                </div>
+                <div class="comment">
+                    <p>9月30日前续费成功 </p>
+                    <p style="margin-top: .1rem">到期后的收益将正常返利</p>
+                    <p style="font-size: .24rem;margin-top: .4rem">带返利金额：<span style="color: #FE8F53">¥598</span></p>
+                </div>
+            </section>
+        </if>
+
+        <!--还有30天到期 提前续费-->
+        <!--多加 30天时长 -->
+        <if condition="$user_identity['partner']['is_about_to_expire'] eq 1">
+            <section class="content_one_state2">
+                <div class="head">
+                    <a href="{:U('Mobile/User/index')}" class="fl">
+                        <img src="__STATIC__/images/new/back.png" alt="" style="margin-top: .1rem;">
+                    </a>
+                    <div  class="scroll ">
+                        <span class="stateBtn">即将过期</span>
+                        <span class="stateFont">你的合伙人身份将在 <span style="color: #FE8F53" class="endTime"></span>到期</span>
+                    </div>
+                </div>
+                <div class="comment" style="top: 2.2rem;">
+                    <span style="font-size: .8rem;margin-top: .2rem">30天</span>
+                </div>
+            </section>
+        </if>
+        <section class="content_three_state"></section>
+        <section class="content_five">
+            <ul class="goods">
+                <foreach name="$data['goods_data']" item="v">
+                    <li style="">
+                        <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$v[goods_id]))}">
+                            <img src="{$v.original_img}?x-oss-process=style/s340x340" alt="">
+                            <p class="nickname">{$v.goods_remark}</p>
+
+                            <p class="detals">{$v.goods_name}</p>
+                            <p class="money">
+                                <span>￥</span>
+                                <span>{$v.shop_price}</span>
+                                <span>￥{$v.market_price}</span>
+                            </p>
+                        </a>
+                    </li>
+
+                </foreach>
+            </ul>
+        </section>
+    </div>
+</if>
+
+<script>
+    var events = navigator.userAgent;
+    if(events.indexOf('Android')>-1 || events.indexOf('Linux')>-1 || events.indexOf('Adr')>-1){
+        console.log("安卓手机");
+    }else if(events.indexOf('iPhone')>-1){
+        //根据尺寸进行判断 苹果的型号
+        if(screen.height == 812 && screen.width == 375){
+            console.log("苹果X");
+        }else if(screen.height == 736 && screen.width == 414){
+            console.log("iPhone7P - iPhone8P - iPhone6");
+            $('.content_one').css('height','6rem');
+            $('.content_three').css('height','6rem');
+            $('.content_two').css('height','6rem');
+            $('.content_four').css('height','8.7rem');
+            $('.content_five').css('height','8.5rem');
+        }else if(screen.height == 667 && screen.width == 375){
+            console.log("iPhone7 - iPhone8 - iPhone6");
+        }else if(screen.height == 568 && screen.width == 320){
+            console.log("iPhone5");
+        }else{
+            console.log("iPhone4");
+        }
+    }else if(events.indexOf('Windows Phone')>-1){
+        console.log("诺基亚手机");
+
+    }else if(events.indexOf("iPad")>-1){
+        console.log("平板");
+    }
+</script>
+
+<section style="height: 1rem;"></section>
+<section class="content_six">
+    <a href="{:U('Mobile/distribution/verifiyInviteCode')}">
+        <img src="__STATIC__/images/new/commonUserIndex6.png" alt="">
+    </a>
+</section>
+<script>
+    var timeStyle, endTime;
+    endTime = "{$user_status['be_partner_end']}"?"{$user_status['be_partner_end']}":"";
+    endTime = endTime*1000
+    //时间戳转化为时间格式
+    var formatDate = function(){
+        var time = new Date(endTime);
+        var y=time.getFullYear();
+        var m=time.getMonth()+1;
+        var d=time.getDate();
+        m = m<10?("0"+m):m;
+        d = d<10?("0"+d):d;
+        timeStyle = y+"年"+m+"月"+d+'日';
+    };
+    formatDate();
+    $('.endTime').html(timeStyle);
+
+
+        //滚动
+    var scrollIndex=0;
+    var Timer=null;
+    function scroll_f(){
+        clearInterval(Timer);
+        var ul=$("#scroll ul");
+        var li=ul.children("li");
+        $("#scroll ul").eq(0).height();
+        // var h = li.height();
+        var h=li.outerHeight(true);
+        var index=0;
+        if(li.length>0) {
+            ul.css("height",h*li.length*2);
+            ul.html(ul.html()+ul.html());
+        }
+        function run()
+        {
+            if(scrollIndex>=li.length){
+                ul.css({top:0});
+                scrollIndex=1;
+                ul.animate({top:-scrollIndex*h},200);
+            }
+            else{
+                scrollIndex++;
+
+                ul.animate({top:-scrollIndex*h},200);
+            }
+        }
+        if(li.length>0) {
+            Timer=setInterval(run,3000);
+        }
+    }
+    $(function(){
+        scroll_f();
+    })
+</script>
+
+<script>
+    var ShareImgUrl = "https://{$_SERVER[HTTP_HOST]}__STATIC__/images/new/partter_share.png"; //分享图标
+    var ShareDesc ="闲时赚钱利器，动动手指赚大钱，查看详情" ; //分享标题
+    var ShareTitle = "尚美缤纷合伙人火热招募中"; //分享描述
+    var ShareLink = "http://{$_SERVER[HTTP_HOST]}/index.php/mobile/distribution/commonUserIndex"; //分享描述
+</script>
+<include file="public/wx_share"/>
+</body>
+</html>

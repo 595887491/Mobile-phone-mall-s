@@ -1,0 +1,124 @@
+<div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+    <table style="width: 100%;">
+        <tbody>
+        <if condition="empty($list) eq true " >
+            <tr data-id="0">
+                <td class="no-data" align="center" axis="col0" colspan="50">
+                    <i class="fa fa-exclamation-circle"></i>没有符合条件的记录
+                </td>
+            </tr>
+            <else/>
+            <volist name="list" id="vo">
+                <tr data-order-id="{$vo.id}">
+                    <td class="sign" axis="col0">
+                        <div style="width: 24px;"><i class="ico-check"></i></div>
+                    </td>
+                    <td align="left" abbr="order_sn" axis="col3" class="">
+                        <div style="text-align: left; width: 140px;" class="">{$vo.id}</div>
+                    </td>
+                    <td align="left" abbr="consignee" axis="col4" class="">
+                        <div style="text-align: left; width: 100px;" class="">{$vo.hall_name}</div>
+                    </td>
+                    <td align="center" abbr="article_time" axis="col6" class="">
+                        <div style="text-align: center; width: 120px;" class="">{$vo.hall_name_en}</div>
+                    </td>
+                    <td align="center" abbr="article_time" axis="col6" class="">
+                        <div style="text-align: center; width: 120px;" class="">
+                            <i id="img_i"
+                               onMouseOver="layer.tips('<img width=300px src={$vo.banner_img}?x-oss-process=style/s01>',this,{tips: [1, '#fff']});"
+                               onMouseOut="layer.closeAll();">
+                                <img width="50px" src="{$vo.banner_img}?x-oss-process=style/s01">
+                            </i>
+                        </div>
+                    </td>
+                    <td align="center" abbr="article_time" axis="col6" class="">
+                        <div style="text-align: center; width: 200px;" class="">{$vo.country}</div>
+                    </td>
+                    <td align="center" abbr="article_time" axis="col6" class="">
+                        <div style="text-align: center; width: 80px;" class="">{$vo.hot_goods}</div>
+                    </td>
+                    <td align="center" abbr="article_time" axis="col6" class="">
+                        <div style="text-align: center; width: 100px;" class="">
+                          {$vo.hot_brand}
+                        </div>
+                    </td>
+                    <td align="center" abbr="article_time" axis="col6" class="">
+                        <div style="text-align: center; width: 180px;" class="">
+                           {$vo.add_time|date='Y-m-d H:i:s',###}
+                        </div>
+                    </td>
+                    <!--<td align="center" abbr="article_time" axis="col6" class="">-->
+                        <!--<div style="text-align: center; width: 100px;">-->
+                            <!--<if condition='$vo[id] eq 1'>-->
+                                <!--<span class="yes" onClick="changeTableVal('brand','id','{$vo.id}','is_hot',this)" ><i class="fa fa-check-circle"></i>是</span>-->
+                                <!--<else />-->
+                                <!--<span class="no" onClick="changeTableVal('brand','id','{$vo.id}','is_hot',this)" ><i class="fa fa-ban"></i>否</span>-->
+                            <!--</if>-->
+                        <!--</div>-->
+                    <!--</td>-->
+
+                    <td align="center" axis="col1" class="handle" align="center">
+                        <div style="text-align: center; ">
+                            <!--<a class="btn green" href="javascript:void(0)" onclick="lianjie({$vo.id})"><i class="fa fa-list-alt"></i>场馆链接</a>-->
+                            <a class="btn green" href="{:url('GlobalPurchase/addEdit',['id'=>$vo.id])}"><i class="fa fa-list-alt"></i>编辑</a>
+                            <a class="btn green" href="javascript:void(0)" onclick="hall_delete({$vo.id})"><i class="fa fa-list-alt"></i>删除</a>
+                        </div>
+                    </td>
+                    <td align="" class="" style="width: 100%;">
+                        <div>&nbsp;</div>
+                    </td>
+                </tr>
+            </volist>
+        </if>
+        </tbody>
+    </table>
+</div>
+
+<div class="partnerList">
+    {$page}
+</div>
+
+<script>
+    // 点击分页触发的事件
+    $(".pagination  a").click(function(){
+        cur_page = $(this).data('p');
+        ajax_get_table('search-form2',cur_page);
+    });
+    function search_agent(real_name) {
+        $('#identity').val(2);
+        $('#keywords').val(real_name);
+        ajax_get_table('search-form2',1);
+    }
+    $('.ftitle>h5').empty().html("(共{$count}条记录)");
+
+    //删除操作
+    function hall_delete(id) {
+        layer.confirm('确定删除该场馆吗?', {
+            btn: ['确定','点错了'] //按钮
+        }, function(){
+            $.ajax({
+                type : "POST",
+                url:"/index.php/Admin/GlobalPurchase/delete/id/"+id,//+tab,
+                success: function(data){
+                    if(data.code == 1){
+                        layer.msg(data.message, {icon: 1});
+                        ajax_get_table('search-form2',cur_page);
+                    }else {
+                        layer.msg(data.message, {icon: 2});
+                    }
+                }
+            });
+        });
+    }
+
+    //链接操作
+    function lianjie(id) {
+        layer.prompt({title: '输入你的银行卡密码，并确认', formType: 1}, function(pass, index){
+            layer.close(index);
+            layer.prompt({title: '输入你的银行卡号，并确认', formType: 2}, function(text, index){
+                layer.close(index);
+                layer.msg('党和国家感谢你的奉献：'+ text );
+            });
+        });
+    }
+</script>

@@ -1,0 +1,18 @@
+.cf_nickstaut{
+    /*color: #FFFFFF;*/
+    display: inline-block;
+    /*font-size: .6rem;*/
+    margin-top: .3rem;
+}
+.Mright{
+    opacity: .45;
+}
+.cf_user_set{
+    float: left;
+    margin-left: .5rem;
+}
+.cf_user_code{
+    position: absolute;
+    right: 0;
+    top: 2.6rem;
+}

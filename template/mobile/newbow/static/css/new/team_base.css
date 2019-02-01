@@ -1,0 +1,44 @@
+* {
+    margin: 0;
+    padding: 0;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    -webkit-text-size-adjust: none;
+    -webkit-tap-highlight-color: transparent
+}
+@font-face {
+    font-family: 'iconfont';  /* project id 606850 */
+    src: url('//at.alicdn.com/t/font_606850_bv56l0gl3k.eot');
+    src: url('//at.alicdn.com/t/font_606850_bv56l0gl3k.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_606850_bv56l0gl3k.woff') format('woff'),
+    url('//at.alicdn.com/t/font_606850_bv56l0gl3k.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_606850_bv56l0gl3k.svg#iconfont') format('svg');
+}
+
+.iconfont {
+    font-family: "iconfont" !important;
+    font-size: 20px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+}
+a{text-decoration: none;}
+body{font-size: .25rem;font-family: "Microsoft YaHei","PingFang SC";overflow-x:hidden;width: 100%;height: 100%;
+color: #1E1B1B;background-color: #F1F5F8;}
+.fl{float: left;}
+.fr{float: right;}
+.clearfix{clear: both;overflow: hidden;}
+li{list-style: none;}
+.headerRank{position: fixed;width: 100%;top:0;left: 0;height: .88rem;background-color: #fff;border-bottom: 1px solid #EDEEF4;z-index: 999;}
+.headerRank a{display: block;position: absolute;}
+.headerRank .back{left: 3%;top:.25rem;width: .22rem;height: .37rem;}
+.headerRank .back img{width: .22rem;height: .37rem;}
+.headerRank .txt{font-size: .3rem;text-align: center;line-height: .88rem;}
+.headerRank .myTeam{right: 3%;top:0;text-decoration: none;font-size: .26rem;color: #1E1B1B;line-height: .88rem;}
+.layui-m-layer-msg .layui-m-layercont {
+    padding: .3rem .5rem;
+    font-size: .3rem;
+}
+

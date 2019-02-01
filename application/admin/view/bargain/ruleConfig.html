@@ -1,0 +1,186 @@
+<include file="public/layout" />
+<script type="text/javascript" src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+
+<style>
+    .newTypeTab li{
+        width: 100px;
+        height: 40px;
+        background-color: #F1F5F8;
+        font-size: 16px;
+        color: #1E1B1B;
+        margin-left: 1px;
+        text-align: center;
+        line-height: 40px;
+        border-radius: 1px;
+        cursor:pointer;
+    }
+    .row .ink input{width:50px!important;}
+</style>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>砍价管理</h3>
+                <h5>商城砍价商品查询及管理</h5>
+            </div>
+            <ul class="tab-base nc-row">
+                <li><a class="" href="{:U('admin/Bargain/bargainList')}"><span>砍价商品</span></a></li>
+                <li><a class="" href="{:U('admin/Bargain/amountConfig')}"><span>砍价金额模板配置</span></a></li>
+                <li><a class="current" href="{:U('admin/Bargain/ruleConfig')}"><span>砍价规则配置</span></a></li>
+            </ul>
+        </div>
+    </div>
+
+    <form class="form-horizontal" id="handleposition" method="post">
+        <input type="hidden" name="id" value="{$info.id}">
+        <input type="hidden" name="is_select" value="00">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label>
+                        <h4>砍价规则配置</h4>
+                    </label>
+                </dt>
+            </dl>
+
+            <dl class="row rowDisplay">
+                <dt class="tit">
+                    <label>每日帮砍次数</label>
+                </dt>
+                <dd class="opt ink">
+                    <input type="text" name="min_price" value="{$info.min_price | default=''}"  placeholder="请输入次数" class="input-txt" >次
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label>
+                        <h4>自己砍价次数获取条件</h4>
+                    </label>
+                </dt>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>自己砍价次数获取条件</label>
+                </dt>
+                <dd class="opt ink">
+                    第2刀分享次数:
+                    <input type="text" name="time_limit" value="{$info.time_limit | default=''}" placeholder="次数" class="input-txt">次&nbsp&nbsp
+                    第3刀分享次数:
+                    <input type="text" name="time_limit" value="{$info.time_limit | default=''}" placeholder="次数" class="input-txt">次&nbsp&nbsp
+                    第4刀邀请砍价人数:
+                    <input type="text" name="time_limit" value="{$info.time_limit | default=''}" placeholder="次数" class="input-txt">次&nbsp
+                </dd>
+            </dl>
+            <div class="bot"><a id="submit1" onsubmit="sb()" class="ncap-btn-big ncap-btn-green">保存</a></div>
+        </div>
+    </form>
+    <form class="form-horizontal" id="handlepositions" method="post">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label>默认分享模板</label>
+                </dt>
+                <dd class="opt">
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label> 分享标题</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="share_title" value="{$info.share_title | default=''}" placeholder="不填写将采用默认标题，最多16个字" class="input-txt">
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>分享图片</label>
+                </dt>
+                <dd class="opt">
+                    <div class="input-file-show">
+                        <span class="show">
+                            <a id="img_a" target="_blank" class="nyroModal" rel="gal" href="">
+                                <i id="img_i" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$info.share_img | default=\'\'}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>
+                            </a>
+                        </span>
+                        <span class="type-file-box">
+                            <input type="text" id="topic_img" name="share_img" value="{$info.share_img | default=''}" class="type-file-text">
+                            <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
+                            <input class="type-file-file" onClick="GetUploadify(1,'','activity','img_call_back')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+                        </span>
+                    </div>
+                    <span class="err"></span>
+                    <p class="notic">不单独上传将使用商品封面图作为分享图片</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>分享描述</label>
+                </dt>
+                <dd class="opt">
+                    <textarea name="share_desc" id="" cols="30" rows="20" placeholder="不填写将采用默认描述，最多20个字">{$info.share_desc | default=''}</textarea>
+                </dd>
+            </dl>
+
+            <div class="bot"><a id="submit" onsubmit="sb()" class="ncap-btn-big ncap-btn-green">保存</a></div>
+        </div>
+    </form>
+
+</div>
+<script type="text/javascript">
+    ajax_get_table('search-form2',1);
+    function form_submit(v){
+        $('#export').val(v);
+        var selected_ids = '';
+        $('.trSelected' , '#flexigrid').each(function(i){
+            selected_ids += $(this).data('order-id')+',';
+        });
+        if(selected_ids != ''){
+            $('input[name="order_ids"]').val(selected_ids.substring(0,selected_ids.length-1));
+        }
+        $('#search-form2').submit();
+        $('#export').val(0);
+    }
+
+
+
+
+    //ajax 抓取页面
+    function ajax_get_table(tab,page){
+        cur_page = page; //当前页面 保存为全局变量
+        $.ajax({
+            type : "POST",
+            url:"/index.php/Admin/bargain/amountConfig/p/"+page,//+tab,
+            data : $('#'+tab).serialize(),// 你的formid
+            success: function(data){
+                $("#flexigrid").html('');
+                $("#flexigrid").append(data);
+
+                // 表格行点击选中切换
+                $('#flexigrid > table>tbody >tr').click(function(){
+                    $(this).toggleClass('trSelected');
+                });
+
+            }
+        });
+    }
+
+    // 点击排序
+    function sort(field){
+        $("input[name='order_by']").val(field);
+        //切换顺序
+        var v = $("input[name='sort']").val() == 'desc' ? 'asc' : 'desc';
+        $("input[name='sort']").val(v);
+
+        ajax_get_table('search-form2',cur_page);
+    }
+
+
+
+</script>
+</body>
+</html>

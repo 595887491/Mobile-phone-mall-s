@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>往期排行榜</title>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/rem.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
+    <!--<link rel="stylesheet" href="__STATIC__/css/style.css">-->
+    <link rel="stylesheet" href="__STATIC__/css/allRankList.css">
+</head>
+
+<body>
+    <!--header-->
+    <div class="headerRank">
+        <div class="headerRankCon">
+            <div class="fl texFl">
+                <a href="javascript:history.back()">
+                    <img src="__STATIC__/images/return.png" alt="返回"></a>
+                </a>
+            </div>
+            <div class="tex">
+                <span>全部榜单</span>
+            </div>
+        </div>
+    </div>
+    <!--header-->
+    <div class="rankListBox" id="rankListBox">
+        <foreach name="$lists" item="list">
+            <div class="rankList">
+                <div class="rankListMore">
+                    <div class="fl ll">
+                        <span>打榜时间：{$list.start_time|date="m月d日",###}-{$list.end_time|date="m月d日",###}</span>
+                    </div>
+                    <div class="fr lr">
+                        <if condition="$list.status eq 1">
+                            <span>打榜进行中</span>
+                        </if>
+                        <if condition="$list.status eq 2">
+                            <span style="color: #F49000">打榜结束，排名确认中</span>
+                        </if>
+                        <if condition="$list.status eq 3">
+                            <span style="color: #1F9310">已派奖</span>
+                        </if>
+                    </div>
+                </div>
+                <div class="rankCoverMap">
+                    <a href="{:U('mobile/Distribution/rankList',array('id'=>$list.id))}">
+                        <img src="{$list.cover}" alt="">
+                    </a>
+                </div>
+            </div>
+        </foreach>
+    </div>
+</body>
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script>
+    /**
+     * ajax加载更多数据
+     */
+    var ajax_pending = false;//进行中
+    var has_more_data = true;//还有数据
+    var  page = 1;
+    function ajax_sourch_submit()
+    {
+        if (ajax_pending || has_more_data == false) return;
+
+        ajax_pending = true;
+        ++page;
+        $.ajax({
+            type : "GET",
+            url:"/index.php?m=Mobile&c=Distribution&a=allRankList&is_ajax=1&p="+page,
+            success: function(data) {
+                ajax_pending = false;
+                if ($.trim(data) != '') {
+                    $('#rankListBox').append(data);
+                } else {
+                    has_more_data = false;
+                }
+            }
+        });
+    }
+</script>
+</html>

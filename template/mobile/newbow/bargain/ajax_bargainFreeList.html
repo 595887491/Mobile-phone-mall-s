@@ -1,0 +1,46 @@
+
+<foreach $list as $v >
+    <div class="team-list">
+        <a href="{:U('Mobile/bargain/info',['item_id' => $v['item_id'] , 'activity_id' => $v['id']])}">
+            <div class="fl imgs">
+                <img src="{$v['original_img']}?x-oss-process=style/s340x340" alt="">
+            </div>
+            <div class="fr team-list-right">
+                <div class="title">
+                    <if condition="$v['is_shipping'] eq 1">
+                        <span>包邮</span>
+                    </if>
+                    {$v['goods_name']}
+                </div>
+                <p class="complete">{$v['goods_remark']}</p>
+                <div class="people">
+                    <if condition="$v['act_type'] eq 1">
+                        <span class="one">{$v['salesNum']}人已底价购买</span>
+                    </if>
+                    <if condition="$v['act_type'] eq 0">
+                        <span class="one">{$v['salesNum']}人已免费领取</span>
+                    </if>
+                </div>
+                <div class="bottom">
+                    <div class="fl">
+                        <span>原价:￥{$v['shop_price']}</span>
+                        <p>
+                            <if condition="$v['act_type'] eq 1">
+                                <span>底价:￥<strong>{$v['min_price']}</strong> </span>
+                                <else/>
+                                <span>￥<strong>0</strong> </span>
+                            </if>
+                        </p>
+                    </div>
+                    <if condition="$v['act_type'] eq 1">
+                        <a href="{:U('Mobile/bargain/info',['item_id' => $v['item_id'] , 'activity_id' => $v['id']])}" class="fr btnOne">砍价底价购</a>
+                    </if>
+                    <if condition="$v['act_type'] eq 0">
+                        <a href="{:U('Mobile/bargain/info',['item_id' => $v['item_id'] , 'activity_id' => $v['id']])}" class="fr btnTwo">砍价免费拿</a>
+                    </if>
+                </div>
+            </div>
+        </a>
+    </div>
+</foreach>
+

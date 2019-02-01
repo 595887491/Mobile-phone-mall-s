@@ -1,0 +1,204 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>邀请的好友</title>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/rem.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css"/>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/need/swiper-4.3.3.min.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" href="__STATIC__/js/need/swiper-4.3.3.min.css">
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
+    <link rel="stylesheet" href="__STATIC__/css/invitedFriends.css">
+</head>
+<style>
+    .inviteCard{
+        background: url("__STATIC__/images/intiveCardOne.png") no-repeat;
+        background-size: 100%;
+    }
+    .inviteCardOverdue{
+        background: url("__STATIC__/images/intiveCardTwo.png") no-repeat;
+        background-size: 100%;
+    }
+
+</style>
+<body>
+<div class="headerRank">
+    <div class="headerRankCon">
+        <div class="fl texFl">
+            <a onclick="javascript:history.back()">
+                <img src="__STATIC__/images/return.png" alt="返回"></a>
+            </a>
+        </div>
+        <div class="tex">
+            <span>邀请的好友</span>
+        </div>
+        <a href="{:U('Mobile/Index/index')}"  class="homeIndex">
+            <img src="__STATIC__/images/homeIndex.png"  alt="">
+        </a>
+    </div>
+</div>
+
+<!--header-->
+<div style="height: .9rem;z-index: 99999"></div>
+<div style="height: .1rem;background-color: #f1f5f8;z-index: 9999"></div>
+<div class="invitedTab invitePos">
+    <ul>
+        <li class="activeTab"><a><span>注册成功</span></a></li>
+        <li><a><span>下单成功</span></a></li>
+        <li><a><span>获得奖励</span></a></li>
+    </ul>
+</div>
+
+<!--列表-->
+<!--注册成功-->
+<div class="invitedList invitedListOne">
+    <foreach name="$list" item="v">
+        <div class="inviteCom">
+            <div class="fl invitePortrait"><img src="{$v['user']['head_pic']|default='http://cdn.cfo2o.com/data/avatar/user_head_default.png'}?x-oss-process=style/s150x150" alt=""></div>
+            <div class="fl inviteDescribe"><p>{$v['user']['nickname']}</p><p>注册{$v['be_user_start']}</p></div>
+            <if condition="$v['type'] eq 1">
+                <div class="fr inviteState"><p>已注册</p></div>
+                <else />
+                <div class="fr inviteState"><p>下单成功</p><p class="inviteStateTime">首单{$v['first_order_time']}</p></div>
+            </if>
+        </div>
+    </foreach>
+</div>
+</body>
+<!--分享开始-->
+<script>
+    // http://cdn.cfo2o.com/public/upload/other/logo_share.png
+    var ShareImgUrl ="https://{$_SERVER[HTTP_HOST]}__STATIC__/images/shareNoney.png"; //分享图标
+    var ShareTitle = "送你￥188元新人大礼包，立即领取>>"; //分享标题
+    var ShareDesc = "尚美缤纷-一家有线下沙龙体验活动的化妆品平台"; //分享描述
+</script>
+<include file="public/wx_share"/>
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script>
+    // $(function() {
+    //     if ($(window).scrollTop() >= 100) {
+    //         $('.invitedTab').addClass("invitePos")
+    //     }
+    //     $(window).scroll(function() {
+    //         if ($(window).scrollTop() >= 100) {
+    //             $('.invitedTab').addClass("invitePos")
+    //         } else {
+    //             $('.invitedTab').removeClass("invitePos")
+    //         }
+    //     });
+    // });
+    // 点击切换二维码身份
+    $('.invitedTab ul li').click(function () {
+        // $('.invitedTab ul li a').eq($(this).index()).addClass("activeTab").siblings().removeClass('activeTab')
+        $(this).addClass("activeTab").siblings().removeClass('activeTab');
+    });
+
+    // 默认请求tab
+    var a;
+    var deltype = {$type};
+    if(deltype == 3){
+        a = 3
+    }
+    if(deltype == 2){
+        a = 2
+    }
+    if(deltype == 1){
+        a = 1
+    }
+
+    $.ajax({
+        type : "GET",
+        url:"/Mobile/User/invitedFriends",
+        data:{
+            type:deltype
+        },
+        success: function(data) {
+            $('.invitedList').html(data);
+        }
+    });
+    // m默认tab 选中状态
+    if(deltype == 1){
+        $('.invitedTab ul li:nth-child(1)').addClass("activeTab").siblings().removeClass('activeTab')
+    }
+    if(deltype == 2){
+        $('.invitedTab ul li:nth-child(2)').addClass("activeTab").siblings().removeClass('activeTab')
+    }
+    if(deltype == 3){
+        $('.invitedTab ul li:nth-child(3)').addClass("activeTab").siblings().removeClass('activeTab')
+    }
+    // 点击第一个TAB
+
+    $('.invitedTab ul li:nth-child(1)').click(function () {
+        $.ajax({
+            type : "GET",
+            url:"/Mobile/User/invitedFriends",
+            data:{
+                type:1
+            },
+            success: function(data) {
+                console.log(data);
+                $('.invitedList').html(data);
+            }
+        });
+        a=1
+    })
+    // 点击第二个tab
+    $('.invitedTab ul li:nth-child(2)').click(function () {
+        $.ajax({
+            type : "GET",
+            url:"/Mobile/User/invitedFriends",
+            data:{
+                type:2
+            },
+            success: function(data) {
+                console.log(data);
+                $('.invitedList').html(data);
+            }
+        });
+        a=2
+    })
+    // 点击第三个tab
+    $('.invitedTab ul li:nth-child(3)').click(function () {
+        $.ajax({
+            type : "GET",
+            url:"/Mobile/User/invitedFriends",
+            data:{
+                type:3
+            },
+            success: function(data) {
+                console.log(data);
+                $('.invitedList').html(data);
+            }
+        });
+        a = 3
+    })
+
+    /**
+     * ajax加载更多数据
+     */
+    var ajax_pending = false;//进行中
+    var has_more_data = true;//还有数据
+    var  page = 1;
+    function ajax_sourch_submit() {
+        if (ajax_pending || has_more_data == false) return;
+        ajax_pending = true;
+        ++page;
+        $.ajax({
+            type : "GET",
+            url:"/index.php?m=Mobile&c=User&a=invitedFriends&p="+page+"&type="+a,
+            success: function(data) {
+                ajax_pending = false;
+                if ($.trim(data) != '') {
+                    $('.invitedList').append(data);
+                } else {
+                    has_more_data = false;
+                }
+            }
+        });
+    }
+
+</script>
+</html>

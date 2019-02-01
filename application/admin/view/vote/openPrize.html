@@ -1,0 +1,107 @@
+<include file="public/layout" />
+<script type="text/javascript" src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+
+<style>
+    .typeTab {float: left!important;margin-right: 144px;}
+
+    .newTypeTab li{
+        width: 100px;
+        height: 40px;
+        background-color: #F1F5F8;
+        font-size: 16px;
+        color: #1E1B1B;
+        margin-left: 1px;
+        text-align: center;
+        line-height: 40px;
+        border-radius: 1px;
+        cursor:pointer;
+    }
+    html { overflow-x: hidden; }
+</style>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;width: 520px  ">
+    <div class="flexigrid" style="width: 520px;">
+        <div class="hDiv" style="padding-bottom: 70px;">
+            <div class="hDivBox" id="ajax_return">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th align="center" axis="col4" class="">
+                            <div style="text-align: center; width: 150px;" class="">用户信息</div>
+                        </th>
+                        <th align="center" abbr="vote_number"  axis="col6" class="">
+                            <div style="text-align: center; width: 50px;" class="">票数</div>
+                        </th>
+                        <th align="center" abbr="vote_users"  axis="col4" class="">
+                            <div style="text-align: left; width: 70px;" class="">编号</div>
+                        </th>
+                        <th align="center" abbr="ranking" axis="col4" class="">
+                            <div style="text-align: center; width: 50px;" class="orderState">排名</div>
+                        </th>
+                        <th align="center" axis="col6" class="">
+                            <div style="text-align: center; width: 150px;" class="sortAdd">获奖</div>
+                        </th>
+                    </tr>
+                    <volist name="ranking" id="vo">
+                    <tr style="margin-top: 10px;border-top: solid 1px #f5eded">
+                        <td align="center" axis="col4" class="">
+                            <div style="text-align: center; width: 150px;height: 50px;padding-top: 10px;" class="">
+                                <img style="width: 30px;height:30px;border-radius: 50%;margin-top: 3px;float: left;" src="{$vo.head_pic|default='http://cdn.cfo2o.com/data/avatar/1523631369812.jpg'}" alt="">
+                                <div class="" style="float: left;text-align: left;width: 100px;margin-left: 10px;">
+                                    <p>{$vo.nickname}</p>
+                                    <p>{$vo.mobile}</p>
+                                </div>
+
+                            </div>
+                        </td>
+                        <td align="center"  axis="col6" class="">
+                            <div style="text-align: center; width: 50px;" class="">{$vo.vote_number}</div>
+                        </td>
+                        <td align="center"  axis="col6" class="">
+                            <div style="text-align: left; width: 70px;" class="">#{$vo.found_id}</div>
+                        </td>
+                        <td align="center" axis="col6" class="">
+                            <div style="text-align: center; width: 50px;" class="orderState">{$vo.rank}</div>
+                        </td>
+                        <td align="center" axis="col6" class="">
+                            <div style="text-align: center; width: 150px;" class="sortAdd">{$vo.prizeName}</div>
+                        </td>
+                    </tr>
+                    </volist>
+                    <tfoot>
+                    <tr>
+                        <td colspan="5" class="text-center" style="padding: 10px 0;position: fixed;width: 100%;bottom: 0;background: #fff;">
+                            <input type="button" onclick="opens({$vote_id})" value="确认排名并开奖" style="width: 150px;height: 40px;background-color: rgba(22, 155, 213, 1);
+border: none;outline: none;margin: 0 auto;display: block;color: #fff;border-radius: 5px;">
+                        </td>
+                    </tr>
+                    </tfoot>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    function opens(v) {
+        //询问框
+        layer.confirm('确认排名并开奖吗？', {
+            btn: ['确认','取消'] //按钮
+        }, function(){
+            $.ajax({
+                url:"/index.php?m=Admin&c=Vote&a=openPrize&open="+1,
+                success: function(data){
+                    if(data.code == 200){
+                        layer.msg(data.msg, {icon: 1});
+                        setTimeout(function () {
+                            parent.layer.closeAll();
+                            parent.location.reload();
+                        },2000)
+                    }else {
+                        layer.msg(data.msg, {icon: 2});
+                    }
+                }
+            });
+        });
+    }
+</script>
+</html>

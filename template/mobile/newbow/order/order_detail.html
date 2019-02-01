@@ -1,0 +1,468 @@
+<include file="public/header" title="订单详情" body="g4"/>
+<include file="public/header_nav" title="订单详情" href="javascript:goBack()"/>
+<link rel="stylesheet" href="__STATIC__/css/order_detail.css">
+<style>
+    .order-static{
+        background: url("__STATIC__/images/order_static.png") no-repeat;
+        background-size: cover;
+        width: 100%;
+        height: 2.5rem;
+        font-size: .7rem;
+        color: #fff;
+        text-align: left;
+        line-height: 2.5rem;
+    }
+    #MEIQIA-BTN-HOLDER{
+        display: none!important;
+    }
+</style>
+<!--客服 配置-->
+<script type='text/javascript'>
+    (function(m, ei, q, i, a, j, s) {
+        m[i] = m[i] || function() {
+            (m[i].a = m[i].a || []).push(arguments)
+        };
+        j = ei.createElement(q),
+            s = ei.getElementsByTagName(q)[0];
+        j.async = true;
+        j.charset = 'UTF-8';
+        j.src = 'https://static.meiqia.com/dist/meiqia.js?_=t';
+        s.parentNode.insertBefore(j, s);
+    })(window, document, 'script', '_MEIQIA');
+    _MEIQIA('entId', 111444);
+
+    // 传递顾客信息
+    _MEIQIA('metadata', {
+        name: '{$service_user_info.name}',// 美洽默认字段
+        address:'{$service_user_info.address}',// 美洽默认字段
+        age :'{$service_user_info.age}',// 年龄
+        email:'{$service_user_info.email}',// 邮箱
+        gender:'{$service_user_info.gender}', // 性别
+        tel:'{$service_user_info.tel}' // 电话
+    });
+</script>
+<if condition="$order_info['shipping_code'] == 'ZITI' && $order_info['order_pick_up_code']">
+    <if condition="$order_info['order_pick_up_code']['status'] == 0">
+        <!--自提订单未使用-->
+        <div class="order-static" style="text-align: left;padding-left: .7rem;background: url('__STATIC__/images/new/order_details_ztback.png')">
+            <img src="__STATIC__/images/new/order_details_zt.png" alt="" style="width: .9rem;height: .7rem;">
+            <span style="color: #1E1B1B;">待发货</span>
+            <span style="color: #D50D16;font-size: .6rem;vertical-align: -.1rem;">本单为自提订单,自提货物时请出示自提码</span>
+        </div>
+        <div class="cf_comment" style="color: #1E1B1B;">
+            <p style="font-size: .62rem;">自提码：<span style="font-size: .7rem;">{$order_info['order_pick_up_code']['code']}</span></p>
+            <img src="{$order_info['order_pick_up_code']['qrcode_url']}?x-oss-process=style/s340x340"  alt="" style="width: 5rem;height: 5rem;margin-left:2.1rem;margin-top: .4rem;">
+        </div>
+        <else/>
+        <!--自提订单已使用-->
+        <div class="order-static" style="text-align: left;padding-left: .7rem;background: url('__STATIC__/images/new/order_details_ztback.png')">
+            <img src="__STATIC__/images/new/order_details_dd.png" alt="" style="width: .9rem;height: .7rem;">
+            <span style="color: #1E1B1B;">待评价</span>
+        </div>
+        <div class="cf_comment" style="color: #1E1B1B;">
+            <p style="font-size: .62rem;">自提码：<span style="font-size: .7rem;">{$order_info['order_pick_up_code']['code']}</span> <span class="fr" style="padding-right: .6rem;color: #FF407E;font-size: .62rem;">已使用</span></p>
+            <img src="{$order_info['order_pick_up_code']['qrcode_url']}?x-oss-process=style/s340x340"  alt="" style="width: 5rem;height: 5rem;margin-left:2.1rem;margin-top: .4rem;">
+        </div>
+    </if>
+
+<else/>
+    <!--客服配置结束-->
+    <div class="order-static" style="text-align: left;">
+
+        <!--待支付-->
+        <if condition="$order_info.order_status_code eq 'WAITPAY'">
+            <i class="iconfont">&#xb678;</i>
+        </if>
+        <!--待发货-->
+        <if condition="$order_info.order_status_code eq 'WAITSEND'">
+            <i class="iconfont">&#xe6bf;</i>
+        </if>
+        <!--部分发货-->
+        <if condition="$order_info.order_status_code eq 'PORTIONSEND'">
+            <i class="iconfont">&#xe6bf;</i>
+        </if>
+        <!--待收货-->
+        <if condition="$order_info.order_status_code eq 'WAITRECEIVE'">
+            <i class="iconfont">&#xb636;</i>
+        </if>
+        <!--待评价-->
+        <if condition="$order_info.order_status_code eq 'WAITCCOMMENT'">
+            <i class="iconfont">&#xb605;</i>
+        </if>
+        <!--已取消-->
+        <if condition="$order_info.order_status_code eq 'CANCEL'">
+            <i class="iconfont">&#xb664;</i>
+        </if>
+        <!--已完成-->
+        <if condition="$order_info.order_status_code eq 'FINISH'">
+            <i class="iconfont">&#xb63e;</i>
+        </if>
+        <!--已作废-->
+        <if condition="$order_info.order_status_code eq 'CANCELLED'">
+            <i class="iconfont">&#xb664;</i>
+        </if>
+        <if condition="$order_info.shipping_code eq 'ZITI' && in_array($order_info.order_status_code,['WAITSEND','PORTIONSEND','WAITRECEIVE'])">
+            <span>自提订单(已支付)</span>
+            <else/>
+            <span>{$order_info.order_status_desc}</span>
+        </if>
+    </div>
+    <!--是否确认收货-->
+    <if condition="$delivery_status.is_check">
+        <div class="cf_comment">
+            <p>感谢的来尚美购物,期待你的再次到来</p>
+        </div>
+    </if>
+</if>
+
+<if condition="$delivery_status.msg && $order_info.shipping_code neq 'ZITI'">
+    <div class="cf_comment_m">
+        <if condition="!is_array($delivery_status['msg'])">
+            <span>{$delivery_status.msg}</span>
+            <else/>
+            <span>物流信息: </span><span style="color: #148003">{$delivery_status['msg']['context']}</span><br><br>
+            <span style="color: #BFC1CD;font-size: .5rem">{$delivery_status['msg']['ftime']}</span>
+        </if>
+    </div>
+</if>
+<!--<div style="width: 100%;height: .3rem;background-color: #F3F5F7"></div>-->
+
+<if condition="$order_info.shipping_code neq 'ZITI'">
+<div class="edit_gtfix">
+    <div class="namephone">
+        <div class="top">
+            <div class="le fl" style="letter-spacing: .2rem;">收货人：<span style="margin-left: -.2rem;letter-spacing: 0;">{$order_info.consignee}</span></div>
+            <div class="lr fr cf_mobile"></div>
+        </div>
+        <div class="_bot">
+            <!--<i class="dwgp"></i>-->
+            <span>收货地址：{$region_list[$order_info['province']]},{$region_list[$order_info['city']]},{$region_list[$order_info['district']]},{$order_info.address}</span>
+        </div>
+    </div>
+    <if condition="$order_info.prom_type eq 4">
+    <div class="order_s" style=""><span >订单类型：</span><span class="bgnum"></span><span>预售订单</span></div>
+    </if>
+</div>
+</if>
+<!--订单商品列表-s-->
+<div class="ord_list p" style="margin: .3rem  0;background-color: #fff;">
+    <div class="maleri30">
+        <volist name="order_info.goods_list" id="good">
+            <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$good[goods_id]))}">
+                <div class="shopprice">
+                    <div class="img_or fl">
+                        <img src="{$good['original_img']}?x-oss-process=style/s340x340"/>
+                    </div>
+                    <div class="fon_or fl">
+                        <h2 class="similar-product-text">{$good[goods_name]}</h2>
+                        <div><span class="bac">{$good['spec_key_name']}</span></div>
+                        <span style="font-size: .7rem;color: #FF407E;margin-top: .5rem;display: inline-block">¥{$good['member_goods_price']}</span>
+                        <span class="num" style="position: absolute;right: 1.2rem;">x{$good['goods_num']}</span>
+                    </div>
+                </div>
+            </a>
+        </volist>
+    </div>
+</div>
+<!--订单商品列表-e-->
+
+<div class="information_dr">
+    <div class="maleri30">
+        <div class="xx-list xx-list-top">
+            <p class="p">
+                <span class="fl">订单编号：</span>
+                <span class="fl">{$order_info.order_sn}</span>
+            </p>
+            <p class="p">
+                <span class="fl">下单时间：</span>
+                <span class="fl"><span>{:date('Y-m-d  H:i:s', $order_info.add_time)}</span></span>
+            </p>
+        </div>
+        <div class="xx-list xx-list-top">
+            <p class="p" style="padding-top: .11rem;">
+                <span class="fl" style="padding-top: .1rem;">收货地址：</span>
+                <span class="fl receiving">{$region_list[$order_info[province]]}&nbsp;{$region_list[$order_info[city]]}&nbsp;{$region_list[$order_info[district]]}&nbsp;{$order_info[address]}</span>
+            </p>
+            <p class="p">
+                <span class="fl" style="letter-spacing: .2rem;">收货人：</span>
+                <span class="fl" style=" margin-left: -.2rem;"><span>{$order_info.consignee|default='--'}</span><span>{$order_info.mobile}</span></span>
+            </p>
+            <p class="p">
+                <span class="fl">配送方式：</span>
+                <if condition="empty($order_info.shipping_name) && $order_info['prom_type'] == 7">
+                  <span class="fl">到店自提</span>
+                 <else/>
+                  <span class="fl">{$order_info.shipping_name}</span>
+                </if>
+            </p>
+        </div>
+        <div class="xx-list xx-list-top">
+            <p class="p">
+                <span class="fl">支付方式：</span>
+                <span class="fl">
+                    <if condition="$order_info[pay_status] eq 1 and empty($order_info.pay_name)">
+                        在线支付
+                        <else/>
+                        {$order_info.pay_name}
+                    </if>
+                </span>
+            </p>
+        </div>
+        <div class="xx-list xx-list-top" style="border: none;">
+            <p class="p">
+                <span class="fl">买家留言：</span>
+                <textarea placeholder="选填" class="leave_msg">{$order_info.user_note}</textarea>
+                <!--<span class="fr">{$order_info.user_note}</span>-->
+            </p>
+        </div>
+        <if condition="$order_info.order_status_code eq 'CANCEL' && in_array($order_info.pay_status, [1,3,4])">
+            <div class="xx-list xx-list-top" style="border: none;">
+                <p class="p">
+                    <span class="fl">退款状态：</span>
+                    <if condition="$order_info.pay_status eq 1">
+                        <span class="fl" style="color: #FF407E;">正在审核，请耐心等待</span>
+                    <elseif condition="$order_info.pay_status eq 3">
+                        <span class="fl" style="color: #FF407E;">已退款</span>
+                    <else/>
+                        <span class="fl" style="color: #FF407E;">拒绝退款</span>
+                    </if>
+                </p>
+            </div>
+            <div class="xx-list xx-list-top" style="border: none;">
+                <p class="p">
+                    <span class="fl">退款反馈：</span>
+                    <span class="fl">{$order_info.admin_note}</span>
+                </p>
+            </div>
+        </if>
+        <if condition="$order_info.prom_type eq 4">
+            <if condition="$order_info.pre_sell_is_finished eq 2">
+                <div class="xx-list xx-list-bottom">
+                <p class="p">
+                    <span class="fl">订单关闭：</span>
+                    <span class="fl">商家取消活动，返还订金</span>
+                </p>
+                </div>
+            </if>
+            <if condition="$order_info.pre_sell_is_finished eq 1">
+                <if condition="time() gt $order_info.pre_sell_retainage_end">
+                    <div class="xx-list xx-list-bottom">
+                    <p class="p">
+                        <span class="fl">订单关闭：</span>
+                        <span class="fl">已过支付尾款时间</span>
+                    </p>
+                    </div>
+                </if>
+            </if>
+        </if>
+    </div>
+</div>
+<div class="information_dr ma-to-20">
+    <div class="maleri30">
+        <div class="xx-list" style="padding:.21333rem 0;">
+            <if condition="$order_info.prom_type neq 4">
+                <p class="p">
+                    <span class="fl">商品总价</span>
+                    <span class="fr"><span>￥</span><span>{$order_info.goods_price}</span>元</span>
+                </p>
+                <p class="p">
+                    <span class="fl">运费</span>
+                    <span class="fr"><span>￥</span><span>{$order_info.shipping_price}</span>元</span>
+                </p>
+                <p class="p">
+                    <span class="fl">优惠券</span>
+                    <span class="fr"><span>-￥</span><span>{$order_info.coupon_price}</span>元</span>
+                </p>
+                <p class="p">
+                    <span class="fl">活动优惠</span>
+                    <span class="fr"><span>-￥</span><span>{$order_info.order_prom_amount}</span>元</span>
+                </p>
+                <if condition="$order_info.prom_type eq 7">
+                    <p class="p">
+                        <span class="fl">砍价</span>
+                        <span class="fr"><span>-￥</span><span>{$order_info.act_price}</span>元</span>
+                    </p>
+                </if>
+                <p class="p">
+                    <span class="fl">积分</span>
+                    <span class="fr"><span>-￥</span><span>{$order_info.integral_money}</span>元</span>
+                </p>
+            </if>
+            <p class="p">
+                <span class="fl">余额</span>
+                <span class="fr"><span>-￥</span><span>{$order_info.user_money}</span>元</span>
+            </p>
+            <!-- 预售商品 start -->
+            <if condition="$order_info.prom_type eq 4 AND $order_info.paid_money gt 0" >
+                <if condition="$order_info.pay_status eq 1">
+                    <p class="p">
+                        <span class="fl">已付尾款</span>
+                        <span class="fr"><span>-￥</span><span>{$order_info.order_amount}</span>元</span>
+                    </p>
+                </if>
+                <p class="p">
+                    <span class="fl">已付订金</span>
+                    <span class="fr"><span>-￥</span><span>{$order_info.paid_money}</span>元</span>
+                </p>
+                <p class="p">
+                    <span class="fl">发货时间</span>
+                    <span class="fr"><span>{$order_info.pre_sell_deliver_goods}</span></span>
+                </p>
+            </if>
+            <!-- 预售商品 end -->
+            <p class="p">
+                <span class="fl">应付总额</span>
+                <span class="fr"><span>￥</span><span>{$order_info.order_amount}</span>元</span>
+            </p>
+        </div>
+    </div>
+</div>
+<div style="height: 2.13333rem;margin-top: .3rem;"></div>
+<div class="qqz">
+    <div class="maleri30">
+        <a href="javascript:void(0)" onclick="_MEIQIA('showPanel')">联系客服</a>
+        <div class="fr s">
+            <if condition="$order_info.pay_btn eq 1">
+                <a href="{:U('Mobile/Cart/cart4',array('order_id'=>$order_info['order_id']))}" >立即付款</a>
+                <else/>
+                <!--<a>{$order_info.order_status_desc}</a>-->
+            </if>
+            <if condition="$order_info.cancel_btn eq 1">
+                <a class="closeorder_butt" >取消订单</a>
+            </if>
+            <if condition="$order_info.receive_btn eq 1">
+                <a href="{:U('Mobile/Order/order_confirm',array('id'=>$order_info['order_id']))}">收货确认</a>
+            </if>
+            <if condition="$order_info.shipping_btn eq 1">
+                <if condition="$order_info['shipping_code'] eq 'ZITI'">
+                    <a  >自提订单</a>
+                    <else/>
+                    <a href="{:U('Mobile/Order/express',array('order_id'=>$order_info['order_id']))}" >查看物流</a>
+                </if>
+
+            </if>
+            <if condition="$order_info.prom_type eq 4 AND $order_info.pay_status eq 2 AND $order_info.pre_sell_is_finished eq 1 AND (time() egt $order_info.pre_sell_retainage_start AND time() elt $order_info.pre_sell_retainage_end)">
+                <a href="{:U('/Mobile/Cart/cart4',array('order_id'=>$order_info[order_id]))}">支付尾款</a>
+            </if>
+        </div>
+
+    </div>
+</div>
+<!--取消订单-s-->
+<div class="losepay closeorder" style="display: none;">
+    <div class="">
+        <p class="con-lo">确定取消订单吗?</p>
+        <div class="con ">
+            <a class="ax fl" >取消</a>
+            <if condition="$order_info.pay_status eq 0">
+                <a class="are fr" onclick="cancel_order({$order_info.order_id})">确定</a>
+            </if>
+            <if condition="$order_info.pay_status eq 1">
+                <a class="are fr" href="{:U('Order/refund_order', ['order_id'=>$order_info['order_id']])}">确认</a>
+                <!--<a class="are" href="{:U('Order/refund_order', ['order_id'=>$order_info['order_id']])}">取消订单</a>-->
+            </if>
+        </div>
+    </div>
+</div>
+<!--取消订单-e-->
+
+<div class="mask-filter-div" style="display: none;"></div>
+
+
+
+<!--客服弹窗-->
+<!--<div class="cf_forward_bg">-->
+    <!--<div class="cf_forward">-->
+        <!--<p class="forward_first">联系客服</p>-->
+        <!--<img onclick="closePop()" class="forward_first_img"  src="__STATIC__/images/cf_close.png" alt="">-->
+        <!--<div style="margin-top: 1rem;clear: both;overflow: hidden">-->
+            <!--<div class="fl" style="margin-left: 1.5rem">-->
+                <!--<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=3601438225&site=qq&menu=yes">-->
+                    <!--<img class="sever_img" src="__STATIC__/images/sever_qq.png" alt=""><br><br><br>-->
+                    <!--<span style="font-size: .7rem">QQ客服</span>-->
+                <!--</a>-->
+            <!--</div>-->
+            <!--<div class="fr" style="margin-right: 1.5rem">-->
+                <!--<a href="tel:028-8557 8499">-->
+                    <!--<img class="sever_img" src="__STATIC__/images/sever_phone.png" alt=""><br><br><br>-->
+                    <!--<span style="font-size: .7rem">电话客服</span>-->
+                <!--</a>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div style="margin-top: 1rem;border-top: 2px solid #F1F5F8;padding-top: .6rem">-->
+            <!--<ul>-->
+                <!--<li style="line-height: 1rem;width: 100%;height: 1rem;font-size: .6rem;text-align: left;margin-left: 1rem"><span>微信客服小尚：</span><span>snbf04</span>-->
+                    <!--&lt;!&ndash;<span  style="margin-left: 1rem;color: #074884;position: absolute;right: 1rem" onclick="onCopy()">复制</span>&ndash;&gt;-->
+                <!--</li>-->
+                <!--<li style="line-height: 1rem;width: 100%;height: 1rem;font-size: .6rem;text-align: left;margin-left: 1rem"><span>微信客服小美：</span><span id="wxName">shangmeibinfen</span>-->
+                    <!--&lt;!&ndash;<span  style="margin-left: 1rem;color: #074884;position: absolute;right: 1rem" onclick="onCopy()">复制</span>&ndash;&gt;-->
+                <!--</li>-->
+            <!--</ul>-->
+        <!--</div>-->
+    <!--</div>-->
+</div>
+
+<script type="text/javascript">
+    
+    function goBack() {
+        var url = document.referrer;
+        var history_url = "{:U('Mobile/Order/order_list')}";
+        var myBargain_url = "https://" + location.host + "/Mobile/bargain/myBargain.html";
+        console.log(url);
+        console.log(myBargain_url);
+        if(url == myBargain_url) {
+           location.href = myBargain_url;
+        }else {
+            location.href = history_url;
+        }
+    }
+    //取消订单按钮
+    $('.closeorder_butt').click(function(){
+        $('.mask-filter-div').show();
+        $('.losepay').show();
+    })
+    //取消取消订单
+    $('.con .ax').click(function(){
+        $('.mask-filter-div').hide();
+        $('.losepay').hide();
+    })
+
+    //确认取消订单
+    function cancel_order(id){
+        $.ajax({
+            type: 'GET',
+            dataType:'JSON',
+            url:"/index.php?m=Mobile&c=Order&a=cancel_order&id="+id,
+            success:function(data){
+                if(data.code == 1){
+                    layer.open({content:data.msg,time:2,skin:'msg'});
+                    location.href = "/index.php?m=Mobile&c=Order&a=order_detail&id="+id;
+                }else{
+                    layer.open({content:data.msg,time:2,skin:'msg'});
+                    location.href = "/index.php?m=Mobile&c=Order&a=order_detail&id="+id;
+                    return false;
+                }
+            },
+            error:function(){
+                layer.open({content:'网络异常，请稍后重试',time:3,skin:'msg'});
+            },
+        });
+        $('.mask-filter-div').hide();
+        $('.losepay').hide();
+    }
+    // 设置 电话号码 样式
+    var cf_mobile = '{$order_info.mobile}';
+    var test = cf_mobile.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
+    $('.cf_mobile').html(test);
+
+    // 关闭客服弹窗
+    function closePop() {
+        $('.cf_forward_bg').css('display','none');
+    }
+    function severPop() {
+        $('.cf_forward_bg').css('display','block');
+    }
+
+</script>
+</body>
+</html>

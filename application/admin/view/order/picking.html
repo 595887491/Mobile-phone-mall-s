@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="cn">
+<head>
+    <meta charset="UTF-8" />
+    <title>配货单打印</title>
+    <link href="__PUBLIC__/bootstrap/css/bootstrap.css" rel="stylesheet" media="all" />
+    <script type="text/javascript" src="__PUBLIC__/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/bootstrap/css/bootstrap.min.css"></script>
+    <link href="__PUBLIC__/bootstrap/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+    <style media="print" type="text/css">.noprint{display:none}</style>
+</head>
+<body>
+<div class="container">
+    <div style="page-break-after: always;">
+        <h1 class="text-center">订单信息</h1>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <td style="width: 50%;">发送自</td>
+                <td style="width: 50%;">订单详情</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><address><strong>{$shop.store_name}</strong><br/>{$shop.address}</address>
+                    <b>电话：</b> {$shop.phone}<br/>
+                    <b>E-Mail：</b> {$shop.smtp_user}<br/>
+                    <b>网址：</b> <a href="{$shop.tpshop_http}">{$shop.tpshop_http}</a>
+                </td>
+                <td style="width: 50%;">
+                	<b>支付日期：</b> {$order.pay_time|date='Y-m-d H:i:s',###}<br />
+                    <b>订单号：</b> {$order.order_sn}<br />                    
+					<b>支付方式：</b> {$order.pay_name|default="其他"}<br/>                    
+                    <b>配送方式：</b>
+                    <if $order.shipping_name=='门店自提' || $order.shipping_name=='自提'>
+                        {$order.shipping_name}
+                        <elseif $order.shipping_name=='' />
+                        <else/>
+                        {$order.shipping_name} &nbsp 配送单号:&nbsp{$invoiceNo}
+                    </if>
+                    <br/>
+                    <b>用户备注：</b> {$order.user_note}<br/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <td colspan="4"><b>收货信息</b></td>
+            </tr>
+            <tr><td>收件人</td><td>联系电话</td><td>收货地址</td><td>邮编</td></tr>
+            </thead>
+            <tbody>
+            <tr>
+            	<td>{$order.consignee}</td>
+            	<td>{$order.mobile}</td>
+                <td>{$order.province}&nbsp;&nbsp;{$order.city}&nbsp;&nbsp;{$order.district}&nbsp;&nbsp;{$order.address}</td>
+                <td>{$order.zipcode}</td>
+            </tr>
+            </tbody>
+        </table>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <td><b>商品编号</b></td>
+                <td><b>商品名称</b></td>
+                <td><b>规格属性</b></td>
+                <td><b>数量</b></td>
+                <td><b>单价</b></td>
+                <td><b>会员折扣价</b></td>
+                <td class="text-right"><b>小计</b></td>
+            </tr>
+            </thead>
+            <tbody>
+            <volist name="$order.orderGoods" id="good">
+                <tr>
+                    <td>{$good.goods_sn}</td>
+                    <td>{$good.goods_name}</td>
+                    <td>{$good.spec_key_name}</td>
+                    <td>{$good.goods_num}</td>
+                    <td>{$good.goods_price}</td>
+                    <td>{$good.member_goods_price}</td>
+                    <td class="text-right">{$good.goods_total}</td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <td colspan="4" style="width: 50%;">费用信息</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <b>小计：</b> {$order.goods_price}<br/>
+                    <b>余额抵扣：</b> -{$order.user_money}<br/>
+                    <if $order.prom_type eq 7>
+                        <b>已砍价格：</b> -{$order.cut_price}<br/>
+                    </if>
+                    <b>实付：</b> {$order.order_amount}<br/>
+                </td>
+                <td>
+                    <b>运费：</b> +{$order.shipping_price}<br/>
+                    <b>优惠券抵扣：</b> {$order.coupon_price}<br/>
+                </td>
+                <td>
+                    <b>积分(-{$order.integral})：</b> {$order.integral_money}<br/>
+                    <b>价格调整： 减：</b> {$order.discount}<br/>
+                </td>
+
+            </tr>
+            <tfoot>
+            <tr><td colspan="5" class="text-center"><input class="btn btn-default noprint" type="submit" onclick="window.print();" value="打印"></td></tr>
+            </tfoot>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

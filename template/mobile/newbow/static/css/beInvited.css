@@ -1,0 +1,357 @@
+body{
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    overflow-x: hidden;
+    background-color: #241105;
+    font-family:'微软雅黑','PingFang SC';
+}
+a,a:hover,a:active,a:visited,a:link,a:focus{
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
+    -webkit-tap-highlight-color: transparent;
+    outline:none;
+    background: none;
+    text-decoration: none;
+}
+.fr{
+    float: right;
+}
+.fl{
+    float: left;
+}
+.clearFix{
+    clear: both;
+}
+ul,p{
+    padding: 0;
+    margin: 0;
+}
+.headerRank{
+    width: 100%;
+    height: 6.1rem;
+
+}
+.headerRankCon{
+    width: 100%;
+    height: .88rem;
+    line-height: .88rem;
+    clear: both;
+    overflow: hidden;
+}
+.texLeft{
+    margin-left: .24rem;
+    margin-top: .24rem;
+}
+.texRight{
+    margin-right: .24rem;
+    margin-top: .24rem;
+}
+.texLeft img{
+    width: .2rem;
+    height: .33rem;
+}
+.texRight img{
+    width: .4rem;
+    height: .42rem;
+}
+.headerPic{
+    text-align: center;
+    margin-top: -.4rem;
+}
+.headerPic img{
+    width: .8rem;
+    height: .8rem;
+    border-radius: 50%;
+}
+.headerName{
+    text-align: center;
+    margin-top: .1rem;
+}
+.headerName span{
+    font-size: .26rem;
+    color: #FFE0AC;
+}
+.beInviteCom img{
+    width: 100%;
+}
+.inviteForm{
+    width: 100%;
+    height: auto;
+}
+.inviteFormBg{
+    width: 92%;
+    margin-left: 4%;
+    background-color: #190901;
+    height: 6rem;
+    margin-top: .35rem;
+    border-radius: .2rem;
+    position: relative;
+}
+.inviteFormBg input{
+    width: 82%;
+    height: .5rem;
+    margin-left: 9%;
+    font-size: .24rem;
+    color: #FFE2AD;
+    background-color: #190901;
+    border: none;
+    border-bottom: 1px solid #473423;
+    margin-top: .5rem;
+    outline: none;
+}
+.inviteForm .getCode{
+    width: 1.8rem;
+    height: .5rem;
+    font-size: .24rem;
+    color: #FFE2AD;
+    position: absolute;
+    right: .5rem;
+    top: 1.5rem;
+    background-color:#190901;
+    border: none;
+    outline: none;
+}
+.inviteReceive img{
+    width: 82%;
+    margin-left: 9%;
+    border: none;
+    outline: none;
+    background-color: #FFE2AD;
+    font-size: .3rem;
+    color: #241105;
+    text-align: center;
+    height: .7rem;
+    margin-top: .6rem;
+    border-radius: .1rem;
+}
+.inviteBom{
+    clear: both;
+    overflow: hidden;
+    width: 82%;
+    margin-left: 9%;
+    margin-top: .83rem;
+}
+.inviteBomFirst{
+    width: 4rem;
+    height: .72rem;
+}
+.inviteBomSed{
+    width: 1.3rem;
+    height: .5rem;
+}
+.guessLike{
+    margin-top: .1rem;
+}
+.guessLike a{
+    text-decoration: none;
+}
+.guessLikeTop{
+    text-align: center;
+}
+.guessLikeTop img{
+    height: .28rem;
+    margin-top: .3rem;
+}
+.guessList{
+    margin-top: .2rem;
+}
+.guessItem{
+    background-color: #fff;
+    float: left;
+    width: 45%;
+    margin-left: .24rem;
+    font-size: .24rem;
+    padding-bottom: .2rem;
+    margin-top: .22rem;
+    border-radius: .08rem;
+    /*height: 5.5rem;*/
+}
+.guessItem img{
+    width: 100%;
+    height: 3.4rem;
+    border-top-left-radius: 0.08rem;
+    border-top-right-radius: 0.08rem;
+}
+.guessTitle{
+    /*margin-left: .18rem;*/
+    padding: 0  .2rem;
+    /*margin-top: .12rem;*/
+    height: .5rem;
+    line-height: .5rem;
+    font-size: .26rem;
+    color: #1E1B1B;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:1;
+    white-space:normal;
+    font-weight: bold;
+    word-break:break-all;
+}
+.guessCom{
+    font-size: .24rem;
+    color: #1E1B1B;
+    margin-top: .1rem;
+    /*margin-left: .18rem;*/
+    padding: 0 .2rem;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+    white-space:normal;
+    height: .67rem;
+    word-break:break-all;
+}
+.guessItem .guessDiv{
+    margin-right: .24rem;
+    height: .5rem;
+    padding-bottom: .1rem;
+    margin-top: .25rem;
+}
+.guessDivSpan{
+    display: inline-block;
+    min-width: 1.9rem;
+    /*padding: 0 .1rem;*/
+    text-indent: -.1rem;
+    height: .52rem;
+    background-color: #FEE0AA;
+    font-size: .22rem;
+    text-align:center ;
+    border-top-right-radius: .3rem;
+    border-bottom-right-radius: .3rem;
+    line-height: .52rem;
+    color: #190901;
+}
+.guessDivSpan strong{
+    font-size: .3rem;
+}
+.guessRight{
+    color: #BFC1CD;
+    font-size: .22rem;
+    margin-top: .1rem;
+    text-decoration: line-through;
+}
+.noMore{
+    width: 100%;
+    height: 1.2rem;
+    line-height: 1.2rem;
+    text-align: center;
+    clear: both;
+    margin-top: 1rem;
+    display: none;
+}
+.noMore span{
+    font-size: .26rem;
+    color: #BFC1CD;
+}
+
+input::-webkit-input-placeholder {
+    color: #988274;
+}
+/*领取成功的弹窗*/
+.ordinaryPopBg{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color:rgba(0,0,0,.6) ;
+    z-index: 999999;
+    text-align: center;
+    display: none;
+}
+.ordinary{
+    width: 80%;
+    height: 6.5rem;
+    font-size: .24rem;
+    background-color: #fff;
+    border-radius: .2rem;
+    text-align: center;
+    position: relative;
+    top: 50%;
+    left:10%;
+    margin-top: -3.5rem;
+    padding-top: .4rem;
+}
+.fristPop{
+    font-size: .36rem;
+    color: #1E1B1B;
+    font-weight: bold;
+    /*margin-top: .5rem;*/
+}
+.ordinary img{
+    width: 3.78rem;
+    height: 2.42rem;
+    margin-top: .2rem;
+}
+.moneyP {
+    font-size: .3rem;
+    color: #1E1B1B;
+}
+.moneyP span{
+    color: #FF407E;
+}
+.ordinary div button{
+    width:90%;
+    height: .8rem;
+    margin-left: 1%;
+    background-color: #fff;
+    font-size: .26rem;
+    text-align: center;
+    border-radius: .1rem;
+    color:#FF407E ;
+    margin-top: .3rem;
+    border: 1px solid #FF407E;
+    outline: none;
+}
+.ordinary div .secPop{
+    color: #fff;
+    background-color: #FF407E;
+}
+.ordinaryCodeBg{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color:rgba(0,0,0,.6) ;
+    z-index: 999999;
+    text-align: center;
+    display: none;
+}
+.ordinaryCodeBg .ordinary img{
+    width: 4.18rem;
+    height: 4.18rem;
+}
+.codeCom{
+    font-size: .24rem;
+    color: #BFC1CD;
+    margin-top: .4rem;
+}
+.closePop{
+    position: absolute;
+    top: 7rem;
+    display: inline-block;
+    left: 50%;
+    margin-left: -.25rem;
+}
+.closePop #closePopImg{
+    width: .58rem;
+    height: .58rem;
+}
+.closePop #closeImg{
+    width: .58rem;
+    height: .58rem;
+}
+.layui-m-layercont{
+    font-size: .26rem;
+}
+.fixedHaeder{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    background: #190901;
+}

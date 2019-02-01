@@ -1,0 +1,283 @@
+<include file="public/header" title="评论" />
+<include file="public/header_nav" title="评论" href="javascript:history.back(-1)"/>
+<link rel="stylesheet" href="__STATIC__/css/style.css">
+<link rel="stylesheet" href="__STATIC__/css/categoryList.css">
+<link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css"/>
+<script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+<!--<script src="__STATIC__/js/zepto-1.2.0-min.js" type="text/javascript" charset="utf-8"></script>-->
+<script src="__STATIC__/js/style.js" type="text/javascript" charset="utf-8"></script>
+<script src="__STATIC__/js/mobile-util.js" type="text/javascript" charset="utf-8"></script>
+<script src="__PUBLIC__/js/global.js"></script>
+<script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+<script src="__STATIC__/js/swipeSlide.min.js" type="text/javascript" charset="utf-8"></script>
+<link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
+<link rel="stylesheet" href="__STATIC__/css/new/goodsInfo.css">
+<!--<link rel="stylesheet" href="__STATIC__/css/new/goodsTopic.css">-->
+<!--<link rel="stylesheet" href="__STATIC__/css/new/goodsInfo.css">-->
+<style>
+    .classreturn{position: fixed;z-index: 999;}
+    .like_ani {
+        font-size: 1.19467rem;
+        font-weight: bold;
+        position: absolute;
+        top: -.384rem;
+        right: 1.28rem;
+        -webkit-animation: myfirst .6s;
+        -moz-animation: myfirst .6s;
+        -ms-animation: myfirst .6s;
+        -o-animation: myfirst .6s;
+        animation: myfirst .6s;
+        color: #f00;
+    }
+    .xq_details .comment_de ul li span{vertical-align: 0;}
+</style>
+<div style="height: 1.87733rem;"></div>
+<!--商品详情s-->
+<div>
+    <!--评论列表-s-->
+    <!--<div style="transform: translateY(0);transition: .5s;" id="goDetails">-->
+    <div class="xq_details" >
+        <div class="spxq-ggcs comment_de p"  style="" id="comment">
+            <ul>
+                <!--1 全部 2好评 3 中评 4差评-->
+                <!--<li class="red">全部评价 <br /><span ctype="1">{$commentStatistics.c0}</span></li>-->
+                <li class="check"><i class="iconfont">&#xe60c;</i>全部<span ctype="1">{$commentStatistics.c0}</span></li><li>好评<span ctype="2">{$commentStatistics.c1}</span></li><li>中评<span ctype="3">{$commentStatistics.c2}</span></li><li>差评<span ctype="4">{$commentStatistics.c3}</span></li>
+                <li style="margin-bottom: .42rem;margin-top: .62rem;">有图<span ctype="5">{$commentStatistics.c4}</span></li>
+            </ul>
+        </div>
+
+        <!--评论列表-->
+        <div class="tab-con-wrapper my_comment_list" style="display: none;"></div>
+
+        <!--默认评论列表-->
+        <div class="cf_tab-con-wrapper cf_my_comment_list" style="background-color: transparent;">
+            <div class="cf_assess-flat " id="cf_List">
+            </div>
+        </div>
+    </div>
+    <!--没有评论 -s-->
+    <div class="cf_empty" style="display: none;">
+        <img src="/template/mobile/newbow/static/images/cf_no_comment.png" alt="" style="pointer-events:none;">
+        <p>客官大大！暂无相关信息</p>
+    </div>
+    <!--没有评论 -e-->
+</div>
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe.
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides.
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar" style="padding: 10px;">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <!--<button class="pswp__button pswp__button&#45;&#45;share" title="Share"></button>-->
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+<!--商品详情e-->
+<div class="noMore" style="display: none;text-align: center;font-size: .7rem;color: #999;background: #F3F5F7;line-height: 2rem;">没有更多了</div>
+<!--加载更多S-->
+<notempty name="goods_list">
+    <div class="loadbefore">
+        <img class="ajaxloading" src="__STATIC__/images/loading.gif" alt="loading...">
+    </div>
+</notempty>
+<!--点赞弹窗-s-->
+<div class="alert">
+    <img src="__STATIC__/images/hh.png"/>
+    <p>您已经赞过了！</p>
+</div>
+
+
+<!--点赞弹窗-e-->
+<!--加载更多E-->
+<!-- 微信浏览器 调用微信 分享js  end-->
+<script type="text/javascript" src="__STATIC__/js/mobile-location.js"></script>
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+
+<link rel="stylesheet" href="__STATIC__/js/photoswipe/photoswipe.css"/>
+<link rel="stylesheet" href="__STATIC__/js/photoswipe/default-skin/default-skin.css"/>
+<script src="__STATIC__/js/photoswipe/photoswipe.js"></script>
+<script src="__STATIC__/js/photoswipe/photoswipe-ui-default.js"></script>
+<script>
+    function viewPhoto(obj) {
+        var key = $(obj).data('key');
+        var imgList = $(obj).parent('ul').find('img');
+        var items = [];
+        var scrinWidth = $(window).width();
+        for (var i=0;i<imgList.length;i++) {
+            var naturalWidth = imgList[i].naturalWidth,
+                naturalHeight = imgList[i].naturalHeight;//获取图片的原始宽高
+            var widthScale = ((scrinWidth)/naturalWidth).toFixed(2);
+            items.push({src:$(imgList[i]).attr('src'),
+                w:naturalWidth*widthScale,
+                h:naturalHeight*widthScale
+            })
+        }
+        // console.log(items);
+        // return false;
+        var pswpElement = document.querySelectorAll('.pswp')[0];
+        // define options (if needed)
+        var options = {
+            // optionName: 'option value'
+            // for example:
+            index: key // start at first slide
+        };
+        // Initializes and opens PhotoSwipe
+        var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+        gallery.init();
+    }
+</script>
+<script>
+    /**
+     * 点赞ajax
+     * dyr
+     * @param obj
+     */
+    function zan(obj) {
+        if ("{$Think.session.user.user_id}" == "") {
+            layer.open({content:'请先登录',skin: 'msg',time:2});
+            return ;
+        }
+        var comment_id = $(obj).attr('data-comment-id');
+        var comment_obj = $(obj);
+        var zan_num = parseInt($("#span_zan_" + comment_id).text());
+        $.ajax({
+            type: "POST",
+            data: {comment_id: comment_id},
+            dataType: 'json',
+            url: "/index.php?m=Mobile&c=Order&a=ajaxZan",
+            success: function (res) {
+                if (res.status) {
+                    // $("#span_zan_" + comment_id).css("border","1px solid red")
+                    // $("#span_zan_" + comment_id).text(zan_num + 1);
+                    //     $('#'+comment_id).find('.like').addClass('like_ani'); //显示点赞效果
+                    // $('#'+comment_id).find('.btn-like-icon').addClass('like-red');
+                    comment_obj.find('.like').addClass('like_ani'); //显示点赞效果
+                    comment_obj.find('.btn-like-icon').addClass('like-red');
+                    comment_obj.addClass('like-red');
+                    comment_obj.find('i').addClass('like-red');
+                    comment_obj.find('span').addClass('like-red');
+                    comment_obj.find('span').text(zan_num + 1);
+                } else {
+                    $('.alert').show(200);
+                    $('.alert').animate({opacity:"1"},600,hde());
+                }
+            },
+            error : function(res) {
+                if( res.status == "200"){ // 兼容调试时301/302重定向导致触发error的问题
+                    layer.open({content:'请先登录!',skin: 'msg',time:2})
+                    return;
+                }
+                layer.open({content:'请求失败!',skin: 'msg',time:2})
+                return;
+            }
+        });
+    }
+    ajaxComment(1, 1);
+    /**
+     * 加载更多评论
+     */
+    function ajaxComment(commentType,page){
+        $.ajax({
+            type : "GET",
+            url:"/index.php?m=Mobile&c=goods&a=ajaxComment&goods_id={$goods_id}&commentType="+commentType+"&p="+page,//+tab,
+            success: function(data){
+                var h = $(data).children();
+                $(h).addClass('cf-info');
+                var more = '<div style="text-align: center;font-size: .45rem;color: #BFC1CD;background-color: transparent;line-height: 1.5rem;" id="returnMore">没有更多了</div>'
+                $(".my_comment_list").empty().append(data);
+                $("#cf_List").empty().append(h,more);
+
+                if($('.detail .search span').eq(0).hasClass('sxp')){
+                    $('.cf-info').find('.assess-btns-box').hide();
+                }
+            }
+        });
+    }
+    /**
+     * 内部导航切换
+     */
+    $('.spxq-ggcs ul li').click(function(){
+        $(this).addClass('check').siblings().removeClass('check');
+        var sg = $('.spxq-ggcs ul li').index(this);
+        $('.sg').eq(sg).show().siblings('.sg').hide();
+        var $commentType= $(this).children('span').attr('ctype');
+        ajaxComment($commentType,1);// ajax 加载评价列表
+    });
+</script>
+<script>
+    var page = 1;
+    function ajax_sourch_submit(){
+        page++;
+        $.ajax({
+            type:'GET',
+            url:'/index.php/Mobile/User/withdrawals_list/is_ajax/1/p/'+page,
+            success:function(data){
+                if($.trim(data)==''){
+                    $('#getmore').show();
+                    return false;
+                }else{
+                    $('.maleri30').append(data);
+                }
+            }
+        });
+    }
+</script>
+<script src="__PUBLIC__/js/jqueryUrlGet.js"></script><!--获取get参数插件-->
+</body>
+</html>

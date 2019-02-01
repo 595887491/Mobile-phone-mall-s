@@ -1,0 +1,91 @@
+<table>
+    <tbody>
+    <if condition="empty($earns_data) eq true">
+        <tr data-id="0">
+            <td class="no-data" align="center" axis="col0" colspan="50">
+                <i class="fa fa-exclamation-circle"></i>没有符合条件的记录
+            </td>
+        </tr>
+        <else/>
+        <volist name="$earns_data" id="list">
+            <tr data-user-id="{$list.from_user_id}" id="{$list.from_user_id}">
+                <td align="center" abbr="member_one" axis="col6" class="">
+                    <div style="text-align: center; width: 80px;" class="">{$list.divide_money}</div>
+                </td>
+                <td align="center" abbr="member_two" axis="col6" class="">
+                    <div style="text-align: center; min-width: 170px;" class="">
+
+                        <p>
+                            <if condition="$list['to_user_id'] == $list['from_user_id']">
+                                平台升级汇总
+                            <elseif condition="$list['distribute_type'] gt 100 ">
+                                    <if condition="$list['distribute_type'] == 101">发展直营合伙人奖励
+                                        <elseif condition="$list['distribute_type'] == 102">
+                                            <if condition="$agent_info['agent_level'] == 1">
+                                                发展区县合伙人奖励
+                                                <elseif condition="$agent_info['agent_level'] == 2">
+                                                    发展直营合伙人奖励
+                                            </if>
+                                            <elseif condition="$list['distribute_type'] == 103">
+                                            <if condition="$agent_info['agent_level'] == 3">发展直营合伙人奖励
+                                                <else/">发展镇/街道办合伙人奖励
+                                            </if>
+                                    </if>
+                                <else/>
+                                    <if condition="$list['divider_type'] == 1">一级会员返利{$list.divide_ratio}%
+                                        <elseif condition="$list['divider_type'] == 2">二级会员返利{$list.divide_ratio}%
+                                            <elseif condition="$list['divider_type'] == 4 || $list['divider_type'] == 7 || $list['divider_type'] == 10">代管的区县会员返利{$list.divide_ratio}%<elseif condition="$list['divider_type'] == 5 || $list['divider_type'] == 8 || $list['divider_type'] == 11">代管区县会员返利{$list.divide_ratio}%<elseif condition="$list['divider_type'] == 6">直营合伙人会员返利{$list.divide_ratio}%<elseif condition="$list['divider_type'] == 9">直营合伙人的会员返利{$list.divide_ratio}%
+                                                <elseif condition="$list['divider_type'] === 0">
+                                                    <if condition="$list['level'] == 1">一级会员返利{$list.divide_ratio}%
+                                                        <elseif condition="$list['level'] == 2">二级会员返利{$list.divide_ratio}%
+                                                            <else/>直营会员返利{$list.divide_ratio}%
+                                                    </if>
+                                    </if>
+                                </if>
+
+                                <if condition="$list['is_divided'] == 0">
+                                    <span style="color: #CC9900;">待返利</span>
+                                </if>
+                        </p>
+                    </div>
+                </td>
+                <td align="left" abbr="user_id" axis="col3" class="">
+                    <div style="text-align: center; width: 60px;" class="">{$list.from_user_id}</div>
+                </td>
+                <td align="left" abbr="nickname" axis="col4" class="">
+                    <div style="text-align: left; width: 260px;line-height: 22px;" class="clearfix">
+                        <div class="avatar fl"><img src="{$list.head_pic}" alt=""></div>
+                        <div class="fl" style="margin-left: 10px;">
+                            <p>{$list.nickname}</p>
+                            <p>{$list.mobile}</p>
+                            <p><if condition="$list['agent_level'] ">合伙人</if></p>
+                        </div>
+                    </div>
+                </td>
+
+                <td align="center" abbr="jion_time" axis="col6" class="">
+                    <div style="text-align: center; width: 160px;" class="">{:date('Y-m-d H:i',$list.add_time)}</div>
+                </td>
+                <td style="width: 100%;">
+                    <div></div>
+                </td>
+            </tr>
+        </volist>
+    </if>
+    </tbody>
+</table>
+<div class="earnsDetail">
+    <span style="line-height: 30px;" class="fl">总共 <span>{$count}</span> 条记录</span>
+{$page}
+</div>
+<script>
+    $('#total_earns')[0].innerText = '￥'+ {$total_earns};
+
+    // 点击分页触发的事件
+    $(".earnsDetail .pagination  a").click(function(){
+        cur_page = $(this).data('p');
+        ajax_get_table('search-form-earns',cur_page,'flexigridEarns');
+    });
+
+    $('.ftitle>h5').empty().html("(共{$pager->totalRows}条记录)");
+</script>

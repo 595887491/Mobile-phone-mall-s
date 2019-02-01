@@ -1,0 +1,350 @@
+body{
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+    width: 100%;
+    background-color: #f1f5f8;
+    font-family:'微软雅黑','PingFang SC';
+}
+.fr{
+    float: right;
+}
+.fl{
+    float: left;
+}
+ul{
+    padding: 0;
+    margin: 0;
+}
+.headerRank{
+    width: 100%;
+    height: .88rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    background: white;
+}
+.headerRankCon{
+    width: 100%;
+    height: .88rem;
+    line-height: .88rem;
+}
+.tex{
+    text-align: center;
+}
+.tex span{
+    font-size: .31rem;
+    color: #1E1B1B;
+}
+.texFl{
+    position: absolute;
+    top: .26rem;
+    left: .24rem;
+
+}
+.texFl a{
+    width: .5rem;
+    height: .5rem;
+}
+.texFl a img{
+    width: .22rem;
+    height: .32rem;
+}
+.homeIndex{
+    position: absolute;
+    top: .25rem;
+    right: .24rem;
+}
+.homeIndex img{
+    width: .4rem;
+    height: .42rem;
+}
+.tabChange{
+    height: .8rem;
+    line-height: .8rem;
+    width: 100%;
+    background-color: #fff;
+    border-bottom: 2px solid #f1f5f8;
+}
+.tabChange ul li {
+    list-style: none;
+    font-size: .26rem;
+    float: left;
+    color: #1E1B1B;
+    margin-left: 1.8rem;
+}
+.tabChange ul li span{
+    display: inline-block;
+}
+.activeStyle{
+    border-bottom: 4px solid #FF407E;
+    color:#FF407E;
+}
+.content{
+    width: 100%;
+    background-color: #fff;
+
+}
+.stateImg{
+    position: absolute;
+    top: 2.8rem;
+    right: .5rem
+}
+.stateImg img{
+    width: 1.47rem;
+    height: 1.15rem;
+}
+.team-list{
+    width: 100%;
+    background-color: #fff;
+    clear: both;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding: .24rem 0;
+}
+.listImg{
+    width: 2.8rem;
+    height: 2.8rem;
+    margin-left: .24rem;
+    margin-top: .24rem;
+}
+.listImg img{
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: .05rem;
+}
+.team-list-right{
+    width: 52%;
+    font-size: .24rem;
+    margin-left: .35rem;
+    position: relative;
+}
+.team-list-right .title{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+    font-size: .24rem;
+    font-weight: bold;
+    line-height: .4rem;
+}
+.titleP{
+    margin: 0;
+    padding: 0;
+    padding-right: .1rem;
+
+}
+#by{
+    color: #fff;
+    border-radius: .05rem;
+    display: inline-block;
+    font-size: .2rem;
+    background-color: #D50D16;
+    padding: .05rem;
+    line-height: 1.3;
+    margin-right: .07rem;
+}
+.team-list-right .complete{
+    color: #5B5858;
+    font-size: .24rem;
+    /*margin: .18rem 0;*/
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space:nowrap;
+    padding: 0;
+    /*margin-top: -.05rem;*/
+}
+.team-list-right .people{
+    font-size: .24rem;
+    color: #BFC1CD;
+}
+.team-list-right .people .one{
+    color: #D50D16;
+    margin-right: .17rem;
+}
+
+.team-list-right .bottom{
+    margin-top: .25rem;
+    clear: both;
+}
+.team-list-right .bottom .fl p{
+    font-size: .24rem;
+    color: #FF407E;
+}
+.team-list-right .bottom .bottomMoney{
+    font-size: .32rem;
+    font-weight: bold;
+}
+.team-list-right .bottom .fl p span:last-child{
+    font-size: .22rem;
+    color: #BFC1CD;
+    margin-left: .2rem;
+}
+.teamClass{
+    width: 100%;
+    height: 3.92rem;
+    background-color: #fff;
+    margin-top: .15rem;
+}
+.teamClassTop{
+    width: 100%;
+    text-align: center;
+    position: relative;
+}
+.teamClassTop div{
+    display: inline-block;
+    width: .72rem;
+    height: .72rem;
+    border-radius: 50%;
+}
+.teamClassTop .teamFirst .teamFirstImg{
+    width: .72rem;
+    height: .72rem;
+    border-radius: 50%;
+}
+.teamClassTop .teamFirst{
+    border: 1px solid #FF407E;
+    position: relative;
+}
+.teamSen img{
+    width: .72rem;
+    height: .72rem;
+    border-radius: 50%;
+}
+#taggle{
+    position: absolute;
+    top: 0.5rem;
+    left: 0.1rem;
+    width: .5rem;
+    height: .2rem
+}
+.teamTime{
+    width: 100%;
+    text-align: center;
+    font-size: .24rem;
+    color: #5B5858;
+    /*margin-top: .2rem;*/
+}
+.teamTime .teamTime_a span{
+    color: #D50D16;
+    font-weight: bold;
+}
+.Invitation{
+    width: 100%;
+    height: 1rem;
+    /*line-height: 1rem;*/
+    text-align: center;
+    margin-top: .1rem;
+}
+.Invitation button{
+    width: 92%;
+    height: .8rem;
+    background-color: #FF407E;
+    color: #fff;
+    font-size: .3rem;
+    border: none;
+    border-radius: .1rem;
+    margin-top: .2rem;
+}
+.teamFlaw{
+    width: 100%;
+    height: .7rem;
+    line-height: .7rem;
+    border-top: 2px solid #f1f5f8;
+    margin-top: .3rem;
+    font-size: .24rem;
+    color: #5B5858;
+    text-align: center;
+}
+.teamActive{
+    color:#FF407E ;
+}
+.parameter{
+    width: 100%;
+    background-color: #fff;
+    margin-top: .15rem;
+    padding-bottom: .3rem;
+}
+.parameterHeader{
+    text-align: center;
+    height:.7rem;
+    line-height: .7rem;
+}
+.parameterHeader img{
+    width: 1.35rem;
+    height: .23rem;
+    margin-top:.25rem;
+}
+.de_table{
+    width: 100%;
+    text-align: center;
+}
+.de_table table{
+    width: 94%;
+    margin-left: .24rem;
+}
+.de_table table tr{
+    height: .61rem;
+}
+.de_table table tr td:first-child{
+    padding-left: .24rem;
+    font-size: .24rem;
+    color: #5B5858;
+    width: 1.6rem;
+}
+.de_table table tr td:last-child{
+    padding-left: .24rem;
+    font-size: .24rem;
+    color: #8C8C8C;
+}
+.parameterCom{
+    width: 100%;
+    text-align: center;
+    margin-top: .15rem;
+    background-color: #fff;
+}
+.parameterComHeader{
+    width: 100%;
+    height: .7rem;
+    text-align: center;
+}
+.parameterComHeader img{
+    width: 1.35rem;
+    height: .23rem;
+    margin-top: .25rem;
+}
+.parameterComment{
+    width: 96%;
+    margin-left: 2%;
+}
+.parameterComment p {
+    margin: 0;
+    padding: 0;
+}
+.parameterComment >p>img {
+    width: 100%;
+}
+.parameterComment img{
+    width: 100%;
+}
+.hms .hmsSpan{
+    background-color: #333;
+    /*padding: .05rem;*/
+    border-radius: .05rem;
+    color:#FFFFFF;
+    display: inline-block;
+    width: .39rem;
+    height: .39rem;
+    line-height: .39rem;
+    text-align: center;
+}
+.shade_mark{position: fixed;top:0;left: 0;width: 100%;height: 100%;background: rgba(0,0,0,.7);
+    z-index: 999;}
+
+.share_popup{position: fixed;width: 100%;left: 0;top:0;z-index: 99999999;}
+.layui-m-layer-msg .layui-m-layercont{
+    font-size: .26rem;
+    color: #fff;
+}

@@ -1,0 +1,539 @@
+<include file="public/header" title="{$brand_info.name}" />
+
+<link rel="stylesheet" href="__STATIC__/css/new/goodsList.css">
+<link rel="stylesheet" href="__STATIC__/css/new/globalPurchase.css">
+<div class="classreturn loginsignup " id="header">
+    <div class="content">
+        <div class="ds-in-bl return">
+            <a href="javascript:goBack()"><img src="__STATIC__/images/return.png" alt="返回"></a>
+        </div>
+        <div class="ds-in-bl search center">
+            <span>{$brand_info.name}</span>
+        </div>
+    </div>
+</div>
+<div style="height: 1.87733rem;"></div>
+<!--banner-->
+<div class="banner banner_brand">
+    <!--<img src="{$info.topic_img}?x-oss-process=style/s01"  alt="banner" style="pointer-events: none;">-->
+    <!--<img src="__STATIC__/images/global/banner.png" alt="">-->
+    <!--<img src="{$brand_info.hot_logo}" alt="">-->
+    <div class="logo">
+        <img src="{$brand_info.logo}" alt="">
+    </div>
+     <p class="lick_name">{$brand_info.name}</p>
+     <p class="brand">{$brand_info.country_name}品牌</p>
+</div>
+
+<div class="global_screen">
+    <p>全部商品 <span style="font-size: .65rem;font-weight: 500;vertical-align: top;">({$goods_count})</span></p>
+    <!--排序按钮-s-->
+    <nav class="storenav p search_list_dump pos2 fr" id="head_search_box">
+        <ul>
+            <li class="activeRed" data-id ="">
+                <span class="lb">综合</span>
+            </li>
+            <li data-id ="sales_sum">
+                <span class="dq">销量</span>
+            </li>
+            <li data-id ="shop_price">
+                <span class="jg dq">价格</span>
+                <i  class="pr"></i>
+                <input type="hidden" value="asc" class="pic">
+            </li>
+        </ul>
+    </nav>
+    <!--排序按钮-e-->
+</div>
+<!--商品详情s-->
+<div id="goods_list" class="clearfix addimgchan addmhg">
+    <foreach name="$goods_list" item="vo" key="k">
+    <div class="orderlistshpop p addimgchan">
+        <div class="maleri30">
+            <a href="{:U('Mobile/Goods/goodsInfo',['id'=>$vo['goods_id']])}" class="item">
+                <div class="sc_list se_sclist clearfix">
+                    <div class="shopimg fl">
+                        <!--<img src="{$goods.original_img}?x-oss-process=style/s01">-->
+                        <img src="" alt="" class="image-item" lazyload="true" data-original="{$vo.original_img}?x-oss-process=style/s340x340">
+                    </div>
+                    <div class="deleshow fr">
+                        <div class="deletes">
+                            <span class="similar-product-txt" style="height: .8rem;">{$vo.goods_remark}</span>
+                            <p class="similar-product-text" style="">{$vo.goods_name}</p>
+                        </div>
+                        <div class="bot" style="position: static;">
+                            <div class="prices fl">
+                                <p class="sc_pri"><span style="vertical-align: bottom;">¥</span><span>{$vo.shop_price}</span></p>
+                            </div>
+                            <p class="weight fl"><span>¥</span>&nbsp;<span>{$vo.market_price}</span></p>
+                            <!--<p class="weight"><span>0</span><span>条评价</span></p>-->
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    </foreach>
+</div>
+<!--商品详情e-->
+<div class="noMore" style="display: none;text-align: center;font-size: .6rem;color: #5B5858;background: #F3F5F7;line-height: 2rem;">没有更多了</div>
+<!--加载更多S-->
+<notempty name="goods_list">
+    <div class="loadbefore">
+        <img class="ajaxloading" src="__STATIC__/images/loading.gif" alt="loading...">
+    </div>
+</notempty>
+
+<!--筛选-s-->
+<div class="screen_wi">
+    <div class="classreturn loginsignup">
+        <div class="content">
+            <div class="ds-in-bl return seac_retu">
+                <a href="javascript:void(0);" ><img src="__STATIC__/images/return.png" alt="返回"></a>
+            </div>
+            <div class="ds-in-bl search center">
+                <span class="sx_jsxz">筛选</span>
+            </div>
+            <div class="ds-in-bl suce_ok" style="   position: absolute; top: 0;right: .5rem;">
+                <a href="javascript:void(0);">确定</a>
+            </div>
+        </div>
+    </div>
+    <!--顶部筛选-s-->
+    <div class="popcover">
+        <ul>
+            <li>
+                <span <if condition="$Request.param.sel eq 'all'">class="ch_dg"</if>>
+                显示全部<input type="hidden" <if condition="$Request.param.sel eq 'all'">class="sel"</if> value="all" ></span>
+            </li>
+            <li>
+                <span <if condition="$Request.param.sel eq 'free_post'">class="ch_dg"</if>>
+                仅看包邮<input type="hidden" <if condition="$Request.param.sel eq 'free_post'">class="sel"</if> value="free_post" ></span>
+            </li>
+            <li>
+                <span <if condition="$Request.param.sel eq 'store_count'">class="ch_dg"</if>>
+                仅看有货<input type="hidden" <if condition="$Request.param.sel eq 'store_count'">class="sel"</if> value='store_count'></span>
+            </li>
+            <li>
+                <span <if condition="$Request.param.sel eq 'prom_type'">class="ch_dg"</if>>促销商品
+                <input type="hidden" <if condition="$Request.param.sel eq 'prom_type'">class="sel"</if> value="prom_type" ></span>
+            </li>
+        </ul>
+    </div>
+    <!--筛选顶部-e-->
+    <!--一级筛选条件-s-->
+    <div class="list-se-all ma-to-20 one-related" >
+        <!--全部分类-s-->
+        <div class="myorder p" onclick="cateArr()">
+            <div class="content30">
+                <a href="javascript:void(0);">
+                    <div class="order">
+                        <div class="fl">
+                            <span>全部分类</span>
+                        </div>
+                        <div class="fr">
+                            <i class="Mright"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <!--全部分类-e-->
+        <!--规格-s-->
+        <foreach name="filter_spec" item="spec" >
+            <if condition="!empty($spec[name])">
+                <div class="myorder p " onclick="filtercriteria('spec',{$spec['spec_id']})" id="spec[{$spec['spec_id']}]">
+                    <div class="content30" >
+                        <a href="javascript:void(0)">
+                            <div class="order" >
+                                <div class="fl">
+                                    <span>{$spec[name]}</span>
+                                </div>
+                                <div class="fr">
+                                    <i class="Mright"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </if>
+        </foreach>
+        <!--规格-e-->
+        <!--属性-s-->
+        <foreach name="$filter_attr" item="attr" >
+            <if condition="!empty($attr[attr_name])">
+                <div class="myorder p " onclick="filtercriteria('attr',{$attr['attr_id']})" id="attr[{$attr['attr_id']}]">
+                    <div class="content30" >
+                        <a href="javascript:void(0)">
+                            <div class="order" >
+                                <div class="fl">
+                                    <span>{$attr[attr_name]}</span>
+                                </div>
+                                <div class="fr">
+                                    <i class="Mright"></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </if>
+        </foreach>
+        <!--属性-e-->
+        <!--价格-s-->
+        <div class="myorder p" onclick="filterprice()" >
+            <div class="content30">
+                <a href="javascript:void(0)">
+                    <div class="order" >
+                        <div class="fl">
+                            <span>价格</span>
+                        </div>
+                        <div class="fr">
+                            <i class="Mright"></i>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <!--价格-e-->
+        <input type="hidden" id="key" value="" />
+    </div>
+    <!--一级筛选条件-e-->
+    <!--二级刷选条件-->
+    <div class="list-se-all ma-to-20 two-related" style="overflow-y: auto;max-height: 20rem;">
+        <!--分类筛选-s-->
+        <foreach name="cateArr" item="cate" key="catek">
+            <div class="myorder p catearr">
+                <div class="content30">
+                    <a href="{:U('Mobile/Goods/goodsList',array('id'=>$cate['id']))}">
+                        <div class="order">
+                            <div class="fl">
+                                <span style="font-weight: 700;">{$cate[name]}</span>
+                            </div>
+                            <div class="fr">
+                                <i class=""></i>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <foreach name="cate[sub_menu]" item="cate2" key="catek2">
+                <div class="myorder p catearr">
+                    <div class="content30">
+                        <a href="{:U('Mobile/Goods/goodsList',array('id'=>$cate2['id']))}">
+                            <div class="order">
+                                <div class="fl">
+                                    <span style="color: #5b5b5b;font-size: .6rem;">{:str_repeat("&nbsp;",$cate2[level])}{$cate2[name]}</span>
+                                </div>
+                                <div class="fr">
+                                    <i class=""></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </foreach>
+        </foreach>
+        <!--分类筛选-e-->
+        <!--规格值筛选-s-->
+        <foreach name="filter_spec" item="spec1" key="speck">
+            <foreach name="spec1[item]" item="val" key="speck2">
+                <div class="myorder p filter filterspec" data-id="{$spec1[spec_id]}" >
+                    <div class="content30" >
+                        <a href="javascript:void(0)">
+                            <div class="order">
+                                <div class="fl">
+                                    <span>{$val[item]}</span>
+                                </div>
+                                <div class="fr">
+                                    <i class=""><input type="checkbox" style="display: none;"  value="{$val[val]}"/></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </foreach>
+        </foreach>
+        <!--规格值筛选-e-->
+        <!--属性值-s-->
+        <foreach name="filter_attr" item="attr1" key="attrk">
+            <foreach name="attr1[attr_value]" item="attrval" key="attrk2">
+                <div class="myorder p filter filterattr" data-id="{$attr1[attr_id]}" >
+                    <div class="content30" >
+                        <a href="javascript:void(0)">
+                            <div class="order">
+                                <div class="fl">
+                                    <span>{$attrval[val]}</span>
+                                </div>
+                                <div class="fr">
+                                    <i class=""><input type="checkbox" style="display: none;"  value="{$attrval[val]}"/></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </foreach>
+        </foreach>
+        <!--属性-e-->
+        <!--价格筛选-s-->
+        <if condition="$filter_price neq null">
+            <foreach name="filter_price" item="price" key="pricek">
+                <div class="myorder p tow-price">
+                    <div class="content30">
+                        <a href="{$price[href]}">
+                            <div class="order">
+                                <div class="fl">
+                                    <span>{$price[value]}</span>
+                                </div>
+                                <div class="fr">
+                                    <i class=""></i>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </foreach>
+            <else/>
+            <div class="myorder p tow-price">
+                <div class="content30">
+                    <a href=" ">
+                        <div class="order">
+                            试试其他筛选吧！
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </if>
+        <!--价格筛选-e-->
+    </div>
+    <!--二级刷选条件-e-->
+</div>
+<!--筛选-e-->
+<div class="mask-filter-div" style="display: none;"></div>
+
+<div class="mask-filter-box" style="display: none;"></div>
+<!--加载更多E-->
+<!-- 微信浏览器 调用微信 分享js-->
+<script>
+    var ShareImgUrl = "{$brand_info.hot_logo}"; //分享图标
+    var ShareTitle = "尚美缤纷{$brand_info.name}"; //分享标题
+    var ShareDesc = "我在尚美缤纷发现了好多正品好货，绝对适合你，速来围观~"; //分享描述
+    var ShareLink = "http://{$_SERVER[HTTP_HOST]}/index.php/mobile/Goods/goodsBrand/brand_id/{$brand_info.id}"; //分享描述
+</script>
+<include file="public/wx_share"/>
+<!-- 微信浏览器 调用微信 分享js  end-->
+<!--<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>-->
+<script type="text/javascript">
+    //滚动加载更多
+    $(window).scroll(
+        function() {
+            var scrollTop = parseInt($(this).scrollTop());
+            var scrollHeight = parseInt($(document).height());
+            var windowHeight = parseInt($(this).height());
+            if (scrollTop + windowHeight >= scrollHeight-50) {
+                ajax_sourch_submit();//调用加载更多
+            }
+        }
+    );
+
+    var scrollTops = parseInt($('.global_screen').offset().top);
+    //滚动 排序置顶
+    $(window).scroll(function () {
+        var scrollH = $(window).scrollTop();
+        if(scrollH > scrollTops) {
+            $('.global_screen ').addClass('floatNav');
+        }
+        if(scrollH <= scrollTops) {
+            $('.global_screen ').removeClass('floatNav');
+        }
+    });
+    /**
+     * ajax加载更多数据
+     */
+    /**
+     * 加载更多商品
+     **/
+    var  page = 1;
+    var haveMore = 1,ajax_returned = 1;
+    var dataVal , pic;
+    dataVal = sessionStorage.getItem('type');
+    pic = sessionStorage.getItem('price');
+    if(dataVal || pic) {
+        // 判断返回的数据的选中状态
+        if(dataVal == ''){
+            $(".storenav ul li:first-child").addClass("activeRed").siblings().removeClass('activeRed');
+        }
+        if(dataVal == 'sales_sum'){
+            $(".storenav ul li:nth-child(2)").addClass("activeRed").siblings().removeClass('activeRed');
+        }
+        if(dataVal == "shop_price"){
+            if (pic == 'asc') {
+                $(".storenav ul li .pr").removeClass("bpr1").addClass("bpr2");
+            }
+            if(pic == 'desc'){
+                $(".storenav ul li .pr").removeClass("bpr2").addClass("bpr1");
+            }
+            if(pic==''){
+                $(".storenav ul li .pr").removeClass("bpr1").addClass("bpr2");
+            }
+            $(".storenav ul li:last-child").addClass("activeRed").siblings().removeClass('activeRed');
+        }
+        $.ajax({
+            type : "get",
+            url:"/index.php?m=Mobile&c=Goods&a=goodsBrand&brand_id={$brand_info.id}&p="+page,
+            data:{
+                sort:dataVal,
+                sort_asc:pic,
+            },
+            success: function(data) {
+                ajax_returned = 1;
+                if ($.trim(data) == '') {
+                    haveMore = 0;
+                    $('#getmore').hide();
+                    $('.noMore').show();
+                } else {
+                    $("#goods_list").html(data);
+                }
+            }
+        });
+    }
+
+
+    function ajax_sourch_submit() {
+        if (haveMore == 0 || ajax_returned == 0) return;
+        ajax_returned =0;
+        page++;
+        $.ajax({
+            type : "get",
+            url:"/index.php?m=Mobile&c=Goods&a=goodsBrand&brand_id={$brand_info.id}&p="+page,
+            data:{
+                sort:dataVal,
+                sort_asc:pic,
+            },
+            success: function(data) {
+                ajax_returned = 1;
+                if ($.trim(data) == '') {
+                    haveMore = 0;
+                    $('#getmore').hide();
+                    $('.noMore').show();
+                } else {
+                    $("#goods_list").append(data);
+                }
+            }
+        });
+    }
+
+    // 点击筛选条件筛选
+    $('.storenav ul li').click(function () {
+        $(".storenav ul li ").eq($(this).index()).addClass("activeRed").siblings().removeClass('activeRed');
+        pic = $('.pic').val();
+        var test;
+        dataVal = $(this).data('id');
+        if( dataVal == 'shop_price'){
+            if (pic == 'asc') {
+                test = 'desc';
+                page =1;
+                haveMore=1;
+                $(".storenav ul li .pr").removeClass("bpr1").addClass("bpr2");
+            }
+            if(pic == 'desc'){
+                page=1;
+                haveMore=1;//还有数据
+                test = 'asc';
+                $(".storenav ul li .pr").removeClass("bpr2").addClass("bpr1");
+            }
+            if(pic==''){
+                page=1;
+                haveMore=1;//还有数据
+                test = 'desc';
+                $(".storenav ul li .pr").removeClass("bpr1").addClass("bpr2");
+            }
+        }else {
+            $(".storenav ul li .pr").removeClass("bpr2");
+            $(".storenav ul li .pr").removeClass("bpr1")
+        }
+
+        if(dataVal == 'sales_sum'){
+            page =1;
+            haveMore=1;
+            pic = "desc";
+            test = 'desc';
+        }
+        if(dataVal ==''){
+            page =1;
+            haveMore=1;
+            pic = '';
+            test = '';
+        }
+        $('.pic').val(test);
+
+        $.ajax({
+            type : "GET",
+            url:"/index.php?m=Mobile&c=Goods&a=goodsBrand&brand_id={$brand_info.id}&p="+page,
+            data:{
+                sort:dataVal,
+                sort_asc:pic,
+            },
+            success: function(data) {
+                ajax_returned = 1;
+                if ($.trim(data) == '') {
+                    haveMore = 0;
+                    $('#getmore').hide();
+                    $('.noMore').show();
+                } else {
+                    window.scrollTo(0,scrollTops-100);
+                    // $(window).animate({scrollTop:scrollTops-100},300)
+                    $("#goods_list").html(data);
+                }
+            }
+        });
+
+        //存储排行数据
+        sessionStorage.setItem('type',dataVal);
+        sessionStorage.setItem('price',pic);
+    });
+     
+
+    // // 分享后 判断是否有上一级页面
+    function goBack(){
+        var url = document.referrer;
+        if(url) {
+            history.back(-1);
+        }else {
+            window.location.href = "{:U('Mobile/Index/index')}";
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    var viewHeight = document.documentElement.clientHeight // 可视区域的高度
+    function lazyload () {
+        // 获取所有要进行懒加载的图片
+        var eles = document.querySelectorAll('img[data-original][lazyload]')
+        Array.prototype.forEach.call(eles, function (item, index) {
+            var rect
+            if (item.dataset.original === '')
+                return
+            rect = item.getBoundingClientRect()
+            // 图片一进入可视区，动态加载
+            if (rect.bottom >= 0 && rect.top < viewHeight) {
+                !function () {
+                    var img = new Image()
+                    img.src = item.dataset.original
+                    img.onload = function () {
+                        item.src = img.src
+                        console.log(1)
+                    }
+                    item.removeAttribute('data-original')
+                    item.removeAttribute('lazyload')
+                }()
+            }
+        })
+    }
+    // 首屏要人为的调用，否则刚进入页面不显示图片
+    lazyload();
+
+    document.addEventListener('scroll', lazyload);
+</script>
+
+</body>
+</html>

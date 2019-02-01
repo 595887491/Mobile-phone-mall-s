@@ -1,0 +1,64 @@
+<!DOCTYPE>
+<html>
+<head>
+    <title>尚美一起拼</title>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/rem.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <!--<link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>-->
+    <link rel="stylesheet" href="__STATIC__/css/new/team_base.css">
+    <link rel="stylesheet" href="__STATIC__/css/new/team_index.css">
+</head>
+
+<body>
+<!--header-->
+<div class="headerRank">
+    <a href="{:U('Mobile/Index/index')}" class="back">
+        <img src="__STATIC__/images/return.png" alt="返回"></a>
+    </a>
+    <div class="txt">
+        尚美一起拼
+    </div>
+    <a href="{:U('Mobile/Team/myTeam')}" class="myTeam">我的拼团</a>
+</div>
+<div style="height: .88rem;"></div>
+<!--header-->
+<div class="content"></div>
+</body>
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script>
+/**
+ * ajax加载更多数据
+ */
+var flog = 0;
+function ajax_sourch_submit()
+{
+    if(flog == 1) {
+       return
+    }
+    ++page;
+    flog =1;
+    $.ajax({
+        type : "GET",
+        url:"/index.php?m=Mobile&c=Team&a=index&p="+page,
+        success: function(data) {
+            if ($.trim(data) != '') {
+                $('.content').append(data);
+                flog =0;
+            }
+        }
+    });
+}
+var  page = 0;
+ajax_sourch_submit();
+</script>
+
+<script>
+    var ShareImgUrl = "https://{$_SERVER[HTTP_HOST]}__STATIC__/images/new/team_share.png"; //分享图标
+    var ShareDesc ="尚美缤纷-一家有线下沙龙体验活动的化妆品平台" ; //分享标题
+    var ShareTitle = "尚美缤纷拼团购，折扣低成团快，快来看看>>"; //分享描述
+    var ShareLink = "http://{$_SERVER[HTTP_HOST]}/index.php/mobile/team/index";
+</script>
+<include file="public/wx_share"/>
+</html>

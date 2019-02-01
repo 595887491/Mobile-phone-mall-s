@@ -1,0 +1,56 @@
+.withdrawal_detail{
+    margin-top: 1.8rem;
+}
+.withdrawal_detail ul li {
+    height: 2.8rem;
+    line-height: 1rem;
+    border-bottom: 2px solid #f1f5f8;
+    padding-top: .5rem;
+}
+.withdrawal_left{
+    margin-left: .5rem;
+}
+.withdrawal_left_first{
+    font-size: .6rem;
+    color: #1E1B1B;
+    display: inline-block;
+    width: 9rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.withdrawal_left_second{
+    font-size: .6rem;
+    color: #1E1B1B;
+}
+.withdrawal_left p{
+    font-size: .5rem;
+    color: #BFC1CD;
+}
+.withdrawal_state{
+    font-size: .6rem;
+    color: #1E1B1B;
+}
+.withdrawal_right{
+    margin-right: .5rem;
+}
+.withdrawal_right span{
+    font-size: .7rem;
+    color: #1E1B1B;
+}
+.withdrawal_img{
+    width: 100%;
+    text-align: center;
+}
+.withdrawal_img P {
+    font-size: .7rem;
+    color: #BFC1CD;
+}
+.withdrawal_img img {
+    width: 13rem;
+    height: 13rem;
+}
+.loginsignup{
+    position: fixed;
+    top: 0;
+}

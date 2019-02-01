@@ -1,0 +1,61 @@
+<foreach name="order_earnings_rows" item="user" key="k">
+    <div class="list">
+        <div class="timer id_{$k}" id="id_{$k}">
+            <span class="list-timer">
+                <if condition="date('Y') == date('Y',$k)">
+                            {:date('m月d日',$k)}
+                            <else/>
+                            {:date('Y年m月d日',$k)}
+                         </if></span>
+            <span>合计{$every_day_order_earns[$k]}</span>
+        </div>
+        <foreach name="user" item="vv" key="kk">
+            <div class="ranking_list" data-fromUserId="{$vv.from_user_id}" data-logId="{$vv.id}">
+                <div class="ranking_list_left">
+                    <div class="avatar fl">
+                        <img src="{$vv.head_pic|default='http://cdn.cfo2o.com/data/avatar/user_head_default.png'}?x-oss-process=style/s150x150" alt="">
+                    </div>
+                    <div class="msg fl">
+                        <p class="clearfixs">
+                            <span class="c1">{$vv.nickname}</span>
+                            <if condition="$vv.nickname != $vv.mobile">
+                              <span style="margin-left: .3rem;color: #BFC1CD;vertical-align: -.1rem;">{$vv.mobile}</span>
+                            </if>
+                            <span class="fr money-wrap">
+                             <if condition="$vv.is_divided neq 1">
+
+                              <span class="wait"><i class="iconfont">&#xa622;</i>待返利</span>
+                             </if>
+                              <span class="m">{:sprintf("%.2f", floatval($vv.divide_money))}</span>
+                            </span>
+                        </p>
+                        <p>
+                            <if condition="$vv.is_divided eq 1">
+                                <span style="color: #BFC1CD;font-size: .58rem;"><if condition="date('Y') == date('Y',$k)">
+                                            {:date('m-d H:i', $vv.add_time)}
+                                            <else/>
+                                             {:date('Y-m-d H:i', $vv.add_time)}
+                                            </if></span>
+                                <else/>
+                                <span style="color: #BFC1CD;font-size: .58rem;"><if condition="date('Y') == date('Y',$k)">
+                                            {:date('m-d H:i', $vv.add_time)}
+                                            <else/>
+                                             {:date('Y-m-d H:i', $vv.add_time)}
+                                            </if></span>
+                            </if>
+                            <span class="fr" style="font-size: .72rem;color: #1E1B1B;">
+                                 <span class="fr" style="font-size: .55rem;color: #BFC1CD;">
+                                     <if  condition="$vv.relative_level neq 0">
+                                      <span style="vertical-align:0;">{$vv.remarks}</span>
+                                         <else/>
+                                         平台升级汇总
+                                     </if>
+                                </span>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </foreach>
+    </div>
+</foreach>

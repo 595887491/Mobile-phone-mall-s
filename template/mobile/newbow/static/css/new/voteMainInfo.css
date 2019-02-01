@@ -1,0 +1,116 @@
+.top{width: 100%;height: 10rem;position: relative;
+    /*background: url("../../images/new/hanfu.png") no-repeat;*/}
+.header{position: fixed;top:0;left: 0;width: 100%;padding: .22rem .25rem;height: .9rem;z-index: 999;}
+.header::after,.new-vote ul::after,.new-vote::after{display: block;content: '';clear: both;overflow: hidden;height: 0;}
+.header .fr >div{display:inline-block;font-size: .24rem;color: #fff;padding: .1rem  .2rem;border-radius: .3rem;
+background: rgba(0,0,0,0.4);}
+.header .state2 .fr >div{background:transparent;color: #043E37;}
+.header .state2 .fl{background:transparent;}
+.header .state2 .fl img{width: .2rem;height: .33rem;margin-left: 0;}
+.header .fr >div img{width: .25rem;height: .25rem;vertical-align: -.04rem;}
+.header .fl{width: .46rem;height: .46rem;border-radius: .46rem;background: rgba(0,0,0,.4);}
+.header .back img{width: .16rem;height: .28rem;margin-left: .15rem;margin-top: .08rem;}
+.top .bottom{width: 100%;height: 3.3rem;position: absolute;background: url("../../images/new/hanfu-info-mark.png")no-repeat;
+background-size: 100% 100%;left: 0;bottom: 0;text-align: center;color: #fff;font-size: .26rem;
+padding: 0 .25rem;padding-top: .3rem;}
+.top .bottom .title{font-size: .3rem;font-weight: bold;}
+.top .bottom .details{margin-top: .22rem;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;}
+.top .bottom .ps{margin: .12rem 0;}
+.top .bottom img{width: 2.88rem;height: .78rem;}
+.new-vote {width: 100%;background: #fff;padding: .2rem 0;padding-left: .3rem;}
+.new-vote ul{width: 80%;white-space: nowrap;overflow: hidden;}
+.new-vote ul li{width: .6rem;height: .6rem;border-radius: .6rem;overflow: hidden;display: inline-block;margin-left: .1rem;}
+.new-vote ul li img{width: 100%;height: 100%;}
+.recommend-logo {padding-top: .48rem;padding-bottom:.16rem;text-align: center;}
+.recommend-logo img{width: 3rem;height: .65rem;display: inline-block}
+.guessCom{color: #597C77;}
+.guessItem{height: 5.5rem;margin-left: 3.33%;}
+.cf_close {width: .2rem;height: .2rem;position: absolute;right: .25rem;top: .25rem;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,86 @@
+.fr{
+    float: right;
+}
+.fl{
+    float: left;
+}
+body{
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+    width: 100%;
+}
+.headerRank{
+    width: 100%;
+    height: .88rem;
+    border-bottom: 2px solid #eaeaea;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    background: white;
+}
+.headerRankCon{
+    width: 100%;
+    height: .88rem;
+    line-height: .88rem;
+}
+.tex{
+    text-align: center;
+}
+.tex span{
+    font-size: .31rem;
+    color: #1E1B1B;
+}
+.texFl{
+    margin-top: .25rem;
+    margin-left: .24rem;
+
+}
+
+.texFl a{
+    display: inline-block;
+    width: .5rem;
+    height: .5rem;
+}
+.rankList{
+    width: 100%;
+    height: 4.5rem;
+    background: #ffffff;
+    margin-top: .05rem;
+    border-bottom:.1rem solid #f1f5f8;
+}
+.rankList:first-child{
+    margin-top: 1rem;
+}
+.rankListMore{
+    width: 100%;
+    height: .8rem;
+    line-height: .8rem;
+    padding-left: .24rem;
+    margin-bottom: .1rem;
+}
+.ll span{
+    font-size: .26rem;
+    color: #1E1B1B;
+}
+.lr{
+    padding-right: .5rem;
+}
+.lr span{
+    font-size: .26rem;
+    color: #E51B00;
+}
+.rankCoverMap{
+    width: 100%;
+    height: 3.46rem;
+    /*margin-left: 2.6%;*/
+    padding-left: .24rem;
+    border-radius: .1rem;
+}
+.rankCoverMap img{
+    width: 94%;
+    border-radius: .1rem;
+    height: 3.46rem;
+}
+#rankListBox{box-sizing: border-box;overflow-x: hidden;width: 100%;}

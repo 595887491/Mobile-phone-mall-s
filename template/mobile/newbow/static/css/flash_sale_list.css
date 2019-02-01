@@ -1,0 +1,80 @@
+.killtime ul::after{content:'';display: block;visibility: hidden;height: 0;clear: both;}
+.shopkill ul li .fon{
+    margin-left: .3rem;
+    width: 9rem;
+}
+.shopkill ul li .fon .similar-product-text{
+    height: 1.6rem;
+}
+.similar-product-text{
+    line-height: .8rem;
+}
+.killtime ul li{
+    width: 25%;
+}
+.loginsignup {
+    position: fixed;
+    top: 0;
+    z-index: 9999;
+}
+.hms{
+    margin-left: .2rem;
+}
+.hms span{
+    background-color: #3d3d3d;
+    padding: .1rem;
+    border-radius: .1rem;
+    color: white;
+
+}
+.shopkill ul li .fon .ms .qums a{
+    /* padding: .3rem .5rem; */
+    width: 3.4rem;
+    height: 1.2rem;
+    text-align: center;
+    line-height: .6rem;
+    /* min-width: 3rem; */
+    display: block;
+}
+/*.flash_sale{*/
+    /*position: absolute;*/
+    /*z-index: 99999;*/
+    /*right: .5rem;*/
+    /*top:1.5rem;*/
+    /*width: 5.55rem;*/
+    /*!*height: 4.3rem;*!*/
+    /*background-image:url("__STATIC__/images/flash_com.png" );*/
+    /*background-size: 100% 100%;*/
+    /*display: none;*/
+    /*padding: .3rem 0;*/
+/*}*/
+.flash_sale p{
+    position: relative;
+    font-size: .6rem;
+    color: white;
+    text-align: center;
+    padding: 0 .2rem;
+    line-height: .6rem;
+
+}
+.remindMe{
+    background-color: #30C37C;
+    color: #fff;
+    border: 1px solid transparent;
+    outline: none;
+}
+.remenber{
+    outline: none;
+    background-color: #fff;
+    color: #30C37C;
+    border: 1px solid #30C37C;
+}
+.isLogin_box{position: fixed;width: 100%;display: none;height: 100%;background: rgba(0,0,0,0.5);top:0;left: 0;z-index: 99999;}
+.isLogin-wrapper{position: absolute;left: 20%;top:50%;margin-top: -3.2rem;background: #fff;width: 60%;font-size:.62rem;text-align: center;border-radius: 10px;}
+.isLogin-wrapper .top{padding: .8rem 0;}
+.isLogin-wrapper .top p:first-child{font-size: .67rem;color: #1E1B1B;}
+.isLogin-wrapper .top p:last-of-type{color:#5B5858;margin-top: 1rem;}
+.isLogin-wrapper .btn{border-top: 1px solid #F0F2F5;padding: .5rem  1rem;}
+.isLogin-wrapper .btn::after{content: '';display: block;clear: both;visibility: hidden;height: 0;font-size: 0;}
+.isLogin-wrapper .btn button{width: 3rem;height: 1.3rem;border-radius: .1rem;border: 2px solid #FF407E;color: #FF407E;background: #fff;}
+.isLogin-wrapper .btn button:last-of-type{background-color: #FF407E;color: #fff;}

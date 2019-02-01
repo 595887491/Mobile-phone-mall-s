@@ -1,0 +1,41 @@
+<foreach name="goods_list" item="good">
+    <div class="maleri30">
+        <!--商品列表-s-->
+        <div class="sc_list">
+            <div class="radio fl cf_collect_delete" style="display: none">
+                <!--商品勾选按钮-->
+                <span onclick="checkGoods(this)" class="che check_t">
+                             <i>
+                                 <input name="checkItem" type="checkbox" style="display:none;" value="104" checked="checked">
+                             </i>
+                             </span>
+            </div>
+            <div class="shopimg fl" style="margin-top: .5rem">
+                <a href="/index.php/Mobile/Goods/goodsInfo/id/194.html">
+                    <!--商品图片-->
+                    <img src="{$good.original_img}" />
+                </a>
+            </div>
+            <div class="deleshow fr">
+                <div class="deletes clearfix">
+                    <!--商品名-->
+                    <span class="similar-product-text fl" style="margin-bottom: .15rem;">
+                                    <a href="/index.php/Mobile/Goods/goodsInfo/id/194.html">{$good[goods_name]|getSubstr=0,20}</a>
+                                </span>
+                </div>
+                <!--商品属性，规格-->
+                <!--<p class="weight">属性</p>-->
+                <div class="prices clearfix">
+                    <p class="price fl">
+                        <!--<span style="color: #1E1B1B">¥</span>-->
+                        <span id="cart_104_member_goods_price">￥{$good[shop_price]}</span>
+                    </p>
+                </div>
+                <div class="cf_more_like">
+                    <a href="{:U('Goods/goodsList',['id'=>$good.cat_id])}"><span class="guess-button dele-button J_ping">立即购买</span></a>
+                </div>
+            </div>
+            <!--商品列表-e-->
+        </div>
+    </div>
+</foreach>

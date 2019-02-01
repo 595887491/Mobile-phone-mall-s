@@ -1,0 +1,84 @@
+.red{
+    border-bottom: 2px solid #FF407E;
+}
+.cf_ul_act li a span{
+    font-size: .65rem;
+    color: #1E1B1B;
+}
+.storenav ul .red span{
+    color: #FF407E;
+}
+.get-limit{
+    background-color: transparent;
+}
+.get-limit .clickgetcoupon{
+    color: #FF407E;
+    border: none;
+    font-size: .7rem;
+    height: 3rem;
+    width: .8rem;
+    margin-left: 1.8rem;
+    margin-top: .5rem;
+}
+.alcowlone {
+    background: url("../../images/cf_dist.png") no-repeat;
+    margin-bottom: 0.5rem;
+    background-size: 100%;
+    height: 5rem;
+    width: 15rem;
+}
+
+.goods-limit-fo .condition em{
+    color:#FF407E;
+    font-size: 1.8rem;
+    position: relative;
+    top: .3rem;
+    font-weight: 400;
+}
+.goods-limit-fo .condition{
+    /*color:#FF407E ;*/
+    color: #A61544;
+    font-size: .75rem;
+}
+.goods-limit-fo{
+    width: 10rem;
+    margin-left: .5rem;
+}
+.cf_name{
+    position: absolute;
+    font-size: .6rem;
+    color: #585858;
+    top: 3.5rem;
+    margin-left: .5rem;
+    width: 10rem;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+}
+#cf_mon{
+    font-size: .9rem;
+}
+.cf_more{
+    position: absolute;
+    color: #1E1B1B;
+    font-size: .6rem;
+    left: 4.2rem;
+    top:1.2rem;
+}
+.cf_more_l{
+    position: absolute;
+    font-size: .6rem;
+    left: 4.2rem;
+    top:2.2rem;
+    color: #1E1B1B;
+}
+.storenav ul li>a{
+    padding-bottom: .57rem;
+}
+.storenav ul li span{padding-right: 0;}
+.loginsignup {
+    position: fixed;
+    top: 0;
+    z-index: 9999;
+}

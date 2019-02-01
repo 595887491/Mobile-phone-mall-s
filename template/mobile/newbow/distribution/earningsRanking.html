@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>收益排行</title>
+    <link rel="stylesheet" href="__STATIC__/css/style.css">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css"/>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/mobile-util.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
+</head>
+<include file="public/header_nav" title="收益排行" href="javascript:history.back(-1)"/>
+<link rel="stylesheet" href="__STATIC__/css/new/earningsRanking.css">
+<body>
+<div class="cf_top">
+    <ul>
+        <li>
+            <p>{$share_days}</p>
+            <p>累计分享时间（天）</p>
+        </li>
+        <li style="position: relative;">
+            <p style="font-size:1.2rem;">{$user_rank}</p>
+            <p>排名名次（名）</p>
+            <p class="bot">前30名</p>
+        </li>
+        <li>
+            <p>{$front_of_other}</p>
+            <p>领先人群（比）</p>
+        </li>
+    </ul>
+</div>
+<div class="all_money">
+ <span>我的累计收益</span>
+ <span class="fr" style="color: #1E1B1B;">{$my_earning_total}</span>
+</div>
+
+<div class="ranking_wrap">
+    <notempty name="ranking_rows">
+     <foreach name="ranking_rows" item="user" key="k">
+   <div class="ranking_list">
+       <div class="ranking_list_left">
+           <div class="avatar fl">
+               <img src="{$user.head_pic|default='http://cdn.cfo2o.com/data/avatar/user_head_default.png'}?x-oss-process=style/s150x150" alt="">
+            </div>
+           <if condition="$user.rank eq 1">
+           <div class="ranking_img no1">{$user.rank}</div>
+           <elseif condition="$user.rank eq 2"/>
+           <div class="ranking_img no2">{$user.rank}</div>
+           <elseif condition="$user.rank eq 3"/>
+           <div class="ranking_img no3">{$user.rank}</div>
+           <else/>
+           <div class="ranking_img no_ranking">{$user.rank}</div>
+           </if>
+            <div class="msg fl">
+                <p>{$user.nickname|default='佚名用户'}</p>
+                <p>累计分享{$user.share_days}天</p>
+            </div>
+           <span class="fr">{$user.wallet_accumulate_income}元</span>
+       </div>
+   </div>
+    </foreach>
+    <else/>
+    <div class="cf_empty" style="background: #F1F5F8;">
+        <img src="__STATIC__/images/empty_earnings_details.png" alt="" style="pointer-events: none;">
+        <p>客官大大！暂无相关信息</p>
+    </div>
+    </notempty>
+</div>
+</body>
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var u = navigator.userAgent;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        if(isAndroid || !isiOS){  //安卓
+            $('.ranking_img').css('line-height','2.32222rem');
+        }else{  //苹果
+            $('.ranking_img').css('line-height','2.122rem');
+        }
+    })
+    /**
+     * 加载更多商品
+     **/
+    var hasMoreData = 1;
+    var  page = 1;
+    function ajax_sourch_submit()
+    {
+        if (hasMoreData == 0) {
+            return;
+        }
+        ++page;
+        $.ajax({
+            type : "post",
+            url:"/index.php?m=Mobile&c=Distribution&a=earningsRanking_ajaxGetMore&p="+page,
+            success: function(data) {
+                if ($.trim(data) == '') {
+                    hasMoreData = 0;
+                    $('#getmore').hide();
+                } else {
+                    $(".ranking_wrap").append(data);
+                }
+            }
+        });
+    }
+</script>
+</html>

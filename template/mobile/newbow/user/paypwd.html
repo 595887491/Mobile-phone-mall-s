@@ -1,0 +1,190 @@
+<include file="public/header" title="支付密码" body=""/>
+<if condition="$referer eq 'cart2'">
+    <div class="classreturn loginsignup ">
+        <div class="content">
+            <div class="ds-in-bl return">
+                <a href="javascript:window.parent.call_back(); " class="returnImag" ><img src="__STATIC__/images/clos.png" alt="返回" style="width: 0.7rem;height: 0.7rem;"></a>
+            </div>
+            <div class="ds-in-bl search center">
+                <span>支付密码</span>
+            </div>
+        </div>
+    </div>
+<else/>
+    <include file="public/header_nav" title="支付密码"  href="javascript:history.back(-1)"/>
+</if>
+<link rel="stylesheet" href="__STATIC__/css/new/paypwd.css">
+<if condition="$step eq 1">
+        <div class="loginsingup-input">
+            <form method="post" >
+                <div class="lsu">
+                    <span>手机号码 :</span>
+                    <input type="text" name="mobile" id="tel" value="{$mobile}" placeholder="请输入您的手机号" readonly onBlur="checkMobilePhone(this.value);"/>
+                </div>
+                <div class="v-identity m-t-40">
+                    <span class="v-til">验证码:</span>
+                    <div class="v-cont-wrap">
+                        <input type="text" name="mobile_code" id="tpcode" value="" placeholder="请输入验证码">
+                        <a  class="m_phone" href="javascript:void(0);" rel="mobile" id="fcode" onclick="sendcode(this)">获取验证码</a>
+                    </div>
+                </div>
+                <div class="lsu-submit">
+                    <input type="button" onclick="nextstep()" value="下一步" />
+                </div>
+            </form>
+        </div>
+    </if>
+<if condition="$step eq 2">
+    <div class="loginsingup-input">
+        <form  method="post"  id="payform">
+          <if condition="!empty($user.paypwd)">
+            </if>
+            <div class="lsu">
+                <span style="letter-spacing: .24rem;">新密码:</span>
+                <input style="margin-left: -.18rem;"  type="password" name="new_password" id="new_password" onkeyup="this.value=/^\d+\.?\d{0,2}$/.test(this.value) ? this.value : ''" placeholder="请输入6位数新密码"/>
+            </div>
+            <div class="lsu">
+                <span>确认密码 :</span>
+                <input type="password" name="confirm_password" id="confirm_password" onkeyup="this.value=/^\d+\.?\d{0,2}$/.test(this.value) ? this.value : ''" placeholder="再次输入新密码" />
+            </div>
+            <p class="ts">注:支付密码请设置为6位数的数字</p>
+            <div class="lsu-submit">
+                <input type="button" onclick="submitverify()" value="确认" />
+            </div>
+        </form>
+    </div>
+</if>
+<script>
+    var referer = "{$referer}";
+    //手机验证
+    function checkMobilePhone(mobile){
+        if(mobile == ''){
+            showErrorMsg('请输入您的手机号');
+            return false;
+        }else  if(!checkMobile(mobile)) {
+            showErrorMsg('手机号码格式不正确！');
+            return false;
+        }
+    }
+    //发送短信验证码
+    function sendcode(obj){
+        var tel = $.trim($('#tel').val());
+        var obj = $(obj);
+        if(tel == ''){
+            showErrorMsg('请输入您的号码！');
+            return false;
+        }
+        var s = {$tpshop_config['sms_sms_time_out']|default=60};
+        //改变按钮状态
+        obj.unbind('click');
+        //添加样式
+        obj.attr('id','fetchcode');
+        callback();
+        //循环定时器
+        var T = window.setInterval(callback,1000);
+        function callback()
+        {
+            if(s <= 0){
+                //移除定时器
+                window.clearInterval(T);
+                obj.bind('click',sendcode)
+                obj.removeAttr('id','fetchcode');
+                obj.text('获取验证码');
+            }else{
+                obj.text(--s + '秒');
+            }
+        }
+        $.ajax({
+            url : "/index.php?m=Home&c=Api&a=send_validate_code&scene=4&type=mobile&send="+tel,
+            type:'post',
+            dataType:'json',
+            data:{type:obj.attr('rel'),send:tel},
+            success:function(res){
+                if(res.status==1){
+                    //成功
+                    showErrorMsg(res.msg);
+                }else{
+                    //失败
+                    showErrorMsg(res.msg);
+                    //移除定时器
+                    window.clearInterval(T);
+                    obj.removeAttr('id','fetchcode');
+                    obj.text('获取验证码');
+                }
+            }
+        })
+    }
+
+    //第一步验证
+    function nextstep(){
+    	
+    	
+        var tpcode = $('#tpcode').val();
+        if(tpcode == ''){
+            showErrorMsg('验证码不能为空');
+            return false;
+        }
+        if(tpcode.length != 4){
+            showErrorMsg('验证码错误');
+            return false;
+        }
+        $.ajax({
+            url:'/index.php?m=Home&c=Api&a=check_validate_code&t='+Math.random(),
+            type:'post',
+            dataType:'json',
+            data:{type:$('#sender').val(),code:tpcode,send:$('#tel').val(),scene:6},
+            success:function(data){
+                if(data.status==1){
+                    is_check = true;
+                    window.location.href='/index.php?m=Mobile&c=User&a=paypwd&step=2&referer='+referer+'&t='+Math.random();
+                }else{
+                    showErrorMsg(data.msg);
+                    return false;
+                }
+            }
+        })
+    }
+    //提交前验证表单
+    function submitverify(){
+        var new_password = $('#new_password').val();
+        var confirm_password = $('#confirm_password').val();
+        if(new_password == ''){
+            showErrorMsg('新支付密码不能为空');
+            return false;
+        }
+        if(new_password.length !=6){
+            showErrorMsg('密码长度只能为6位数字');
+            return false;
+        }
+        if(new_password != confirm_password){
+            showErrorMsg('两次密码不一致');
+            return false;
+        }
+        $.ajax({
+            url:'/index.php?m=Mobile&c=User&a=paypwd&step=2&t='+Math.random(),
+            type:'post',
+            dataType:'json',
+            data:$('#payform').serialize(),
+            success:function(data){
+                if(data.status==1){
+                    showErrorMsg(data.msg);
+                    if (referer == 'cart2') {
+                        window.parent.call_back('设置成功');return;
+                    }
+                    window.location.href=data.url;
+                }else{
+                    showErrorMsg(data.msg);
+                    return false;
+                }
+            }
+        })
+    }
+    /**
+     * 提示弹窗
+     * */
+    function showErrorMsg(msg){
+        layer.open({content:msg,time:2,skin:'msg'});
+    }
+</script>
+</body>
+</html>

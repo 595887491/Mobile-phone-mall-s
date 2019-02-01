@@ -1,0 +1,129 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "my project doc",
+        "description": "my project \u63a5\u53e3\u6587\u6863, V2-3.<br>\r\n\u4ee5\u540e\u5927\u5bb6\u5c31\u5728\u8fd9\u91cc\u6109\u5feb\u7684\u5bf9\u63a5\u53e3\u628a!<br>\r\n\u4ee5\u540e\u5927\u5bb6\u5c31\u5728\u8fd9\u91cc\u6109\u5feb\u7684\u5bf9\u63a5\u53e3\u628a!<br>\r\n\u4ee5\u540e\u5927\u5bb6\u5c31\u5728\u8fd9\u91cc\u6109\u5feb\u7684\u5bf9\u63a5\u53e3\u628a!<br>\r\n",
+        "version": "2.3"
+    },
+    "host": "dev.cfo2o.com",
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "multipart/form-data"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/user/login": {
+            "post": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "\u767b\u5f55\u63a5\u53e3(\u7528\u6237\u540d+\u5bc6\u7801)",
+                "description": "\u7528\u6237\u767b\u5f55\u63a5\u53e3,\u8d26\u53f7\u53ef\u4e3a \u7528\u6237\u540d \u6216 \u624b\u673a\u53f7. \u53c2\u8003(\u8fd9\u4e2a\u4f1a\u5728\u9875\u9762\u4ea7\u751f\u4e00\u4e2a\u53ef\u8df3\u8f6c\u7684\u94fe\u63a5: [\u7528\u6237\u767b\u5f55\u6ce8\u610f\u4e8b\u9879](http://blog.csdn.net/liuxu0703/)",
+                "parameters": [
+                    {
+                        "name": "userName",
+                        "in": "formData",
+                        "description": "\u767b\u5f55\u7528\u6237\u540d/\u624b\u673a\u53f7",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "password",
+                        "in": "formData",
+                        "description": "\u767b\u5f55\u5bc6\u7801",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "image_list",
+                        "in": "formData",
+                        "description": "\u7528\u6237\u76f8\u518c. \u597d\u5427,\u6ca1\u4eba\u4f1a\u5728\u767b\u5f55\u65f6\u8981\u6c42\u586b\u4e00\u5806\u56fe\u7247\u4fe1\u606f.\u8fd9\u91cc\u662f\u4e3a\u4e86\u793a\u4f8b \u5e26\u7ed3\u6784\u7684\u6570\u636e, @SWG\\Schema ,\u8fd9\u4e2a\u7ed3\u6784\u9700\u8981\u53e6\u884c\u5b9a\u4e49,\u4e0b\u9762\u4f1a\u8bb2.",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Image"
+                            }
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "video",
+                        "in": "formData",
+                        "description": "\u7528\u6237 \u5443... \u89c6\u9891? \u540c\u4e0a,\u4e3a\u4e86\u793a\u4f8b @SWG\\Schema .",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Video"
+                        },
+                        "type": "string"
+                    },
+                    {
+                        "name": "client_type",
+                        "in": "formData",
+                        "description": "\u8c03\u7528\u6b64\u63a5\u53e3\u7684\u5ba2\u6237\u7aef\u7c7b\u578b: 1-Android, 2-IOS. \u975e\u5fc5\u586b,\u6240\u4ee5 required \u5199\u4e86 false",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "gender",
+                        "in": "formData",
+                        "description": "\u6027\u522b: 1-\u7537; 2-\u5973. \u6ce8\u610f\u8fd9\u4e2a\u53c2\u6570\u7684default\u4e0a\u5199\u7684\u4e0d\u662f\u53c2\u6570\u9ed8\u8ba4\u503c,\u800c\u662f\u9ed8\u8ba4\u4f1a\u88ab\u586b\u5199\u5728swagger\u9875\u9762\u4e0a\u7684\u503c,\u4e3a\u7684\u662f\u65b9\u4fbf\u7528swagger\u5c31\u5730\u8bbf\u95ee\u8be5\u63a5\u53e3.",
+                        "required": false,
+                        "type": "integer",
+                        "default": "1"
+                    }
+                ]
+            }
+        },
+        "/User/myWebPage": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "\u7528\u6237\u7684\u4e2a\u4eba\u7f51\u9875",
+                "description": "\u8fd9\u4e0d\u662f\u4e2aapi\u63a5\u53e3,\u8fd9\u4e2a\u8fd4\u56de\u4e00\u4e2a\u9875\u9762,\u6240\u4ee5 produces \u5199\u4e86 text/html",
+                "produces": [
+                    "text/html"
+                ],
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "query",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "userToken",
+                        "in": "query",
+                        "description": "\u7528\u6237\u4ee4\u724c",
+                        "required": true,
+                        "type": "string"
+                    }
+                ]
+            }
+        }
+    },
+    "definitions": {},
+    "tags": [
+        {
+            "name": "User",
+            "description": "\u7528\u6237\u64cd\u4f5c"
+        },
+        {
+            "name": "MainPage",
+            "description": "\u9996\u9875\u6a21\u5757"
+        },
+        {
+            "name": "News",
+            "description": "\u65b0\u95fb\u8d44\u8baf"
+        },
+        {
+            "name": "Misc",
+            "description": "\u5176\u4ed6\u63a5\u53e3"
+        }
+    ]
+}

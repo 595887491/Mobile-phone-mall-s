@@ -1,0 +1,141 @@
+<include file="public/header" title="秒杀"/>
+<style>
+    .flash_sale{
+        position: absolute;
+        z-index: 99999;
+        right: .5rem;
+        top:1.5rem;
+        width: 5.55rem;
+        height: 4.5rem;
+        background-image:url("__STATIC__/images/flash_com.png" );
+        background-size: 100% 100%;
+        display: none;
+        padding: .3rem 0;
+    }
+</style>
+<div class="classreturn loginsignup ">
+    <div class="content">
+        <div class="ds-in-bl return">
+            <a onclick="goBack()"><img src="__STATIC__/images/return.png" alt="返回"></a>
+        </div>
+        <div class="ds-in-bl search center">
+            <span>秒杀</span>
+        </div>
+    </div>
+
+    <div class="flash_sale">
+        <p style="margin-top: .6rem">设置成功</p>
+        <p style="font-size: .5rem;margin-top: .5rem">将在开奖前3分钟通过短信或微信提醒您</p>
+        <p style="font-size: .5rem;margin-top: .4rem">点击图标查看我的提醒</p>
+    </div>
+</div>
+<link rel="stylesheet" type="text/css" href="__STATIC__/css/flash_sale_list.css"/>
+    <!--秒杀提醒-->
+    <a href="{:U('User/flashRemindMe')}">
+        <img src="__STATIC__/images/remind.png" style="width: .8rem;height: .8rem;position: fixed;top: .5rem;right: .5rem;z-index: 9999" alt="">
+    </a>
+    <!--顶部时间栏-s-->
+    <div class="floor killtime p" style="margin-top: 2rem">
+        <div class="content30">
+            <ul>
+                <foreach name="time_space" item="vo" key="k">
+                    <li onclick="reload_flash_sale_list(this);" start-data="{$vo['start_time']|date='Y/m/d H:i:s',###}" end-data="{$vo['end_time']|date='Y/m/d H:i:s',###}" data-start-time="{$vo['start_time']}" data-end-time="{$vo['end_time']}" <if condition="(time() egt $vo['start_time']) AND (time() lt $vo['end_time'])">class="red"</if> >
+                        <h3>{$vo['font']}</h3>
+                        <p>
+                            <if condition="time() lt $vo['start_time']">即将开场
+                                <elseif condition="(time() egt $vo['start_time']) AND (time() lt $vo['end_time'])"/>正在疯抢
+                                <else />已经结束
+                            </if>
+                        </p>
+                    </li>
+                </foreach>
+            </ul>
+            <div class="nowkill">
+                <span class="fl">好价! 好货! 限量抢!</span>
+                <div class="fr Time" style="display: none;">
+                    <span id="surplus" class="surplus"></span>
+                    <span class="hms">
+                        <span id="hours"></span>
+                        <span style="background-color: transparent;color: #3d3d3d;font-size: .5rem;font-weight: 700;">:</span>
+                        <span id="minte"></span>
+                        <span style="background-color: transparent;color: #3d3d3d;font-size: .5rem;font-weight: 700;">:</span>
+                        <span id="second"></span>
+                    </span>
+                </div>
+                <!--秒杀-end-->
+            </div>
+        </div>
+    </div>
+    <!--顶部时间栏-es-->
+
+    <!--秒杀商品-s-->
+    <div class="floor shopkill">
+        <ul id="flash_sale_list">
+            <if condition="empty($time_space)">
+                <li style="text-align: center;">暂无抢购商品。。。。<li>
+            </if>
+        </ul>
+        <!--加载更多S-->
+            <div class="loadbefore">
+	            <img class="ajaxloading" src="__STATIC__/images/loading.gif" alt="loading...">
+	        </div>
+        <!--加载更多E-->
+    </div>
+    <!--秒杀商品-e-->
+
+   <!--登录判断弹窗-->
+    <div class="isLogin_box">
+      <div class="isLogin-wrapper">
+          <div class="top">
+              <p>您还未登录</p>
+              <p>该功能登录后才可使用</p>
+          </div>
+          <div class="btn">
+              <button class="fl">取 消</button>
+              <button class="fr"><a href="{:U('mobile/User/login')}" style="color: #fff;">去登录</a></button>
+          </div>
+      </div>
+    </div>
+<script>
+    var ShareImgUrl = "https://{$_SERVER[HTTP_HOST]}__STATIC__/images/logo_share.png"; //分享图标
+    var ShareTitle = "CF限时秒杀，好价、好货、限量抢"; //分享标题
+    var ShareDesc = "尚美缤纷秒杀专场，精选百款尖货，低价限时抢购中~"; //分享描述
+    var ShareLink = "http://{$_SERVER[HTTP_HOST]}/index.php/mobile/Activity/flash_sale_list"; //分享链接
+</script>
+<!-- 微信浏览器 调用微信 分享js-->
+<include file="public/wx_share"/>
+<!-- 微信浏览器 调用微信 分享js  end-->
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script type="text/javascript" src="__STATIC__/js/newTwo/flash_sale_list.js"></script>
+<script type="text/javascript" src="__STATIC__/js/jquery.lazyload.js"></script>
+<script>
+    function goBack(){
+        var his = document.referrer;
+        if(his) {
+            history.back(-1)
+        }else {
+            window.location.href = "{:U('Mobile/Index/index')}";
+        }
+    }
+    // 懒加载  相关配置
+    $(function() {
+        $("img.lazy").lazyload({effect: "fadeIn"});
+    });
+    $("img.lazy").lazyload({ threshold :180});
+    $("img.lazy").lazyload({
+        placeholder : "/template/mobile/newbow/static/images/aa.png", //用图片提前占位
+        // placeholder,值为某一图片路径.此图片用来占据将要加载的图片的位置,待图片加载时,占位图则会隐藏
+        effect: "slideDown", // 载入使用何种效果
+        // effect(特效),值有show(直接显示),fadeIn(淡入),slideDown(下拉)等,常用fadeIn
+        threshold: 150, // 提前开始加载
+        // threshold,值为数字,代表页面高度.如设置为200,表示滚动条在离目标位置还有200的高度时就开始加载图片,可以做到不让用户察觉
+        event: 'click',  // 事件触发时才加载
+        // event,值有click(点击),mouseover(鼠标划过),sporty(运动的),foobar(…).可以实现鼠标莫过或点击图片才开始加载,后两个值未测试…
+        container: $(".morelaer"),  // 对某容器中的图片实现效果
+        // container,值为某容器.lazyload默认在拉动浏览器滚动条时生效,这个参数可以让你在拉动某DIV的滚动条时依次加载其中的图片
+        failurelimit : 10 // 图片排序混乱时
+        // failurelimit,值为数字.lazyload默认在找到第一张不在可见区域里的图片时则不再继续加载,但当HTML容器混乱的时候可能出现可见区域内图片并没加载出来的情况,failurelimit意在加载N张可见区域外的图片,以避免出现这个问题.
+    });
+</script>
+</body>
+</html>

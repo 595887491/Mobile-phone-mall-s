@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>我的足迹</title>
+		<link rel="stylesheet" href="__STATIC__/css/style.css">
+		<link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css"/>
+		<script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__STATIC__/js/mobile-util.js" type="text/javascript" charset="utf-8"></script>
+        <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+        <script src="__STATIC__/js/swipeSlide.min.js" type="text/javascript" charset="utf-8"></script>
+        <link rel="stylesheet" href="__STATIC__/css/new/visit_log.css">
+	</head>
+	<body>
+		<div class="classreturn loginsignup">
+			<div class="content">
+				<div class="ds-in-bl return">
+					<a href="{:U('User/index')}"><img src="__STATIC__/images/return.png" alt="返回"></a>
+				</div>
+				<div class="ds-in-bl search center">
+					<span style="font-size:.65rem;color: #1E1B1B;">我的足迹</span>
+				</div>
+				<div class="ds-in-bl emptyedit">
+					<a href="javascript:void(0);" onclick="editalone();" id="cf_edito">编辑</a>
+				</div>
+			</div>
+		</div>
+        <empty name="visit_list">
+            <!--没有内容时-s--->
+            <div class="comment_con p">
+                <div class="none">
+                    <img src="__STATIC__/images/cf_none2.png">
+                    <br><br>
+                   <p>客官大大！暂无相关信息！</p>
+                    <a href="/" class="goto">去逛逛</a>
+                </div>
+            </div>
+            <!--没有内容时-e--->
+        <else/>
+          <div id="visit_list">
+            <foreach name="visit_list" item="list" key='curdate'>
+                <div class="list">
+                    <div class="daterecord">
+                        <div class="maleri30" style="border: none;">
+                            {$curdate}
+                        </div>
+                    </div>
+                    <foreach name='list' item="goods">
+                    <div class="orderlistshpop dejsshort p">
+                        <div class="maleri30">
+                            <div class="sc_list se_sclist">
+                                <div class="radio fl">
+                                    <span class="che " data-id="{$goods.visit_id}">
+                                        <i></i>
+                                    </span>
+                                </div>
+                                <div class="shopimg fl">
+                                    <a href="{:U('Goods/goodsInfo',['id'=>$goods.goods_id])}">
+                                        <img src="{$goods.original_img}">
+                                    </a>
+                                </div>
+                                <div class="deleshow fr">
+                                    <div class="deletes p">
+                                        <a href="{:U('Goods/goodsInfo',['id'=>$goods.goods_id])}">
+                                            <span class="similar-product-text fl">{$goods.goods_name}</span>
+                                        </a>
+                                    </div>
+                                    <div class="prices lookalike">
+                                        <p class="sc_pri fl"><span style="font-size: .55rem;vertical-align: bottom;padding-right: .1rem;">¥</span><span>{$goods.shop_price}</span></p>
+                                        <a href="{:U('Goods/goodsInfo',['id'=>$goods.goods_id])}">立即购买</a>
+                                        <!--<a href="{:U('Goods/goodsList',['id'=>$goods.cat_id])}">看相似</a>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </foreach>
+                </div>
+            </foreach>
+          </div>
+        </empty>
+        <div class="noting">没有更多了</div>
+		<div class="foohi foohiext a_emptyall">
+			<div class="payit ma-to-20 payallb">
+				<div class="fl alllef">
+					<div class="radio fl">
+						<span class="che alltoggle" style="">
+							<i style="margin-top: .15rem"></i>
+						</span>
+						<span class="all">全选</span>
+					</div>
+				</div>
+				<div class="fr">
+                    <a href="javascript:void(0);" onclick="delSelect()">删除</a>
+				</div>
+			</div>
+		</div>
+		<!--删除浏览记录-s-->
+		<div class="cuidd delbrowser">
+			<p>确定要清空全部浏览记录？</p>
+			<div class="weiyi p">
+				<a href="javascript:void(0);">取消</a>
+                <a class="eno" href="javascript:void(0);" onclick="clearAll()">确定</a>
+			</div>
+		</div>
+		<!--删除浏览记录-e-->
+		<div class="mask-filter-div" style="display: none;"></div>
+<script src="__STATIC__/js/style.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script type="text/javascript">
+    $(function () {
+        var u = navigator.userAgent;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        if(isAndroid || !isiOS){  //安卓
+            $('.alltoggle i').css('margin-top','.07rem');
+        }else{  //苹果
+            $('.alltoggle i').css('margin-top','.15rem');
+        }
+    })
+    //编辑
+    function editalone(){
+        if($('#cf_edito').html() == '编辑'){
+            $('#cf_edito').html('完成');
+            $('.a_emptyall .payallb').css('bottom','0');
+        }else {
+            $('#cf_edito').html('编辑');
+            $('.a_emptyall .payallb').css('bottom','-3rem');
+
+        }
+        $('.dejsshort').toggleClass('hiradio');
+    }
+    //清空
+    function clearempty(){
+        cover();
+        $('.cuidd').show();
+    }
+    //全选
+    $(function(){
+        $('.alltoggle,.radio .all').click(function(){
+            allchk();
+        });
+    })
+    function allchk(){
+        var chknum = $('.che').length - 2;
+        var chk = 0;
+        $('.che').each(function () {
+            if($(this).hasClass('check_t')){
+                chk++;
+            }
+        });
+        if(chknum==(chk - 1)){
+            $(".che").removeClass('check_t'); //全取消
+        }else{
+            $(".che").addClass('check_t'); //全选
+        }
+    }
+    //radio选中
+    $(function(){
+         // if($('.alltoggle').hasClass('check_t')) {
+            $('#visit_list .radio .che').click(function(){
+                var chk = 0;
+                var chk_len = $('.radio .che').length-1
+                $('#visit_list .radio .che').each(function () {
+                    if($(this).hasClass('check_t')){
+                        chk++;
+                    }
+                });
+              if(chk_len != chk)  {
+                  $('.alltoggle ').removeClass('check_t')
+              }
+              else {
+                  $('.alltoggle ').addClass('check_t')
+              }
+          })
+    })
+    function delSelect() {
+        var visit_ids = [];
+        layer.open({
+            content: '确定要删除此商品吗?'
+            ,btn: ['确定', '取消']
+            ,yes: function(index){
+                layer.close(index);
+                $(' .check_t').each(function(){
+                    visit_ids.push($(this).attr('data-id'));
+                });
+                location.href = "{:U('Mobile/User/del_visit_log')}?visit_ids="+String(visit_ids);
+            },
+
+        });
+    }
+    function clearAll() {
+        location.href = "{:U('Mobile/User/clear_visit_log')}";
+    }
+    var page = 1;
+    function ajax_sourch_submit()
+    {
+        page += 1;
+        $.ajax({
+            type : "get",
+            url:"{:U('Mobile/User/visit_log')}?is_ajax=1&p=" + page,
+            success: function(data)
+            {
+                if($.trim(data) != ''){
+                    $("#visit_list").append(data);
+                } else {
+                    $(".noting").show();
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

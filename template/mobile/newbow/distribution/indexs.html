@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>分享中心</title>
+    <link rel="stylesheet" href="__STATIC__/css/style.css">
+    <link rel="stylesheet" href="__STATIC__/css/distribution_index.css">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css"/>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/mobile-util.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
+</head>
+
+<body>
+<!--第一部分-->
+<div class="cf_bg">
+    <div class="classreturn loginsignup ">
+        <div class="content">
+            <div class="ds-in-bl return">
+                <a href="{:U('Mobile/User/index')}"><img src="__STATIC__/images/cf_retru.png" alt="返回"></a>
+            </div>
+            <div class="ds-in-bl search center">
+                <if condition="$data['identity']['partner'] eq 0 && $data['identity']['agent'] eq 0"><span>普通会员</span></if>
+                <if condition="$data['identity']['partner'] eq 1 && $data['identity']['agent'] eq 0"><span>合伙人</span></if>
+                <if condition="$data['identity']['partner'] eq 0 && $data['identity']['agent'] eq 1"><span>服务商</span></if>
+                <if condition="$data['identity']['partner'] eq 1 && $data['identity']['agent'] eq 1"><span>服务商</span></if>
+                <!--<span class="cf_search_f">{$data['user_name']}</span>-->
+                <span class="cf_search_s">{$data['level_name']}</span>
+                <!--<span class="cf_search_s">美丽分享1星</span>-->
+            </div>
+            <div class="ds-in-bl menu">
+                <if condition="$data['identity']['agent'] eq 1">
+                    <a onclick="codePop()"><img src="__STATIC__/images/dis_code.png" alt="二维码"></a>
+                </if>
+                <a onclick="scanQRCode()"><img src="__STATIC__/images/partner_code.png" alt="扫一扫"></a>
+            </div>
+        </div>
+    </div>
+    <div class="cf_balance">
+        <span class="cf_balance_span">可提现收益</span><br><br>
+        <div style="text-align: center;margin-left: -6rem ">
+            <span class="cf_balance_money"><notempty name="$data['can_pick_money']">{$data['can_pick_money']}<else/>0</notempty></span>
+        </div>
+
+        <if condition="$data['identity']['partner'] neq 0 || $data['identity']['agent'] neq 0">
+            <span class="cf_balances_btn" onclick="balancePop()">去提现</span>
+        </if>
+    </div>
+        <!--申请合伙人-->
+        <if condition="$data['identity']['partner'] neq 1">
+            <if condition="$data[apply_status] eq -1">
+                <div class="cf_status">
+                        <a href="{:U('Mobile/distribution/applyAgreement')}">
+                            <span>申请成为合伙人</span>
+                        </a>
+                </div>
+            </if>
+            <if condition="$data[apply_status] eq 0">
+                <div class="cf_status">
+                        <!--<a href="{:U('Mobile/distribution/applyAgreement')}">-->
+                            <span >申请中</span>
+                        <!--</a>-->
+                </div>
+            </if>
+        </if>
+
+    </div>
+</div>
+
+<!--第二部分-->
+<div class="cf_profit">
+    <!--普通会员-->
+    <if condition="$data['identity']['partner'] eq 0 && $data['identity']['agent'] eq 0">
+        <div class="cf_profit_top">
+            <ul>
+                <li style="width: 28%">
+                    <span><notempty name="$data['wait_earnings']">{:round($data['wait_earnings'],2)}<else/>0</notempty></span><br>
+                    <span>待返利收益</span>
+                </li>
+                <li style="width: 28%">
+                    <span><notempty name="$data['user_earnings']">{:round($data['user_earnings'],2)}<else/>0</notempty></span><br>
+                    <span>会员收益</span>
+                </li>
+                <li style="width: 28%">
+                    <span><notempty name="$data['total_earnings']">{:round($data['total_earnings'],2)}<else/>0</notempty></span><br>
+                    <span>累计收益</span>
+                </li>
+            </ul>
+        </div>
+    </if>
+    <!--合伙人-->
+    <if condition="$data['identity']['partner'] eq 1 && $data['identity']['agent'] eq 0">
+        <div class="cf_profit_top">
+            <ul>
+                <li>
+                    <span><notempty name="$data['wait_earnings']">{$data['wait_earnings']}<else/>0</notempty></span><br>
+                    <span>待返利收益</span>
+                </li>
+                <!--<li>-->
+                    <!--<span><notempty name="$data['user_earnings']">{$data['user_earnings']}<else/>0</notempty></span><br>-->
+                    <!--<span>会员收益</span>-->
+                <!--</li>-->
+                <li>
+                    <span><notempty name="$data['have_earnings']">{$data['have_earnings']}<else/>0</notempty></span><br>
+                    <span>已返利收益</span>
+                </li>
+                <li>
+                    <span><notempty name="$data['total_earnings']">{$data['total_earnings']}<else/>0</notempty></span><br>
+                    <span>累计收益</span>
+                </li>
+            </ul>
+        </div>
+    </if>
+    <!--服务商-->
+    <if condition="$data['identity']['partner'] eq 0 && $data['identity']['agent'] eq 1">
+        <div class="cf_profit_top">
+            <ul>
+                <li>
+                    <span><notempty name="$data['wait_earnings']">{$data['wait_earnings']}<else/>0</notempty></span><br>
+                    <span>待返利收益</span>
+                </li>
+                <!--<li>-->
+                    <!--<span><notempty name="$data['user_earnings']">{$data['user_earnings']}<else/>0</notempty></span><br>-->
+                    <!--<span>会员收益</span>-->
+                <!--</li>-->
+                <li>
+                    <span><notempty name="$data['agent_earnings']">{$data['have_earnings']}<else/>0</notempty></span><br>
+                    <span>已返利收益</span>
+                </li>
+                <li>
+                    <span><notempty name="$data['total_earnings']">{$data['total_earnings']}<else/>0</notempty></span><br>
+                    <span>累计收益</span>
+                </li>
+            </ul>
+        </div>
+    </if>
+    <!--合伙人和服务商-->
+    <if condition="$data['identity']['partner'] eq 1 && $data['identity']['agent'] eq 1">
+        <div class="cf_profit_top">
+            <ul>
+                <li>
+                    <span><notempty name="$data['wait_earnings']">{$data['wait_earnings']}<else/>0</notempty></span><br>
+                    <span>待返利收益</span>
+                </li>
+                <!--<li>-->
+                    <!--<span><notempty name="$data['user_earnings']">{$data['user_earnings']}<else/>0</notempty></span><br>-->
+                    <!--<span>会员收益</span>-->
+                <!--</li>-->
+                <li>
+                    <span><notempty name="$data['agent_partner_earnings']">{$data['have_earnings']}<else/>0</notempty></span><br>
+                    <span>已返利收益</span>
+                </li>
+                <li>
+                    <span><notempty name="$data['total_earnings']">{$data['total_earnings']}<else/>0</notempty></span><br>
+                    <span>累计收益</span>
+                </li>
+            </ul>
+        </div>
+    </if>
+
+    <div class="cf_profit_bottom">
+        <ul>
+            <li>
+                <a href="{:U('Mobile/distribution/earningsRanking')}">
+                    <img src="__STATIC__/images/cf_banlance_01.png" alt=""><br>
+                    <span>收益排行</span>
+                </a>
+            </li>
+            <li>
+                <a href="{:U('Mobile/distribution/earningsDetails')}">
+                    <img src="__STATIC__/images/cf_banlance_02.png" alt=""><br>
+                    <span>收益明细</span>
+                </a>
+            </li>
+            <li>
+                <a href="{:U('Mobile/distribution/withdrawalDetail')}">
+                    <img src="__STATIC__/images/cf_balance_06.png" alt=""><br>
+                    <span>提现明细</span>
+                </a>
+            </li>
+            <!--<li>-->
+                <!--<a href="{:U('Mobile/distribution/touchbalanceDetail')}">-->
+                    <!--<img src="__STATIC__/images/cf_banlance_03.png" alt=""><br>-->
+                    <!--<span>余额明细</span>-->
+                <!--</a>-->
+            <!--</li>-->
+        </ul>
+    </div>
+</div>
+
+<!--第三部分-->
+<div class="cf_member">
+    <div class="cf_member_top">
+        <p>我的会员中心</p>
+    </div>
+
+    <!--普通用户展示部分-->
+    <if condition="$data.identity['partner'] eq 0 && $data.identity['agent'] eq 0">
+         <div class="cf_member_bottom">
+            <ul>
+                <li>
+                    <a href="{:U('Mobile/distribution/memberList')}">
+                        <span><notempty name="$data['total_child_num']">{$data['total_child_num']}<else/>0</notempty></span><br>
+                        <span>全部会员</span>
+                    </a>
+                </li>
+                <li>
+
+                    <a href="{:U('Mobile/distribution/memberList',array('type'=>'1'))}">
+                        <span><notempty name="$data['first_child_num']">{$data['first_child_num']}<else/>0</notempty></span><br>
+                        <span>一级会员</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Mobile/distribution/memberList',array('type'=>'2'))}">
+                        <span><notempty name="$data['second_child_num']">{$data['second_child_num']}<else/>0</notempty></span><br>
+                        <span>二级会员</span>
+                    </a>
+                </li>
+            </ul>
+          </div>
+    </if>
+    <!--合伙人-->
+    <if condition="$data.identity['partner'] eq 1 && $data.identity['agent'] eq 0">
+            <div class="cf_member_bottom" style="height: 8.5rem">
+            <ul>
+                <li>
+                    <a href="{:U('Mobile/distribution/memberList')}">
+                        <span><notempty name="$data['total_child_num']">{$data['total_child_num']}<else/>0</notempty></span><br>
+                        <span>全部会员</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Mobile/distribution/memberList',array('type'=>'1'))}">
+                        <span><notempty name="$data['first_child_num']">{$data['first_child_num']}<else/>0</notempty></span><br>
+                        <span>一级会员</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Mobile/distribution/memberList',array('type'=>'2'))}">
+                        <span><notempty name="$data['second_child_num']">{$data['second_child_num']}<else/>0</notempty></span><br>
+                        <span>二级会员</span>
+                    </a>
+                </li>
+                    <!--合伙人-->
+                    <!--<if condition="$data.identity['partner'] eq 1 && $data.identity['agent'] eq 0">-->
+                        <!--<a href="{:U('Mobile/distribution/partnerAchievementRank')}">-->
+                            <!--<span><notempty name="$data['ranking']">{$data['ranking']}<else/>0</notempty></span><br>-->
+                            <!--<span>合伙人成就排行</span>-->
+                        <!--</a>-->
+                    <!--</if>-->
+                    <!--&lt;!&ndash;服务商&ndash;&gt;-->
+                    <!--<if condition="$data.identity['partner'] eq 0 && $data.identity['agent'] eq 1">-->
+                        <!--<a onclick="agentPop()">-->
+                            <!--<span><notempty name="$data['ranking']">{$data['ranking']}<else/>0</notempty></span><br>-->
+                            <!--<span>合伙人成就排行</span>-->
+                        <!--</a>-->
+                    <!--</if>-->
+                    <!--&lt;!&ndash;服务商合伙人&ndash;&gt;-->
+                    <!--<if condition="$data.identity['partner'] eq 1 && $data.identity['agent'] eq 1">-->
+                        <!--<a href="{:U('Mobile/distribution/partnerAchievementRank')}">-->
+                            <!--<span><notempty name="$data['ranking']">{$data['ranking']}<else/>0</notempty></span><br>-->
+                            <!--<span>合伙人成就排行</span>-->
+                        <!--</a>-->
+                    <!--</if>-->
+            </ul>
+            <ul>
+                <li >
+                    <a onclick="agentPop()">
+                        <span><notempty name="$data['partner_kpi']">{:round($data['partner_kpi'],2)}<else/>0</notempty></span><br>
+                        <span>成就值</span>
+                    </a>
+                </li>
+                <!--<li style="padding-top: 2.2rem">-->
+                    <!--<a href="">-->
+                        <!--<span><notempty name="$data['ranking']">{$data['ranking']}<else/>0</notempty></span><br>-->
+                        <!--<span>合伙人数量</span>-->
+                    <!--</a>-->
+                <!--</li>-->
+                <!--<li style="padding-top: 2.2rem">-->
+                    <!--<a href="">-->
+                        <!--<span><notempty name="$data['ranking']">{$data['ranking']}<else/>0</notempty></span><br>-->
+                        <!--<span>成就值</span>-->
+                    <!--</a>-->
+                <!--</li>-->
+                <li >
+                    <a href="{:U('Distribution/serveTime')}">
+                        <span><notempty name="$data['remain_day']">{$data['remain_day']}<else/>0</notempty></span><br>
+                        <span>剩余天数</span>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </if>
+    <!--服务商-->
+    <if condition="$data.identity['partner'] eq 0 && $data.identity['agent'] eq 1">
+            <div class="cf_member_bottom" style="height: 8.5rem">
+            <ul>
+                <li>
+                    <a href="{:U('Mobile/distribution/memberList')}">
+                        <span><notempty name="$data['total_child_num']">{$data['total_child_num']}<else/>0</notempty></span><br>
+                        <span>全部会员</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Mobile/distribution/memberList',array('type'=>'1'))}">
+                        <span><notempty name="$data['first_child_num']">{$data['first_child_num']}<else/>0</notempty></span><br>
+                        <span>一级会员</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Mobile/distribution/memberList',array('type'=>'2'))}">
+                        <span><notempty name="$data['second_child_num']">{$data['second_child_num']}<else/>0</notempty></span><br>
+                        <span>二级会员</span>
+                    </a>
+                </li>
+            </ul>
+            <ul >
+                <li >
+                    <a href="{:U('Mobile/distribution/partnerAchievementRank')}">
+                        <span><notempty name="$data['avg_achievement']">{:round($data['avg_achievement'],2)}<else/>0</notempty></span><br>
+                        <span>平均成就值</span>
+                    </a>
+                </li>
+                <li >
+                    <a href="{:U('Mobile/distribution/agentPartnerNums')}">
+                        <span><notempty name="$data['partner_num']">{$data['partner_num']}<else/>0</notempty></span><br>
+                        <span>合伙人数量</span>
+                    </a>
+                </li>
+                <!--<li style="padding-top: 2.2rem">-->
+                    <!--<a href="">-->
+                        <!--<span><notempty name="$data['ranking']">{$data['ranking']}<else/>0</notempty></span><br>-->
+                        <!--<span>成就值</span>-->
+                    <!--</a>-->
+                <!--</li>-->
+                <!--<li style="padding-top: 2.2rem">-->
+                    <!--<a href="">-->
+                        <!--<span><notempty name="$data['remain_day']">{$data['remain_day']}<else/>0</notempty></span><br>-->
+                        <!--<span>剩余天数</span>-->
+                    <!--</a>-->
+                <!--</li>-->
+            </ul>
+        </div>
+    </if>
+    <!--服务商和合伙人-->
+    <if condition="$data.identity['partner'] eq 1 && $data.identity['agent'] eq 1">
+            <div class="cf_member_bottom" style="height: 8.5rem">
+            <ul>
+                <li>
+                    <a href="{:U('Mobile/distribution/memberList')}">
+                        <span><notempty name="$data['total_child_num']">{$data['total_child_num']}<else/>0</notempty></span><br>
+                        <span>全部会员</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Mobile/distribution/memberList',array('type'=>'1'))}">
+                        <span><notempty name="$data['first_child_num']">{$data['first_child_num']}<else/>0</notempty></span><br>
+                        <span>一级会员</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Mobile/distribution/memberList',array('type'=>'2'))}">
+                        <span><notempty name="$data['second_child_num']">{$data['second_child_num']}<else/>0</notempty></span><br>
+                        <span>二级会员</span>
+                    </a>
+                </li>
+            </ul>
+            <ul >
+                <li >
+                    <a href="{:U('Mobile/distribution/partnerAchievementRank')}">
+                        <span><notempty name="$data['avg_achievement']">{$data['avg_achievement']}<else/>0</notempty></span><br>
+                        <span>平均成就值</span>
+                    </a>
+
+                </li>
+                <li >
+                    <a href="{:U('Mobile/distribution/agentPartnerNums')}">
+                        <span><notempty name="$data['partner_num']">{$data['partner_num']}<else/>0</notempty></span><br>
+                        <span>合伙人数量</span>
+                    </a>
+                </li>
+                <!--<li style="padding-top: 2.2rem">-->
+                    <!--<a href="">-->
+                        <!--<span><notempty name="$data['ranking']">{$data['ranking']}<else/>0</notempty></span><br>-->
+                        <!--<span>成就值</span>-->
+                    <!--</a>-->
+                <!--</li>-->
+                <!--<li style="padding-top: 2.2rem">-->
+                    <!--<a href="">-->
+                        <!--<span class="avg"><notempty name="$data['remain_day']">{$data['remain_day']}<else/>0</notempty></span><br>-->
+                        <!--<span>剩余天数</span>-->
+                    <!--</a>-->
+                <!--</li>-->
+            </ul>
+        </div>
+    </if>
+</div>
+
+<!--第四部分-->
+<if condition="$data.identity['partner'] eq 0 && $data.identity['agent'] eq 0">
+    <a href="{:U('Mobile/distribution/distributionIntroduce')}">
+        <div class="cf_explain">
+                <div class="fl cf_explain_fist ">
+                    <p>分享说明</p>
+                </div>
+                <div class="fr cf_explain_sed">
+                    <img src="__STATIC__/images/cf_left_l.png" alt="">
+                </div>
+        </div>
+    </a>
+</if>
+
+<if condition="$data.identity['partner'] eq 1 && $data.identity['agent'] eq 0">
+    <div class="cf_explain" style="top: 27.8rem;" onclick="jumpAddress()">
+        <a href="{:U('Mobile/distribution/distributionIntroduce')}">
+            <div class="fl cf_explain_fist ">
+                <p>分享说明</p>
+            </div>
+            <div class="fr cf_explain_sed">
+                <img src="__STATIC__/images/cf_left_l.png" alt="">
+            </div>
+        </a>
+    </div>
+</if>
+<if condition="$data.identity['partner'] eq 0 && $data.identity['agent'] eq 1">
+    <div class="cf_explain" style="top: 27.8rem;" onclick="jumpAddress()">
+        <a href="{:U('Mobile/distribution/distributionIntroduce')}">
+            <div class="fl cf_explain_fist ">
+                <p>分享说明</p>
+            </div>
+            <div class="fr cf_explain_sed">
+                <img src="__STATIC__/images/cf_left_l.png" alt="">
+            </div>
+        </a>
+    </div>
+</if>
+<if condition="$data.identity['partner'] eq 1 && $data.identity['agent'] eq 1">
+    <div class="cf_explain" style="top: 27.8rem;" onclick="jumpAddress()">
+        <a href="{:U('Mobile/distribution/distributionIntroduce')}">
+            <div class="fl cf_explain_fist ">
+                <p>分享说明</p>
+            </div>
+            <div class="fr cf_explain_sed">
+                <img src="__STATIC__/images/cf_left_l.png" alt="">
+            </div>
+        </a>
+    </div>
+</if>
+
+<!--提现 选择方式-->
+<div class="cf_forward_bg">
+    <div class="cf_forward">
+        <p class="forward_first">提 现</p>
+        <img onclick="closePop()" style="width: .6rem;height: .6rem" src="__STATIC__/images/cf_close.png" alt="">
+        <p class="cf_comment">1. 提现到银行卡，提现金额为100的倍数，提现时间为每周一9:00-16:00，预计3个工作日到账</p>
+        <p class="cf_comment">2. 转出到余额，立即生效。(目前余额只可用于平台消费，<span style="color: #D50D16">暂不支持提现到银行卡</span>)</p>
+        <if condition="$limit_money eq 1">
+            <a href="{:U('Mobile/distribution/withdrawDeposit')}">
+                <button class="go_to_balance" >提现到银行卡</button>
+            </a>
+            <else/>
+                <a>
+                    <button class="go_to_balance" style="background-color: #BFC1CD">余额不足100,暂不能提现</button>
+                </a>
+        </if>
+        <button class="go_to_card" onclick="blackPop()">转出到余额</button>
+    </div>
+</div>
+
+<!--提现到余额-->
+<div class="withdraw_bg">
+    <div class="with_draw_balance">
+        <p class="forward_first">转出到余额</p>
+        <img onclick="closePop()" style="width: .6rem;height: .6rem" src="__STATIC__/images/cf_close.png" alt="">
+        <div class="withdraw_money">
+            <span style="position: absolute;left: .7rem;top: 3.5rem;font-size: 1rem">¥</span>
+            <input type="number" id="can_money"  placeholder="可转入:{$data['can_pick_money']}">
+        </div>
+            <span class="fr" style="color: #FF407E;font-size: .6rem;position: absolute;top: 3.7rem;right: .7rem" onclick="all_balance()">全部转出</span>
+        <p class="withdraw_p">提示: 转出到余额，立即生效，余额暂不支持提现到银行卡</p>
+        <div class="cf_btn">
+            <button class="fr" onclick="turnOut_money()">确认转出</button>
+        </div>
+    </div>
+</div>
+
+<!--转入余额成功-->
+<div class="balance_success_bg" style="display: none">
+    <div class="balance_success">
+        <img onclick="closeRead()" class="close_img" src="__STATIC__/images/cf_close.png" alt="">
+        <img src="__STATIC__/images/cf_success.png" class="success_img" alt="">
+        <p>转出成功</p>
+        <div class="comment_money">
+            <span>本次转出余额: <span class="money_l"></span></span>
+        </div>
+        <div class="success_btn">
+            <a href="{:U('Mobile/Distribution/touchbalanceDetail')}" onclick="closePop()">
+                <button >查看余额</button>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<!--转入余额 失败-->
+<div class="balance_fail_bg">
+    <div class="fail_success">
+        <img onclick="closePop()" class="close_img" src="__STATIC__/images/cf_close.png" alt="">
+        <img src="__STATIC__/images/cf_fail.png" class="success_img" alt="">
+        <p>转出失败</p>
+        <div class="comment_money">
+            <span>本次转出余额: <span class="money_l"></span> </span>
+        </div>
+        <div class="success_btn">
+            <button onclick="againPop()">再次转出</button>
+        </div>
+    </div>
+</div>
+
+<!--合伙人的成就排行提示   -->
+<div class="agent_bg" >
+    <div class="comment_agent">
+        <p  style="margin-top: .5rem;border-bottom: 2px solid #F1F5F8;line-height: 1rem;padding-bottom: .5rem;font-size: .7rem">成就值说明</p>
+        <img onclick="closePop()" class="close_img" src="__STATIC__/images/cf_close.png" alt="">
+        <p style="text-align: left;font-size: .6rem;padding:0 .5rem">合伙人的成就值（KPI）  =  (k1*40% + k2*20% +k3*20 + k4*20)* 100 / KPI<sub>max</sub></p>
+        <p style="text-align: left;font-size: .6rem;padding: 0 .5rem">其中：</p>
+        <p style="text-align: left;font-size: .6rem;padding:0 .5rem">k1= 我的一级会员总数/所有合伙人的一级会员总数;</p>
+        <p style="text-align: left;font-size: .6rem;padding:0 .5rem">k2= 我的购买过商品的一级会员数量/所有合伙人的一级会员总数 ;</p>
+        <p style="text-align: left;font-size: .6rem;padding:0 .5rem">k3= 我的一级会员订单总额/所有合伙人的一级会员订单总额 ;</p>
+        <p style="text-align: left;font-size: .6rem;padding:0 .5rem">k4= 我的自购订单总额/（所有合伙人的自购订单总额</p>
+        <p style="text-align: left;font-size: .6rem;padding:0 .5rem">KPI<sub>max</sub> = 为所有合伙人中最大的成就值。</p>
+        <div class="success_btn" style="margin-top: .2rem">
+            <button onclick="closePop()">朕知道了</button>
+        </div>
+    </div>
+</div>
+
+<!--服务商二维码-->
+<if condition="$data['identity']['agent'] eq 1">
+    <div class="code_bg" onclick="closePop()">
+        <div class="code_dis" >
+            <!--<img onclick="closePop()" class="code_close_img" src="__STATIC__/images/cf_close.png" alt="">-->
+            <img src="/index.php?m=Home&c=Index&a=qr_code&data={$agentQRCodeUrl}&back_img={$back_img}" alt="">
+            <span>服务商二维码 永久有效</span>
+        </div>
+    </div>
+</if>
+<include file="public/wx_share"/>
+</body>
+<script>
+    // 去提现
+ function balancePop() {
+     $('.cf_forward_bg').css('display','block');
+ }
+ // 成功关闭并刷新页面
+    function closeRead() {
+        $('.balance_success_bg').css('display','none');
+        location.reload();
+    }
+ // 关闭
+ function closePop() {
+     $('.cf_forward_bg').css('display','none');
+     $('.withdraw_bg').css('display','none');
+     $('.balance_success_bg').css('display','none');
+     $('.balance_fail_bg').css('display','none');
+     $('.agent_bg').css('display','none');
+     $('.code_bg').css('display','none');
+ }
+ function blackPop() {
+     $('.withdraw_bg').css('display','block');
+     $('.cf_forward_bg').css('display','none');
+ }
+ // 提现所有
+ function all_balance() {
+     $('#can_money').val({$data['can_pick_money']})
+ }
+ // 再次转入
+ function againPop() {
+     $('.balance_fail_bg').css('display','none');
+     $('.withdraw_bg').css('display','block');
+ }
+ function agentPop() {
+     $('.code_bg').css('display','block');
+ }
+ // 确认转出
+ function turnOut_money() {
+
+     var userMoeny = $("#can_money").val();
+     var balanceMoeny ="{$data['can_pick_money']}" ? parseFloat({$data['can_pick_money']}) : 0;
+     // console.log(userMoeny);
+     // console.log(balanceMoeny);
+     if(userMoeny == ''){
+         layer.open({content:"金额不能为空",time:2,skin:"msg"});
+         return false;
+     }
+     if(userMoeny < 0.1 ){
+         layer.open({content:"金额不能小于0.01",time:2,skin:"msg"});
+         return false;
+     }
+     if(userMoeny > balanceMoeny){
+         layer.open({content:"金额不能大于可提现金额",time:2,skin:"msg"});
+         return false;
+     }
+     if(userMoeny != '' && userMoeny <= balanceMoeny ){
+         var loading =  layer.open({content:"转出中...",time:300000,skin:"msg",type:2});
+         $.ajax({
+             type : "post",
+             url:'/Mobile/Distribution/shiftToBalances',
+             data:{userMoney:userMoeny},
+             success: function(data) {
+                 if(data.code == 1){
+                     layer.close(loading);
+                     $('.money_l').text( $('#can_money').val());
+                     $("#can_money").val('');
+                     $('.withdraw_bg').css('display','none');
+                     $('.balance_success_bg').css('display','block');
+                 }else {
+                     $('#can_money').val();
+                     $('.money_l').text( $('#can_money').val());
+                     layer.close(loading);
+                     $('.balance_fail_bg').css('display','block');
+                 }
+             }
+         });
+
+     }
+ }
+ function agentPop() {
+     $('.agent_bg').css('display','block');
+ }
+
+ // 调转
+    function jumpAddress() {
+        location.href = "{:U('Mobile/distribution/distributionIntroduce')}"
+    }
+ // 二维码
+function codePop() {
+    $('.code_bg').css('display','block');
+}
+function scanQRCode() {
+    wx.scanQRCode({
+        needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+        scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+        success: function (res) {
+            var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+        }
+    });
+}
+</script>
+</html>

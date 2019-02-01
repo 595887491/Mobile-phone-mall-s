@@ -1,0 +1,65 @@
+<table style="width: 100%;>
+<if condition="empty($lists) eq true">
+<tbody>
+<tr data-id="0">
+    <td class="no-data" align="center" axis="col0" colspan="50">
+        <i class="fa fa-exclamation-circle"></i>没有符合条件的记录
+    </td>
+</tr>
+</tbody>
+<else/>
+<tbody>
+<foreach name="$lists" item="list">
+    <tr data-partnerid="{$list.partner_id}">
+        <td align="left" abbr="user_id" axis="col3" class="">
+            <div style="text-align: center; width: 60px;" class="">{$list.rank}</div>
+        </td>
+        <td align="left" abbr="nickname" axis="col4" class="">
+            <div style="text-align: left; min-width: 200px;line-height: 22px;" class="clearfix">
+                <p class="avatar fl"><img src="{$list.head_pic}" style="width: 40px;height: 40px;border-radius: 34px;"></p>
+                <p class="" style="margin-left: 10px;">
+                <p>{$list.nickname}</p>
+                <p>{$list.mobile}</p>
+                </p>
+            </div>
+        </td>
+        <td align="lefr" abbr="article_show" axis="col5" class="">
+            <div style="text-align: center; min-width: 100px;line-height: 42px;" class="">
+                <p>{$list.member_one}</p>
+            </div>
+        </td>
+        <td align="center" abbr="article_time" axis="col6" class="">
+            <div style="text-align: center; width: 100px;" class="">{$list.scale}</div>
+        </td>
+        <td align="center" abbr="firstUserNum" axis="col6" class="">
+            <div style="text-align: center; width: 100px;" class="">{$list.scale_amount}</div>
+        </td>
+        <td align="center" abbr="secondUserNum" axis="col6" class="">
+            <div style="text-align: center; width: 100px;" class="">{$list.sub_user}</div>
+        </td>
+        <td align="center" abbr="overSecondUserNum" axis="col6" class="">
+            <div style="text-align: center; width: 100px;" class="">{$list.total_order}</div>
+        </td>
+        <td align="center" abbr="today_earns" axis="col6" class="">
+            <div style="text-align: center; width: 100px;" class="">{$list.contribution}</div>
+        </td>
+        <td style="width: 100%;">
+            <div></div>
+        </td>
+    </tr>
+</foreach>
+</tbody>
+</if>
+</table>
+<div class="partnerList">
+    <span style="line-height: 30px;" class="fl">总共 <span>{$count}</span> 条记录</span>
+    {$page}
+</div>
+<script>
+    // 点击分页触发的事件
+    $(".pagination  a").click(function(){
+        cur_page = $(this).data('p');
+        ajax_get_table('search-form2',cur_page);
+    });
+    $('.ftitle>h5').empty().html("(共{$count}条记录)");
+</script>

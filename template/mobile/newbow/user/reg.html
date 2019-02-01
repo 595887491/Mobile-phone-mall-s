@@ -1,0 +1,186 @@
+<include file="public/header" title="" body=""/>
+<if condition="$isWechat eq 1">
+    <else/>
+    <include file="public/header_nav" title="手机号登录" href="javascript:history.back(-1)"/>
+</if>
+<link rel="stylesheet" type="text/css" href="__STATIC__/css/cf_reg.css"/>
+<div class="logo-wrap-bg" style="text-align: center;margin-top: -.5rem">
+    <a class="login-logo-wrap" style="width: auto;height: auto;" href="#">
+        <img src="/template/mobile/newbow/static/images/login_logo.png" alt="LOGO" style=" width: 30%;height: auto;display: block;margin: 0 auto;
+">
+    </a>
+</div>
+
+<!--注册表单-s-->
+<div class="loginsingup-input">
+    <form action="" method="post" id="regFrom" >
+    	<input type="hidden" name="is_bind" value="{$Request.param.is_bind}">
+        <div class="lsu">
+            <span class="ico ico-telephone"></span>
+            <input type="tel" name="username" id="username" value="" placeholder="请输入手机号"  class="c-form-txt-normal">
+            <span id="mobile_phone_notice"></span>
+        </div>
+        <if condition="$regis_sms_enable eq 1">
+            <div class="lsu">
+                <span class="ico ico-v-code"></span>
+                <input class="v-code-input" type="tel" id="mobile_code" value="" name="mobile_code" placeholder="请输入验证码" >
+                <a class="btn-text-message " id="cf_btn" rel="mobile" onClick="sendcode(this)">获取验证码</a>
+            </div>
+        </if>
+        <div class="lsu-submit" id="cf_logo">
+            <input type="button" name="" id="cf_sub" class="" onclick="checkSubmit()" value="登 录"/>
+        </div>
+        <div class="signup-find">
+            <p class="recept" style=" text-align: center;">点击登录即自动注册，且同意<a href="{:U('Mobile/Article/articleDetail',['article_id'=>58])}">《用户注册协议》</a></p>
+            <!--<p class="recept" id="cf_more_comment" style="text-align: center">新用户登录后即可获得30元大礼包！</p>-->
+        </div>
+    </form>
+</div>
+
+
+<!--注册表单-s-->
+<script type="text/javascript">
+    //获取cookie
+    function getCookie(cname){
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++) {
+            var c = ca[i].trim();
+            if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
+        }
+        return "";
+    }
+    var cf_history_url = unescape(getCookie('refer_url'));
+
+    //提交表单
+    function checkSubmit() {
+        var username = $('#username').val();
+        var code = $('#mobile_code').val();
+
+        if(username == '') {
+            showErrorMsg('请输入手机号码');
+            return false
+        }
+        if(!/^1[3456879]\d{9}$/.test(username)){
+            showErrorMsg('请输入正确的手机号码');
+            return false
+        }
+        if(code == '') {
+            showErrorMsg('请输入验证码');
+            return false
+        }
+        if(isNaN(code) || code.length!= 4) {
+            showErrorMsg('请输入正确的验证码');
+            return false
+        }
+        else {
+            $.ajax({
+                type:'POST',
+                url:"/index.php?m=Mobile&c=User&a=reg",
+                dataType:'JSON',
+                data:$('#regFrom').serialize(),
+                success:function(data){
+                    // console.log(cf_status_url);
+                    // console.log(cf_first_login);
+                    if(data.status == 1){
+                        var cf_first_login =  data.result.is_first_login;
+                        localStorage.setItem('isFirst',cf_first_login); //
+                        var cf_status_url = data.result.redirect_url;
+                        // console.log(data);
+                        if (data.result.is_first_login == 1) {  // 是否是第一次登录
+                            showErrorMsg('注册成功!');
+                            if(cf_history_url){
+                                location.href = decodeURIComponent(cf_history_url);
+                            }else {
+                                setTimeout(function () {
+                                    location.href = "{:U('/Mobile/Index/index')}"
+                                },3000)
+                            }
+
+                        } else {                                 //老用户进入
+                            if(cf_history_url){
+                                location.href = decodeURIComponent(cf_history_url);
+                            }else {
+                                location.href = "{:U('/Mobile/User/index')}"
+                            }
+                        }
+                    }else{
+                        showErrorMsg(data.msg);
+                    }
+                }
+            })
+        }
+
+
+    }
+    var flag = false;
+
+
+
+    function countdown(obj) {
+        var s =  60;
+        //改变按钮状态
+        obj.disabled = true;
+        callback();
+        //循环定时器
+        var T = window.setInterval(callback,1000);
+        function callback()
+        {
+            if(s <= 0){
+                //移除定时器
+                window.clearInterval(T);
+                obj.disabled=false;
+                obj.innerHTML='获取验证码';
+            }else{
+                if(s<=10){
+                    obj.innerHTML = '0'+ --s + '秒后再获取';
+                }else{
+                    obj.innerHTML = --s+ '秒后再获取';
+                }
+            }
+        }
+    }
+
+    //发送短信验证码
+    function sendcode(obj) {
+        var mobile = $('#username').val();
+        if (mobile == '') {
+            showErrorMsg('手机不能空');
+            flag = false;
+        } else if (checkMobile(mobile)) { //判断手机格式
+            $.ajax({
+                url: '/index.php?m=Home&c=Api&a=send_validate_code&t=' + Math.random(),
+                type: 'post',
+                dataType: 'json',
+                data: {type: $(obj).attr('rel'), send: $.trim($('#username').val()), scene: 1},
+                success: function (res) {
+                    if (res.status == 1) {
+                        //成功
+                        countdown(obj)
+                        showErrorMsg('发送成功');
+                    } else {
+                        //失败
+                        showErrorMsg("60秒内不能重复发送");
+                    }
+                }
+            })
+            flag = true;
+        } else {
+            showErrorMsg('* 手机号码格式不正确');
+            flag = false;
+        }
+    }
+
+    /**
+     * 提示弹窗
+     * */
+    function showErrorMsg(msg){
+        layer.open({content:msg,time:2,skin:'msg'});
+    }
+    // 普通 图形验证码
+    //    function verify(){
+    //        $('#verify_code_img').attr('src','/index.php?m=Home&c=User&a=verify&type=user_reg&r='+Math.random());
+    //    }
+</script>
+	</body>
+</html>

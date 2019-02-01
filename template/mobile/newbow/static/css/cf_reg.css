@@ -1,0 +1,36 @@
+body{background-color: #fff;}
+#verify_code_img{
+    padding: .55467rem .21333rem;
+    width: 4.6rem;
+    height: 2.9rem;
+    color: white;
+    border-radius: .128rem;
+}
+#cf_btn{
+    width: 4rem;
+    height: 1.5rem;
+    background-color: #F54E78;
+    color: white;
+    border-radius:.15rem ;
+    line-height: 1.5rem;
+    text-align: center;
+    margin-top: -.3rem;
+}
+#cf_sub{
+    background-color: #F54E78;
+}
+#cf_more_comment{
+    margin-top: .5rem;
+    line-height: .8rem;
+    text-align: center;
+    color: #D50D16;
+}
+#cf_logo{
+    margin-top: .5rem;
+}
+#cf_external{
+    margin-top: 2rem;
+}
+.loginsingup-input .lsu-submit input, .btn-goto-login{
+    border-radius: .15rem;
+}

@@ -1,0 +1,111 @@
+body{background: #fff;}
+.top{background: url("../../images/new/bj.png")no-repeat;background-size: 100% 100%;width: 100%;height: 4.9rem;
+position: relative;}
+.header::after,.top .bottom::after,.earnings::after,.member ul::after,.partnership_w::after
+{display: block;content:'';clear: both;visibility: hidden;font-size: 0;}
+.header{padding: .24rem;}
+.header .fl img{width: .18rem;height: .32rem;}
+.header .fr img{width: .22rem;height: .22rem;}
+.header .fr span{font-size: .24rem;color: #fff;vertical-align: .03rem;}
+.top .center{text-align: center;color: #fff;padding:.2rem 0 .5rem;}
+.top .center p:first-of-type{font-size: .24rem;}
+.top .center p:nth-child(2){font-size: .6rem;font-weight: bold;margin: .2rem 0 .35rem;}
+.top .center button{width: 1.3rem;height: .5rem;border-radius: .3rem;outline: none;border: none;
+font-size: .28rem;color: #3B2E59;background: #FFFFFF;}
+.top .bottom{position: absolute;bottom: 0;left: 0;width: 100%;padding: 0 .24rem;background: rgba(255,255,255,.1);}
+.top .bottom li{float: left;color: #fff;text-align: center;width: 33.33%;padding: .23rem 0 .2rem;font-size: .3rem;}
+.top .bottom li .p1{font-size: .24rem;color: #A29BB1;margin-top: .05rem;}
+.top .bottom li .p1 img{width: .2rem;height: .2rem;}
+.content{padding: .24rem;}
+.earnings{width: 100%;}
+.earnings a{display: block;width: 49%;float: left;box-shadow: 0 0 .5rem .05rem #eee;text-align: center;padding: .38rem 0;
+border-radius: .1rem;}
+.earnings a img{width: .42rem;height: .42rem;}
+.earnings a span{font-size: .3rem;color: #1E1B1B;vertical-align: .08rem;padding-left: .2rem;}
+.member {margin-top: .8rem;}
+.member ul{box-shadow: 0 0 .5rem .05rem #eee;border-radius: .1rem;padding: .45rem 0;margin-top: .22rem;}
+.member ul li{float: left;width: 25%;text-align: center;}
+.member ul li a p:first-of-type{font-size: .3rem;color:#1E1B1B;}
+.member ul li a p:nth-child(2){font-size: .24rem;color:#1E1B1B;margin-top: .12rem;}
+.member ._top span:first-of-type{font-size: .3rem;color: #1E1B1B;font-weight: bold;}
+.member ._top span:last-of-type{font-size: .24rem;color: #5B5858;margin-top: .05rem;}
+.more{background: url("../../images/new/sdl_yq_bj.png")no-repeat;background-size: 100% 100%;width: 100%;
+height: 2rem;margin-top: .24rem;text-align: center;color: #fff;font-size: .3rem;padding-top: .2rem;}
+.more a{display: block;font-size: .2rem;color: #3B2E59;width: 1.8rem;height: .4rem;line-height: .4rem;background: #fff;
+border-radius: .4rem;margin: 0 auto;}
+.more p:last-of-type{margin: .15rem 0;}
+.deposit_popup {position: fixed;top:0;left: 0;width: 100%;height: 100%;background: rgba(0,0,0,.5);z-index: 88;display: none;}
+.deposit_pop {position: absolute;top:50%;margin-top: -2.6rem;width: 80%;left: 10%;background: #fff;border-radius: .1rem;}
+.deposit_pop .title{border-bottom: 1px solid #f1f4f5;line-height: .8rem;text-align: center;font-size: .3rem;color: #1E1B1B;}
+.deposit_pop .close{width: .3rem;height: .3rem;position: absolute;right: .25rem;top:.25rem;}
+.deposit_pop .comment{font-size: .24rem;color: #5B5858;line-height: 1.4;margin-top: .2rem;}
+.deposit_pop a{display: block;width: 100%;font-size: .3rem;height: .8rem;line-height: .8rem;text-align: center;border: 1px solid #FF407E;
+border-radius: .1rem;}
+.deposit_pop a.bank{background: #FF407E;color: #fff;margin-top: .5rem;}
+.deposit_pop a.balance{background: #fff;color: #FF407E;margin: .3rem 0;}
+.deposit_pop .withdraw_money{border-bottom:1px solid #f1f4f5;margin-top: .5rem;padding: 0.24rem;}
+.deposit_pop .withdraw_money .r{font-size: .4rem;color:#1E1B1B;vertical-align: -.05rem;}
+.deposit_pop .withdraw_money input{height: .5rem;font-size: .26rem;width: 3.5rem;border: none;outline: none;}
+.deposit_pop .withdraw_money .all{font-size: .26rem;color: #FF407E;margin-top: .14rem;}
+.withdraw_alert {font-size: .26rem;color: #5B5858;border-bottom: 1px solid #F1F5F8;padding: .2rem .24rem .3rem;}
+.deposit_pop .logo{width: 2.6rem;height: 1.92rem;display:inline-block;margin: .5rem 0 .2rem .25rem;}
+.member .partner li{width: 50%;}
+.partnership{margin: .8rem 0 .3rem;}
+.partnership >p{font-size: .3rem;color: #1E1B1B;font-weight: bold;}
+.partnership_w{margin-top: .15rem;}
+.partnership_w .avatar{width: .72rem;height: .72rem;border-radius: .72rem;margin-right: .1rem;overflow: hidden;}
+.partnership_w .avatar img{width: 100%;height: 100%;}
+.partnership_w .msg p:first-of-type{font-size: .26rem;color: #1E1B1B;}
+.partnership_w .msg p:last-of-type{font-size: .24rem;color: #BFC1CD;}
+.partnership_w .fr{font-size: .24rem;color: #1E1B1B;margin-top: .22rem;}
+.partnership_w .fr img{width: .2rem;height: .24rem;}
+.code_popup,.explain_popup{position: fixed;top:0;left: 0;width: 100%;height: 100%;background: rgba(0,0,0,.5);z-index: 88;display: none;}
+.code_pop,.explain_pop {position: relative;top:50%;width: 80%;left: 10%;background: #fff;padding: .4rem .9rem .8rem;text-align: center;
+border-radius: .2rem;margin-top: -3rem;}
+.code_pop img{width: 4.2rem;height: 4.2rem;margin: .15rem auto;display: block;}
+.code_pop .clos{width: .58rem;height: .58rem;position: absolute;bottom: -1rem;left: 50%;margin-left: -.29rem;}
+.explain_popup .close{position: absolute;right: .2rem;top:0.2rem;width: .3rem;height: .3rem;}
+.explain_popup .title{font-size: .32rem;}
+.explain_popup .details{text-align: left;font-size: .26rem;margin: .5rem 0;}
+.explain_popup button{width: 100%;height: .7rem;font-size: .3rem;color: #fff;background: #FF407E;
+border: none;outline: none;border-radius: .1rem;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

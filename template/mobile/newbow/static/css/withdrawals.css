@@ -1,0 +1,23 @@
+.loginsingup-input{
+    padding: 0 .9rem;
+}
+.loginsingup-input .lsu-recharge>span, .loginsingup-input .lsu-v-code>span{
+    font-size: .65rem;
+    width: 4rem;
+    color: #1E1B1B;
+}
+.loginsingup-input .lsu input{
+    font-size: .6rem;
+    color: #1E1B1B;
+}
+.cf_price{
+    position: absolute;
+    top: 12rem;
+    left: .5rem;
+}
+.loginsingup-input .lsu-submit input, .btn-goto-login{
+    background-color: #FF407E;
+    font-size: .7rem;
+    margin-top:2.5rem;
+    border-radius: .2rem;
+}

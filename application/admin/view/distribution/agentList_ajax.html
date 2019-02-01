@@ -1,0 +1,98 @@
+<table>
+	<tbody>
+	<if condition="empty($agent_list) eq true">
+		<tr data-id="0">
+			<td class="no-data" align="center" axis="col0" colspan="50">
+				<i class="fa fa-exclamation-circle"></i>没有符合条件的记录
+			</td>
+		</tr>
+		<else/>
+		<volist name="$agent_list" id="list">
+			<tr data-user-id="{$list.user_id}" id="{$list.user_id}">
+				<td class="sign" axis="col0">
+					<div style="width: 24px;"><i class="ico-check"></i></div>
+				</td>
+				<td align="left" abbr="user_id" axis="col3" class="">
+					<div style="text-align: center; width: 60px;" class="">{$list.user_id}</div>
+				</td>
+				<td align="left" abbr="nickname" axis="col4" class="">
+					<div style="text-align: left; min-width: 170px;line-height: 22px;" class="clearfix">
+						<div class="avatar fl"><img src="{$list.head_pic}"></div>
+						<div class="fl" style="margin-left: 10px;">
+							<p>{$list.nickname}</p>
+							<p>{$list.mobile}</p>
+						</div>
+
+					</div>
+				</td>
+				<td align="lefr" abbr="article_show" axis="col5" class="">
+					<div style="text-align: left; min-width: 150px;line-height: 22px;" class="">
+						<p>{$list.id_card_name|default='--'}</p>
+						<p>{$list.id_card_num|default='--'}</p>
+					</div>
+				</td>
+				<td align="center" abbr="article_time" axis="col6" class="">
+					<div style="text-align: center; width: 60px;" class="">
+						<if condition="$list['agent_level'] == 1">市代理
+							<elseif condition="$list['agent_level'] == 2">区县代理
+								<elseif condition="$list['agent_level'] == 3">镇/街道办代理
+						</if>
+					</div>
+				</td>
+				<td align="center" abbr="article_time" axis="col6" class="">
+					<div style="text-align: center; width: 60px;" class=""><if condition="$list['parent_name']"><a href="javascript:search_agent('{$list["parent_name"]}');">{$list['parent_name']}</a><else/>无</if></div>
+				</td>
+				<td align="center" abbr="article_time" axis="col6" class="">
+					<div style="text-align: center; width: 60px;" class=""><a href="/Admin/distribution/agentReportDetail/agent_id/{$list['user_id']}">{$list['partner_num']}</a></div>
+				</td>
+				<td align="center" abbr="article_time" axis="col6" class="">
+					<div style="text-align: center; width: 60px;" class="">{:round($list['today_earns'],2)}</div>
+				</td>
+				<td align="center" abbr="article_time" axis="col6" class="">
+					<div style="text-align: center; width: 60px;" class="">{$list['total_earns']}</div>
+				</td>
+				<td align="center" abbr="article_time" axis="col6" class="">
+					<div style="text-align: center; width: 120px;" class="">{$list.status}</div>
+				</td>
+				<td align="center" abbr="article_time" axis="col6" class="">
+					<div style="text-align: center; width: 120px;" class="">{:date('Y-m-d H:i:s',$list.be_agent_start)}</div>
+				</td>
+				<td align="center" axis="col1" class="handle" align="center">
+					<div style="text-align: center; ">
+						<a class="btn green" href="{:U('Admin/distribution/agentReportDetail',array('agent_id'=>$list['user_id']))}"><i class="fa fa-list-alt"></i>详情</a>
+					</div>
+				</td>
+				<td style="width: 100%;">
+					<div></div>
+				</td>
+			</tr>
+		</volist>
+	</if>
+	</tbody>
+</table>
+<div class="row">
+	<div class="col-sm-6 text-left"></div>
+	<div class="col-sm-6 text-right">{$page}</div>
+</div>
+<script>
+    $(".pagination  a").click(function(){
+        var page = $(this).data('p');
+        ajax_get_table('search-form2',page);
+    });
+
+    // 删除操作
+    function del(obj) {
+        layer.confirm('确定要删除吗?', function(){
+            var id=$(obj).data('user-id');
+            layer.msg('合伙人还未到期，不能删除');
+        });
+    }
+
+    $('.ftitle>h5').empty().html("(共{$pager->totalRows}条记录)");
+
+    function search_agent(real_name) {
+        $('#identity').val(2);
+        $('#keywords').val(real_name);
+        ajax_get_table('search-form2',1);
+    }
+</script>

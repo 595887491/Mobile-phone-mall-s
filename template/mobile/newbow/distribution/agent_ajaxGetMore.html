@@ -1,0 +1,31 @@
+<foreach $data['partner_list_data'] as $v>
+<div class="ranking_list">
+    <a href="{:U('Mobile/distribution/agentPartnerDetail',['partner_id' => $v.user_id])}">
+        <div class="ranking_list_left">
+            <div class="avatar fl">
+                <img src="{$v.head_pic}?x-oss-process=style/s150x150" alt="">
+            </div>
+            <div class="member_bf cf_member"></div>
+
+            <div class="msg fl">
+                <p class="clearfixs">
+                    <span class="c1">{$v.nickname}</span>
+                    <!--<span class="status state2">已收益</span>-->
+                    <span class="fr" style="font-size: .6rem; margin-left: 1.6rem">{$v.third_child_nums}</span>
+                    <span class="fr" style="font-size: .6rem;margin-left: 1.6rem">{$v.second_child_nums}</span>
+                    <span class="fr" style="font-size: .6rem; ">{$v.first_child_nums}</span>
+                </p>
+                <p>
+                    <span>{$v.mobile}</span>
+                </p>
+                <p>
+                    <span>{$v.be_partner_start}</span>
+                    <span class="fr" style="font-size: .6rem;color: #1E1B1B;margin-left: .8em">缤纷</span>
+                    <span class="fr" style="font-size: .6rem;color: #1E1B1B;margin-left:.8rem">二级</span>
+                    <span class="fr" style="font-size: .6rem;color: #1E1B1B;">一级</span>
+                </p>
+            </div>
+        </div>
+    </a>
+</div>
+</foreach>

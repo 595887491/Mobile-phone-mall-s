@@ -1,0 +1,50 @@
+<include file="public/header" title="年龄" body=""/>
+<include file="public/header_nav" title="年龄"  href="{:U('Mobile/User/userinfo')}"/>
+<link rel="stylesheet" href="__STATIC__/css/age.css">
+<div class="loginsingup-input">
+    <div class="lsu bk">
+        <span>年龄:</span>
+        <input type="text" name="age" id="age" value="{$user.age}"   placeholder="请输入您的年龄"/>
+    </div>
+    <div class="lsu-submit">
+        <input type="submit" name="" id="" value="确定修改" onclick="userAge()"/>
+    </div>
+</div>
+<script type="text/javascript">
+    //提交前验证表单
+    function userAge(){
+        var newemail2 = $.trim($('#age').val());
+        var reg = /^(?:[1-9]?\d|100)$/;
+        if(newemail2 == ''){
+            layer.open({content:'请输入您的年龄！',time:3,skin:'msg'});
+            return false;
+        }
+        if(newemail2 != '' && reg.test(newemail2)){
+            $.ajax({
+                type : "post",
+                url:"{:U('mobile/User/userinfo')}",//+tab,
+                data :{age:newemail2},// 你的formid 搜索表单 序列化提交
+                success: function(data)
+                {
+                    if(data.code == 1)
+                    {
+                        layer.open({content:'修改成功！',time:3,skin:"msg"});
+                        setTimeout(function () {
+                            location.href = '{:U("Mobile/User/userinfo")}';
+                        },3000);
+                        return true;
+                    }
+                    else{
+                        layer.open({content:data.msg,time:3,skin:"msg"});
+                        return false;
+                    }
+                }
+            });
+        }else {
+            layer.open({content:'填写正确的年龄！',time:3,skin:"msg"});
+            return false;
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<include file="public/header" title="支付失败" body="g4"/>
+<include file="public/header_nav" title="支付失败" href="{:U('mobile/Cart/index')}"/>
+<script src="__PUBLIC__/js/md5.min.js"></script>
+<style>
+    .classreturn .content .search span{font-size: .8rem;color: #1E1B1B;}
+    .cf_box{background-color: #fff;font-size: .6rem;color: #1E1B1B;}
+    .cf_order,.cf_money{border-bottom: 1px solid #F0F2F5;line-height: 2rem;margin-left: 1rem;}
+    .red{color: #FF407E;}
+    .cf_money{border: none;}
+    .cf_failure_box{text-align: center;}
+    .cf_failure_logo{color: #000;font-size: .7rem;padding-top: 3rem;padding-bottom: 2.5rem}
+    .cf_failure_logo i{font-size: 2.3rem;color: #EA1C00;padding-bottom: .3rem;}
+    .cf_failure_logo p{margin-top: .3rem;}
+    .cf_failure_p{color:#5B5858;font-size: .6rem;}
+    .cf_failure_box a{width: 4rem;height: 1.3rem;line-height: 1.3rem;border: 1px solid #1E1B1B;
+        display: block;margin: 0 auto;border-radius: .2rem;color: #1E1B1B;font-size: .62rem;margin-top: 2rem;}
+</style>
+<div class="cf_box">
+    <div class="cf_order">
+        <span style="letter-spacing: .2rem;">订单号</span>:
+        <span>{$order['order_sn']}</span>
+    </div>
+    <div class="cf_money">
+        <span>付款金额 :</span>
+        <span class="red"><span style="font-size: .5rem;">¥</span> {$order['order_amount']}</span>
+    </div>
+</div>
+<div class="cf_failure_box">
+    <div class="cf_failure_logo">
+        <i class="iconfont">&#xe600;</i>
+        <p>支付失败!</p>
+    </div>
+
+    <p  class="cf_failure_p" style="">订单支付失败，可以再次支付</p>
+    <a href="{:U('/Mobile/Order/order_detail',array('id'=>$order['order_id']))}">再次支付</a>
+</div>
+</body>
+</html>

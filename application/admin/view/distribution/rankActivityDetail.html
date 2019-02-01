@@ -1,0 +1,679 @@
+<include file="public/layout" />
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!-- 引入样式 -->
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+<!--以下是在线编辑器 代码 -->
+<load href="__ROOT__/public/plugins/Ueditor/ueditor.config.js"/>
+<load href="__ROOT__/public/plugins/Ueditor/ueditor.all.min.js"/>
+<script type="text/javascript" charset="utf-8" src="__ROOT__/public/plugins/Ueditor/lang/zh-cn/zh-cn.js"></script>
+<!--以上是在线编辑器 代码  end-->
+<style>
+    @font-face {
+        font-family: 'iconfont';  /* project id 709796 */
+        src: url('//at.alicdn.com/t/font_709796_h9es25uvbou.eot');
+        src: url('//at.alicdn.com/t/font_709796_h9es25uvbou.eot?#iefix') format('embedded-opentype'),
+        url('//at.alicdn.com/t/font_709796_h9es25uvbou.woff') format('woff'),
+        url('//at.alicdn.com/t/font_709796_h9es25uvbou.ttf') format('truetype'),
+        url('//at.alicdn.com/t/font_709796_h9es25uvbou.svg#iconfont') format('svg');
+    }
+    .iconfont {
+        font-family: "iconfont" !important;
+        font-size: 20px;
+        font-style: normal;
+        -webkit-font-smoothing: antialiased;
+        -webkit-text-stroke-width: 0.2px;
+        -moz-osx-font-smoothing: grayscale;}
+    .page{background: #fafafa;}
+    #app::after, .nav::after,.title-data::after,.title-data ul li::after,.title-data ul li .db::after, .e-chart-nav::after
+    ,.flexigrid::after{display: block;clear: both;visibility: hidden;height: 0;font-size: 0;content: '';}
+    #app .name{line-height: 40px;padding-right: 10px;}
+    .fl{float: left;}
+    .fr{float: right;}
+    .el-cascader .el-input input[type="text"]{height: 40px;line-height: 40px;}
+    .nav{margin-top: 30px;}
+    .nav li {float: left;width: 100px;text-align: center;border: 1px solid #ddd;line-height: 33px;border-radius: 5px 5px 0 0;
+        background-color:rgba(242, 242, 242, 1);border-bottom: none;transition: .3s;}
+    .nav li a{color: #999;}
+    .nav li.checked{background-color: #fff;}
+    .nav li:last-child{margin-left: 15px;}
+    .sell-statistics{background-color: #fff;padding: 10px 20px;border-bottom: 1px solid rgba(235, 235, 235, 1);}
+    .title-data{margin-top: 20px;margin-bottom: 35px;}
+    ._title{border-left: 3px solid #1890FF;padding-left: 5px;margin-bottom: 10px;}
+    .title-data ul li{float: left;width: 15%;min-height: 70px;padding: 5px 5px 10px 15px;border: 1px solid rgba(235, 235, 235, 1);
+        background-color: rgba(255, 255, 255, 1);margin-left:3.7%;border-radius: 5px;}
+    .title-data ul li:first-of-type,.e-chart-nav li:first-of-type{margin-left: 0;}
+    .title-data ul li .db{font-size: 12px;color: #CCCCCC;}
+    .title-data ul li .db .up {background: url("__PUBLIC__/static/images/new/u48.png")no-repeat;color: #00CC00;padding-left: 10px;background-position: 3px 7px;}
+    .title-data ul li .db .down{background: url("__PUBLIC__/static/images/new/u44.png")no-repeat;color: #FE5500;padding-left: 10px;background-position: 3px 7px;}
+    .k_help {width: 18px;height: 18px;cursor: pointer;}
+    .e-chart-nav li{float: left;padding: 5px 10px;border-radius: 3px; background-color: rgba(242, 242, 242, 1);border-color: rgba(235, 235, 235, 1);
+        font-size: 12px;color: #999999;margin-left: 15px;cursor: pointer;}
+    .flexigrid{background: #fff;}
+    .flexigrid .sDiv{float: none;float: left; margin-left: 30px;}
+    .k_help_bx{position: absolute;right: -32px;top:-34px;display: none;color: #fff;background: rgba(0,0,0,.5);padding: 10px 15px;border-radius:3px;}
+    .e-chart-nav li.active{color: #0ba4da;}
+    .clearfix{clear: both;overflow: hidden;}
+    .static-underway .tit{font-size: 18px;font-weight: 700;color: rgba(255, 0, 0, 0.498039215686275);}
+    .static-title{font-size: 18px;font-weight: 700;}
+    .static-end {color:#333;}
+    .static-end  button{border: 1px solid #333;color: #333;border-radius: 3px;outline: none;height: 30px;background: #fff;cursor: pointer;margin-left: 10px;}
+    .relieve{position: fixed;width:300px; background: #fff;top:50%;left:40%;z-index: 999999;padding:30px 10px;
+        box-shadow: 0 0 20px 1px #e1e1e8;text-align: center;font-size: 16px;margin-top: -65px;display: none;}
+    .relieve>p i{font-size: 16px;color: #FAAD14;}
+    .relieve .btn{margin-top: 20px;}
+    .relieve .btn a{display: inline-block;padding:5px 15px;border:1px solid #ddd;border-radius: 5px;font-size: 12px;color: #585858;}
+    .relieve .btn a.yes-btn{background: rgba(24, 144, 255, 1);color: #fff;margin-left: 30px;}
+    #date,#hours,#minte,#second{background-color: rgba(215, 215, 215, 1);padding: 2px 5px;border-radius: 2px;}
+    .flexigrid .bDiv td div{height:auto;line-height: 42px;}
+</style>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h5>
+                    <a href="">合伙人排行榜</a>
+                    >
+                    <a href="">活动详情</a>
+                </h5>
+            </div>
+        </div>
+    </div>
+    <!--选项卡-->
+    <ul class="nav">
+        <li class="checked"><a href="javascript:;">活动详情</a></li>
+        <li><a href="javascript:;">基本信息</a></li>
+    </ul>
+    <!--活动详情-->
+    <div class="sell-statistics" style="">
+        <div>
+            <!--进行中-->
+            <div class="static-underway clearfix">
+                <if condition="$activity.status eq 0">
+                    <span class="fl tit">未开始</span>
+                <elseif condition="$activity.status eq 1"/>
+                    <span class="fl tit">进行中</span>
+                    <div style="margin-left: 20px;line-height: 27px;" class="fl">
+                        距结束
+                        <span id="date"></span>天
+                        <span id="hours"></span>时
+                        <span id="minte"></span>分
+                        <span id="second"></span>秒
+                    </div>
+                <elseif condition="$activity.status eq 2">
+                    <div class="static-title static-end">
+                        <span>打榜结束，排名确认中</span>
+                        <button class="sub-pf isRelieve-btn">确认排名并派发奖金</button>
+                    </div>
+                <elseif condition="$activity.status eq 3" />
+                    <div class="static-title">
+                        <span style="color: #CCCCCC;">已派奖</span>
+                    </div>
+                <elseif condition="$activity.status eq 4" />
+                    <div class="static-title">
+                        <span style="color: #CCCCCC;">已关闭</span>
+                    </div>
+                </if>
+            </div>
+        </div>
+
+        <div class="title-data">
+            <p class="_title">当期打榜数据</p>
+            <ul>
+                <li>
+                    <img src="__PUBLIC__/static/images/new/u20.png" alt="" class="fl" style="margin-top: 27px;">
+                    <div class="fl">
+                        <p style="font-size: 12px;color: #989898;">当期奖池金额</p>
+                        <p style="font-size: 28px;color: #666666;padding: 7px 0 ">￥{$reward}</p>
+                    </div>
+                </li>
+                <if condition="$activity.status eq 3">
+                    <li>
+                        <p style="font-size: 12px;color: #989898;position: absolute;">打榜期间平台总销售额*{$activity.sale_reward_scale}%</p>
+                        <img src="__PUBLIC__/static/images/new/u20.png" alt="" class="fl" style="margin-top: 27px;">
+                        <div class="fl">
+                            <p style="font-size: 28px;color: #666666;padding: 7px 0;margin-top: 17px;">￥{$activity.increased_sale_reward}</p>
+                        </div>
+                    </li>
+
+                    <li>
+                        <img src="__PUBLIC__/static/images/new/u390.png" alt="" class="fl" style="margin-top: 27px;">
+                        <div class="fl" style="margin-left: 10px;">
+                            <p style="font-size: 12px;color: #989898;">参与打榜合伙人数</p>
+                            <p style="font-size: 28px;color: #666666;padding: 7px 0 ">{$activity.partner_num}</p>
+                        </div>
+                    </li>
+
+                    <li>
+                        <img src="__PUBLIC__/static/images/new/u390.png" alt="" class="fl" style="margin-top: 27px;">
+                        <div class="fl" style="margin-left: 10px;">
+                            <p style="font-size: 12px;color: #989898;">新增消费用户数</p>
+                            <p style="font-size: 28px;color: #666666;padding: 7px 0 ">{$activity.increased_user_num}</p>
+                        </div>
+                    </li>
+
+
+                    <li>
+                        <img src="__PUBLIC__/static/images/new/u20.png" alt="" class="fl" style="margin-top: 27px;">
+                        <div class="fl">
+                            <p style="font-size: 12px;color: #989898;">新增销售额</p>
+                            <p style="font-size: 28px;color: #666666;padding: 7px 0 ">￥{$activity.increased_sale_amount}</p>
+                        </div>
+                    </li>
+                <else/>
+                    <li>
+                        <p style="font-size: 12px;color: #989898;position: absolute;">打榜期间平台总销售额*{$activity.sale_reward_scale}%</p>
+                        <img src="__PUBLIC__/static/images/new/u20.png" alt="" class="fl" style="margin-top: 27px;">
+                        <div class="fl">
+                            <p style="font-size: 28px;color: #666666;padding: 7px 0;margin-top: 17px;">￥{$scale_amount}</p>
+                        </div>
+                    </li>
+
+                    <li>
+                        <img src="__PUBLIC__/static/images/new/u390.png" alt="" class="fl" style="margin-top: 27px;">
+                        <div class="fl" style="margin-left: 10px;">
+                            <p style="font-size: 12px;color: #989898;">参与打榜合伙人数</p>
+                            <p style="font-size: 28px;color: #666666;padding: 7px 0 ">{$partner_num}</p>
+                        </div>
+                    </li>
+
+                    <li>
+                        <img src="__PUBLIC__/static/images/new/u390.png" alt="" class="fl" style="margin-top: 27px;">
+                        <div class="fl" style="margin-left: 10px;">
+                            <p style="font-size: 12px;color: #989898;">新增消费用户数</p>
+                            <p style="font-size: 28px;color: #666666;padding: 7px 0 ">{$sub_user_count}</p>
+                        </div>
+                    </li>
+
+                    <li>
+                        <img src="__PUBLIC__/static/images/new/u20.png" alt="" class="fl" style="margin-top: 27px;">
+                        <div class="fl">
+                            <p style="font-size: 12px;color: #989898;">新增销售额</p>
+                            <p style="font-size: 2vw;color: #666666;padding: 7px 0 ">￥{$sale_sum}</p>
+                        </div>
+                    </li>
+                </if>
+
+            </ul>
+        </div>
+    <div class="flexigrid">
+        <p class="_title">实时排行榜</p>
+        <div class="mDiv" style="height: 0;">
+            <form class="navbar-form form-inline"  method="post" action=""  name="search-form2" id="search-form2">
+                <input type="hidden" name="id" value="{$activity.id}">
+                <input type="hidden" name="order_by" value="contribution">
+                <input type="hidden" name="sort" value="desc">
+                <!--用于查看结算统计 包含了哪些订单-->
+            </form>
+        </div>
+        <div class="hDiv">
+            <div class="hDivBox">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th align="center"  axis="col3" class="">
+                            <div style="text-align: center; width:60px;" class="">排行</div>
+                        </th>
+                        <th align="center"  axis="col4" class="">
+                            <div style="text-align: center; width: 200px;" class="">合伙人</div>
+                        </th>
+                        <th align="center" abbr="member_one" axis="col5" class="">
+                            <div style="text-align: center; width: 100px;" class="">一级会员</div>
+                        </th>
+                        <th align="center"  axis="col5" class="">
+                            <div style="text-align: center; width: 100px;" class="">瓜分比例</div>
+                        </th>
+                        <th align="center"  axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">最低瓜分</div>
+                        </th>
+                        <th align="center" abbr="sub_user" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">发展消费用户</div>
+                        </th>
+                        <th align="center" abbr="total_order" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">消费金额</div>
+                        </th>
+                        <th align="center" abbr="contribution" axis="col6" class="">
+                            <div style="text-align: center; width: 100px;" class="">贡献值</div>
+                        </th>
+                        <th style="width:100%" axis="col7">
+                            <div></div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+
+            </div>
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+    </div>
+</div>
+    <!--基本信息-->
+    <div class="base-msg" style="display: none;">
+        <!--表单数据-->
+        <form method="post" id="form">
+            <input type="hidden" name="id" value="{$activity.id}" class="input-txt"/>
+            <!--通用信息-->
+            <div class="ncap-form-default tab_div_1">
+                <dl class="row">
+                    <dt class="tit">
+                        <label>活动标题</label>
+                    </dt>
+                    <dd class="opt">
+                        <input type="text" value="{$activity.title}" name="title" placeholder="请输入标题" class="input-txt" style="width: 395px;"/>
+                        <span class="err" id="err_title" style="color:#F00; display:none;"></span>
+                    </dd>
+                </dl>
+
+                <dl class="row">
+                    <dt class="tit">
+                        <label>封面图片</label>
+                    </dt>
+                    <dd class="opt">
+                        <div class="input-file-show">
+            <span class="show">
+                <a id="img_a" target="_blank" class="nyroModal" rel="gal">
+                    <i id="img_i" class="fa fa-picture-o" onMouseOver="layer.tips('<img src={$activity.cover}>',this,{tips: [1, '#fff']});" onMouseOut="layer.closeAll();"></i>
+                </a>
+            </span>
+                            <span class="type-file-box">
+                <input type="text" id="imagetext" name="cover" value="{$activity.cover}" class="type-file-text">
+                <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
+                <input class="type-file-file" onClick="GetUploadify(1,'','activity','img_call_back')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+            </span>
+                        </div>
+                        <span class="err" id="err_cover" style="color:#F00; display:none;"></span>
+                        <p class="notic">请上传图片文件</p>
+                    </dd>
+                </dl>
+
+                <dl class="row">
+                    <dt class="tit">
+                        <label>打榜时间</label>
+                    </dt>
+                    <dd class="opt">
+                        <input type="text" size="30" name="start_time" id="start_time" value="{$activity.start_time|date='Y-m-d H:i:s',###}" placeholder="起始时间" class="qsbox fl">
+                        -
+                        <input type="text" size="30" name="end_time" id="end_time" value="{$activity.end_time|date='Y-m-d H:i:s',###}" placeholder="截止时间" class="qsbox">
+                        <span class="err" id="err_end_time" style="color:#F00; display:none;"></span>
+                    </dd>
+                </dl>
+
+                <dl class="row">
+                    <dt class="tit">
+                        <label>初始奖池</label>
+                    </dt>
+                    <dd class="opt">
+                        <input type="text" value="{$activity.init_reward}" placeholder="格式为:1-10000的数字" name="init_reward" class="t_mane" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')"  style="width: 266px;"/>
+                        <span class="err" id="err_init_reward" style="color:#F00; display:none;"></span>
+                        <p class="notic"> 奖池金额=打榜期间平台总销售额的1%，当奖池金额<初始奖池时，瓜分初始奖池金额</p>
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="tit">
+                        <label>奖金占销售额比例</label>
+                    </dt>
+                    <dd class="opt">
+                        <input type="text" value="{$activity.sale_reward_scale}" placeholder="格式为:1-100的数字" name="sale_reward_scale" class="t_mane" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')"  style="width: 266px;"/>
+                        <span class="err" id="err_sale_reward_scale" style="color:#F00; display:none;"></span>
+                        <p class="notic">销售获得的奖金提成比例，直接填写数字，如1%请填1</p>
+                    </dd>
+                </dl>
+                <dl class="row">
+                    <dt class="tit">
+                        <label>派奖方式</label>
+                    </dt>
+                    <dd class="opt">
+                        <label for="0">
+                            <input type="radio" id="0" name="reward_type" value="0" <if condition="isset($activity.reward_type) && $activity.reward_type eq 0">checked</if> style="vertical-align: sub">
+                            余额
+                        </label>
+                        <label for="1">
+                            <input type="radio" id="1" name="reward_type" value="1" <if condition="isset($activity.reward_type) && $activity.reward_type eq 1">checked</if> style="vertical-align: sub;margin-left: 30px;">
+                            收益
+                        </label>
+                        <span class="err" id="err_reward_type" style="color:#F00; display:none;"></span>
+                    </dd>
+                </dl>
+
+                <dl class="row">
+                    <dt class="tit">
+                        <label>奖励人数</label>
+                    </dt>
+                    <dd class="opt">
+                        <input type="text" value="{$activity.reward_num}" placeholder="格式为:1-100的数字" name="reward_num" class="t_mane" onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" style="width: 266px;"/>
+                        <span class="err" id="err_reward_num" style="color:#F00; display:none;"></span>
+                    </dd>
+                </dl>
+
+                <dl class="row">
+                    <dt class="tit">
+                        <label>瓜分比例</label>
+                    </dt>
+                    <dd class="opt">
+                        <input type="text" value="{$activity.reward_scale}" placeholder="瓜分比例" name="reward_scale" class="t_mane" style="width: 266px;"/>
+                        <span class="err" id="err_reward_scale" style="color:#F00; display:none;"></span>
+                        <p class="notic">以逗号隔开的数字，如40,20,15,10,5,3,3,2,2,2</p>
+                    </dd>
+                </dl>
+
+                <dl class="row">
+                    <dt class="tit">
+                        <label>活动规则</label>
+                    </dt>
+                    <dd class="opt">
+                        <textarea class="span12 ckeditor" id="rule" name="rule" title="">{$activity.rule}</textarea>
+                        <span class="err" id="err_rule" style="color:#F00; display:none;"></span>
+                    </dd>
+                </dl>
+            </div>
+
+
+            <div class="ncap-form-default">
+                <div class="bot">
+                    <a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green" onClick="verifyForm();">确认提交</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+<!--解除合伙人弹窗-->
+<div class="relieve">
+    <p><i class="iconfont">&#xe616;</i>
+        确认排名并派奖？</p>
+    <div class="btn">
+        <a href="javascript:;" class="no-btn">取消</a>
+        <a href="javascript:award({$activity.id});" class="yes-btn">派奖</a>
+    </div>
+</div>
+<script src="__PUBLIC__/js/echart/echarts.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/js/echart/macarons.js"></script>
+<script src="__PUBLIC__/js/echart/china.js"></script>
+<script src="__PUBLIC__/dist/js/app.js" type="text/javascript"></script>
+<!--基本信息-->
+<script>
+        $('#start_time').layDate();
+        $('#end_time').layDate();
+        var url="{:url('Admin/Ueditor/index',array('savePath'=>'activity'))}";
+        var ue = UE.getEditor('rule',{
+            serverUrl :url,
+            zIndex: 999,
+            initialFrameWidth: "80%", //初化宽度
+            initialFrameHeight: 300, //初化高度
+            focus: false, //初始化时，是否让编辑器获得焦点true或false
+            maximumWords: 99999, removeFormatAttributes: 'class,style,lang,width,height,align,hspace,valign',//允许的最大字符数 'fullscreen',
+            pasteplain:true, //是否默认为纯文本粘贴。false为不使用纯文本粘贴，true为使用纯文本粘贴
+            autoHeightEnabled: true
+        });
+        /*
+         * 以下是图片上传方法
+         */
+        function img_call_back(fileurl_tmp)
+        {
+            $("#imagetext").val(fileurl_tmp);
+            $("#img_a").attr('href', fileurl_tmp);
+            $("#img_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+        }
+        //提交表单
+        function verifyForm(){
+            $('span.err').hide();
+            $.ajax({
+                type: "POST",
+                url: "{:U('Admin/Distribution/rankActivity')}",
+                data: $('#form').serialize(),
+                dataType: "json",
+                error: function () {
+                    layer.alert("服务器繁忙, 请联系管理员!");
+                },
+                success: function (data) {
+                    if (data.status == 1) {
+                        layer.msg(data.msg, {
+                            icon: 1,
+                            time: 1000
+                        }, function(){
+                            location.href = "{:U('Admin/Distribution/partnerRank')}";
+                        });
+                    } else {
+                        layer.msg(data.msg, {icon: 2,time: 1000});
+                        if (data.result) {
+                            $.each(data.result, function (index, item) {
+                                $('#err_' + index).text(item).show();
+                            });
+                        }
+                    }
+                }
+            });
+        }
+    $(function () {
+        if ({$activity.status} == 1) {
+            var end_time  = {$activity.end_time};
+            function GetRTime2(){
+                var NowTime = new Date();
+                var t = (end_time*1000) - NowTime.getTime();
+                var d=Math.floor(t/1000/60/60/24);
+                var h=Math.floor(t/1000/60/60%24);
+                var m=Math.floor(t/1000/60%60);
+                var s=Math.floor(t/1000%60);
+                if(s >= 0) {
+                    $('#date').text(d)
+                    h<10? $('#hours').text('0'+ h):$('#hours').text(h);
+                    m<10 ? $('#minte').text('0'+m) :$('#minte').text(m) ;
+                    s<10 ? $('#second').text('0'+s) :$('#second').text(s);
+                }
+                var nowDate= Date.parse(new Date())/1000;
+                if(end_time < nowDate){
+                    location.reload();
+                }
+            }
+            setInterval(GetRTime2,1000);
+        }
+    })
+    // 选项卡
+  $('.nav li').on('click',function () {
+      var i = $(this).index();
+      $(this).addClass('checked').siblings('li').removeClass('checked');
+      if(i==0){
+         $('.sell-statistics').show();
+         $('.base-msg').hide();
+      }else {
+          $('.sell-statistics').hide();
+          $('.base-msg').show();
+      }
+  })
+</script>
+<script type="text/javascript">
+    //确认派发奖金弹窗
+    $(function () {
+        $('.isRelieve-btn').on('click',function () {
+            $('.relieve').fadeIn();
+        });
+        $('.no-btn').on('click',function () {
+            $('.relieve').fadeOut();
+        });
+    });
+
+    $(document).ready(function(){
+        // 表格行点击选中切换
+        $('#flexigrid > table>tbody >tr').click(function(){
+            $(this).toggleClass('trSelected');
+        });
+    });
+
+    /**
+     * 派奖
+     * @param id
+     */
+    function award(id) {
+        layer.closeAll();
+        $.ajax({
+            type : "POST",
+            url:"/index.php/Admin/Distribution/award",
+            data : {id:id},// 你的formid
+            dataType:'json',
+            success: function(data){
+                console.log(data)
+                if (data.status == 1) {
+                    window.location.reload();
+                } else {
+                    layer.open({content:data.msg,time:2});
+                }
+            },
+            fail: function () {
+                layer.open({content:'操作失败，请稍后再试',time:2});
+            }
+        });
+    }
+</script>
+<script type="text/javascript">
+        // 点击刷新数据
+        var ssort = 'sdesc';
+        var on_sclick = 0;
+        $('.hDivBox > table>thead>tr>th').hover(
+            function () {
+                if(typeof($(this).attr('abbr')) == "undefined"){
+                    return false;
+                }
+                $(this).addClass('thOver');
+                if($(this).hasClass('sorted')){
+                    if(ssort == 'sdesc'){
+                        $(this).find('div').removeClass('sdesc');
+                        $(this).find('div').addClass('sasc');
+                    }else{
+                        $(this).find('div').removeClass('sasc');
+                        $(this).find('div').addClass('sdesc');
+                    }
+                }else{
+                    $(this).find('div').addClass(ssort);
+                }
+            }, function () {
+                if(typeof($(this).attr('abbr')) == "undefined"){
+                    return false;
+                }
+                if(on_sclick == 0){
+                    if($(this).hasClass('sorted')){
+                        if(ssort == 'sdesc'){
+                            $(this).find('div').removeClass('sasc');
+                            $(this).find('div').addClass('sdesc');
+                        }else{
+                            $(this).find('div').removeClass('sdesc');
+                            $(this).find('div').addClass('sasc');
+                        }
+                    }else{
+                        $(this).find('div').removeClass(ssort);
+                    }
+                }
+                $(this).removeClass("thOver");
+                on_sclick = 0;
+            }
+        );
+        $('.hDivBox > table>thead>tr>th').click(function(){
+            if(typeof($(this).attr('abbr')) == "undefined"){
+                return false;
+            }
+            if($(this).hasClass('sorted')){
+                $(this).find('div').removeClass(ssort);
+                if(ssort == 'sdesc'){
+                    ssort = 'sasc';
+                }else{
+                    ssort = 'sdesc';
+                }
+                $(this).find('div').addClass(ssort);
+                on_sclick = 1;
+            }else{
+                $('.hDivBox > table>thead>tr>th').removeClass('sorted');
+                $('.hDivBox > table>thead>tr>th').find('div').removeClass(ssort);
+                $(this).addClass('sorted');
+                $(this).find('div').addClass(ssort);
+                var hDivBox_th_index = $(this).index();
+                var flexigrid_tr =   $('#flexigrid > table>tbody>tr')
+                flexigrid_tr.each(function(){
+                    $(this).find('td').removeClass('sorted');
+                    $(this).children('td').eq(hDivBox_th_index).addClass('sorted');
+                });
+            }
+            sort($(this).attr('abbr'));
+        });
+
+        $('.fa-refresh').click(function(){
+            location.href = location.href;
+        });
+        ajax_get_table('search-form2',1);
+
+        function change_act_tab(act,id_name,sort) {
+            $('#keywords').val('');
+            $('#member_level').val('');
+            $('#start_time').val('');
+            $('#end_time').val('');
+            $('#withdraw_start_time').val('');
+            $('#withdraw_end_time').val('');
+            $('#earns_keywords').val('');
+            $('#act').val(act);
+            $('#order_by').val(sort);
+            cur_page = 1;
+            ajax_get_table('search-form2',1,id_name);
+        }
+
+        function change_user_tab(type) {
+            $('#user_type').val(type);
+            ajax_get_table('search-form2',1);
+        }
+
+        //ajax 抓取页面
+        function ajax_get_table(tab,page,id_name='flexigrid'){
+            cur_page = page; //当前页面 保存为全局变量
+            $.ajax({
+                type : "POST",
+                url:"/index.php/Admin/Distribution/rankActivityDetail_ajax/p/"+page,//+tab,
+                data : $('#'+tab).serialize(),// 你的formid
+                success: function(data){
+                    $("#"+id_name).html('');
+                    $("#"+id_name).append(data);
+
+                    // 表格行点击选中切换
+                    $('#'+id_name+' > table>tbody >tr').click(function(){
+                        $(this).toggleClass('trSelected');
+                    });
+                }
+            });
+        }
+
+        // 点击排序
+        function sort(field){
+            $("input[name='order_by']").val(field);
+            var v = $("input[name='sort']").val() == 'desc' ? 'asc' : 'desc';
+            $("input[name='sort']").val(v);
+            if (field == 'add_time') {
+                ajax_get_table('search-form2',cur_page,'flexigridEarns');
+                return;
+            }
+
+            if (field == 'create_time') {
+                ajax_get_table('search-form2',cur_page,'flexigridWithdraw');
+                return;
+            }
+            ajax_get_table('search-form2',cur_page);
+        }
+
+        function exportReport(){
+            var selected_ids = '';
+            $('.trSelected' , '#flexigrid').each(function(i){
+                selected_ids += $(this).data('user-id')+',';
+            });
+            if(selected_ids != ''){
+                $('input[name="user_ids"]').val(selected_ids.substring(0,selected_ids.length-1));
+            }
+            $('#search-form2').submit();
+        }
+
+    </script>
+</body>
+</html>

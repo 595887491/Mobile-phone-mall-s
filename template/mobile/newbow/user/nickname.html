@@ -1,0 +1,67 @@
+<include file="public/header" title="修改昵称" body=""/>
+<include file="public/header_nav" title="修改昵称"  href="{:U('Mobile/User/userinfo')}"/>
+<style>
+    .classreturn .content .search span{font-size: .7rem;color: #1E1B1B;}
+    .lsu span{float: left;color: #1E1B1B;font-size: .7rem;}
+    .loginsingup-input{padding: 0 .64rem;}
+    .loginsingup-input .lsu{border-color: #F0F2F5;}
+    .loginsingup-input .lsu  input{width: 12rem;}
+    .loginsingup-input .lsu-recharge>span{width: auto;margin-top: -.05rem;}
+    .loginsingup-input .lsu-submit{padding: 0;margin-top: 5rem;}
+    .loginsingup-input .lsu-submit input{background-color: #FF407E;font-size: .8rem;}
+    .loginsingup-input .lsu-submit input, .btn-goto-login{
+        border-radius: .2rem;
+    }
+    .loginsingup-input .lsu input{
+        font-size: .7rem;
+        color: #1E1B1B;
+    }
+</style>
+    <div class="loginsingup-input ma-to-20">
+        <!--<form action="{:U('Mobile/User/userinfo')}" method="post">-->
+            <div class="lsu lsu-recharge">
+                <span style="color: #5B5858">昵称: </span>
+                <input type="text" name="nickname"  class="name" value="{$user.nickname}" placeholder="请输入昵称" />
+                <!--onBlur="checkMobilePhone(this.value);-->
+            </div>
+            <div class="lsu-submit">
+                <input type="submit" name="" id="" onclick="changeName()" value="确定修改" />
+            </div>
+        <!--</form>-->
+    </div>
+<script>
+    function changeName(nickname) {
+        var name =   $.trim($('.name').val());
+        // var name = $('.name').val();
+        // console.log(name);
+        if(name == ''){
+            layer.open({content:'请输入您的昵称！',time:3,skin:'msg'});
+            return false;
+        }else{
+            $.ajax({
+                type : "post",
+                url:"{:U('mobile/User/userinfo')}",//+tab,
+//			url:"{:U('Mobile/User/comment',array('status'=>$_GET['status']),'')}/is_ajax/1/p/"+page,//+tab,
+                data :{nickname:name},// 你的formid 搜索表单 序列化提交
+                success: function(data)
+                {
+                    if(data.code == 1)
+                    {
+                        layer.open({content:'修改成功！',time:3,skin:"msg"});
+                        setTimeout(function () {
+                            location.href = '{:U("Mobile/User/userinfo")}';
+                        },3000);
+                        return true;
+                    }
+                    else{
+                        // location.href = '{:U("Mobile/User/userinfo")}';
+                        layer.open({content:data.msg,time:3,skin:"msg"});
+                        return false;
+                    }
+                }
+            });
+        }
+    }
+</script>
+</body>
+</html>

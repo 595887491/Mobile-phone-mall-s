@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>秒杀提醒</title>
+    <link rel="stylesheet" href="__STATIC__/css/style.css">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css"/>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/mobile-util.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
+</head>
+<style>
+    .comment_m{
+        background-color: #f3f5f7;
+        height: 1.6rem;
+        line-height: 1.6rem;
+        padding-left: .5rem;
+        font-size: .6rem;
+    }
+    .goods_info_left {
+        width: 4.3rem;
+        height: 4.3rem;
+    }
+    .goods_info_left img{
+        width: 4.3rem;
+        height: 4.3rem;
+    }
+    .goods_info_right{
+        width: 11rem;
+    }
+    .commentBottom{
+        margin-top: -1rem;
+    }
+    .commentTop p{
+        font-size: .6rem;
+        width: 100%;
+        margin:.3rem 0 1rem;
+        color: #1E1B1B;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        display:-webkit-box;
+        -webkit-box-orient:vertical;
+        -webkit-line-clamp:2;
+        min-height: 2.2rem;
+        line-height: 1.5;
+
+    }
+    .goBuy{
+
+        padding: .3rem .4rem;
+        background-color: #fff;
+        border: 1px solid #30C37C;
+        /*line-height: 1.4rem;*/
+        color: #30C37C;
+        display: block;
+        text-align: center;
+        font-size: .5rem;
+        border-radius: .2rem;
+        text-decoration: none;
+        margin-right: .5rem;
+        margin-top: .2rem;
+    }
+    .money{
+        color: #FF407E;
+        font-size: .8rem;
+        margin: 0;
+        margin-top: .4rem;
+    }
+    .oldMoney{
+        color: #BFC1CD;
+        text-decoration: line-through;
+        font-size: .6rem;
+        margin: 0;
+
+    }
+    .remenber{
+        outline: none;
+        background-color: #fff;
+        color: #30C37C;
+        border: 1px solid #30C37C;
+    }
+    .none{margin: 0;    margin-top: 1rem;}
+    .none img{width: 65%;height: 65%;margin-top: 2.5rem;}
+</style>
+<body>
+<div class="classreturn loginsignup ">
+    <div class="content">
+        <div class="ds-in-bl return">
+            <a href="javascript:history.back(-1)"><img src="__STATIC__/images/return.png" alt="返回"></a>
+        </div>
+        <div class="ds-in-bl search center">
+            <span>秒杀提醒</span>
+        </div>
+        <!--<div class="ds-in-bl menu">-->
+        <!--<a href="javascript:void(0);"><img src="__STATIC__/images/class1.png" alt="菜单"></a>-->
+        <!--</div>-->
+    </div>
+</div>
+<if condition="empty($flash_remind_datas)" >
+    <!--没有收藏-s-->
+    <div class="comment_con p">
+        <!--<div class="none"><img src="__STATIC__/images/none.png"><br><br>亲，此处还没有收藏哦~</div>-->
+        <div class="none"><img src="__STATIC__/images/nonting_remind.png">
+            <p style="margin-top: 3rem;color: #BFC1CD;margin-bottom:2rem;">客官大大！暂无相关信息</p>
+        </div>
+    </div>
+    <!--没有收藏-e-->
+    <else/>
+<foreach name="flash_remind_datas" item="vo" key="k">
+    <div class="JS_goods_box">
+        <div class="JS_TIME comment_m">
+            <img src="__STATIC__/images/commennt_m.png" style="width: .6rem;height: .6rem" alt="">
+            <span>{$k|date='H:i',###}</span>
+        </div>
+        <foreach name="$vo" item="v" key="k1">
+        <a class="JS_SIGN" href="{:U('Mobile/Goods/goodsInfo', array('id'=>$v['goods_info']['goods_id']))}">
+            <li class="JS_SIGN_LI clearfix" style="margin: .6rem 0;border-bottom: 2px solid #f3f5f7;padding-bottom: .6rem">
+                <div class="fl goods_info_left">
+                    <img src="{$v['goods_info']['original_img']}" alt="" class="fl" />
+                </div>
+
+                <div class="fr goods_info_right">
+                    <div class="commentTop">
+                        <p>{$v['goods_info']['goods_name']}</p>
+                    </div>
+                    <div class="commentBottom">
+                        <div class="fl">
+                            <p class="money">¥ {$v['goods_info']['price']} <span class="oldMoney">¥ {$v['goods_info']['market_price']}</span></p>
+                            <!--<p class="oldMoney"</p>-->
+                        </div>
+                        <div class="fr">
+                            <php>$nowTime = time();</php>
+                            <!--href="{:U('Mobile/Goods/goodsInfo', array('id'=>$v['goods_info']['goods_id']))}"-->
+                            <if condition="$nowTime gt $k">
+                                <a  class="goBuy" style="background-color: #FF407E;color: #fff;border: none" href="{:U('Mobile/Goods/goodsInfo', array('id'=>$v['goods_info']['goods_id']))}">
+                                    <img src="__STATIC__/images/flash.png" style="width: .4rem;height: .6rem" alt="">
+                                    去秒杀
+                                </a>
+                                <else/>
+                                <a onclick="remindMe({$v['goods_id']},this)" data-start-time="{$v['flash_start_time']}" class="goBuy">
+                                    <!--<img src="__STATIC__/images/clock.png" style="width: .6rem;height: .6rem" alt="">-->
+                                    取消提醒
+                                </a>
+                            </if>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </a>
+        </foreach>
+    </div>
+</foreach>
+</if>
+
+<script>
+    // 秒杀提醒
+    // var a = 'http://tpdev.cfo2o.com';
+    // var b = 'http://www.cfo2o.com';
+    function remindMe(goods_id,obj) {
+        var start_time = $(obj).data('start-time');
+        $.ajax({
+            type : "post",
+            url: '/Api/Activity/flashRemindUser',
+            data:{
+                goods_id:goods_id,
+                flash_start_time:start_time,
+                status:2
+            },
+            success: function(data){
+                if(data.code == 1){
+                    var count = $(obj).parents('.JS_goods_box').find('.JS_SIGN_LI').length;
+                    var parent_box = $(obj).parents('.JS_goods_box');
+                    // console.log(count)
+                    $(obj).parents('.JS_SIGN_LI').remove();
+                    $(obj).parents('.JS_SIGN').remove();
+
+                    if(count == 1){
+                        parent_box.remove();
+                    }
+                    layer.open({content:"提醒已取消",time:2,skin:"msg"});
+                }
+
+            }
+        });
+    }
+</script>
+</body>
+</html>

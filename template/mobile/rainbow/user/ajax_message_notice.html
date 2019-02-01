@@ -1,0 +1,29 @@
+<empty name="messages">
+    <div class="comment_con p">
+        <!--<div class="none"><img src="__STATIC__/images/none.png"><br><br>亲，此处还没有收藏哦~</div>-->
+        <div class="none"><img src="__STATIC__/images/no-notice.png">
+            <p style="margin-top: 3rem;color: #BFC1CD;margin-bottom:2rem;">客官大大！暂无相关信息！</p>
+        </div>
+    </div>
+    <else/>
+    <foreach name="messages" item="v" key="k">
+        <div class="news_list_fll" id="del_{$v.message_id}">
+            <div class="maleri30 clearfix">
+                <div class="fl news_c_img">
+                    <img src="__STATIC__/images/cf_information.png" alt="">
+                </div>
+                <div class="fl  news_c_tit">
+                    <p>
+                        <span class="_name">系统消息</span>
+                        <span class="yestertime">{$v['send_time']|date='Y-m-d',###}</span>
+                        <i class="iconfont de fr delete-btn" onclick="del_message({$v.category},{$v.message_id})">&#xa658;</i>
+                        <!--<a class="delete-news-btn fr" href="javascript:;" onclick="del_message({$v.category},{$v.message_id})">删除</a>-->
+                    </p>
+                    <div class="news-des-wrap">
+                        <span class="left-news-des" style="width:11.8rem">{$v['message']}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </foreach>
+</empty>

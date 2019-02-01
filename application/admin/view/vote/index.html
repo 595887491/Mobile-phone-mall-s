@@ -1,0 +1,248 @@
+<include file="public/layout" />
+<style>
+    .fl{
+        float: left;
+        width: 80px;
+    }
+    .fl .add span{
+        color: #1E1B1B;
+    }
+    .fl .add .active{
+        color: #1890FF;
+    }
+    .flexigrid .sDiv2 .qsbox{
+        width: 250px!important;
+        /*height: 30px!important;*/
+    }
+</style>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+  <div class="fixed-bar">
+    <div class="item-title">
+      <div class="subject">
+        <h3>投票列表</h3>
+        <h5>投票管理</h5>
+      </div>
+    </div>
+  </div>
+  <!-- 操作说明 -->
+  <!--<div id="explanation" class="explanation" style="color: rgb(44, 188, 163); background-color: rgb(237, 251, 248); width: 99%; height: 100%;">
+    <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+      <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+      <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+    </div>
+     <ul>
+      <li>用户可以在商品详情页下方咨询商品</li>
+    </ul>
+  </div>-->
+    <a class="btn btn-primary" style="width: 100px;height:30px;display:inline-block;text-align: center;line-height:30px;border-radius: 6px;background-color: #1890FF;font-size: 12px;color: #fff" href="{:U('Admin/Vote/add')}" >添加投票活动</a>
+    <div class="tDiv" style="margin-top: 25px">
+        <div class="tDiv2">
+            <div class="fbutton fl ">
+                <a href="{:U('Admin/Vote/index')}">
+                    <div class="add" title="全部活动">
+                        <span class="<if condition='$status == -1 '>active</if>">全部活动</span>
+                    </div>
+                </a>
+            </div>
+            <div class="fbutton fl">
+                <a href="{:U('Admin/Vote/index',[ 'status' => 1 ])}">
+                    <div class="add" title="进行中">
+                        <span class="<if condition='$status == 1 '>active</if>">进行中</span>
+                    </div>
+                </a>
+            </div>
+            <div class="fbutton fl ">
+                <a href="{:U('Admin/Vote/index',[ 'status' => 3 ])}">
+                    <div class="add" title="已结束">
+                        <span class="<if condition='$status == 3 '>active</if>">已结束</span>
+                    </div>
+                </a>
+            </div>
+            <div class="fbutton fl">
+                <a href="{:U('Admin/Vote/index',[ 'status' => 0 ])}">
+                    <div class="add" title="未开始">
+                        <span class="<if condition='$status == 0 '>active</if>">未开始</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div style="clear:both"></div>
+    </div>
+  <div class="flexigrid" style="margin-top: 20px">
+    <div class="mDiv">
+      <div class="ftitle">
+        <h3>投票列表</h3>
+        <h5></h5>
+      </div>
+      <a href=""><div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div></a>
+	 <form action="{:U('Vote/getVoteData')}" id="search-form2" class="navbar-form form-inline" role="search" method="post">
+      <div class="sDiv">
+         <div class="sDiv2">
+          <input type="text" size="30" name="act_name" class="qsbox" value="{$act_name}" placeholder="搜索活动" >
+          <input type="hidden" size="30" name="order_by" class="qsbox">
+          <input type="hidden" size="30" name="sort" class="qsbox" value="">
+         </div>
+         <div class="sDiv2">
+          <input type="button" onClick="ajax_get_table('search-form2',1)"  class="btn" value="搜索" style="width: 60px;background-color: #1890FF;color: #fff">
+        </div>
+      </div>
+     </form>
+    </div>
+    <div class="hDiv">
+      <div class="hDivBox">
+        <table cellspacing="0" cellpadding="0">
+          <thead>
+            <tr>
+              <th class="">
+                <div style="text-align: center; width: 50px;" class="">编号</div>
+              </th>
+                <th align="left" axis="col3" class="">
+                    <div style="text-align: left; width: 120px;" class="">活动名称</div>
+                </th>
+              <th align="left" axis="col4" class="">
+                <div style="text-align: left; width: 150px;" class="">活动时间</div>
+              </th>
+              <th align="left" abbr="number" axis="col5" class="">
+                <div style="text-align: left; width: 200px;" class="">参与人数</div>
+              </th>
+              <th align="center" axis="col6" class="">
+                <div style="text-align: center; width: 200px;" class=""> 活动状态</div>
+              </th>
+              <th align="center" axis="col6" class="">
+                <div style="text-align: center; width: 120px;" class="">上架状态</div>
+              </th>
+              <th align="center" axis="col6" class="">
+                <div style="text-align: center; width: 160px;" class=""> 操作</div>
+              </th>
+              <th style="width:100%" axis="col7">
+                <div></div>
+              </th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div>
+    <div class="bDiv" style="height: auto;">
+      <div id="flexigrid" cellpadding="0" cellspacing="0" border="0" data-url="{:U('Vote/delete')}">
+      </div>
+      <div class="iDiv" style="display: none;"></div>
+    </div>
+    <!--分页位置--> 
+    {$page}
+   	</div>
+</div>
+<script>
+    $(document).ready(function(){
+        ajax_get_table('search-form2',1);
+        // 表格行点击选中切换
+        $(document).on('click','#flexigrid > table>tbody >tr',function(){
+            $(this).toggleClass('trSelected');
+            var checked = $(this).hasClass('trSelected');
+            $(this).find('input[type="checkbox"]').attr('checked',checked);
+        });
+    });
+
+    // ajax 抓取页面
+    function ajax_get_table(tab,page){
+        cur_page = page; //当前页面 保存为全局变量
+        $.ajax({
+            type : "POST",
+            url:"/index.php/Admin/Vote/getNextData/p/"+page+"/status/{$status}",
+            data : $('#'+tab).serialize(),// 你的formid
+            success: function(data){
+                $("#flexigrid").html('');
+                $("#flexigrid").append(data);
+            }
+        });
+    }
+
+    // 点击刷新数据
+    var ssort = 'sdesc';
+    var on_sclick = 0;
+    $('.hDivBox > table>thead>tr>th').hover(
+        function () {
+            if(typeof($(this).attr('abbr')) == "undefined"){
+                return false;
+            }
+            $(this).addClass('thOver');
+            if($(this).hasClass('sorted')){
+                if(ssort == 'sdesc'){
+                    $(this).find('div').removeClass('sdesc');
+                    $(this).find('div').addClass('sasc');
+                }else{
+                    $(this).find('div').removeClass('sasc');
+                    $(this).find('div').addClass('sdesc');
+                }
+            }else{
+                $(this).find('div').addClass(ssort);
+            }
+        }, function () {
+            if(typeof($(this).attr('abbr')) == "undefined"){
+                return false;
+            }
+            if(on_sclick == 0){
+                if($(this).hasClass('sorted')){
+                    if(ssort == 'sdesc'){
+                        $(this).find('div').removeClass('sasc');
+                        $(this).find('div').addClass('sdesc');
+                    }else{
+                        $(this).find('div').removeClass('sdesc');
+                        $(this).find('div').addClass('sasc');
+                    }
+                }else{
+                    $(this).find('div').removeClass(ssort);
+                }
+            }
+            $(this).removeClass("thOver");
+            on_sclick = 0;
+        }
+    );
+
+    $('.hDivBox > table>thead>tr>th').click(function(){
+        if(typeof($(this).attr('abbr')) == "undefined"){
+            return false;
+        }
+        if($(this).hasClass('sorted')){
+            $(this).find('div').removeClass(ssort);
+            if(ssort == 'sdesc'){
+                ssort = 'sasc';
+            }else{
+                ssort = 'sdesc';
+            }
+            $(this).find('div').addClass(ssort);
+            on_sclick = 1;
+        }else{
+            $('.hDivBox > table>thead>tr>th').removeClass('sorted');
+            $('.hDivBox > table>thead>tr>th').find('div').removeClass(ssort);
+            $(this).addClass('sorted');
+            $(this).find('div').addClass(ssort);
+            var hDivBox_th_index = $(this).index();
+            var flexigrid_tr =   $('#flexigrid > table>tbody>tr')
+            flexigrid_tr.each(function(){
+                $(this).find('td').removeClass('sorted');
+                $(this).children('td').eq(hDivBox_th_index).addClass('sorted');
+            });
+        }
+
+        if( $(this).children("div").hasClass("sasc") ){
+            $("input[name='sort']").val("desc");
+        }else {
+            $("input[name='sort']").val("asc");
+        }
+        sort($(this).attr('abbr'));
+    });
+
+    // 点击排序
+    function sort(field){
+        $("input[name='order_by']").val(field);
+        var v = $("input[name='sort']").val() == 'desc' ? 'asc' : 'desc';
+        $("input[name='sort']").val(v);
+        ajax_get_table('search-form2',cur_page);
+    }
+
+</script>
+</body>
+</html>

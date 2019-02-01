@@ -1,0 +1,262 @@
+<include file="public/layout" />
+<style>
+    dd.opt table{
+        width: 100%;
+    }
+    dd.opt tr{
+        border: 1px solid #f4f4f4;
+        padding: 8px;
+    }
+    dd.opt tr td{
+        border: 1px solid #f4f4f4;
+    }
+</style>
+<load href="__ROOT__/public/plugins/Ueditor/ueditor.config.js"/>
+<load href="__ROOT__/public/plugins/Ueditor/ueditor.all.min.js"/>
+<script type="text/javascript" charset="utf-8" src="__ROOT__/public/plugins/Ueditor/lang/zh-cn/zh-cn.js"></script>
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<style type="text/css">
+    html, body {
+        overflow: visible;
+    }
+</style>
+
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>投票活动</h3>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="promotion" action="{:U('Admin/Vote/save')}" method="post">
+        <input type="hidden" name="id" value="{$info.id}">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>活动标题</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="act_name" id="act_name" value="{$info.act_name}" class="input-txt">
+                    <p class="notic">活动标题</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>开始时间</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" id="start_time" name="start_time" value="<if condition="$info['start_time']">{:date("Y-m-d H:i:s",$info["start_time"])}</if>"  class="input-txt">
+                    <p class="notic">活动开始时间</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>结束时间</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" id="end_time" name="end_time" value="<if condition="$info['start_time']">{:date("Y-m-d H:i:s",$info["end_time"])}</if>" class="input-txt">
+                    <p class="notic">活动结束时间</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>活动封面图片</label>
+                </dt>
+                <dd class="opt">
+                    <div class="input-file-show">
+                        <span class="show">
+                            <a id="img_a" target="_blank" class="nyroModal" rel="gal" href="{$info.cover}">
+                                <i id="img_i" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$info.cover}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>
+                            </a>
+                        </span>
+                        <span class="type-file-box">
+                            <input type="text" id="cover" name="cover" value="{$info.cover}" class="type-file-text">
+                            <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
+                            <input class="type-file-file" onClick="GetUploadify(1,'cover','activity','img_call_back')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+                        </span>
+                    </div>
+                    <span class="err"></span>
+                    <p class="notic">请上传图片格式文件</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>活动规则</label>
+                </dt>
+                <dd class="opt">
+                    <textarea class="span12 ckeditor" placeholder="请输入活动介绍" id="post_content" name="rule" rows="6">{$info.rule}</textarea>
+                    <p class="notic">活动规则</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>随机描述</label>
+                </dt>
+                <dd class="opt">
+                    <textarea placeholder="请输入标语" name="slogan" rows="8" style="width: 500px;height: 200px">{$info.slogan}</textarea>
+                    <p class="notic">随机标语，一条一行</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>投票次数</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="follow_day_times" id="follow_day_times" value="{$info.follow_day_times}" class="input-txt">
+                    <p class="notic">投票次数</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>首次关注奖励次数</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="follow_focus_day_times" id="follow_focus_day_times" value="{$info.follow_focus_day_times}" class="input-txt">
+                    <p class="notic">首次关注奖励次数</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>自己投自己</label>
+                </dt>
+                <dd class="opt">
+                    <input type="checkbox" name="is_vote_found" <if condition="$info['is_vote_found']">checked</if>>
+                </dd>
+            </dl>
+
+            <dl class="row rowDom">
+                <dt class="tit">
+                    <label><em>*</em>奖品设置</label>
+                </dt>
+                <dt class="tit">
+                    <label><span onclick="addDom()"  class="numDom" data-num="<if condition='count($info["prize_setting"])'>{:count($info['prize_setting']) + 1}<else/>1</if>" style='display: inline-block;width: 20px;height: 20px;border-radius: 50%;;border:1px solid #1E1B1B;text-align: center;font-size: 20px;line-height: 18px'>+</span></label>
+                </dt>
+                <br/>
+                <foreach name="$info['prize_setting']" item="v" key="k">
+                <dd class="opt" style="margin-left: 12%;margin-top: 20px">
+                    <span>{$k}</span>
+                    <input type="hidden" name="prize_setting[{$k}][level]" value="{$k}" >
+                    <input type="text" name="prize_setting[{$k}][name]" placeholder="奖项名称" value="{$v['name']}" >
+                    <input type="text" name="prize_setting[{$k}][num]" placeholder="奖项数量" value="{$v[num]}">
+                    <input type="text" name="prize_setting[{$k}][goods_id]" placeholder="奖项商品ID" value="{$v[goods_id]}">
+                    <input type="text" name="prize_setting[{$k}][goods_intro]" placeholder="奖品简称" value="{$v[goods_intro]}">
+                    <span onclick="delDom(this)" style='display: inline-block;width: 20px;height: 20px;border-radius: 50%;;border:1px solid #1E1B1B;text-align: center;font-size: 20px;line-height: 18px'>-</span>
+                </dd>
+                </foreach>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>活动首页地址</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="qrcode_url" id="qrcode_url" value="{$info.qrcode_url}" class="input-txt">
+                    <p class="notic">生成二维码用</p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>商品专题ID</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="goods_topic_id" id="goods_topic_id" value="{$info.goods_topic_id}" class="input-txt">
+                    <p class="notic">商品专题ID，0为无效</p>
+                </dd>
+            </dl>
+            <div class="bot"><a id="submit" class="ncap-btn-big ncap-btn-green">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    // 点击添加按钮 添加节点
+    function addDom() {
+        var $num = $('.numDom').attr('data-num');
+        $('.numDom').attr('data-num',+$num + 1);
+
+        var dataDom = '<dd class="opt" style="margin-left: 12%;margin-top: 20px">\n' +
+            '<span>'+$num+'</span>\n' +
+            '<input type="hidden" name="prize_setting['+$num+'][level]" value="'+$num+'" style="margin-left: 10px">\n' +
+            '<input type="text" name="prize_setting['+$num+'][name]" placeholder="奖项名称" value="{$info[prize_setting]['+$num+'][name]}" >\n' +
+            '<input type="text" name="prize_setting['+$num+'][num]" placeholder="奖项数量" value="{$info[prize_setting]['+$num+'][num]}">\n' +
+            '<input type="text" name="prize_setting['+$num+'][goods_id]" placeholder="奖项商品ID" value="{$info[prize_setting]['+$num+'][goods_id]}">\n' +
+            '<input type="text" name="prize_setting['+$num+'][goods_intro]" placeholder="奖品简称" value="{$info[prize_setting]['+$num+'][goods_intro]}">\n' +
+            '<span onclick="delDom(this)" style=\'display: inline-block;width: 20px;height: 20px;border-radius: 50%;;border:1px solid #1E1B1B;text-align: center;font-size: 20px;line-height: 18px\'>-</span>\n' +
+            '</dd>';
+        $('.rowDom').append(dataDom)
+
+    }
+    // 点击删除 节点
+    function delDom(obj) {
+        $(obj).closest('.opt').remove();
+    }
+
+
+    $(function () {
+        $('#start_time').layDate();
+        $('#end_time').layDate();
+    });
+    
+    var url="{:url('Admin/Ueditor/index',array('savePath'=>'activity'))}";
+    var ue = UE.getEditor('post_content',{
+        serverUrl :url,
+        zIndex: 999,
+        initialFrameWidth: "100%", //初化宽度
+        initialFrameHeight: 350, //初化高度            
+        focus: false, //初始化时，是否让编辑器获得焦点true或false
+        maximumWords: 99999, removeFormatAttributes: 'class,style,lang,width,height,align,hspace,valign',//允许的最大字符数 'fullscreen',
+        pasteplain:false, //是否默认为纯文本粘贴。false为不使用纯文本粘贴，true为使用纯文本粘贴
+        autoHeightEnabled: true
+    });
+
+    $(function () {
+        $(document).on("click", '#submit', function (e) {
+            $.ajax({
+                type: "POST",
+                url: "{:U('Admin/Vote/save')}",
+                data: $('#promotion').serialize(),
+                async:false,
+                dataType: "json",
+                error: function () {
+                    layer.alert("服务器繁忙, 请联系管理员!");
+                },
+                success: function (data) {
+                    if (data.status == 1) {
+                        layer.msg(data.msg, {
+                            icon: 1,
+                            time: 1000
+                        }, function(){
+                            location.href = "{:U('Admin/Vote/index')}";
+                        });
+                    } else {
+                        layer.msg(data.msg, {icon: 2,time: 1000});
+                    }
+                }
+            });
+        })
+    });
+
+
+
+
+    $(document).ready(function(){
+        $("#prom_type").trigger('change');
+
+        $('#start_time').layDate();
+        $('#end_time').layDate();
+
+    });
+
+    function img_call_back(fileurl_tmp) {
+        $("#cover").val(fileurl_tmp);
+        $("#img_a").attr('href', fileurl_tmp);
+        $("#img_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+</script>
+</body>
+</html>

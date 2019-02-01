@@ -1,0 +1,89 @@
+<table>
+	<tbody>
+	<if condition="empty($apply_list)">
+		<tr data-id="0">
+			<td class="no-data" align="center" axis="col0" colspan="50">
+				<i class="fa fa-exclamation-circle"></i>没有符合条件的记录
+			</td>
+		</tr>
+		<else/>
+		<volist name="$apply_list" id="list">
+			<tr data-id="{$list.id}" id="{$list.id}">
+				<td class="sign" axis="col0">
+					<div style="width: 24px;"><i class="ico-check"></i></div>
+				</td>
+				<td align="left" abbr="user_id" axis="col3" class="">
+					<div style="text-align: left; width: 60px;" class="">{$list.user_id}</div>
+				</td>
+				<td align="left" abbr="nickname" axis="col4" class="">
+					<div style="text-align: left; width: 120px;" class="">{$list.nickname}</div>
+				</td>
+				<td align="center" abbr="mobile" axis="col5" class="">
+					<div style="text-align: center; width: 120px;" class="">{$list.mobile}</div>
+				</td>
+				<td align="center" abbr="apply_time" axis="col6" class="">
+					<div style="text-align: center; width: 120px;" class="">{$list.apply_time}</div>
+				</td>
+				<td align="center" abbr="status" axis="col6" class="">
+					<div style="text-align: center; width: 120px;" class="">{$list.status_desc}</div>
+				</td>
+				<td align="center" abbr="deal_time" axis="col6" class="">
+					<div style="text-align: center; width: 120px;" class="">{$list.deal_time}</div>
+				</td>
+				<td align="center" abbr="deal_time" axis="col6" class="">
+					<div style="text-align: center; width: 120px;" class="">{$list.deal_result|default='--'}</div>
+				</td>
+				<td align="left" axis="col1" class="handle" align="center">
+					<div style="text-align: left; ">
+						<a class="btn green" href="{:U('Admin/Distribution/partnerApplyDetail',array('id'=>$list['id']))}"><i class="fa fa-list-alt"></i>查看</a>
+						<a class="btn red" href="javascript:void(0);" data-id="{$list['id']}" data-status="{$list.status}" onclick="del(this)"><i class="fa fa-trash-o"></i>删除</a>
+					</div>
+				</td>
+				<td style="width: 100%;">
+					<div></div>
+				</td>
+			</tr>
+		</volist>
+	</if>
+	</tbody>
+</table>
+<div class="row">
+	<div class="col-sm-6 text-left"></div>
+	<div class="col-sm-6 text-right">{$page}</div>
+</div>
+<script>
+    $(".pagination  a").click(function(){
+        var page = $(this).data('p');
+        ajax_get_table('search-form2',page);
+    });
+
+    // 删除操作
+    function del(obj) {
+        layer.confirm('确定要删除吗?', function(){
+            var id=$(obj).data('id'), status = $(obj).data('status');
+            if (status == 0 || status == 1) { //只能删除已拒绝的申请
+                return layer.msg('暂不能删除申请记录');
+			} else {
+                $.ajax({
+                    type : "POST",
+                    url: "{:U('Admin/Distribution/deletePartnerApply')}",
+                    data:{id:id},
+                    dataType:'json',
+                    success: function(data){
+                        if(data.status ==1){
+                            layer.alert(data.msg, {icon: 1});
+                            $('#'+id).remove();
+                        }else{
+                            layer.alert(data.msg, {icon: 2});
+                        }
+                    },
+                    error:function(){
+                        layer.alert('网络异常，请稍后重试',{icon: 2});
+                    }
+                });
+			}
+        });
+    }
+
+    $('.ftitle>h5').empty().html("(共{$pager->totalRows}条记录)");
+</script>

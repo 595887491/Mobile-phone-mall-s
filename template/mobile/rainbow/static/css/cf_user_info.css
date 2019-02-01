@@ -1,0 +1,25 @@
+#cf_jump{
+     border: none;
+}
+.cf_user_comment{
+    background-color: white;
+    text-align: center;
+    font-size: .4rem;
+    color: #333;
+}
+.cf_user_comment>h1{
+    margin: 0 1.4rem;
+    /*margin-left: .2rem;*/
+}
+.cf_num{
+    margin-top: .5rem;
+    color: #5B5858;
+}
+.cf_perfect{
+    font-size: .6rem;
+    margin-top: .6rem;
+    color: #FF407E;
+}
+#cf_bottom{
+    border-bottom: 1px solid #ddd;
+}

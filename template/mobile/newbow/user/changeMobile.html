@@ -1,0 +1,227 @@
+<include file="public/header" title="绑定手机号" body=""/>
+<link rel="stylesheet" href="__STATIC__/css/change_moblie.css">
+<if condition="$mobile !== 0">
+    <div class="classreturn loginsignup ">
+        <div class="content">
+            <div class="ds-in-bl return">
+                <a href="{:U('Mobile/User/userinfo')}" class="returnImag" >
+                    <img src="__STATIC__/images/return.png" style="width: 0.35rem;height: 0.6rem;" alt="返回">
+                    <!--<img src="__STATIC__/images/clos.png" alt="返回" ">-->
+                </a>
+            </div>
+            <div class="ds-in-bl search center">
+                <span>修改手机号</span>
+            </div>
+        </div>
+    </div>
+    <else/>
+    <include file="public/header_nav" title="绑定手机号"  href="{:U('Mobile/User/userinfo')}"/>
+</if>
+<if condition="$mobile !== 0">
+        <div style="width: 100%;text-align: center;margin-top: .2rem;height:3rem;background-color: #fff">
+            <img src="__STATIC__/images/new_mobile.png"  style="text-align: center;width: 12rem;height: 2.5rem" alt="">
+        </div>
+        <div style="width: 100%;height: .3rem;background: #f3f5f7"></div>
+        <div class="loginsingup-input">
+            <form method="post" >
+                <div class="lsu">
+                    <span>手机号码 :</span>
+                    <input type="text" name="mobile" id="tel" value="{$mobile}" readonly placeholder="请输入您的手机号" />
+                </div>
+                <div class="v-identity m-t-40 ">
+                    <span class="v-til">验证码:</span>
+                    <div class="v-cont-wrap">
+                        <input type="text" name="mobile_code" id="tpcode" value="" placeholder="请输入验证码">
+                        <a  class="m_phone" href="javascript:void(0);" rel="mobile" id="fcode" onclick="sendcode(this)">获取验证码</a>
+                    </div>
+                </div>
+                <div class="lsu-submit">
+                    <input type="button" onclick="nextstep()" value="下一步" />
+                </div>
+
+                <div style="margin-top: 1.5rem;text-align: center" onclick="nextPop()">
+                    <span style="color: #BFC1CD;font-size: .6rem">当前无法收到短信，请联系客服</span>
+                    <img src="__STATIC__/images/kefu.png" style="width: .6rem;height: .6rem" alt="">
+                </div>
+            </form>
+        </div>
+    <else/>
+    <!--未绑定 手机微信登录的页面-->
+        <!--<div class="loginsingup-input">-->
+            <!--<form  method="post"  id="payform">-->
+                <!--<if condition="!empty($user.paypwd)">-->
+                    <!--&lt;!&ndash;<div class="reset-pwd-title">修改支付密码</div>&ndash;&gt;-->
+                    <!--<div class="lsu">-->
+                        <!--&lt;!&ndash;<span class="ico ico-old-password"></span>&ndash;&gt;-->
+                        <!--<span style="letter-spacing: .24rem;">原密码:</span>-->
+                        <!--<input style="margin-left: -.18rem;" type="password" name="old_password" id="old_password" onkeyup="this.value=/^\d+\.?\d{0,2}$/.test(this.value) ? this.value : ''" placeholder="请输入原密码"/>-->
+                    <!--</div>-->
+                <!--</if>-->
+                <!--<div class="lsu">-->
+                    <!--&lt;!&ndash;<span class="ico ico-password"></span>&ndash;&gt;-->
+                    <!--<span style="letter-spacing: .24rem;">新密码:</span>-->
+                    <!--<input style="margin-left: -.18rem;"  type="password" name="new_password" id="new_password" onkeyup="this.value=/^\d+\.?\d{0,2}$/.test(this.value) ? this.value : ''" placeholder="请输入6位数新密码"/>-->
+                <!--</div>-->
+                <!--<div class="lsu">-->
+                    <!--&lt;!&ndash;<span class="ico ico-password"></span>&ndash;&gt;-->
+                    <!--<span>确认密码 :</span>-->
+                    <!--<input type="password" name="confirm_password" id="confirm_password" onkeyup="this.value=/^\d+\.?\d{0,2}$/.test(this.value) ? this.value : ''" placeholder="再次输入新密码" />-->
+                <!--</div>-->
+                <!--<p class="ts">注:支付密码请设置为6位数的数字</p>-->
+                <!--<div class="lsu-submit">-->
+                    <!--<input type="button" onclick="submitverify()" value="确认" />-->
+                <!--</div>-->
+            <!--</form>-->
+        <!--</div>-->
+</if>
+
+<!--客服弹窗-->
+<!--客服弹窗-->
+<div class="cf_forward_bg">
+    <div class="cf_forward">
+        <p class="forward_first">联系客服</p>
+        <img onclick="closePop()" class="forward_first_img"  src="__STATIC__/images/cf_close.png" alt="">
+        <div style="margin-top: 1rem;clear: both;overflow: hidden">
+            <div class="fl" style="margin-left: 1.5rem">
+                <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=3601438225&site=qq&menu=yes">
+                    <img class="sever_img" src="__STATIC__/images/sever_qq.png" alt=""><br><br><br>
+                    <span style="font-size: .7rem">QQ客服</span>
+                </a>
+            </div>
+            <div class="fr" style="margin-right: 1.5rem">
+                <a href="tel:028-8557 8499">
+                    <img class="sever_img" src="__STATIC__/images/sever_phone.png" alt=""><br><br><br>
+                    <span style="font-size: .7rem">电话客服</span>
+                </a>
+            </div>
+        </div>
+        <div style="margin-top: 1rem;border-top: 2px solid #F1F5F8;padding-top: .6rem">
+            <ul>
+                <li style="line-height: 1rem;width: 100%;height: 1rem;font-size: .6rem;text-align: left;margin-left: 1rem"><span>微信客服小尚：</span><span>snbf04</span>
+                    <!--<span  style="margin-left: 1rem;color: #074884;position: absolute;right: 1rem" onclick="onCopy()">复制</span>-->
+                </li>
+                <li style="line-height: 1rem;width: 100%;height: 1rem;font-size: .6rem;text-align: left;margin-left: 1rem"><span>微信客服小美：</span><span id="wxName">shangmeibinfen</span>
+                    <!--<span  style="margin-left: 1rem;color: #074884;position: absolute;right: 1rem" onclick="onCopy()">复制</span>-->
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    var referer = "{$referer}";
+    //手机验证
+    function checkMobilePhone(mobile){
+        if(mobile == ''){
+            layer.open({content:'请输入手机号！',time:3,skin:"msg"});
+            return false;
+        }else  if(!checkMobile(mobile)) {
+            layer.open({content:'手机号码格式不对！',time:3,skin:"msg"});
+            return false;
+        }
+    }
+
+
+    //发送短信验证码
+    function sendcode(obj){
+        var tel = $.trim($('#tel').val());
+        var obj = $(obj);
+        if(tel == ''){
+            layer.open({content:'请输入你的号码！',time:3,skin:"msg"});
+            return false;
+        }
+        var s = 60;
+        //改变按钮状态
+        obj.unbind('click');
+        //添加样式
+        obj.attr('id','fetchcode');
+        callback();
+        //循环定时器
+        var T = window.setInterval(callback,1000);
+        function callback()
+        {
+            if(s <= 0){
+                //移除定时器
+                window.clearInterval(T);
+                obj.bind('click',sendcode)
+                obj.removeAttr('id','fetchcode');
+                obj.text('获取验证码');
+            }else{
+                obj.text(--s + '秒');
+            }
+        }
+        $.ajax({
+            url : "/index.php?m=Home&c=Api&a=send_validate_code&scene=4&type=mobile&send="+tel,
+            type:'post',
+            dataType:'json',
+            data:{type:obj.attr('rel'),send:tel},
+            success:function(res){
+                if(res.status==1){
+                    //成功
+                    layer.open({content:res.msg,time:3,skin:"msg"});
+                    // showErrorMsg(res.msg);
+                }else{
+                    //失败
+                    layer.open({content:res.msg,time:3,skin:"msg"});
+                    // showErrorMsg(res.msg);
+                    //移除定时器
+                    window.clearInterval(T);
+                    obj.removeAttr('id','fetchcode');
+                    obj.text('获取验证码');
+                }
+            }
+        })
+    }
+
+    //第一步验证
+    function nextstep(){
+        var tpcode = $('#tpcode').val();
+        var tel = $('#tel').val();
+        if(tpcode == ''){
+            layer.open({content:'验证码不能为空！',time:3,skin:"msg"});
+            return false;
+        }
+        if(tpcode.length != 4){
+            layer.open({content:'验证码错误！',time:3,skin:"msg"});
+            return false;
+        }
+
+        $.ajax({
+            url:"{:U('mobile/User/setMobile')}",
+            type:'post',
+            dataType:'json',
+            data:{
+                mobile:tel,
+                mobile_code:tpcode,
+                validate:1
+            },
+            success:function(data){
+                if(data.code==1){
+                    // is_check = true;
+                    layer.open({content:'验证成功！',time:3,skin:"msg"});
+                    window.location.href="{:U('Mobile/User/userinfo',array('action'=>'changeNewMobile'))}";
+                }else{
+                    layer.open({content:data.msg,time:3,skin:"msg"});
+                    return false;
+                }
+            }
+        })
+    }
+    // 关闭客服弹窗
+    function closePop() {
+        $('.cf_forward_bg').css('display','none');
+
+    }
+    function nextPop() {
+        $('.cf_forward_bg').css('display','block');
+    }
+
+    /**
+     * 提示弹窗
+     * */
+    function showErrorMsg(msg){
+        layer.open({content:msg,time:2,shin:'msg'});
+    }
+</script>
+</body>
+</html>

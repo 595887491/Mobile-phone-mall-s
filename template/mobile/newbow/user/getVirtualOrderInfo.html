@@ -1,0 +1,274 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <head>
+        <title>订单详情</title>
+        <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="__STATIC__/js/rem.js" type="text/javascript" charset="utf-8"></script>
+        <script src="__PUBLIC__/js/global.js"></script>
+        <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+        <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
+        <link rel="stylesheet" href="__STATIC__/css/cardInfo.css">
+    </head>
+</head>
+<style>
+    #MEIQIA-BTN-HOLDER{
+        display: none!important;
+    }
+</style>
+<!--客服 配置-->
+<script type='text/javascript'>
+    (function(m, ei, q, i, a, j, s) {
+        m[i] = m[i] || function() {
+            (m[i].a = m[i].a || []).push(arguments)
+        };
+        j = ei.createElement(q),
+            s = ei.getElementsByTagName(q)[0];
+        j.async = true;
+        j.charset = 'UTF-8';
+        j.src = 'https://static.meiqia.com/dist/meiqia.js?_=t';
+        s.parentNode.insertBefore(j, s);
+    })(window, document, 'script', '_MEIQIA');
+    _MEIQIA('entId', 111444);
+
+    // 传递顾客信息
+    _MEIQIA('metadata', {
+        name: '{$service_user_info.name}',// 美洽默认字段
+        address:'{$service_user_info.address}',// 美洽默认字段
+        age :'{$service_user_info.age}',// 年龄
+        email:'{$service_user_info.email}',// 邮箱
+        gender:'{$service_user_info.gender}', // 性别
+        tel:'{$service_user_info.tel}' // 电话
+    });
+</script>
+<!--客服配置结束-->
+<body>
+<!--header-->
+<div class="headerRank">
+    <div class="headerRankCon">
+        <div class="fl texFl">
+            <a href="{:url('User/getVirtualOrdeList')}">
+                <img src="__STATIC__/images/return.png" alt="返回"></a>
+            </a>
+        </div>
+        <div class="tex">
+            <span>订单详情</span>
+        </div>
+    </div>
+</div>
+<!--header-->
+<div style="height:.9rem;width: 100% "></div>
+<!--商品详情-->
+<div class="cardInfo">
+    <a href="{:U('Virtual/goodsInfo')}?id={$info.goods_id}">
+        <div class="clearFix cardInfoCon">
+            <div class="fl cardInfoLeft">
+                <img src="{$info.original_img}" alt="">
+            </div>
+            <div class="fl cardInfoRight">
+                <p class="titleP">{$info.goods_name}</p>
+                <p class="titleAll">总价: <span>¥{$info.total_amount}</span></p>
+            </div>
+        </div>
+        <div class="cardState">
+            <span>x{$info.goods_num}</span>
+        </div>
+    </a>
+</div>
+<!--二维码-->
+<if condition="$info.pay_status eq 1 || $info.pay_status eq 3">
+    <div class="cardCode">
+        <div class="cardTime">
+            <span>缤纷券:</span>
+            <span>有效期至{$info.endTime}</span>
+        </div>
+        <volist name="$vrInfo" id="v" key="o">
+            <div class="cardTime">
+                <span>密码 {$o}:</span>
+                <span style="font-size: .28rem">{:interval($v.vr_code)}</span>
+                <!--<img src="__STATIC__/images/cardCode.png" class="cardTimeImg" alt="">-->
+                <if condition="$v.vr_state eq 0 && $v.refund_lock eq 0">
+                    <span class="cardSt" style="color: #5B5858">未使用</span>
+                </if>
+                <if condition="$v.vr_state eq 1 && $v.refund_lock eq 0">
+                    <span class="cardSt" style="color: #169C00">已消费</span>
+                </if>
+                <if condition="$v.vr_state eq 2 && $v.refund_lock eq 0 ">
+                    <span class="cardSt" style="color: #5B5858">已过期</span>
+                </if>
+                <if condition="$v.refund_lock eq 3">
+                    <span class="cardSt" style="color: #5B5858">已退款</span>
+                </if>
+                <if condition="$v.refund_lock eq 1">
+                    <span class="cardSt" style="color: #5B5858">申请退款中</span>
+                </if>
+            </div>
+        </volist>
+    </div>
+</if>
+<!--去支付-->
+<if condition="$info.pay_status eq 0 && $info.order_status eq 0">
+    <div class="noPlay">
+        <div class="noPlayMoney" >实付金额: <span>¥ {$info.order_amount}</span></div>
+        <a href="{:U('Cart/cart4')}?order_id={$info.order_id}">
+            <button>立即付款</button>
+        </a>
+        <p class="cardPlayT">订单24小时未付款将自动取消</p>
+    </div>
+</if>
+<!--已取消-->
+<if condition="$info.order_status eq 3 ">
+    <div class="cardRest">
+        <p>实付金额: <span>¥ {$info.order_amount}</span></p>
+        <p>订单已取消</p>
+    </div>
+</if>
+
+
+<!--套餐-->
+<div class="mealAll">
+    <div class="cardMeal">
+        <p>套餐</p>
+    </div>
+    <div class="mealCon">
+        {$info.virtual_desc | htmlspecialchars_decode}
+    </div>
+    <div class="textures">
+        <a href="{:U('Virtual/goodsInfo')}?id={$info.goods_id}">
+            <div class="clearFix">
+                <span class="fl" >查看图文详情</span>
+                <img  class="fr" src="__STATIC__/images/cf_left_more.png" alt="">
+            </div>
+        </a>
+    </div>
+</div>
+<!--明细-->
+
+<div class="orderDetails">
+    <div class="cardDetail">
+        <p>订单明细</p>
+    </div>
+    <div class="cardPrice clearFix">
+        <div class="cardPriceCom">
+            <span class="fl">订单号</span>
+            <span class="fr">{$info.order_sn}</span>
+        </div>
+        <div class="cardPriceCom">
+            <span class="fl">数量</span>
+            <span class="fr">{$info.goods_num}</span>
+        </div>
+        <div class="cardPriceCom">
+            <span class="fl">总价</span>
+            <span class="fr">¥{$info.total_amount}</span>
+        </div>
+        <div class="cardPriceCom">
+            <span class="fl">余额支付</span>
+            <span class="fr">¥{$info.user_money}</span>
+        </div>
+        <div class="cardPriceCom">
+            <span class="fl">
+                <if $info.pay_status == 0 && ($info.order_status == 3 || $info.order_status == 0)>
+                    应付
+                    <else/>
+                    实付
+                </if></span>
+            <span class="fr">¥{$info.order_amount}</span>
+        </div>
+    </div>
+</div>
+<!--是否取消-s-->
+<div class="losepay  closeorder">
+    <div class="teamConfirm">
+        <p class="con-lo">确定取消该订单吗?</p>
+        <div class="con">
+            <a class="ax fl">取消</a>
+            <a class="are fr" onclick="cancel_order({$info.order_id})">确认</a>
+        </div>
+    </div>
+</div>
+<!--是否取消-e-->
+
+<!--按钮-->
+<div class="cardBtn clearFix">
+    <if condition="$info.pay_status neq 0">
+
+        <if $info.goods_num eq 1 && $fillIn eq 1>
+            <a href="{:U('Mobile/User/getVirtualFormInfo')}?id={$dataId}" class="fr">
+                <button>体检人信息</button>
+            </a>
+            <elseif $info.goods_num eq 1 && $fillIn eq 0 />
+                <a href="{:U('Mobile/Virtual/preferUserInfo')}?order_id={$info.order_id}&goods_num=1" class="fr">
+                    <button>体检人信息</button>
+                </a>
+            <elseif  $info.pay_status neq 3  />
+                <a href="{:U('Mobile/User/getVirtualFormList')}?order_id={$info.order_id}" class="fr">
+                    <button>体检人信息</button>
+                </a>
+            </if>
+        </if>
+    </if>
+    <a onclick="_MEIQIA('showPanel')" class="fr">
+        <button >联系客服</button>
+    </a>
+    <if condition="$info.pay_status eq 0 && $info.order_status eq 0">
+        <a class="fr popPlay">
+            <button>取消订单</button>
+        </a>
+    </if>
+    <if condition="$info.order_status eq 3 || $info.order_status eq 4 ||$info.pay_status eq 3 ||$info.is_comment eq 1">
+        <a href="{:U('Virtual/goodsInfo')}?id={$info.goods_id}" class="fr">
+            <button >再来一单</button>
+        </a>
+    </if>
+    <if condition="$info.is_comment eq 0 && $info.is_consume eq 1">
+        <a href="{:U('Mobile/Order/add_comment')}?rec_id={$info.rec_id}" class="fr">
+            <button >去评价</button>
+        </a>
+    </if>
+</div>
+<script>
+    // 点击取消 弹出弹框提示;
+    $('.popPlay').click(function () {
+        $('.losepay').show();
+    });
+    //取消订单按钮
+    $('.con .ax').click(function(){
+        $('.losepay').hide();
+    });
+    //确认订单按钮
+    $('.con .are').click(function(){
+        $('.losepay').hide();
+    })
+
+    //确认取消订单
+    function cancel_order(id){
+        $.ajax({
+            type: 'GET',
+            dataType:'JSON',
+            url:"/index.php?m=Mobile&c=Order&a=cancel_order&id="+id,
+            success:function(data){
+                if(data.code == 1){
+                    layer.open({content:data.msg,time:2,skin:'msg'});
+                    setTimeout(function () {
+                        location.reload();
+                    },2000);
+
+                    return false;
+
+                }else{
+                    layer.open({content:data.msg,time:2,skin:'msg'});
+                    setTimeout(function () {
+                        location.reload();
+                    },2000);
+                    return false;
+                }
+            },
+            error:function(){
+                layer.open({content:'网络异常，请稍后重试',time:3,skin:'msg'});
+            },
+        });
+    }
+</script>
+</body>
+</html>

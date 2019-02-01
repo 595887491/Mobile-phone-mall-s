@@ -1,0 +1,217 @@
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>完善资料</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" />
+    <link rel="stylesheet" type="text/css"href="__STATIC__/css/voteInfo.css" />
+</head>
+<style>
+    .voteBottom{
+        background: url("__STATIC__/images/vote/porferBg.png")no-repeat;
+        background-size: 100%;
+        height: 2.1rem;
+        position: relative;
+        top: -1.9rem;
+        z-index: 9999;
+        text-align: center;
+        padding-bottom: .1rem;
+    }
+</style>
+<body>
+<!--上传按钮-->
+<div class="voteCover">
+    <label for="file" style="display: inline;z-index: 99"  class="voteCoverfile" onclick="disableRoll()">
+        <a href="javascript:;" class="file">
+            <div class="voteBtn">
+                <img src="__STATIC__/images/vote/porfer.png"  alt="">
+                <input type="file" name="file"  id="file" >
+            </div>
+        </a>
+    </label>
+    <img src="" class="my_photo" id="view" alt="">
+    <input type="hidden" name="my_photo" class="aa" value="{$found_info['my_photo']}">
+
+    <div class="voteBottom">
+        <div class="comment">
+            <input type="text" placeholder="取个吸引眼球的名字，如绝世舞姬-貂蝉" value="{$found_info['title']}" class="voteName" maxlength="8">
+            <textarea placeholder="请填写一句话介绍自己...">{$found_info['slogan']}</textarea>
+            <button onclick="changeDescribe()">随机一条</button>
+        </div>
+        <div class="subBtn">
+            <button onclick="perfectVote()">提 交</button>
+        </div>
+    </div>
+</div>
+<!--<img src="__STATIC__/images/vote/porferBg.png" class="coverBg" alt="">-->
+
+
+<div ontouchstart=""  id="ov"  style="display: none">
+    <div id="clipArea"></div>
+    <div class="btnCat">
+        <button  onclick="cancelCat()">取消</button>
+        <img src="__STATIC__/images/vote/ratoVote.png"  onclick="change()" alt="">
+        <button id="clipBtn">截取</button>
+    </div>
+</div>
+
+<script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript"></script>
+<script src="__PUBLIC__/js/global.js"></script>
+<script src="__STATIC__/js/layer.js"  type="text/javascript"></script>
+<script src="__STATIC__/css/capable/hammer.min.js"></script>
+<script src="__STATIC__/css/capable/iscroll-zoom-min.js"></script>
+<script src="__STATIC__/css/capable/lrz.all.bundle.js"></script>
+<script src="__STATIC__/css/capable/PhotoClip.js"></script>
+<script>
+    var haveImg = '{$have_join}'?'{$have_join}':'';
+    // 获取地址栏目 的参数
+    var changePic;
+    var url = window.location.search;
+    if (url.indexOf("?") != -1) {
+        var str = url.substr(1);
+        strs = str.split("=");
+    }
+
+    if(haveImg == 0){
+        changePic = unescape(strs[1]);
+        $('#view').attr('src',changePic);
+    }else {
+        changePic = $('.aa').val();
+        $('#view').attr('src',changePic);
+
+    }
+
+
+    var pc = new PhotoClip('#clipArea', {
+        size: [300,400],
+        outputSize: 750,
+        //adaptive: ['60%', '80%'],
+        file: '#file',
+        view: '#view',
+        style: {maskBorder:'1px solid #fff'},
+        ok: '#clipBtn',
+        maxZoom:0,
+        outputQuality:.9,
+        //img: 'img/mm.jpg',
+        loadStart: function() {  //开始读取照片
+            $('#ov').css('display','block');
+        },
+        loadComplete: function() {  //读取照片完成
+
+        },
+        done: function(dataURL) { //裁剪完成
+            var index = layer.open({type:2,time:300,skin:'msg'});
+            $.ajax({
+                type : "post",
+                url:"/mobile/Vote/uploadPic",//+tab,
+                data:{
+                    dataURL:dataURL
+                },
+                success: function(data){
+                    if(data.code == 1){
+                        layer.close(index);
+                        $('#view').attr('src',dataURL);
+                        $('.aa').val(data.data.my_photo);
+                        layer.open({content:'上传成功',time:3,skin:'msg'});
+                        $('#ov').css('display','none');
+                        $('.voteBottom').css('display','block');
+                        $('.voteCoverfile').css('display','block');
+                    }else {
+                        layer.close(index);
+                        layer.open({content:'上传失败',time:3,skin:'msg'});
+                    }
+                }
+            });
+        },
+        fail: function(msg) {
+            alert(msg);
+        }
+    });
+
+    // 取消裁剪
+    function cancelCat() {
+        $('#ov').css('display','none');
+        $('.voteBottom').css('display','block');
+        $('.voteCoverfile').css('display','block');
+    }
+    // 裁剪弹出时，禁止滚动
+    function disableRoll() {
+        // $('.voteBottom').css('display','none');
+        // $('.voteCoverfile').css('display','none');
+        $("#ov").on("touchmove",function(){
+            event.preventDefault();
+        });
+    }
+
+    // 加载的图片必须要与本程序同源，否则无法截图
+    /*pc.load('img/mm.jpg');*/
+    var a = 0
+    function change() {
+        a+=90;
+        if(a >360){
+            a = 0
+        }
+        pc.rotate(a,500);
+
+    }
+
+    // 随机一条
+    var changeArr = [];
+    changeArr = {$slogan};
+    function changeDescribe(){
+        var a = changeArr[Math.floor(Math.random()*changeArr.length)];
+        $('.comment textarea').val(a);
+    }
+    // 提交
+    function perfectVote() {
+        if(haveImg == 0){
+            changePic = unescape(strs[1]);
+        }else {
+            changePic = $('.aa').val();
+        }
+        var name = $('.voteName').val();
+        var text = $('.comment textarea').val();
+        if(name == '' || text == ''){
+            layer.open({content:'请完善全部信息',time:2,skin:'msg'});
+        }
+        if(name != '' && text != ''){
+            $.ajax({
+                type : "post",
+                url:"/mobile/Vote/perferInfo",//+tab,
+                data:{
+                    my_photo:changePic,
+                    title:name,
+                    slogan:text
+                },
+                success: function(data){
+                    if(data.code == 1){
+                        layer.open({content:'保存成功',time:2,skin:'msg'});
+                        var found_id = data.data.found_id
+                        setTimeout(function () {
+                            location.href = "{:U('/Mobile/vote/voteMainInfo')}"+"?found_id="+found_id;
+                        },2000)
+                    }else {
+                        layer.open({content:'保存失败',time:2,skin:'msg'});
+                    }
+                }
+            });
+        }
+    }
+
+
+    // $(document).on('scroll.unable',function (e) {
+    //     $(document).scrollTop(top);
+    // })
+    // 判断有无历史记录返回
+    function goBack() {
+        var historyUrl = document.referrer;
+        if(historyUrl !==''){
+            window.history.go( -1 );
+        }else {
+            location.href = "{:U('/Mobile/Team/index')}"
+        }
+    }
+</script>
+
+</body>
+</html>

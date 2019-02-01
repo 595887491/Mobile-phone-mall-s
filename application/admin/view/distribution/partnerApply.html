@@ -1,0 +1,200 @@
+<include file="public/layout" />
+<script type="text/javascript" src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>合伙人申请</h3>
+                <h5>合伙人申请</h5>
+            </div>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <div id="explanation" class="explanation" style=" width: 99%; height: 100%;">
+        <div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span title="收起提示" id="explanationZoom" style="display: block;"></span>
+        </div>
+        <ul>
+            <li>提示相关设置操作时应注意的要点</li>
+        </ul>
+    </div>
+    <div class="flexigrid">
+        <div class="mDiv">
+            <div class="ftitle">
+                <h3>合伙人申请</h3>
+                <h5>(共{$page->totalRows}条记录)</h5>
+            </div>
+            <div title="刷新数据" class="pReload"><i class="fa fa-refresh"></i></div>
+            <form class="navbar-form form-inline"  method="post" action=""  name="search-form2" id="search-form2">
+                <input type="hidden" name="ids" value=""> <!--导出选中的项-->
+                <input type="hidden" name="action" value=""> <!--导出还是查询-->
+                <!--用于查看结算统计 包含了哪些订单-->
+                <div class="sDiv">
+                    <div class="sDiv2">
+                        <select name="status" class="select sDiv3" style="margin-right:5px;margin-left:5px">
+                            <option value="">状态</option>
+                            <option value="0">未处理</option>
+                            <option value="1">通过</option>
+                            <option value="2">不通过</option>
+                        </select>
+                    </div>
+                    <div class="sDiv2" style="margin-right: 10px;">
+                        <input type="text" size="30" name="start_time" id="start_time" value="{$apply_start_time}" placeholder="申请起始时间" class="qsbox">
+                        <input type="button" class="btn" value="申请起始时间">
+                    </div>
+                    <div class="sDiv2" style="margin-right: 10px;">
+                        <input type="text" size="30" name="end_time" id="end_time" value="{$apply_end_time}" placeholder="申请截止时间" class="qsbox">
+                        <input type="button" class="btn" value="申请截止时间">
+                    </div>
+
+                    <div class="sDiv2">
+                        <input type="text" size="30" name="keywords" class="qsbox" placeholder="会员名称/手机号码/姓名/省份证号码...">
+                    </div>
+                    <div class="sDiv2">
+                        <input type="button" onclick="ajax_get_table('search-form2',1)"  class="btn" value="搜索">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="hDiv">
+            <div class="hDivBox" id="ajax_return">
+                <table cellspacing="0" cellpadding="0">
+                    <thead>
+                    <tr>
+                        <th axis="col0">
+                            <div style="width: 24px;"><i class="ico-check"></i></div>
+                        </th>
+                        <th align="left" abbr="user_id" axis="col3" class="">
+                            <div style="text-align: left; width: 60px;" class="">会员编号</div>
+                        </th>
+                        <th align="left" abbr="nickname" axis="col4" class="">
+                            <div style="text-align: left; width: 120px;" class="">昵称</div>
+                        </th>
+                        <th align="center" abbr="mobile" axis="col5" class="">
+                            <div style="text-align: center; width: 120px;" class="">手机号码</div>
+                        </th>
+                        <th align="center" abbr="apply_time" axis="col6" class="">
+                            <div style="text-align: center; width: 120px;" class="">申请时间</div>
+                        </th>
+                        <th align="center" abbr="status" axis="col6" class="">
+                            <div style="text-align: center; width: 120px;" class="">状态</div>
+                        </th>
+                        <th align="center" abbr="deal_time" axis="col6" class="">
+                            <div style="text-align: center; width: 120px;" class="">审核时间</div>
+                        </th>
+                        <th align="center" abbr="deal_result" axis="col6" class="">
+                            <div style="text-align: center; width: 120px;" class="">备注</div>
+                        </th>
+                        <th align="left" axis="col1" class="handle">
+                            <div style="text-align: left; width: 150px;">操作</div>
+                        </th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class="tDiv">
+            <div class="tDiv2">
+                <div class="fbutton">
+                    <a href="javascript:exportReport()">
+                        <div class="add" title="选定行数据导出excel文件,如果不选中行，将导出列表所有数据">
+                            <span><i class="fa fa-share"></i>导出数据</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="fbutton">
+                    <!--<a href="/index.php?m=Admin&c=Order&a=add_order">
+                          <div class="add" title="添加订单">
+                            <span><i class="fa fa-plus"></i>添加订单</span>
+                          </div>
+                      </a> -->
+                </div>
+            </div>
+            <div style="clear:both"></div>
+        </div>
+        <div class="bDiv" style="height: auto;">
+            <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+
+            </div>
+            <div class="iDiv" style="display: none;"></div>
+        </div>
+        <!--分页位置-->
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#start_time').layDate();
+        $('#end_time').layDate();
+        // 点击刷新数据
+        $('.fa-refresh').click(function(){
+            location.href = location.href;
+        });
+
+        ajax_get_table('search-form2',1);
+
+        $('.ico-check ' , '.hDivBox').click(function(){
+            $('tr' ,'.hDivBox').toggleClass('trSelected' , function(index,currentclass){
+                var hasClass = $(this).hasClass('trSelected');
+                $('tr' , '#flexigrid').each(function(){
+                    if(hasClass){
+                        $(this).addClass('trSelected');
+                    }else{
+                        $(this).removeClass('trSelected');
+                    }
+                });
+            });
+        });
+
+    });
+
+
+    //ajax 抓取页面
+    function ajax_get_table(tab,page){
+        $("input[name=action]").val('');
+        $("input[name=ids]").val('');
+        cur_page = page; //当前页面 保存为全局变量
+        $.ajax({
+            type : "POST",
+            url:"/index.php/Admin/distribution/partnerApply/p/"+page,//+tab,
+            data : $('#'+tab).serialize(),// 你的formid
+            success: function(data){
+                $("#flexigrid").html('');
+                $("#flexigrid").append(data);
+
+                // 表格行点击选中切换
+                $('#flexigrid > table>tbody >tr').click(function(){
+                    $(this).toggleClass('trSelected');
+                });
+
+            }
+        });
+    }
+
+    // 点击排序
+    function sort(field){
+        $("input[name='order_by']").val(field);
+        var v = $("input[name='sort']").val() == 'desc' ? 'asc' : 'desc';
+        $("input[name='sort']").val(v);
+        ajax_get_table('search-form2',cur_page);
+    }
+
+    function exportReport(){
+        var selected_arr = [];
+        $('.trSelected' , '#flexigrid').each(function(i){
+            selected_arr.push($(this).data('id'));
+        });
+        if(selected_arr.length > 0){
+            $('input[name="ids"]').val(selected_arr.join(','));
+        }
+        $("input[name=action]").val('export')
+        $('#search-form2').submit();
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<include file="public/layout" />
+<!--物流配置 css -start-->
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<style>
+    ul.group-list {
+        width: 96%;min-width: 1000px; margin: auto 5px;list-style: disc outside none;
+    }
+    .err{color:#F00; display:none;}
+    ul.group-list li {
+        white-space: nowrap;float: left;
+        width: 150px; height: 25px;
+        padding: 3px 5px;list-style-type: none;
+        list-style-position: outside;border: 0px;margin: 0px;
+    }
+    .row .table-bordered td .btn,.row .table-bordered td img{
+        vertical-align: middle;
+    }
+    .row .table-bordered td{
+        padding: 8px;
+        line-height: 1.42857143;
+    }
+    .table-bordered{
+        width: 100%
+    }
+    .table-bordered tr td{
+        border: 1px solid #f4f4f4;
+    }
+    .btn-success {
+        color: #fff;background-color: #449d44;border-color: #398439 solid 1px;
+    }
+    .btn {
+        display: inline-block;
+        padding: 6px 12px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.42857143;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        -ms-touch-action: manipulation;
+        touch-action: manipulation;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-image: none;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+    .col-xs-8 {
+        width: 66.66666667%;
+    }
+    .col-xs-4 {
+        width: 33.33333333%;
+    }
+    .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
+        float: left;
+    }
+    .row .tab-pane h4{
+        padding: 10px 0;
+    }
+    .row .tab-pane h4 input{
+        vertical-align: middle;
+    }
+    .table-striped>tbody>tr:nth-of-type(odd) {
+        background-color: #f9f9f9;
+    }
+    .ncap-form-default .title{
+        border-bottom: 0
+    }
+    .ncap-form-default dl.row, .ncap-form-all dd.opt{
+        /*border-color: #F0F0F0;*/
+        border: none;
+    }
+    .ncap-form-default dl.row:hover, .ncap-form-all dd.opt:hover{
+        border: none;box-shadow: inherit;
+    }
+    .addprine{display: inline; }
+    .alisth{margin-top: 10px}
+    .p_plus strong{cursor: pointer;margin-left: 4px;}
+    .freight_template {
+        font-size: 14px;
+        display: inline-block;
+        padding: 0px 10px;
+    }
+</style>
+<!--物流配置 css -end-->
+<!--以下是在线编辑器 代码 -->
+<load href="__ROOT__/public/plugins/Ueditor/ueditor.config.js"/>
+<load href="__ROOT__/public/plugins/Ueditor/ueditor.all.min.js"/>
+<script type="text/javascript" charset="utf-8" src="__ROOT__/public/plugins/Ueditor/lang/zh-cn/zh-cn.js"></script>
+<!--以上是在线编辑器 代码  end-->
+<body style="background-color: #FFF; overflow: auto;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page" style="padding: 10px 1% 0 1%">
+     <p style="line-height: 30px;">
+         <a href="javascript:history.back()">合伙人排行榜</a>
+         >
+         <a href="javascript:;">添加排行榜活动</a>
+     </p>
+    <!-- 操作说明 -->
+    <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"><i class="fa fa-lightbulb-o"></i>
+            <h4 title="提示相关设置操作时应注意的要点">操作提示</h4>
+            <span id="explanationZoom" title="收起提示"></span> </div>
+        <ul>
+            <li>请填写正确的表单信息</li>
+        </ul>
+    </div>
+    <!--表单数据-->
+    <form method="post" id="form">
+        <input type="hidden" name="id" value="{$activity.id}" class="input-txt"/>
+        <!--通用信息-->
+        <div class="ncap-form-default tab_div_1">
+            <dl class="row">
+                <dt class="tit">
+                    <label>活动标题</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" value="{$activity.title}" name="title" placeholder="请输入标题" class="input-txt" style="width: 395px;"/>
+                    <span class="err" id="err_title" style="color:#F00; display:none;"></span>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label>封面图片</label>
+                </dt>
+                <dd class="opt">
+                    <div class="input-file-show">
+            <span class="show">
+                <a id="img_a" target="_blank" class="nyroModal" rel="gal">
+                    <i id="img_i" class="fa fa-picture-o" onMouseOver="layer.tips('<img src={$activity.cover}>',this,{tips: [1, '#fff']});" onMouseOut="layer.closeAll();"></i>
+                </a>
+            </span>
+            <span class="type-file-box">
+                <input type="text" id="imagetext" name="cover" value="{$activity.cover}" class="type-file-text">
+                <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
+                <input class="type-file-file" onClick="GetUploadify(1,'','activity','img_call_back')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+            </span>
+                    </div>
+                    <span class="err" id="err_cover" style="color:#F00; display:none;"></span>
+                    <p class="notic">请上传图片文件</p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label>打榜时间</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" size="30" name="start_time" id="start_time" value="" placeholder="起始时间" class="qsbox fl">
+                    -
+                    <input type="text" size="30" name="end_time" id="end_time" value="" placeholder="截止时间" class="qsbox fl">
+                    <span class="err" id="err_end_time" style="color:#F00; display:none;"></span>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label>初始奖池</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" value="{$activity.init_reward}" placeholder="格式为:1-10000的数字" name="init_reward" class="t_mane" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')"  style="width: 266px;"/>
+                    <span class="err" id="err_init_reward" style="color:#F00; display:none;"></span>
+                    <p class="notic"> 奖池金额=打榜期间平台总销售额的1%，当奖池金额<初始奖池时，瓜分初始奖池金额</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>奖金占销售额比例</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" value="{$activity.sale_reward_scale}" placeholder="格式为:1-100的数字" name="sale_reward_scale" class="t_mane" onKeyUp="this.value=this.value.replace(/[^\d.]/g,'')" onpaste="this.value=this.value.replace(/[^\d.]/g,'')"  style="width: 266px;"/>
+                    <span class="err" id="err_sale_reward_scale" style="color:#F00; display:none;"></span>
+                    <p class="notic">销售获得的奖金提成比例，直接填写数字，如1%请填1</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>派奖方式</label>
+                </dt>
+                <dd class="opt">
+                    <label for="0">
+                        <input type="radio" id="0" name="reward_type" value="0" <if condition="isset($activity.reward_type) && $activity.reward_type eq 0">checked</if> style="vertical-align: sub">
+                        余额
+                    </label>
+                    <label for="1">
+                        <input type="radio" id="1" name="reward_type" value="1" <if condition="isset($activity.reward_type) && $activity.reward_type eq 1">checked</if> style="vertical-align: sub;margin-left: 30px;">
+                        收益
+                    </label>
+                    <span class="err" id="err_reward_type" style="color:#F00; display:none;"></span>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label>奖励人数</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" value="" placeholder="格式为:1-100的数字" name="reward_num" class="t_mane" onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" style="width: 266px;"/>
+                    <span class="err" id="err_reward_num" style="color:#F00; display:none;"></span>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label>瓜分比例</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" value="{$activity.reward_scale}" placeholder="瓜分比例" name="reward_scale" class="t_mane" style="width: 266px;"/>
+                    <span class="err" id="err_reward_scale" style="color:#F00; display:none;"></span>
+                    <p class="notic">以逗号隔开的数字，如40,20,15,10,5,3,3,2,2,2</p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label>活动规则</label>
+                </dt>
+                <dd class="opt">
+                    <textarea class="span12 ckeditor" id="rule" name="rule" title="">{$goodsInfo.rule}</textarea>
+                    <span class="err" id="err_rule" style="color:#F00; display:none;"></span>
+                </dd>
+            </dl>
+</div>
+
+
+<div class="ncap-form-default">
+    <div class="bot">
+        <a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green" onClick="verifyForm();">确认提交</a>
+    </div>
+</div>
+</form>
+<!--表单数据-->
+</div>
+<div id="goTop"> <a href="JavaScript:void(0);" id="btntop"><i class="fa fa-angle-up"></i></a><a href="JavaScript:void(0);" id="btnbottom"><i class="fa fa-angle-down"></i></a></div>
+<script>
+    $('#start_time').layDate();
+    $('#end_time').layDate();
+    var url="{:url('Admin/Ueditor/index',array('savePath'=>'activity'))}";
+    var ue = UE.getEditor('rule',{
+        serverUrl :url,
+        zIndex: 999,
+        initialFrameWidth: "80%", //初化宽度
+        initialFrameHeight: 300, //初化高度
+        focus: false, //初始化时，是否让编辑器获得焦点true或false
+        maximumWords: 99999, removeFormatAttributes: 'class,style,lang,width,height,align,hspace,valign',//允许的最大字符数 'fullscreen',
+        pasteplain:true, //是否默认为纯文本粘贴。false为不使用纯文本粘贴，true为使用纯文本粘贴
+        autoHeightEnabled: true
+    });
+
+    /*
+     * 以下是图片上传方法
+     */
+    function img_call_back(fileurl_tmp)
+    {
+        $("#imagetext").val(fileurl_tmp);
+        $("#img_a").attr('href', fileurl_tmp);
+        $("#img_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+    //提交表单
+    function verifyForm(){
+        $('span.err').hide();
+        $.ajax({
+            type: "POST",
+            url: "{:U('Admin/Distribution/rankActivity')}",
+            data: $('#form').serialize(),
+            dataType: "json",
+            error: function () {
+                layer.alert("服务器繁忙, 请联系管理员!");
+            },
+            success: function (data) {
+                if (data.status == 1) {
+                    layer.msg(data.msg, {
+                        icon: 1,
+                        time: 1000
+                    }, function(){
+                        location.href = "{:U('Admin/Distribution/partnerRank')}";
+                    });
+                } else {
+                    layer.msg(data.msg, {icon: 2,time: 1000});
+                    if (data.result) {
+                        $.each(data.result, function (index, item) {
+                            $('#err_' + index).text(item).show();
+                        });
+                    }
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

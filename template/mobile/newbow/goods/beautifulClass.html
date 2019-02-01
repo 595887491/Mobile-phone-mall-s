@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>美丽课堂</title>
+    <link rel="stylesheet" href="__STATIC__/css/style.css">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css"/>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/mobile-util.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
+</head>
+<include file="public/header_nav" title="美丽课堂" href="{:U('Mobile/Index/index')}"/>
+<style>.introduce{margin-top: 1.87733rem;}  .introduce img{height:100%;width: 100%;pointer-events:none;}  .classreturn{position: fixed;left: 0;top: 0;width: 100%;}</style>
+<body>
+<div class="introduce">
+    <img src="http://cdn.cfo2o.com/public/upload/other/beautifulClass1.png?x-oss-process=style/s01" alt="图1">
+    <img src="http://cdn.cfo2o.com/public/upload/other/beautifulClass2.png?x-oss-process=style/s01" alt="图2">
+</div>
+</body>
+</html>
+<script>
+    var ShareImgUrl = "https://{$_SERVER[HTTP_HOST]}__STATIC__/images/logo_share.png"; //分享图标
+    // var ShareImgUrl = "http://{$_SERVER[HTTP_HOST]}__STATIC__/images/logo_share.png"; //分享图标
+    var ShareTitle ="美丽课堂" ; //分享标题
+    var ShareDesc = "学会这些护肤、美妆小技巧，感觉自己美美哒!"; //分享描述
+    var ShareLink = "http://{$_SERVER[HTTP_HOST]}index.php/mobile/Goods/beautifulClass";//链接地址
+</script>
+<!-- 微信浏览器 调用微信 分享js-->
+<include file="public/wx_share"/>

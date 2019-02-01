@@ -1,0 +1,41 @@
+<foreach $data as $vo>
+    <li>
+        <div class="fl withdrawal_left">
+            <if condition="$vo.bank_name && $vo.bank_card">
+                <span class="withdrawal_left_first">{$vo.bank_name}</span>&nbsp;&nbsp;&nbsp;
+                <span class="withdrawal_left_second">(尾号{$vo.bank_card})</span>&nbsp;
+                <else/>
+                <span class="withdrawal_left_first">余额转入</span>&nbsp;&nbsp;
+            </if>
+
+
+            <p>
+                <span>{$vo.create_time}</span>
+            </p>
+        </div>
+
+        <div class="fr withdrawal_right">
+            <span style="display: block;text-align: right">{$vo.money}</span>
+            <div class="sta">
+                <if condition="$vo.status eq -2">
+                    <span class="withdrawal_state" style="color: #D50D16;font-size: .6rem">删除作废</span>
+                </if>
+                <if condition="$vo.status eq -1">
+                    <span class="withdrawal_state" style="color: #D50D16;font-size: .6rem">提现失败</span>
+                </if>
+                <if condition="$vo.status eq 0">
+                    <span class="withdrawal_state" style="color:#F2790E;font-size: .6rem">处理中</span>
+                </if>
+                <if condition="$vo.status eq 1">
+                    <span class="withdrawal_state" style="color:#F2790E;font-size: .6rem">处理中</span>
+                </if>
+                <if condition="$vo.status eq 2">
+                    <span class="withdrawal_state" style="color: #02951A;font-size: .6rem">提现成功</span>
+                </if>
+                <if condition="$vo.status eq 3">
+                    <span class="withdrawal_state" style="color: #D50D16;font-size: .6rem">提现失败</span>
+                </if>
+            </div>
+        </div>
+    </li>
+</foreach>

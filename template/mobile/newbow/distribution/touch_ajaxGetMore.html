@@ -1,0 +1,20 @@
+<foreach $data as $vo>
+    <li>
+        <div class="fl withdrawal_left">
+            <span class="withdrawal_left_first">{$vo.desc}</span>&nbsp;&nbsp;&nbsp;
+            <!--<span class="withdrawal_left_second">(尾号6688)</span>&nbsp;-->
+            <p>
+                <span>{$vo.change_time}</span>
+            </p>
+        </div>
+        <div class="fr withdrawal_right">
+            <if condition="$vo.user_money gt 0 ">
+                <span style="color: #FF407E">+{$vo.user_money}</span>
+            </if>
+            <if condition="$vo.user_money lt 0">
+                <span style="color: #1E1B1B">{$vo.user_money}</span>
+            </if>
+
+        </div>
+    </li>
+</foreach>

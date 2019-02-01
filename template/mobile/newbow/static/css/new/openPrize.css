@@ -1,0 +1,101 @@
+body{width: 100%;background: url("../../images/new/prize_back.jpg")repeat-y;background-size: 100% auto;}
+.top{width: 100%;height: 11.11rem;background: url("../../images/new/prize_back_top.jpg")no-repeat;
+    background-size: 100% 100%;position: relative;}
+.content{position: absolute;bottom: 1.5rem;width: 100%;text-align: center;}
+.content >p {font-size: .35rem;color: #A66508;font-weight: bold;margin-bottom: .2rem;}
+.content .staus-img{width: 4.14rem;height: .84rem;}
+.nav {position: absolute;width: 100%;bottom: 0;text-align: center;padding: 0 .18rem;}
+.nav img{width: 100%;height: .27rem;}
+.nav ul li{display: inline-block;padding: .18rem .55rem;color: #597C77;font-size: .26rem;}
+.nav ul li.checked{color: #022B26;font-weight: bold;}
+.prize_wrap{padding: .18rem;}
+.prize {width: 100%;background: url("../../images/new/prizeback.jpg")repeat-y;background-size: 100% auto;
+padding: .18rem;padding-bottom: .22rem;position: relative;}
+.prize >p{width: .36rem;height: .36rem;position: absolute;bottom: .1rem;background: #fff;}
+.prize >p img{width: 100%;height: 100%;}
+.prize>div{border: .04rem solid #044139;padding: .06rem;}
+.prize-inside {border: .02rem solid #044139;}
+.prize-inside .prize-inside-top{width: 100%;height: .7rem;font-size: .24rem;color: #fff;position: relative;}
+.prize-people::after,.ranking_wrap::after{display: block;content: '';clear: both;overflow: hidden;height: 0;}
+.prize-inside .prize-inside-top img{position: absolute;width: .1rem;height: .16rem;right: .1rem;top:.28rem;}
+.prize-inside .prize-inside-top .remark{width: 67%;margin-left: 1.8rem;text-align: right;
+text-overflow: ellipsis;overflow: hidden;white-space:nowrap;line-height: .7rem;}
+.prize-people {padding: .12rem .1rem .12rem .12rem;border-bottom: 1px solid #CFCFCF;}
+.prize-people img{width: 1.5rem;height:2rem;}
+.prize-people .msg{width: 74%;font-size: .26rem;}
+.prize-people .msg .title span{color: #022B26;font-weight: bold;}
+.prize-people .msg .title span:last-of-type{font-size: .3rem;color: #A66508;}
+.prize-people .msg .details,.ranking-list .details{color: #597C77;overflow:hidden;
+    text-overflow:ellipsis;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;}
+.prize-people .msg .nickName{color: #022B26;margin: .1rem 0 .3rem;}
+.ranking_wrap{padding: .18rem;}
+.ranking-list{width: 48.5%;height: 6.39rem;background: url("../../images/new/ranking-list-back.png")no-repeat;
+background-size: 100% 100%;float: left;padding: .1rem;position: relative;font-size: .26rem;color: #022B26;
+margin-top: .58rem;}
+.ranking-list:first-of-type,.ranking-list:nth-child(2){margin-top: 0;}
+.ranking-list:nth-child(even){float: right;}
+.ranking-list .ranking-list-img{width: 100%;height: 4.4rem;position: relative;z-index: -1;}
+.ranking-list .ranking-list-img img{width: 100%;height: 100%;}
+.ranking-list .ranking{width: 96%;position: absolute;bottom: .16rem;text-align: center;color: #fff;font-size: .24rem;}
+.ranking-list .title span:last-of-type{color: #A66508;font-weight: 500;}
+.ranking-list .title {margin-top: .13rem;color: #022B26;font-weight: bold;}
+.ranking-list .ranking-num{position: absolute;left: .1rem;bottom: 2rem;display: inline-block;padding: .07rem .12rem .07rem .06rem;
+border-radius: 0  .5rem .5rem 0;background: #044139;color: #fff;font-size: .24rem;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

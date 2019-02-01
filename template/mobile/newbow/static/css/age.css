@@ -1,0 +1,30 @@
+.classreturn .content .search span{font-size: .7rem;color: #1E1B1B;}
+.fetchcode{
+    background-color: #ec5151;
+    border-radius: 0.128rem;
+    color: white;
+    padding: 0.55467rem 0.21333rem;
+    vertical-align: middle;
+    font-size: 0.59733rem;
+}
+#fetchcode{
+    background:#898995;
+    border-radius: 0.128rem;
+    color: white;
+    padding: 0.55467rem 0.21333rem;
+    vertical-align: middle;
+    font-size: 0.59733rem;
+}
+.lsu span{float: left;color: #1E1B1B;font-size: .7rem;}
+.loginsingup-input{padding: 0 .64rem;}
+.loginsingup-input .lsu{border-color: #F0F2F5;}
+.loginsingup-input .lsu  input{width: 12rem;}
+.loginsingup-input .lsu-submit{padding: 0;margin-top: 5rem;}
+.loginsingup-input .lsu-submit input{background-color: #FF407E;font-size: .8rem;}
+.loginsingup-input .lsu-submit input, .btn-goto-login{
+    border-radius: .2rem;
+}
+.loginsingup-input .lsu input{
+    font-size: .7rem;
+    color: #1E1B1B;
+}

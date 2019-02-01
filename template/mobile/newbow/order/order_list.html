@@ -1,0 +1,303 @@
+<include file="public/header" title="我的订单" body="g4"/>
+<div class="popup" style="display: none;">
+    <div class="popup_wrap" style="margin-top: -6.5rem;">
+        <div class="content">
+            <p>自提码：<span class="code_num"></span></p>
+            <div class="code"><img src="" alt="" id="codes"></div>
+        </div>
+        <img src="__STATIC__/images/qx.png" alt="" class="closed" onclick="cls(this)">
+    </div>
+</div>
+<link rel="stylesheet" href="__STATIC__/css/order_list.css">
+<div class="classreturn loginsignup " style="position: fixed;z-index: 999;width: 100%;top: 0;">
+    <div class="content">
+        <div class="ds-in-bl return">
+            <a href="{:U('/Mobile/User/index')}"><img src="__STATIC__/images/return.png" alt="返回"></a>
+        </div>
+        <div class="ds-in-bl search center">
+            <span>我的订单</span>
+        </div>
+        <div  onclick="showPop()" style="position: absolute;font-size: .5rem;z-index: 99999;color: #1E1B1B;right: .5rem;top: -.3rem">
+            <!--<div onclick="showPop()" style="font-size: .5rem;position: absolute;right: .5rem;width: 3rem;height:2.2rem">-->
+                <ul >
+                    <li>其他订单</li>
+                    <li style="position: absolute;top: .7rem;margin-right: -0.5rem;">拼团,卡券</li>
+                </ul>
+            <!--</div>-->
+        </div>
+    </div>
+</div>
+<div style="position: fixed;top:1.7rem;right: .5rem;border-radius: .1rem;display: none;font-size: .65rem;;z-index: 999999;background-color: #000;opacity: .7;width: 4rem;height: 3.5rem;line-height: 1.7rem;text-align: center" class="orderCom">
+    <a href="{:U('/Mobile/Team/myTeam')}" style="display: block">
+        <span style="color: white">拼团订单</span>
+    </a>
+    <a href="{:U('/Mobile/User/getVirtualOrdeList')}">
+        <span style="color: white">卡券订单</span>
+    </a>
+</div>
+<div class="tit-flash-sale p mytit_flash" style="position: fixed;width: 100%;z-index: 999;top: 1.8rem;border-bottom: 2px solid  #F0F2F5">
+    <div class="maleri30">
+        <ul class="">
+            <li <if condition="$Request.param.type eq ''">class="red"</if>>
+                <a href="{:U('/Mobile/Order/order_list')}" class="tab_head">全部</a>
+            </li>
+            <li id="WAITPAY" <if condition="$Request.param.type eq 'WAITPAY'">class="red"</if>">
+                <a href="{:U('/Mobile/Order/order_list',array('type'=>'WAITPAY'))}" class="tab_head" >待付款</a>
+            </li>
+            <li id="WAITSEND" <if condition="$Request.param.type eq 'WAITSEND'">class="red"</if>>
+                <a href="{:U('/Mobile/Order/order_list',array('type'=>'WAITSEND'))}"  class="tab_head">待发货</a>
+            </li>
+
+            <li id="WAITRECEIVE"  <if condition="$Request.param.type eq 'WAITRECEIVE'">class="red"</if>>
+            <a href="{:U('/Mobile/Order/order_list',array('type'=>'WAITRECEIVE'))}" class="tab_head">待收货</a>
+            </li>
+
+            <!--<li id="WAITRECEIVE"><a href="{:U('/Mobile/User/order_list',array('type'=>'WAITRECEIVE'))}"  class="tab_head <if condition="$Request.param.type eq 'WAITRECEIVE'">on</if>">待收货</a></li>-->
+            <li id="WAITCCOMMENT"  <if condition="$Request.param.type eq 'FINISH'">class="red"</if>>
+                <a href="{:U('/Mobile/Order/order_list',array('type'=>'FINISH'))}" class="tab_head">已完成</a>
+            </li>
+            <li id="CANCEL" <if condition="$Request.param.type eq 'CANCEL'">class="red"</if>>
+                <a href="{:U('/Mobile/Order/order_list',array('type'=>'CANCEL'))}" class="tab_head">已取消</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!--订单列表-s-->
+<div class="ajax_return" style="margin-top: 3.4rem">
+        <if condition="count($lists) eq 0">
+            <!--没有内容时-s--->
+            <div class="comment_con p" >
+                <div class="none">
+                    <img src="__STATIC__/images/cf_order.png" style="pointer-events: none;width: 65%;margin-top: 2rem;">
+                    <br><br>
+                    <span style="color: #BFC1CD;font-size: .6rem">客官大大！暂无订单!</span>
+                    <div class="paiton">
+                        <div class="maleri30">
+                            <a class="soon" href="/"><span>去逛逛</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--没有内容时-e--->
+        </if>
+        <volist name="lists" id="list">
+            <div class="mypackeg ma-to-20 getmore">
+                <div class="packeg p">
+                    <div class="maleri30">
+                        <div class="fl">
+                            <h1><span></span><span class="bgnum"></span></h1>
+                            <p class="bgnum">
+                                <if condition="$list['order_status_desc'] == '已完成'">
+                                <img src="__STATIC__/images/cf_order_right.png" style="width: .6rem;height: .6rem" alt="">
+                                    <elseif condition="$list['order_status_desc'] == '已取消'">
+                                        <img src="__STATIC__/images/cf_order_errow.png" style="width: .6rem;height: .6rem" alt="">
+                                        <else/>
+                                        <img src="__STATIC__/images/cf_order_wiat.png" style="width: .6rem;height: .6rem" alt="">
+                                </if>
+                                <span>订单编号</span> &nbsp;<span>{$list.order_sn}</span></p>
+                        </div>
+                        <div class="fr">
+                            <span>{$list['order_status_desc']}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="shop-mfive p">
+                    <div class="" style="margin-left: .64rem;">
+                        <foreach  name="list.goods_list" item="good">
+                            <div class="sc_list se_sclist paycloseto" style="padding-right: .64rem;">
+                                <a <if condition="$list.receive_btn eq 1">href="{:U('/Mobile/Order/order_detail',array('id'=>$list['order_id'],'waitreceive'=>1))}" <else/> href="{:U('/Mobile/Order/order_detail',array('id'=>$list['order_id']))}"</if>>
+                                <div class="shopimg fl">
+                                    <!--<img src="{$good[goods_id]|goods_thum_images=200,200}">-->
+                                    <img src="{$good[original_img]}?x-oss-process=style/s340x340">
+
+                                </div>
+                                <div class="deleshow fr">
+                                    <div class="deletes">
+                                        <span class="similar-product-text fl">{$good[goods_name]}</span>
+                                        <!--<div class="fr">-->
+                                            <!--<p class="sc_pri" id="cf_order_p"><span>￥</span><span>{$good[member_goods_price]}</span></p>-->
+                                            <!--<p class="sc_pri" id="cf_p"><span>￥</span><span >{$good[goods_price]}</span></p>-->
+                                        <!--</div>-->
+                                    </div>
+                                    <div class="deletes">
+                                        <span class="similar-product-text" id="cf_product_text">{$good.spec_key_name}</span>
+                                    </div>
+                                    <!--<div class="prices  wiconfine " id="cf_price_or">-->
+
+                                    <!--</div>-->
+
+                                    <!--<div class="prices  wiconfine" id="cd_price_dis">-->
+
+                                    <!--</div>-->
+                                    <!--数量-->
+                                    <!--<div class="qxatten  wiconfine cf_prices">-->
+                                        <!--<p class="weight"><span>x</span>&nbsp;<span>{$good[goods_num]}</span></p>-->
+                                    <!--</div>-->
+                                    <div class="buttondde">
+                                        <if condition="($list[return_btn] eq 1) and ($good[is_send] lt 2)">
+                                            <a href="{:U('Mobile/Order/return_goods',['rec_id'=>$good['rec_id']])}">申请售后</a>
+                                        </if>
+                                    </div>
+                                </div>
+                                </a>
+                            </div>
+                        </foreach>
+                    </div>
+                </div>
+
+                <div class="shop-rebuy-price p">
+                    <div class="" style="margin-left: .64rem;">
+                        <span class="price-alln">
+                            <if condition="$list['prom_type'] eq 7">
+                                <if condition="$list['act_type'] eq 1">
+                                 <img src="__STATIC__/images/bargainStateone.png" class="fl" style="width: 2.6rem;height: .7rem" alt="">
+                                </if>
+                                <if condition="$list['act_type'] eq 0">
+                                 <img src="__STATIC__/images/bargainStatetwo.png" class="fl" style="width: 2.6rem;height: .7rem" alt="">
+                                </if>
+                             </if>
+                            <span class="red">共{$list.count_goods_num}件商品</span><span class="threel" id="goodsnum">合计: <span class="cf_span_pic">￥{$list['total_amount']}</span> </span>
+                        </span>
+                        <div class="clearfix" style="padding-right: .64rem;">
+                        <if condition="$list.pay_btn eq 1">
+                            <a class="shop-rebuy paysoon" style="border: 1px solid #FF407E; background-color:#FF407E;color: white;" href="{:U('Mobile/Cart/cart4',array('order_id'=>$list['order_id']))}">立即付款</a>
+                        </if>
+                          <!--自提码-->
+                        <if condition="$list['shipping_code'] == 'ZITI' && $list['order_pick_up_code']">
+                            <if condition="$list['order_status_desc'] == '待发货' || $list['order_status_desc'] == '待收货' ">
+                            <a class="shop-rebuy paysoon" style="border: 1px solid #FF407E; background-color:#FF407E;color: white;" href="javascript:check_code({$list['order_id']})">
+                                <img src="__STATIC__/images/new/order_detalils_ewm.png" alt="" style="width: .55rem; height: .55rem;vertical-align: -.1rem;">自提码</a>
+                            </if>
+                        </if>
+                        <!--再次购买-->
+                        <if condition="$list['order_status_desc'] == '已完成' || $list['order_status_desc'] == '待发货' || $list['order_status_desc'] == '待收货' ">
+                            <a class="shop-rebuy paysoon" style="border: 1px solid #FF407E; background-color:#FF407E;color: white;" href="{:U('Mobile/Cart/cart4',array('order_id'=>$list['order_id']))}">再次购买</a>
+                        </if>
+                        <if condition="$list['order_status_desc'] == '已取消'" >
+                            <a class="shop-rebuy paysoon" style="border: 1px solid #FF407E; background-color:#FF407E;color: white;" href="{:U('Mobile/Order/order_detail',array('id'=>$list['order_id']))}">再次购买</a>
+                        </if>
+
+                        <if condition="$list.cancel_btn eq 1">
+                            <if condition="$list.pay_status eq 0">
+                                <a class="shop-rebuy " onClick="cancel_order({$list.order_id})">取消订单</a>
+                            </if>
+                            <if condition="$list.pay_status eq 1">
+                                <a class="shop-rebuy" href="{:U('Order/refund_order', ['order_id'=>$list['order_id']])}">取消订单</a>
+                                <!--<a class="shop-rebuy" href="{:U('Order/refund_order', ['order_id'=>$list['order_id']])}">取消订单</a>-->
+                            </if>
+                        </if>
+
+                        <if condition="$list.receive_btn eq 1">
+                            <a class="shop-rebuy paysoon" style="border: 1px solid #FF407E; color:#FF407E ;background-color: white"  onclick="orderConfirm({$list.order_id})">确认收货</a>
+                        </if>
+                        <if condition="$list.comment_btn eq 1">
+                            <a class="shop-rebuy" href="{:U('/Mobile/Order/comment')}">去评价</a>
+                        </if>
+
+                        <if condition="$list.shipping_btn eq 1">
+                             <a class="shop-rebuy" class="shop-rebuy" href="{:U('Mobile/Order/express',array('order_id'=>$list['order_id']))}">查看物流</a>
+                        </if>
+                  </div>
+                    </div>
+                </div>
+            </div>
+        </volist>
+    </div>
+<!--订单列表-e-->
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script type="text/javascript">
+    function cls(obj) {
+        $(obj).closest('.popup').hide();
+    }
+    function showPop() {
+        $('.orderCom').toggle()
+    }
+    //查看二维码
+    function check_code(code) {
+        $('.popup').show();
+        $.ajax({
+            url:'/Mobile/OrdersPickUp/getPickUpCode',
+            type:'GET',
+            data:{'order_id':code},
+            success:function (res) {
+                console.log(res.res.code);
+                $('.code_num').text(res.res.code);
+               $('#codes').attr('src',res.res.qrcode_url);
+            }
+        });
+
+    }
+    /**
+     * 取消订单
+     */
+    function cancel_order(id){
+        layer.open({
+            content: '确定要取消此订单吗?'
+            ,btn: ['确定', '取消']
+            ,yes: function(index){
+                layer.close(index);
+                $.ajax({
+                    type: 'GET',
+                    dataType:'JSON',
+                    url:"/index.php?m=Mobile&c=Order&a=cancel_order&id="+id,
+                    success:function(data){
+                        // console.log(data);
+                        if(data.code == 1){
+                            layer.open({content:data.msg,time:2,skin:'msg'});
+                            location.href = "/index.php?m=Mobile&c=Order&a=order_list";
+                        }else{
+                            layer.open({content:data.msg,time:2,skin:'msg'});
+                            location.href = "/index.php?m=Mobile&c=Order&a=order_list";
+                            return false;
+                        }
+                    },
+                    error:function(){
+                        layer.open({content:'网络异常，请稍后重试',time:3,skin:'msg'});
+                    },
+                });
+            }
+        });
+
+    }
+
+    /**
+     * 确定收货
+     */
+    function orderConfirm(id){
+        layer.open({
+            content: '确认收到此商品吗?'
+            ,btn: ['确定', '取消']
+            ,yes: function(index) {
+                layer.close(index);
+
+                location.href = "/index.php?m=Mobile&c=Order&a=order_confirm&id=" + id;
+            }
+        })
+    }
+
+    var  page = 1;
+    /**
+     *加载更多
+     */
+    function ajax_sourch_submit()
+    {
+        page += 1;
+        $.ajax({
+            type : "GET",
+            url:"/index.php?m=Mobile&c=Order&a=order_list&type={$Request.param.type}&is_ajax=1&p="+page,//+tab,
+            success: function(data)
+            {
+                if(data == '')
+                    $('#getmore').hide();
+                else
+                {
+                    $(".ajax_return").append(data);
+                    $(".m_loading").hide();
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

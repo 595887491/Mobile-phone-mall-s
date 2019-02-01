@@ -1,0 +1,643 @@
+body{
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+    width: 100%;
+    background-color: #f1f5f8;
+    font-family:'微软雅黑','PingFang SC';
+}
+.fr{
+    float: right;
+}
+.fl{
+    float: left;
+}
+ul{
+    padding: 0;
+    margin: 0;
+}
+.headerRank{
+    width: 100%;
+    height: .88rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99999;
+    background: white;
+    border-bottom: 2px solid #f1f5f8;
+}
+.headerRankCon{
+    width: 100%;
+    height: .88rem;
+    line-height: .88rem;
+}
+.tex{
+    text-align: center;
+}
+.tex span{
+    font-size: .31rem;
+    color: #1E1B1B;
+}
+.texFl{
+    position: absolute;
+    top: .26rem;
+    left: .24rem;
+
+}
+.texFl a{
+    width: .5rem;
+    height: .5rem;
+}
+.texFl a img{
+    width: .2rem;
+    height: .32rem;
+}
+.homeIndex{
+    position: absolute;
+    top: .25rem;
+    right: .24rem;
+}
+.homeIndex img{
+    width: .4rem;
+    height: .42rem;
+}
+.tabChange{
+    height: .8rem;
+    line-height: .8rem;
+    width: 100%;
+    background-color: #fff;
+    border-bottom: 2px solid #f1f5f8;
+    position: fixed;
+    top: 1rem;
+    left: 0;
+    z-index: 99999;
+}
+.nav_tab{
+    height: .8rem;
+    width: 100%;
+}
+.tabChange ul li {
+    list-style: none;
+    font-size: .26rem;
+    float: left;
+    color: #1E1B1B;
+    text-align: center;
+    width: 50%;
+}
+.tabChange ul li span{
+    display: inline-block;
+}
+.activeStyle{
+    border-bottom: 4px solid #FF407E;
+    color:#FF407E;
+}
+.oneTab{
+    margin-top: .85rem;
+    overflow-x: hidden;
+}
+.twoTab{
+    margin-top: .85rem;
+}
+.content{
+    background-color: #fff;
+}
+.stateImg{
+    position: absolute;
+    top: 1.2rem;
+    right: .3rem
+}
+.stateImg img{
+    width: 1.47rem;
+    height: 1.15rem;
+}
+.team-list{
+    width: 100%;
+    background-color: #fff;
+    clear: both;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding: .24rem 0;
+}
+.listImg{
+    width: 2.8rem;
+    height: 2.8rem;
+    margin-left: .24rem;
+}
+.listImg img{
+    width: 2.8rem;
+    height: 2.8rem;
+}
+.team-list-right{
+    width: 52%;
+    font-size: .24rem;
+    margin-left: .35rem;
+    position: relative;
+}
+.team-list-right .title{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+    font-size: .24rem;
+    font-weight: 600;
+    line-height: .35rem;
+}
+.team-list-right .title p{
+    margin: 0;
+    padding:0;
+}
+#by{
+    color: #fff;
+    border-radius: .05rem;
+    display: inline-block;
+    font-size: .2rem;
+    background-color: #D50D16;
+    padding: .05rem;
+    line-height: 1.3;
+    margin-right: .07rem;
+}
+.complete{
+    margin: 0;
+    padding: 0;
+}
+.team-list-right .complete{
+    color: #5B5858;
+    font-size: .24rem;
+    margin: .18rem 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space:nowrap;
+}
+.team-list-right .people{
+    font-size: .24rem;
+    color: #BFC1CD;
+}
+.team-list-right .people .one{
+    color: #D50D16;
+    margin-right: .17rem;
+}
+
+.team-list-right .bottom{
+    margin-top: .4rem;
+}
+.team-list-right .bottom .fl p{
+    font-size: .24rem;
+    color: #FF407E;
+}
+.team-list-right .bottom .bottomMoney{
+    font-size: .32rem;
+    font-weight: bold;
+}
+.team-list-right .bottom .fl p span:last-child{
+    font-size: .22rem;
+    color: #BFC1CD;
+    margin-left: .2rem;
+}
+.teamClass{
+    width: 100%;
+    /*height: 3.92rem;*/
+    background-color: #fff;
+    margin-top: .15rem;
+}
+.teamClassTop{
+    width: 100%;
+    text-align: center;
+    position: relative;
+}
+.teamClassTop div{
+    display: inline-block;
+    width: .72rem;
+    height: .72rem;
+    border-radius: 50%;
+}
+.teamClassTop .teamFirst .teamFirstImg{
+    width: .72rem;
+    height: .72rem;
+    border-radius: 50%;
+}
+.teamSen{
+    width: .72rem;
+    height: .72rem;
+    border-radius: 50%;
+}
+.teamSen img{
+    width: .72rem;
+    height: .72rem;
+    border-radius: 50%;
+}
+.teamClassTop .teamFirst{
+    border: 1px solid #FF407E;
+    position: relative;
+}
+#taggle{
+    position: absolute;
+    top: 0.52rem;
+    left: 0.12rem;
+    width: .5rem;
+    height: .2rem
+}
+.teamTime{
+    width: 100%;
+    text-align: center;
+    font-size: .24rem;
+    color: #5B5858;
+    /*margin-top: .2rem;*/
+}
+.teamTime .teamTime_a span{
+    color: #D50D16;
+    font-weight: 600;
+}
+.Invitation{
+    width: 100%;
+    height: 1rem;
+    /*line-height: 1rem;*/
+    text-align: center;
+    /*margin-top: .1rem;*/
+}
+.Invitation button{
+    width: 92%;
+    height: .8rem;
+    background-color: #FF407E;
+    color: #fff;
+    font-size: .3rem;
+    border: none;
+    border-radius: .1rem;
+    margin-top: .2rem;
+}
+.teamFlaw{
+    width: 100%;
+    height: .7rem;
+    line-height: .7rem;
+    border-top: 2px solid #f1f5f8;
+    margin-top: .3rem;
+    font-size: .24rem;
+    color: #5B5858;
+    text-align: center;
+}
+.teamActive{
+    color:#FF407E ;
+}
+.parameter{
+    width: 100%;
+    background-color: #fff;
+    margin-top: .15rem;
+    padding-bottom: .3rem;
+}
+.parameterHeader{
+    text-align: center;
+    height:.7rem;
+    line-height: .7rem;
+}
+.parameterHeader img{
+    width: 1.35rem;
+    height: .23rem;
+    margin-top:.25rem;
+}
+.de_table{
+    width: 100%;
+    text-align: center;
+}
+.de_table table{
+    width: 94%;
+    margin-left: .24rem;
+}
+.de_table table tr{
+    height: .61rem;
+}
+.de_table table tr td:first-child{
+    padding-left: .24rem;
+    font-size: .24rem;
+    color: #5B5858;
+    width: 1.6rem;
+}
+.de_table table tr td:last-child{
+    padding-left: .24rem;
+    font-size: .24rem;
+    color: #8C8C8C;
+}
+.parameterCom{
+    width: 100%;
+    text-align: center;
+    margin-top: .15rem;
+    background-color: #fff;
+}
+.parameterComHeader{
+    width: 100%;
+    height: .7rem;
+    text-align: center;
+}
+.parameterComHeader img{
+    width: 1.35rem;
+    height: .23rem;
+    margin-top: .25rem;
+}
+.parameterComment{
+    width: 96%;
+    margin-left: 2%;
+}
+.parameterComment >p{
+    padding: 0;
+    margin: 0;
+}
+.parameterComment >p>img {
+    width: 100%;
+}
+.stateBg{
+    width: 100%;
+    height: 1.48rem;
+    position: relative;
+}
+.stateBgImg{
+    width: 100%;
+    height: 1.48rem;
+}
+.teamSate{
+    position: absolute;
+    top: .55rem;
+    font-size: .3rem;
+    height:.4rem ;
+    margin-left: .24rem;
+}
+.teamSate img{
+    width: .44rem;
+    height: .44rem;
+    vertical-align: middle;
+}
+.teamSate span{
+    font-weight: 600;
+    margin-left: .1rem;
+    vertical-align: middle;
+}
+.logistics{
+    width: 100%;
+    height: 1.36rem;
+    margin-top: .1rem;
+    background-color: #fff;
+    clear: both;
+    position: relative;
+    border-bottom: 2px solid #EDEEF4;
+}
+.logisticsLeft{
+    margin-left:.24rem;
+}
+.logisticsLeft img{
+    width: .28rem;
+    height: .22rem;
+    margin-top: .5rem;
+}
+.logisticsRight{
+    font-size: .24rem;
+    width: 6.23rem;
+    margin-right: .45rem;
+}
+.logisticsRight p:first-child{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+    /*padding-right: .24rem;*/
+}
+.logisticsRight p:last-child{
+    font-size:.24rem;
+    color: #BFC1CD;
+    margin-top: -.2rem;
+}
+.logisticsMore{
+    position: absolute;
+    right: .24rem;
+    top: .55rem;
+    width: .12rem;
+    height: .21rem;
+}
+.teamAddress{
+    width: 100%;
+    background-color: #fff;
+    clear: both;
+    overflow: hidden;
+    position: relative;
+}
+.teamAddressLeft{
+    margin-left: .24rem;
+}
+.teamAddressLeft img{
+    width: .21rem;
+    height: .29rem;
+    margin-top: .45rem;
+}
+.teamAddressRight{
+    width: 6.23rem;
+    margin-right: .45rem;
+}
+.teamAddressRight .addressCom{
+    font-size: .24rem;
+    color: #1E1B1B;
+    font-weight: 600;
+    margin-top: .25rem;
+}
+.teamAddressRight .addressCom span:last-child{
+    margin-left:.2rem;
+}
+.addressN{
+    margin-top: -.1rem;
+}
+.addressN p{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+    font-size: .24rem;
+    color: #1E1B1B;
+}
+.orderDetails{
+    width: 100%;
+    background-color: #fff;
+    position: relative;
+    margin-top: .1rem;
+    /*height: 4.5rem;*/
+    overflow-x: hidden;
+    border-top: 2px solid #f1f5f8;
+}
+.detailsCom{
+    width: 98%;
+    height: 1.16rem;
+    line-height: .55rem;
+    font-size: .24rem;
+    margin-left: .24rem;
+    border-bottom: 2px solid #f1f5f8;
+}
+.detailsComOrder span:first-child{
+    font-size: .24rem;
+    color: #1E1B1B;
+}
+.detailsComOrder span:last-child{
+    font-size: .24rem;
+    color: #5B5858;
+    margin-left: .56rem;
+}
+.detailsComTwo{
+    width: 98%;
+    height: .65rem;
+    line-height: .6rem;
+    font-size: .24rem;
+    margin-left: .24rem;
+    border-bottom: 2px solid #f1f5f8;
+}
+.detailsComTwoOrder span:first-child{
+    font-size: .24rem;
+    color: #1E1B1B;
+}
+.detailsComTwoOrder span:last-child{
+    font-size: .24rem;
+    color: #5B5858;
+    margin-left: .56rem;
+}
+.detailsL{
+    width: 98%;
+    height: .65rem;
+    line-height: .6rem;
+    font-size: .24rem;
+    margin-left: .24rem;
+}
+.detailsLMore{
+    overflow: hidden;
+}
+.detailsLMore span{
+    font-size: .24rem;
+    color: #1E1B1B;
+}
+.detailsLMore input{
+    border: none;
+    margin-left: .52rem;
+    height: .55rem;
+    font-size: .24rem;
+    width: 5.5rem;
+    color: #5B5858;
+    /*margin-top: .15rem;*/
+    outline: none;
+}
+.goodsAll{
+    width: 100%;
+    height: 3rem;
+    background-color: #fff;
+    overflow: hidden;
+    padding-top: .15rem;
+    margin-bottom: 1.2rem;
+}
+.goodsOne{
+    height: .5rem;
+    line-height: .5rem;
+    font-size: .24rem;
+    color: #1E1B1B;
+    margin: 0 .24rem;
+    /*margin-top: .1rem;*/
+}
+.goodsTwo{
+    width: 95%;
+    height: .8rem;
+    line-height: .8rem;
+    border-top: 2px solid #f1f5f8;
+    font-size: .24rem;
+    margin-left: .24rem;
+    margin-top: .15rem;
+}
+.goodsTwo span{
+    font-size: .24rem;
+    margin-right: .06rem;
+}
+.goodsTwo span span{
+    color: #FF407E;
+}
+.stateOrder{
+    width: 100%;
+    height: 1rem;
+    background-color: #fff;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+    clear: both;
+    border-top: 2px solid #f1f5f8;
+}
+.stateOrder button{
+    font-size: .24rem;
+    border: 1px solid #BFC1CD;
+    color:#1E1B1B;
+    background-color: #fff;
+    width: 1.5rem;
+    height: .6rem;
+    margin-top: .22rem;
+    margin-right: .24rem;
+    border-radius: .07rem;
+}
+.hms .hmsSpan{
+    background-color: #333;
+    /*padding: .05rem;*/
+    border-radius: .05rem;
+    color:#fff;
+    display: inline-block;
+    width: .39rem;
+    height: .39rem;
+    line-height: .39rem;
+    text-align: center;
+}
+.shade_mark{position: fixed;top:0;left: 0;width: 100%;height: 100%;background: rgba(0,0,0,.7);
+    z-index: 99999;}
+
+.share_popup{position: fixed;width: 100%;left: 0;top:0;z-index: 99999999;}
+
+.losepay {
+    display: none;
+    z-index: 9999;
+    width:100%;
+    height: 100%;
+    background-color: rgba(0,0,0,.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+.teamConfirm{
+    width: 90%;
+    height: 1.9rem;
+    margin-left: 5%;
+    background-color: #fff;
+    position: relative;
+    top: 50%;
+    margin-top: -1rem;
+    border-radius: .2rem;
+    text-align: center;
+}
+.con-lo{
+    height: 1rem;
+    line-height: 1rem;
+    font-size: .26rem;
+    padding: 0;
+    margin: 0;
+    border-bottom: 2px solid #f1f5f8;
+}
+.con{
+    width: 100%;
+    height: 1rem;
+}
+.con .ax{
+    width:49.5%;
+    text-align: center;
+    display: inline-block;
+    height: .8rem;
+    color: #1E1B1B;
+    line-height: .8rem;
+    font-size: .24rem;
+    border-right: 2px solid #f1f5f8;
+}
+.con .are{
+    width: 49.5%;
+    font-size: .24rem;
+    text-align: center;
+    display: inline-block;
+    height: .8rem;
+    color: #1E1B1B;
+    text-decoration: none;
+    line-height: .8rem;
+}

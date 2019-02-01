@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>余额明细</title>
+    <link rel="stylesheet" href="__STATIC__/css/style.css">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/touch_balance_detail.css"/>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/mobile-util.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
+</head>
+<include file="public/header_nav" title="余额明细" href="javascript:history.back(-1)"/>
+<body>
+
+<if condition="$data eq null">
+    <div class="withdrawal_img" style="margin-top: 1.8rem">
+        <img src="__STATIC__/images/comment.png"  alt="">
+        <p>客官大大!暂无相关信息</p>
+    </div>
+   <else />
+    <div class="withdrawal_detail" >
+
+        <ul>
+            <foreach $data as $vo>
+                <li>
+                    <div class="fl withdrawal_left">
+                        <span class="withdrawal_left_first">{$vo.desc}</span>
+                        <p>
+                            <span>{$vo.change_time}</span>
+                        </p>
+                    </div>
+                    <div class="fr withdrawal_right">
+                        <if condition="$vo.user_money gt 0 ">
+                            <span style="color: #FF407E">+{$vo.user_money}</span>
+                        </if>
+                        <if condition="$vo.user_money lt 0">
+                            <span style="color: #1E1B1B">{$vo.user_money}</span>
+                        </if>
+
+                    </div>
+                </li>
+            </foreach>
+        </ul>
+    </div>
+</if>
+
+<script>
+    /**
+     * 继续加载 提现明细
+     * */
+    var before_request = 1; // 上一次请求是否已经有返回来, 有才可以进行下一次请求
+    var page = 1;
+    function ajax_sourch_submit(){
+        if(before_request == 0)// 上一次请求没回来 不进行下一次请求
+            return false;
+        before_request = 0;
+        page++;
+        $.ajax({
+            type : "get",
+            url:"{:U('Mobile/distribution/touchbalanceDetail')}"+"?p="+page,
+            success: function(data)
+            {
+                if(data){
+                    $(".withdrawal_detail>ul").append(data);
+                    before_request = 1;
+                }else{
+                    $('.get_more').hide();
+                }
+            }
+        });
+    }
+    $(function(){
+        $(document).scroll(function(){
+            if($(document).height() - $(document).scrollTop() - $(window).height() <400 )
+            {
+                ajax_sourch_submit()
+            }
+        });
+
+    })
+</script>
+
+</body>
+</html>

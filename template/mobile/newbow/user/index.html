@@ -1,0 +1,637 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>个人中心</title>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/rem.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css"/>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/need/swiper-4.3.3.min.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" href="__STATIC__/js/need/swiper-4.3.3.min.css">
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
+    <link rel="stylesheet" href="__STATIC__/css/user_index.css">
+</head>
+<style>
+    .notLogged{
+        background: url("__STATIC__/images/notLogged.png") no-repeat;
+        background-size: 100%;
+    }
+    .userHeaderMiddleBg{
+        background: url("__STATIC__/images/user_index_bg.png") no-repeat;
+        background-size: 100%;
+        height: 3.2rem;
+    }
+    .mobileSelect .content .btnBar .cancel, .mobileSelect .content .btnBar .ensure{
+        width: 1rem;
+        height: .5rem;
+    }
+</style>
+<body>
+   <!-- 正常合伙人 试用合伙人到期提醒-->
+    <if condition="$user_identity['partner']">
+        <!--提示文字类型一 1个月即将过期-->
+        <if condition="$user_identity['partner']['is_about_to_expire'] eq 1">
+            <div class="partnerTipsOne partnerTips eq 0">
+                <div class="fl partnerTipsLeft">
+                    合伙人身份即将到期，现在续费 <span style="color:#FFC12B">赠送1个月</span>
+                </div>
+                <div class="fr partnerTipsRight">
+                    <a href="{:U('Mobile/Distribution/commonUserIndex')}" style="color: #fff">
+                        <span>查看详情 ＞</span>
+                    </a>
+                </div>
+            </div>
+        </if>
+        <!--提示文字类型二   已过期 宽限期内-->
+        <if condition="$user_identity['partner']['in_grace_eriod'] eq 1 && $user_identity['partner']['status'] eq 4">
+            <div class="partnerTipsOne partnerTips">
+                <div class="fl partnerTipsLeft"></div>
+                合伙人身份已到期，<span style="color: #FFC12B">30天</span>宽限期内续费不影响收益！
+                <div class="fr partnerTipsRight">
+                    <a href="{:U('Mobile/Distribution/commonUserIndex')}"style="color: #fff">
+                        <span>查看详情 ＞</span>
+                    </a>
+                </div>
+            </div>
+        </if>
+       <!--提示文字三  已过期 宽限期外-->
+        <if condition=" $user_identity['partner']['status'] eq 2">
+            <div class="partnerTipsOne partnerTips partnerTipsClose">
+                <div class="fl partnerTipsLeft">
+                    <a href="{:U('Mobile/Distribution/commonUserIndex')}" style="color: #fff">
+                        合伙人身份已到期，续费成功享合伙人8项权益！<span style="color: #FFC12B">立即续费</span>
+                    </a>
+                </div>
+                <div class="fr partnerTipsRight" onclick="showTips()">
+                    <span style="font-size: .4rem;color: #fff">×</span>
+                </div>
+            </div>
+        </if>
+
+        <!-- 试用合伙人 提示文字一  小于7天的提醒  试用期内-->
+        <if condition="$user_identity['partner']['low_try_out_days'] eq 1 && $user_identity['partner']['status'] eq 5">
+            <div class="partnerTipsOne partnerTips">
+                <div class="fl partnerTipsLeft">
+                    合伙人试用仅剩 <span style="color:#FFC12B">{$user_identity['partner']['in_try_out']}</span>天，申请成为合伙人继续享收益
+                </div>
+                <div class="fr partnerTipsRight">
+                    <a href="{:U('Mobile/Distribution/verifiyInviteCode',['invite_partner_code'=>$user_identity['partner']['agent_id']])}"style="color: #fff">
+                        <span>查看详情 ＞</span>
+                    </a>
+                </div>
+            </div>
+        </if>
+        <!--试用期的外-->
+        <if condition="$user_identity['partner']['in_try_out'] eq 0 && $user_identity['partner']['status'] eq 6">
+            <div class="partnerTipsOne partnerTips partnerTipsClose">
+                <div class="fl partnerTipsLeft">
+                    <a href="{:U('Mobile/Distribution/verifiyInviteCode',['invite_partner_code'=>$user_identity['partner']['agent_id']])}">
+                        合伙人试用已结束，<span style="color:#FFC12B;">申请成为合伙人继续享收益</span>
+                    </a>
+                </div>
+                <div class="fr partnerTipsRight " onclick="showTips()">
+                    <span style="font-size: .4rem;color: #fff">×</span>
+                </div>
+            </div>
+        </if>
+   </if>
+
+
+    <!--头部-->
+    <if condition="$user.nickname">
+        <div class="userHeader">
+            <div class="userHeaderMiddleBg">
+                <div class="userHeaderTop clearFix">
+                    <div class="userSetLeft fl">
+                        <a href="{:U('Mobile/User/message_notice')}">
+                            <img src="__STATIC__/images/cf_user_more.png" alt="消息通知">
+                            <if condition="$msg_num neq 0">
+                                <span class="notice">{$msg_num}</span>
+                            </if>
+                        </a>
+                    </div>
+                    <div class="userSetRight fr">
+                        <a href="{:U('Mobile/User/userinfo')}">
+                            <img src="__STATIC__/images/cf_user_.sz.png"  alt="设置">
+                        </a>
+                    </div>
+                </div>
+                <div class="userHeaderMiddle">
+                    <div class="personicon">
+                        <if condition="$user[user_id]">
+                            <div class="personicon">
+                                <img src="{$user[head_pic]|default='http://cdn.cfo2o.com/data/avatar/user_head_default.png'}?x-oss-process=style/s150x150"/>
+                                <if condition="empty($user_identity['partner']) && $user_identity['agent'] eq 0"><span style="display: none">普通会员</span></if>
+                                <if condition="$user_identity['partner']  && $user_identity['agent'] eq 0"><span>合伙人</span></if>
+                                <if condition="empty($user_identity['partner']) && $user_identity['agent'] eq 1"><span>服务商</span></if>
+                                <if condition="$user_identity['partner']  && $user_identity['agent'] eq 1"><span>服务商</span></if>
+                                <if condition ="$user[show_complete_info] && $Think.session.user.user_id">
+                                    <div id="perfectInformation"><a href="{:U('mobile/User/completeUserInfo')}"><img class="" src="__STATIC__/images/complete_info.png" alt=""></a></div>
+                                </if>
+                            </div>
+                            <else/>
+                            <div class="personicon">
+                                <a href="{:U('Mobile/User/login')}">
+                                    <img src="http://cdn.cfo2o.com/data/avatar/user_head_default.png"/>
+                                </a>
+                            </div>
+                        </if>
+                    </div>
+                    <div class="nickName"><span>{$user['nickname']}</span></div>
+                </div>
+            </div>
+            <div class="userHeaderBottom">
+                <if condition="$user_identity['partner'] eq 0 && $user_identity['agent'] eq 0">
+                    <else />
+                    <div class="userComentTop clearBoth">
+                        <div class="fl"><span>我的收益</span><span class="userMoney"><notempty name="$user['income']">¥{$user['income']}<else/>0</notempty></span></div>
+                        <div class="fr comTopRight"><a href="{:U('Mobile/distribution/index')}"><img src="__STATIC__/images/center_sy..png" alt=""><span>收益中心</span></a></div>
+                    </div>
+                </if>
+                <div class="userComentBottom">
+                    <ul>
+                        <li>
+                            <a href="{:U('Mobile/Distribution/touchbalanceDetail')}">
+                                <span class="bigStyle"><notempty name="$user['user_money']">{$user['user_money']}<else/>0</notempty></span><br><span class="lastBot">余额</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{:U('Mobile/User/coupon')}">
+                                 <span><strong><notempty name="$user['have_coupon_count']">{$user['have_coupon_count']}<else/>0</notempty></strong>张</span><br><span class="lastBot">优惠券</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{:U('Mobile/User/points_list')}">
+                                 <span class="bigStyle"><notempty name="$user['pay_points']">{$user['pay_points']}<else/>0</notempty></span><br><span class="lastBot">积分</span>
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    <else />
+        <div class="notLogged">
+            <p>新用户注册</p>
+            <p>领188元红包</p>
+            <a href="{:U('Mobile/User/login')}">
+                <button>登录/注册</button>
+            </a>
+        </div>
+    </if>
+
+    <!--全部订单-->
+    <div class="userOrderModule">
+        <div class="useOrder clearBoth">
+            <div class="fl useOrderLeft"><span>我的订单</span></div>
+            <a href="{:U('Mobile/Order/order_list')}">
+                <div class="fr useOrderRight"><span>全部订单</span><img  class="fr" src="__STATIC__/images/cf_left_more.png" alt=""></div>
+            </a>
+        </div>
+        <div class="ueserOrderList clrarBoth">
+            <ul>
+                <li>
+                    <a href="{:U('/Mobile/Order/order_list',array('type'=>'WAITPAY'))}">
+                        <if condition="$user.waitPay">
+                            <span>{$user.waitPay}</span>
+                        </if>
+                        <img src="__STATIC__/images/userOrder_01.png" alt="待付款"><br>
+                        <span>待付款</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('/Mobile/Order/order_list',array('type'=>'WAITSEND'))}">
+                        <if condition="$user.waitSend">
+                            <span>{$user.waitSend}</span>
+                        </if>
+                        <img src="__STATIC__/images/userOrder_02.png" alt="待发货"><br>
+                        <span>待发货</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('/Mobile/Order/order_list',array('type'=>'WAITRECEIVE'))}">
+                        <if condition="$user.waitReceive">
+                            <span>{$user.waitReceive}</span>
+                        </if>
+                        <img src="__STATIC__/images/userOrder_03.png" alt="待收货"><br>
+                        <span>待收货</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Mobile/Order/comment',array('status'=>0))}">
+                        <if condition="$user.uncomment_count">
+                            <span>{$user.uncomment_count}</span>
+                        </if>
+                        <img src="__STATIC__/images/userOrder_04.png" alt="待评价"><br>
+                        <span>待评价</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Mobile/Order/return_goods_list',array('type'=>1))}">
+                        <if condition="$user.return_count">
+                            <span>{$user.return_count}</span>
+                        </if>
+                        <img src="__STATIC__/images/userOrder_05.png" alt="退换/售后"><br>
+                        <span>退换/售后</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+   <!--分享赚钱-->
+    <div class="userShare">
+        <div class="shareTitle clearBoth">
+            <div class="fl shareTitleLeft"><span>分享赚钱</span></div>
+            <if condition="$user_identity['partner'] eq 0 && $user_identity['agent'] eq 1 || $user_identity['partner'] eq 1 && $user_identity['agent'] eq 1">
+                <div class="fr shareTitleRight" onclick="showCodeOTwo()"><img src="__STATIC__/images/userCode.png" alt=""></div>
+                <else />
+                <div class="fr shareTitleRight" onclick="showCodeOne()"><img src="__STATIC__/images/userCode.png" alt=""></div>
+            </if>
+        </div>
+        <div class="shareList">
+            <div class="shareListTop clearBoth ">
+                <if condition="!$user_identity['partner'] || !$user.nickname">
+                    <div class="fl">
+                        <a href="{:U('Mobile/distribution/commonUserIndex')}">
+                            <img  src="__STATIC__/images/shareLook.png" alt="">
+                        </a>
+                    </div>
+                    <else />
+                    <div class="fl">
+                        <a href="{:U('Mobile/distribution/index')}">
+                            <img  src="__STATIC__/images/Profit.png" alt="">
+                        </a>
+                    </div>
+                </if>
+                <div class="fr">
+                    <a href="{:U('Mobile/User/inviteGift')}">
+                        <img  src="__STATIC__/images/user_invitation.png" alt="">
+                    </a>
+                </div>
+            </div>
+            <if condition="$user_identity['partner'] eq 0 && $user_identity['agent'] eq 0 ">
+                <else />
+                <if condition="$rankActivity neq ''">
+                    <div class="shareListBottm">
+                    <adv limit="1" item="v" pid="51334">
+                        <a href="{$v.ad_link}">
+                            <img src="{$v[ad_code]}" title="{$v[title]}" style="{$v[style]}"/>
+                        </a>
+                    </adv>
+                    </div>
+                    <!--<div class="shareListBottm">-->
+                        <!--<a href="{:U('Mobile/distribution/rankList')}">-->
+                            <!--<img src="__STATIC__/images/Listpartners.png" alt="">-->
+                        <!--</a>-->
+                    <!--</div>-->
+                </if>
+            </if>
+
+        </div>
+    </div>
+
+    <!--我的服务-->
+    <div class="myService">
+        <div class="serviceTitle clearBoth">
+            <div class="fl serviceTitleLeft"><span>我的服务</span></div>
+        </div>
+        <div class="myServiceList clearBoth">
+            <ul>
+                <li>
+                    <a href="{:U('Mobile/team/myTeam')}">
+                        <if condition="$user.unfinished_team_order"><span>{$user.unfinished_team_order}</span></if>
+                        <img src="__STATIC__/images/shareOrder_01.png" alt="">
+                        <p class="ServiceTitle">拼团订单</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Mobile/User/getVirtualOrdeList')}">
+                        <if condition="$user.unfinished_vittual_order"><span>{$user.unfinished_vittual_order}</span></if>
+                        <img src="__STATIC__/images/shareOrder_02.png" alt="">
+                        <p class="ServiceTitle">卡券订单</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Mobile/User/collect_list')}">
+                        <img src="__STATIC__/images/shareOrder_03.png" alt="">
+                        <p class="ServiceTitle">我的收藏</p>
+                        <p class="ServiceTitleNum">{$user['collect_count']}</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Mobile/User/visit_log')}">
+                        <img src="__STATIC__/images/shareOrder_04.png" alt="">
+                        <p class="ServiceTitle">我的足迹</p>
+                        <p class="ServiceTitleNum">{$user['visit_count']}</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Mobile/User/address_list')}">
+                        <img src="__STATIC__/images/shareOrder_05.png" alt="">
+                        <p class="ServiceTitle">收货地址</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Mobile/Activity/coupon_list')}">
+                        <img src="__STATIC__/images/shareOrder_06.png" alt="">
+                        <p class="ServiceTitle">领券中心</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Mobile/Goods/integralMall')}">
+                        <img src="__STATIC__/images/shareOrder_07.png" alt="">
+                        <p class="ServiceTitle">积分商城</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Mobile/Help/lists')}">
+                        <img src="__STATIC__/images/shareOrder_08.png" alt="">
+                        <p class="ServiceTitle">客服与服务</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!--猜你喜欢-->
+    <div class="guessLike">
+        <div class="guessLikeTop">
+            <img src="__STATIC__/images/guessLike.png" alt="">
+        </div>
+        <div class="guessList clearBoth">
+            <foreach name="$favourite_goods" item="v">
+                <a href="{:U('mobile/Goods/goodsInfo',['id'=>$v.goods_id])}">
+                    <div class="guessItem">
+                        <!--src="{$v[original_img]}?x-oss-process=style/s01"-->
+                        <img class="lazy" data-original="{$v[original_img]}?x-oss-process=style/s340x340" alt="">
+                        <p class="guessTitle">{$v['goods_remark']}</p>
+                        <p class="guessCom">{$v['goods_name']}</p>
+                        <div class="guessDiv"><span style="color: #FF407E">¥</span><span style="font-size: .34rem;color: #FF407E">{$v['shop_price']}</span><span style="color: #BFC1CD;margin-left: .2rem;text-decoration: line-through">¥{$v['market_price']}</span></div>
+                    </div>
+                </a>
+            </foreach>
+        </div>
+    </div>
+    <div class="noMore">
+        <span>没有更多了</span>
+    </div>
+    <!--<div style="height: 1rem;width: 100%;clear: both"></div>-->
+    <!--footer-->
+    <div class="footer clearFix">
+        <ul>
+            <a href="{:U('Mobile/Index/index')}">
+                <li ><img src="__STATIC__/images/cf_home.png" alt=""><br><span>首页</span></li>
+            </a>
+            <a href="{:U('Mobile/Goods/categoryList')}">
+                <li><img src="__STATIC__/images/cf_class.png" alt=""><br><span>分类</span></li>
+            </a>
+            <a href="{:U('Mobile/Cart/index')}" >
+                <li style="position: relative" ><img src="__STATIC__/images/cf_shopping.png" alt=""><br><span>购物车</span><div class="numCart"></div> </li>
+            </a>
+            <a href="{:U('Mobile/User/index')}">
+                <li class="activeChoose"><img src="__STATIC__/images/cf_myed.png" alt=""><br><span>我的</span></li>
+
+            </a>
+        </ul>
+    </div>
+    <!--普通用户二维码的弹窗-->
+    <div class="ordinaryPopBg">
+        <div class="ordinary ">
+            <p class="fristPop">邀请码 {$user['invite_friend_code']}</p>
+            <img src="{$user['common_qrcode']}" alt="">
+            <p class="secPop">邀请好友微信扫描二维码</p>
+            <p class="secPop">送好友 <span>188</span>元大礼包</p>
+            <div class="closePop" onclick="closePop()"><img src="__STATIC__/images/qx.png" id="closePopImg" alt=""></div>
+        </div>
+    </div>
+
+    <!--合伙人/服务商的二维码弹窗-->
+    <div class="partnerPopBg">
+        <div class="coverCom">
+            <div class="partnerPopTop">
+                <ul>
+                    <li class="activePatner">好友邀请码</li>
+                    <li>合伙人邀请码</li>
+                </ul>
+            </div>
+            <div class="partnerPop tab2" >
+                <p class="partnerTitle">邀请码 {$user['invite_friend_code']}</p>
+                <img src="{$user['common_qrcode']}" alt="">
+                <p class="partnerSec">邀请好友微信扫描二维码</p>
+                <p class="partnerSec">送好友 <span>188</span>元大礼包</p>
+            </div>
+            <div class="partnerPop tab1" style="display: none">
+                <p class="partnerTitle">邀请码 {$user['invite_partner_code']}</p>
+                <img src="{$user['agent_qrcode']}" alt="">
+                <p class="partnerSec">普通用户扫描此码申请合伙人</p>
+            </div>
+            <div class="closePartner" onclick="closePopTwo()"><img src="__STATIC__/images/qx.png" alt=""></div>
+        </div>
+    </div>
+<!--分享开始-->
+<script>
+    // http://cdn.cfo2o.com/public/upload/other/logo_share.png
+    var ShareImgUrl ="https://{$_SERVER[HTTP_HOST]}__STATIC__/images/logo_share.png"; //分享图标
+    var ShareTitle = "一家有线下沙龙体验活动的化妆品平台"; //分享标题
+    var ShareDesc = "尚美缤纷是一家有线下沙龙体验活动的化妆品平台，美妆老师、美妆产品超正点"; //分享描述
+</script>
+<include file="public/wx_share"/>
+<!--分享结束-->
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script type="text/javascript" src="__STATIC__/js/jquery.lazyload.js"></script>
+<script>
+    // 点击关闭合伙人续费提醒
+    var out_time = "{$user_identity['partner']['try_out_time']}"?"{$user_identity['partner']['try_out_time']}":"";
+    var in_time;
+    function showTips() {
+        sessionStorage.setItem('in_time',1);
+        $('.partnerTipsClose').css('display','none')
+    }
+    in_time =sessionStorage.getItem('in_time');
+    in_time = in_time ? in_time : 0;
+    if(in_time != out_time){
+        $('.partnerTipsClose').css('display','none')
+    }
+    
+    var user_id = "{$user['user_id']}" ? "{$user['user_id']}":"";
+    // 普通用户二维码点击事件
+    function showCodeOne() {
+        if(user_id != ''){
+            $('.ordinaryPopBg').show()
+        }else {
+            location.href = "{:U('Mobile/User/login')}"
+        }
+
+    }
+    function closePop() {
+        if( user_id != ''){
+            $('.ordinaryPopBg').hide()
+        }else {
+            location.href = "{:U('Mobile/User/login')}"
+        }
+
+    }
+
+    // 点击切换二维码身份
+    $('.partnerPopTop ul li').click(function () {
+        $('.partnerPopTop ul li').eq($(this).index()).addClass("activePatner").siblings().removeClass('activePatner')
+        // $(this).addClass('activePatner').siblings().removeClass('activePatner')
+        if($(this).index()== 0){
+            $('.tab1').hide();
+            $('.tab2').show();
+        }else {
+            $('.tab1').show();
+            $('.tab2').hide();
+        }
+
+    });
+    // 服务商二维码点击事件
+    function showCodeOTwo() {
+        $('.partnerPopBg').show()
+    }
+    // 服务商关闭事件
+    function closePopTwo() {
+        $('.partnerPopBg').hide()
+    }
+    // 判断是否有缓存 数据 猜你喜欢  返回到浏览位置
+    var page ;
+    page = 0
+    var page= sessionStorage.getItem("userPage");
+    if(page != null) {
+       page = page
+        /**
+         * ajax加载更多数据
+         */
+        var ajax_pending = false;//进行中
+        var has_more_data = true;//还有数据
+        // var page = 0;
+        var datahtml ='';
+        function ajax_sourch_submit() {
+            if (ajax_pending || has_more_data == false) return;
+            ajax_pending = true;
+            ++page;
+            $.ajax({
+                type : "GET",
+                url:"/index.php?m=Mobile&c=Index&a=ajaxGetGuessUserLike&p="+page,
+                success: function(data) {
+                    ajax_pending = false;
+                    if ($.trim(data) != '') {
+                        $('.guessList').append(data);
+                        datahtml += data;
+                        sessionStorage.setItem("userPage",page);
+                        sessionStorage.setItem("moreData", datahtml);
+                        //加载更多时 懒加载配置
+                        $("img.lazy").lazyload({effect: "fadeIn"});
+                        $("img.lazy").lazyload({ threshold :180});
+                    } else {
+                        has_more_data = false;
+                        $('.noMore').show()
+                    }
+                }
+            });
+        }
+    }else{
+        page =0
+        /**
+         * ajax加载更多数据
+         */
+        var ajax_pending = false;//进行中
+        var has_more_data = true;//还有数据
+        // var page = 0;
+        var datahtml ='';
+        function ajax_sourch_submit() {
+            if (ajax_pending || has_more_data == false) return;
+            ajax_pending = true;
+            ++page;
+            $.ajax({
+                type : "GET",
+                url:"/index.php?m=Mobile&c=Index&a=ajaxGetGuessUserLike&p="+page,
+                success: function(data) {
+                    ajax_pending = false;
+                    if ($.trim(data) != '') {
+                        $('.guessList').append(data);
+                        datahtml += data;
+                        sessionStorage.setItem("userPage",page);
+                        sessionStorage.setItem("moreData", datahtml);
+                        //加载更多时 懒加载配置
+                        $("img.lazy").lazyload({effect: "fadeIn"});
+                        $("img.lazy").lazyload({ threshold :180});
+                    } else {
+                        has_more_data = false;
+                        $('.noMore').show()
+                    }
+                }
+            });
+        }
+    }
+
+
+
+    // 判断是否有缓存 数据 猜你喜欢  返回到浏览位置
+    $(function () {
+        var a = sessionStorage.getItem("moreData");
+        if(a != '') {
+            $('.guessList').html(a);
+        }
+    });
+    // var page = sessionStorage.getItem("userPage")
+
+
+    //判断 购物车数量
+    $(document).ready(function(){
+        var cart_cn = getCookie('cn');
+        if(cart_cn == ''){
+            $.ajax({
+                type : "GET",
+                url:"/index.php?m=Home&c=Cart&a=header_cart_list",//+tab,
+                success: function(data){
+                    cart_cn = getCookie('cn');
+                    if (cart_cn>0) {
+                        $('.numCart').show().html(cart_cn);
+                    }
+                    $('#cart_quantity').html(cart_cn);
+                }
+            });
+        }
+        if (cart_cn>0) {
+            $('.numCart').show().html(cart_cn);
+        }
+        $('#cart_quantity').html(cart_cn);
+    });
+    // 懒加载  相关配置
+    $(function() {
+        $("img.lazy").lazyload({effect: "fadeIn"});
+    });
+    $("img.lazy").lazyload({ threshold :180});
+    $("img.lazy").lazyload({
+        placeholder : "/template/mobile/newbow/static/images/aa.png", //用图片提前占位
+        // placeholder,值为某一图片路径.此图片用来占据将要加载的图片的位置,待图片加载时,占位图则会隐藏
+        effect: "slideDown", // 载入使用何种效果
+        // effect(特效),值有show(直接显示),fadeIn(淡入),slideDown(下拉)等,常用fadeIn
+        threshold: 150, // 提前开始加载
+        // threshold,值为数字,代表页面高度.如设置为200,表示滚动条在离目标位置还有200的高度时就开始加载图片,可以做到不让用户察觉
+        event: 'click',  // 事件触发时才加载
+        // event,值有click(点击),mouseover(鼠标划过),sporty(运动的),foobar(…).可以实现鼠标莫过或点击图片才开始加载,后两个值未测试…
+        container: $(".guessItem"),  // 对某容器中的图片实现效果
+        // container,值为某容器.lazyload默认在拉动浏览器滚动条时生效,这个参数可以让你在拉动某DIV的滚动条时依次加载其中的图片
+        failurelimit : 10 // 图片排序混乱时
+        // failurelimit,值为数字.lazyload默认在找到第一张不在可见区域里的图片时则不再继续加载,但当HTML容器混乱的时候可能出现可见区域内图片并没加载出来的情况,failurelimit意在加载N张可见区域外的图片,以避免出现这个问题.
+    });
+    // 判断ios 和  安卓  兼容样式问题
+    $(function () {
+        var u = navigator.userAgent;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        if(isAndroid || !isiOS){  //安卓
+
+        }else{  //苹果
+            // $('.guessItem .guessCom').css("height",".7rem")
+        }
+    });
+</script>
+</div>
+</body>
+</html>

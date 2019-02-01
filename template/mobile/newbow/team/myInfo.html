@@ -1,0 +1,578 @@
+<!DOCTYPE>
+<html>
+<head>
+    <title>拼团详情</title>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/rem.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <!--<link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>-->
+    <link rel="stylesheet" href="__STATIC__/css/teamInfo.css">
+</head>
+<style>
+    #MEIQIA-BTN-HOLDER{
+        display: none!important;
+    }
+</style>
+<!--客服 配置-->
+<script type='text/javascript'>
+    (function(m, ei, q, i, a, j, s) {
+        m[i] = m[i] || function() {
+            (m[i].a = m[i].a || []).push(arguments)
+        };
+        j = ei.createElement(q),
+            s = ei.getElementsByTagName(q)[0];
+        j.async = true;
+        j.charset = 'UTF-8';
+        j.src = 'https://static.meiqia.com/dist/meiqia.js?_=t';
+        s.parentNode.insertBefore(j, s);
+    })(window, document, 'script', '_MEIQIA');
+    _MEIQIA('entId', 111444);
+
+    // 传递顾客信息
+    _MEIQIA('metadata', {
+        name: '{$service_user_info.name}',// 美洽默认字段
+        address:'{$service_user_info.address}',// 美洽默认字段
+        age :'{$service_user_info.age}',// 年龄
+        email:'{$service_user_info.email}',// 邮箱
+        gender:'{$service_user_info.gender}', // 性别
+        tel:'{$service_user_info.tel}' // 电话
+    });
+</script>
+<!--客服配置结束-->
+<body>
+<!--header-->
+<div class="headerRank">
+    <div class="headerRankCon">
+        <div class="texFl">
+            <a href="javascript:history.back()">
+                <img src="__STATIC__/images/return.png" alt="返回"></a>
+            </a>
+        </div>
+        <div class="tex">
+            <span>拼团详情</span>
+        </div>
+        <a href="{:U('Mobile/Index/index')}"  class="homeIndex">
+            <img src="__STATIC__/images/homeIndex.png"  alt="">
+        </a>
+    </div>
+</div>
+<!--header-->
+<div style="height:1rem;width: 100%"></div>
+<!--tab-->
+<div class="tabChange">
+    <ul class="nav_tab">
+        <li><span class="activeStyle">拼团详情</span></li>
+        <li><span>订单详情</span></li>
+    </ul>
+</div>
+<!--拼团详情-->
+
+<div class="oneTab" >
+<!--拼团商品-->
+    <div class="">
+        <div class="team-list">
+            <div class="fl listImg">
+                <img src="{$teamInfo.goods.original_img}?x-oss-process=style/s340x340" alt="">
+            </div>
+            <div class="fl team-list-right">
+                <div class="title">
+                    <p><if $teamInfo.is_shipping ==1><span id="by">包邮</span></if><span style="font-weight: 600">{$teamInfo.goods_name}</span></p>
+                </div>
+                <p class="complete">{$teamInfo.goods.goods_remark}</p>
+                <div class="people">
+                    <span class="one">{$teamInfo.needer}人团</span>
+                    <span>{$teamInfo.teamed}人已团</span>
+                </div>
+                <div class="bottom">
+                    <div class="fl">
+                        <p>
+                            <span class="">￥</span>
+                            <span class="bottomMoney">{$teamInfo.price}</span>
+                            <span>单买:￥{$teamInfo.goods_price}</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="stateImg">
+                    <!--失败-->
+                    <if $teamInfo.status == 3>
+                        <img src="__STATIC__/images/failTeam.png" alt="">
+                    </if>
+                    <!--成功-->
+                    <if $teamInfo.status == 2>
+                        <img src="__STATIC__/images/successTeam.png" alt="">
+                    </if>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!--参团人数-->
+<div class="teamClass">
+    <div class="teamClassTop">
+        <div class="teamFirst">
+            <img src="{$teamInfo.head_pic}?x-oss-process=style/s150x150" alt="" class="teamFirstImg">
+            <img src="__STATIC__/images/tuanzhang.png" alt="" id="taggle">
+        </div>
+        <volist name="followUser" id="vi">
+            <div class="teamSen"><img src="{$vi.follow_user_head_pic}?x-oss-process=style/s150x150" alt=""></div>
+        </volist>
+        <?php for($i=0;$i<$teamInfo['needer']-$teamInfo['join'];$i++){?>
+            <div class="teamSen"><img src="__STATIC__/images/defaults.png" alt=""></div>
+        <?php }?>
+
+    </div>
+    <if $teamInfo.status == 1>
+        <div class="teamTime">
+          <span class="hms">
+                <span style="color: #5B5858">还差<span style="color: #d50d16;font-weight: 600">{$teamInfo.needer-$teamInfo.join}</span>人 剩余</span>
+                <span id="hours" class="hmsSpan hours">00</span>
+                <span style="background-color: transparent;color: #333;font-size: .35rem;font-weight: 700;" >:</span>
+                <span id="minte" class="hmsSpan minutes">00</span>
+                <span style="background-color: transparent;color: #333;font-size: .35rem;font-weight: 700;" >:</span>
+                <span id="second" class="hmsSpan seconds">00</span>
+                <span style="color: #5B5858">结束</span>
+            </span>
+        </div>
+        <else/>
+        <div class="teamTime">
+            <if $teamInfo.status == 3>
+                <span>拼团时间已结束</span>
+            </if>
+            <if $teamInfo.status == 2>
+                <span>拼团成功</span>
+            </if>
+        </div>
+    </if>
+    <div class="Invitation">
+        <if $teamInfo.status == 3 || $teamInfo.status == 2><a href="{:U('mobile/team/info')}?team_id={$teamInfo.team_id}&goods_id={$teamInfo.goods_id}"><button>重新开团</button></a></if>
+        <if $teamInfo.status == 1><button onclick="popJump()">立即邀请好友参团</button></if>
+    </div>
+    <div class="teamFlaw">
+
+        <span>① 支付开团或参团<img src="__STATIC__/images/right_02.png" alt="" style="width: .11rem;height: .15rem;margin-left: .2rem"></span>
+
+        <if $teamInfo.need gt $teamInfo.join && $teamInfo.status == 1>
+            <span class="teamActive">② 邀请好友参团 <img src="__STATIC__/images/right_02.png" alt="" style="width: .11rem;height: .15rem;margin-left: .1rem"></span>
+            <else/>
+            <span>② 邀请好友参团 <img src="__STATIC__/images/right_02.png" alt="" style="width: .11rem;height: .15rem;margin-left: .1rem"></span>
+        </if>
+        <if $teamInfo.status == 2 >
+            <span style="color:#30c37c">③ 拼团成功，分别发货</span>
+        </if>
+        <if $teamInfo.status == 1 >
+            <span >③ 团满发货，不满退款</span>
+        </if>
+        <if $teamInfo.status == 3 >
+            <span style="color:#d50d16;">③ 人数不足自动退款</span>
+        </if>
+    </div>
+</div>
+
+<!--产品参数-->
+<div class="parameter">
+    <div class="parameterHeader">
+        <img src="__STATIC__/images/parameter.png" alt="">
+    </div>
+    <div class="de_table">
+        <table  border="1" bordercolor="#EDEEF4" style="border-collapse:collapse;">
+            <tr>
+                <td>商品名称</td>
+                <td>{$teamInfo.goods_name}</td>
+            </tr>
+            <if $teamInfo.goods.brand_id != null>
+                <tr>
+                <td>品牌</td>
+                <td>{$teamInfo.goods.brand_id}</td>
+            </tr>
+            </if>
+            <volist name="param" id="vi">
+                <tr>
+                    <td>{$vi.attr_name}</td>
+                    <td>{$vi.attr_value}</td>
+                </tr>
+            </volist>
+        </table>
+    </div>
+</div>
+
+<!--产品详情-->
+<div class="parameterCom">
+    <div class="parameterComHeader">
+        <img src="__STATIC__/images/parameterCom.png" alt="">
+    </div>
+    <div class="parameterComment">
+        {$teamInfo['goods']['goods_content']}
+    </div>
+</div>
+
+<!--分享弹窗-->
+    <div class="share_popup" style="display: none;">
+        <img src="__STATIC__/images/share_money.png" alt="" style="width: 100%;pointer-events: none"/>
+    </div>
+    <!--遮罩层-->
+    <div class="shade_mark" style="display: none;" onclick="closeAll(event)"></div>
+</div>
+<!--订单详情-->
+<div class="twoTab" style="display: none">
+    <!--订单状态-->
+    <div class="stateBg">
+        <img src="__STATIC__/images/bg_team.png" class="stateBgImg" alt="">
+
+        <if $orderStatus.pay_status == 1 && $teamInfo.status == 1>
+            <div class="teamSate">
+        <img src="__STATIC__/images/teamOrder_01.png" alt="">
+            <span>已付款</span>
+        </div>
+        </if>
+        <if $orderStatus.pay_status == 1 &&
+            $orderStatus.shipping_status == 0 && $teamInfo.status == 2>
+            <div class="teamSate"> <!--待发货-->
+            <img src="__STATIC__/images/teamOrder_02.png" alt="">
+            <span>待发货</span>
+            <span style="color: #5B5858;font-size: .24rem">预计一个工作日发货</span>
+        </div>
+        </if>
+        <if $orderStatus.shipping_status egt 1 &&
+            $orderStatus.order_status lt 2 && $teamInfo.status == 2>
+            <div class="teamSate"> <!--待收货-->
+            <img src="__STATIC__/images/teamOrder_03.png" alt="">
+            <span>待收货</span>
+            </div>
+        </if>
+        <if $teamInfo.orderStatus.order_status == 2  && $teamInfo.status == 2>
+            <div class="teamSate"> <!--待评价-->
+            <img src="__STATIC__/images/teamOrder_04.png" alt="">
+            <span>待评价</span>
+        </div>
+        </if>
+        <if $orderStatus.order_status == 4 && $teamInfo.status == 2>
+        <div class="teamSate"> <!--已完成-->
+            <img src="__STATIC__/images/teamOrder_05.png" alt="">
+            <span>已完成</span>
+        </div>
+        </if>
+        <if $orderStatus.pay_status != 3 && $teamInfo.status == 3>
+        <div class="teamSate"> <!--待退款-->
+            <img src="__STATIC__/images/teamOrder_06.png" alt="">
+            <span>待退款</span>
+            <span style="color: #5B5858;font-size: .24rem">拼团失败，等待退款，预计1个工作日内退款</span>
+        </div>
+        </if>
+        <if $orderStatus.pay_status == 3>
+        <div class="teamSate"> <!--已退款-->
+            <img src="__STATIC__/images/teamOrder_07.png" alt="">
+            <span>已退款</span>
+            <span style="color: #5B5858;font-size: .24rem">拼团失败，已退款</span>
+        </div>
+        </if>
+    </div>
+
+    <!--物流信息-->
+    <if $orderStatus.order_status == 2 && $teamInfo.status == 2 || $orderStatus.shipping_status egt 1 &&
+        $orderStatus.order_status != 2 && $teamInfo.status == 2 || $orderStatus.order_status == 4 && $teamInfo.status == 2 >
+
+        <if $orderInfo.shipping_code != ZITI>
+        <div class="logistics">
+            <div class="fl logisticsLeft">
+                <img src="__STATIC__/images/wuliu.png" alt="">
+            </div>
+            <a href="{:U('mobile/Order/express')}?order_id={$teamInfo.order_id}" style="color: #1E1B1B">
+            <div class="fr logisticsRight">
+                <p class="addressCom"></p>
+                <p class="addressTime"></p>
+            </div>
+            <img src="__STATIC__/images/right_02.png" class="logisticsMore" alt="" >
+            </a>
+        </div>
+        </if>
+    </if>
+
+    <!--收货地址-->
+    <div class="teamAddress">
+        <div class="fl teamAddressLeft">
+            <img src="__STATIC__/images/teamAddress.png" alt="">
+        </div>
+        <div class="fr teamAddressRight">
+            <div class="addressCom"><span>{$orderInfo.consignee}</span><span>{$orderInfo.mobile}</span></div>
+            <div class="addressN">
+                <p>{$region_list[$address[province]]}&nbsp;{$region_list[$address[city]]}&nbsp;{$region_list[$address[district]]}&nbsp;{$address[address]}</p>
+            </div>
+        </div>
+    </div>
+
+    <!--订单详情-->
+    <div class="orderDetails">
+        <div class="detailsCom">
+            <div class="detailsComOrder">
+                <span>订单编号</span><span>{$orderInfo.order_sn}</span>
+            </div>
+            <div class="detailsComOrder">
+                <span>下单时间</span><span>{$orderInfo.add_time | date ='Y-m-d H:i:s',###}</span>
+            </div>
+        </div>
+        <div class="detailsCom">
+            <div class="detailsComOrder">
+                <span>支付方式</span><span>{$orderInfo.pay_name}</span>
+            </div>
+            <div class="detailsComOrder">
+                <span>支付时间</span><span>{$orderInfo.pay_time | date ='Y-m-d H:i:s',###}</span>
+            </div>
+        </div>
+        <div class="detailsComTwo">
+            <div class="detailsComTwoOrder">
+                <if $orderInfo.shipping_code == ZITI>
+                    <span>配送方式</span><span>{$orderInfo.shipping_name}-成都市武侯区领事馆路17号鸿川大楼8F <br/>
+                   </span>
+                    <else/>
+                    <span>配送方式</span><span>{$orderInfo.shipping_name | default='百世快递'}</span>
+                </if>
+            </div>
+        </div>
+        <div class="detailsComTwo">
+            <div class="detailsComTwoOrder">
+                <if $orderInfo.invoice_title == 个人>
+                    <span>发票类型</span><span>{$orderInfo.invoice_title}</span>
+                     <elseif condition="$orderInfo.invoice_title ==''"/>
+                        <span>发票类型</span><span>不开发票</span>
+                    <else/>
+                    <span>发票类型</span><span>单位发票&nbsp;({$orderInfo.invoice_title})</span>
+                </if>
+            </div>
+        </div>
+        <div class="detailsL">
+            <div class="detailsLMore">
+                <span>买家留言</span>
+                <input type="text" readonly="readonly" maxlength="20" placeholder="{$orderInfo.user_note}">
+            </div>
+        </div>
+        <div style="width: 100%;height: .15rem;background-color: #f1f5f8"></div>
+    <!--商品总额数量运费-->
+    <div class="goodsAll">
+        <div class="goodsOne">
+            <span class="fl">商品总额</span>
+            <span class="fr">¥ {$orderInfo.goods_price}</span>
+        </div>
+        <div class="goodsOne">
+            <span class="fl">运费</span>
+            <span class="fr">+¥ {$orderInfo.shipping_price}</span>
+        </div>
+        <div class="goodsOne">
+            <span class="fl">优惠券</span>
+            <span class="fr">-¥ {$orderInfo.coupon_price}</span>
+        </div>
+        <div class="goodsOne">
+            <span class="fl">余额</span>
+            <span class="fr">-¥ {$orderInfo.user_money}</span>
+        </div>
+        <div class="goodsTwo">
+            <span class="fr">合计: &nbsp;<span>¥{$orderInfo.order_amount}</span></span>
+        </div>
+    </div>
+
+
+     <!--订单服务状态-->
+    <div class="stateOrder">
+        <a onclick="_MEIQIA('showPanel')" class="fr"><button>联系客服</button></a>
+        <if $teamInfo.orderStatus.shipping_status egt 1 && $teamInfo.orderStatus.order_status lt 2 && $teamInfo.status == 2>
+            <a href="{:U('mobile/Order/express')}?order_id={$teamInfo.order_id}" class="fr"><button>查看物流</button></a>
+            <button class="fr playSus">确认收货</button>
+        </if>
+        <if $teamInfo.orderStatus.order_status == 2 && $teamInfo.status == 2>
+            <a href="{:U('mobile/Order/add_comment')}?rec_id={$order_goods[0]['rec_id']}" class="fr"><button>去评价</button></a>
+            <a href="{:U('mobile/Order/express')}?order_id={$teamInfo.order_id}" class="fr"><button>查看物流</button></a>
+        </if>
+        <if $teamInfo.orderStatus.order_status == 4 && $teamInfo.status == 2>
+            <a href="{:U('mobile/Order/express')}?order_id={$teamInfo.order_id}" class="fr"><button>查看物流</button></a>
+            <a href="{:U('mobile/Order/return_goods')}?rec_id={$order_goods[0]['rec_id']}" class="fr"><button>申请售后</button></a>
+        </if>
+    </div>
+
+        <!--确认收货-s-->
+        <div class="losepay closeorder">
+            <div class="teamConfirm">
+                <p class="con-lo">确定收货吗?</p>
+                <div class="con">
+                    <a class="ax fl">取消</a>
+                    <a class="are fr" href="{:U('Order/order_confirm')}?id={$teamInfo.order_id}">确认</a>
+                </div>
+            </div>
+        </div>
+        <!--确认收货-e-->
+</div >
+<script>
+    $('.playSus').click(function(){
+        $('.losepay').show();
+    })
+    //取消收货按钮
+    $('.con .ax').click(function(){
+        $('.losepay').hide();
+    })
+    //确认收货按钮
+    $('.con .are').click(function(){
+        $('.losepay').hide();
+    })
+    //点击遮罩层关闭所有弹窗
+    function closeAll(event) {
+        event.stopPropagation();
+        $(event.target).hide();
+        $('.share_popup').hide();
+        $('.specification_popup').slideUp();
+    }
+
+    //赚钱分享弹窗
+    function popJump() {
+        $('.shade_mark').show();
+        $('.share_popup').show()
+    }
+    var flag = sessionStorage.getItem('backState');
+    if(flag ==1){
+        $('.nav_tab li').eq(0).find('span').removeClass('activeStyle');
+        $('.nav_tab li').eq(1).find('span').addClass('activeStyle');
+        $('.oneTab').hide();
+        $('.twoTab').show();
+    }
+
+    // 点击切换TAB
+    $('.nav_tab li').each(function (i,v) {
+        $(v).on('click',function () {
+            $('.nav_tab li').find('span').removeClass('activeStyle');
+            $(this).find('span').addClass('activeStyle');
+            if(i == 0) {
+                $('.oneTab').show();
+                $('.twoTab').hide();
+                sessionStorage.removeItem('backState')
+            }
+            else {
+                $('.oneTab').hide();
+                $('.twoTab').show();
+                sessionStorage.setItem('backState',1)
+            }
+        })
+    });
+
+    var end_time  = {$teamInfo.found_end_time};
+    var start_time  = {$startTime};
+    var found_id = {$teamInfo.found_id};
+    var NowTime = new Date();
+    var $this = $('.hms');
+    var a = (start_time * 1000) - NowTime.getTime();
+    var timer = setInterval(function () {
+        var NowTime = new Date();
+        if (a > 0) {
+            var t = (end_time * 1000) - NowTime.getTime() + a;
+
+        }else {
+            var t = (end_time * 1000) - NowTime.getTime() - a;
+        }
+        var h = Math.floor(t / 1000 / 60 / 60 % 24);
+        var m = Math.floor(t / 1000 / 60 % 60);
+        var s = Math.floor(t / 1000 % 60);
+        if (s >= 0) {
+            h < 10 ? $this.find('.hours').text('0' + (h)) : $this.find('.hours').text(h);
+            m < 10 ? $this.find('.minutes').text('0' + m) : $this.find('.minutes').text(m);
+            s < 10 ? $this.find('.seconds').text('0' + s) : $this.find('.seconds').text(s);
+        }
+        if(h==0 && m==0 && s==0) {
+            $.ajax({
+                type : "GET",
+                url:"{:U('team/changeStatus')}",
+                data:{
+                    found_id:found_id
+                },
+                success: function(data) {
+                    if (data.code = 200) {
+                        clearInterval(timer);
+                        location.reload();
+                    }
+                }
+            });
+
+        }
+    },1000);
+
+
+    // 获取物流信息最新
+    $(function () {
+        queryExpress();
+        function queryExpress() {
+            var shipping_code = "{$delivery['shipping_code']}";
+            var invoice_no = "{$delivery['invoice_no']}";
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "/index.php?m=Home&c=Api&a=queryExpress&shipping_code=" + shipping_code + "&invoice_no=" + invoice_no,//+tab,
+                success: function (data) {
+                    console.log(data);
+                    if (data.status == 200) {
+                        // $.each(data.data, function(i,o){
+                        if(data.data[0].context == ''){
+                            $('.logistics').css('display','none')
+                        }
+                        var a = data.data[0].context;
+                        var b = data.data[0].time ;
+                        $('.logisticsRight .addressCom').html(a);
+                        $('.logisticsRight .addressTime').html(b);
+                        // });
+                    }
+                    else {
+                        var c =data.message
+                        $('.logisticsRight .addressCom').html(c);
+                    }
+                }
+            });
+        }
+    })
+
+
+    $(function () {
+        if($(window).scrollTop()>150){
+            $('.tabChange').css('top','.88rem');
+        }else {
+            $('.tabChange').css('top','1rem');
+        }
+
+        $(window).scroll(function () {
+            if($(window).scrollTop()>150){
+                $('.tabChange').css('top','.88rem');
+            }else {
+                $('.tabChange').css('top','1rem');
+            }
+        })
+    });
+
+
+    $(function () {
+        var u = navigator.userAgent;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        if(isAndroid || !isiOS){  //安卓
+           // alert(111111111)
+        }else{  //苹果
+          // alert(22222222222)
+        }
+    })
+
+
+</script>
+<if $teamInfo.status == 2 || $teamInfo.status == 3>
+    <script>
+        var ShareImgUrl = "{$teamInfo.goods.original_img}"; //分享图标
+        var ShareTitle ="拼团火爆进行中，正品行货，超低价格，快来看看！" ; //分享标题
+        var ShareDesc = "{$teamInfo.goods.goods_name}"; //分享名称
+        var ShareLink = "http://{$_SERVER[HTTP_HOST]}/index.php/mobile/Team/joinGroup/found_id/{$teamInfo.found_id}"; //分享描述
+    </script>
+</if>
+<if $teamInfo.status == 1>
+        <script>
+            var ShareImgUrl = "{$teamInfo.goods.original_img}"; //分享图标
+            var ShareTitle ="我刚用￥{$teamInfo.price}拼了一件好货，就差{$teamInfo.needer-$teamInfo.join}人啦，快来加入！" ; //分享标题
+            var ShareDesc = "{$teamInfo.goods.goods_name}"; //分享名称
+            var ShareLink = "http://{$_SERVER[HTTP_HOST]}/index.php/mobile/Team/joinGroup/found_id/{$teamInfo.found_id}"; //分享描述
+        </script>
+    </if>
+<!-- 微信浏览器 调用微信 分享js-->
+
+    <include file="public/wx_share"/>
+</body>
+</html>

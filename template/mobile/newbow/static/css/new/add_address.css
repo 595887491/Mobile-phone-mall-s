@@ -1,0 +1,89 @@
+/*添加地址*/
+body{background-color: #F3F5F7;}
+.myorder{border-bottom: none;}
+.my .content .floor{background-color: transparent;}
+.myorder .content30{border-bottom: 1px solid #F0F2F5;}
+#default_addr{vertical-align: middle;margin-right: .2rem;}
+.edita{
+    width: 15rem;
+}
+.edita input{background-color: #FF407E;border-radius: .2rem;width: 15rem;font-size: .7rem}
+.tapassa {
+    height: 3.84rem;
+    background: inherit;
+    outline: none;
+    border: 0;
+    line-height: .85333rem
+}
+.fr{float: left;}
+.classreturn .content .return{z-index: 999;padding-right: 1rem;}
+.customer-messa .xianzd {
+    position: absolute;
+    color: #999;
+    bottom: -0.36rem;
+    right: .21333rem;
+    font-size: .55467rem
+}
+.off{color: #ddd;}
+.on{color: #FF407E;}
+.edit .myorder .order .fl input{font-size: .6rem;}
+.customer-messa textarea{margin: 0;border: none;height: 4rem;}
+.container .city p{color: #1E1B1B;}
+.edita{position: static;margin-left: 0;margin: 0 auto;}
+
+/*编辑收货地址*/
+@font-face {
+    font-family: 'iconfont';  /* project id 606850 */
+    src: url('//at.alicdn.com/t/font_606850_7dsmdvzsgeklnmi.eot');
+    src: url('//at.alicdn.com/t/font_606850_7dsmdvzsgeklnmi.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_606850_7dsmdvzsgeklnmi.woff') format('woff'),
+    url('//at.alicdn.com/t/font_606850_7dsmdvzsgeklnmi.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_606850_7dsmdvzsgeklnmi.svg#iconfont') format('svg');
+}
+.iconfont {
+    font-family: "iconfont" !important;
+    font-size: 20px;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+}
+.area_roll{
+    width: 100%;
+}
+body{background-color: #F3F5F7;}
+.myorder{border-bottom: none;}
+.my .content .floor{background-color: transparent;}
+.myorder .content30{border-bottom: 1px solid #F0F2F5;}
+#default_addr{vertical-align: middle;margin-right: .2rem;}
+.edita input{background-color: #FF407E;border-radius: 1.128rem;}
+.tapassa {
+    height: 3.84rem;
+    background: inherit;
+    outline: none;
+    border: 0;
+    line-height: .85333rem
+}
+.fr{float: left;}
+.classreturn .content .return{z-index: 999;padding-right: 1rem;}
+.customer-messa .xianzd {
+    position: absolute;
+    color: #999;
+    bottom: -0.36rem;
+    right: .21333rem;
+    font-size: .55467rem
+}
+.off{color: #ddd;}
+.on{color: #FF407E;}
+.edit .myorder .order .fl input{font-size: .6rem;}
+.customer-messa textarea{margin: 0;border: none;height: 4rem;}
+input[type="button"]{outline: none;}
+.edita{position: static;margin-left: 0;margin: 0 auto;}
+.container .city p{color: #1E1B1B;}
+.ed_shdele .lineq .sur{
+    background:#FF407E;
+
+}
+.ed_shdele .lineq .sur a{
+    color: #fff;
+}

@@ -1,0 +1,48 @@
+<include file="public/header" title="帮助中心"/>
+
+<style>
+    #content p{
+        text-align:left;
+    }
+</style>
+<div class="classreturn loginsignup ">
+    <div class="content">
+        <div class="ds-in-bl return">
+            <a href="javascript:history.back(-1)"><img src="__STATIC__/images/return.png" alt="返回"></a>
+        </div>
+        <div class="ds-in-bl search center">
+            <span>用户注册协议</span>
+        </div>
+        <!--<div class="ds-in-bl menu">-->
+            <!--<a href="javascript:void(0);"><img src="__STATIC__/images/class1.png" alt="菜单"></a>-->
+        <!--</div>-->
+    </div>
+</div>
+
+<!--详情-s-->
+<div class="xq_details">
+    <div class="sg">
+        <div class="spxq p">
+            <div id="content"> <!--可编辑区域开始-->
+                <div>
+                    <div style="margin-bottom: 25px;">
+                        <h2 style="height: 34px; line-height: 34px; border-bottom-color: rgb(233, 234, 236); border-bottom-width: 1px; border-bottom-style: solid;"><span
+                                style="color: rgb(60, 60, 60); padding-top: 4px; padding-bottom: 4px; padding-left: 10px; font-size: 14px; font-weight: bold;">{$article.title}</span>
+                        </h2>
+                        <img src="{$article.thumb}"/>
+                        <div style="padding: 20px 30px 0px; color: rgb(60, 60, 60); font-size: 12px;">
+                            {$article.content|htmlspecialchars_decode}
+                        </div>
+                    </div>
+                </div>
+                <!--可编辑区域结束-->
+            </div>
+        </div>
+    </div>
+</div>
+<!--详情-e-->
+<script src="__STATIC__/js/style.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript"></script>
+<include file="public/wx_share"/>
+</body>
+</html>

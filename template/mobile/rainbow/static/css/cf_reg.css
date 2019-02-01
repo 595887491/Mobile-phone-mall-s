@@ -1,0 +1,23 @@
+#cf_btn{
+    width: 4rem;
+    height: 1.5rem;
+    background-color: #F54E78;
+    color: white;
+    border-radius:.8rem ;
+    line-height: 1.5rem;
+    text-align: center;
+    margin-top: -.3rem;
+}
+#cf_sub{
+    background-color: #F54E78;
+}
+#cf_more_comment{
+    margin-top: .5rem;
+    line-height: .8rem;
+}
+#cf_logo{
+    margin-top: .5rem;
+}
+#cf_external{
+    margin-top: 2rem;
+}

@@ -1,0 +1,516 @@
+a{
+    text-decoration: none;
+    vertical-align: middle;
+    color: #1E1B1B;
+}
+.clearBoth{
+    clear:both;
+    overflow: hidden;
+}
+.fll{
+    float: left;
+}
+.frr{
+    float: right;
+}
+.contentRank{
+    width: 100%;
+    height: .88rem;
+    display: block;
+    line-height:.88rem;
+    background: #000000;
+    position: fixed;
+    top: 0;
+    z-index: 12;
+}
+.backLeft{
+    padding-left: .24rem;
+}
+.backRight{
+    padding-right: .24rem;
+}
+.backLeft img{
+    width: .17rem;
+    height: .31rem;
+    position: relative;
+    top: .18rem;
+}
+.yesRant{
+    font-size: .3rem;
+    color: #EEE19A;
+}
+.bannerRank{
+    width: 100%;
+    position: relative;
+    margin-top: .8rem;
+}
+.bannerRank img{
+    width: 100%;
+    height: 3.7rem;
+}
+.bannerRank>div{
+    font-size: .21rem;
+    color: #FFFFFF;
+    position: absolute;
+    bottom:0.28rem;
+    left: 0;
+    text-align: center;
+     width: 100%;
+}
+.activityRules{
+    width: 100%;
+    height: .5rem;
+    text-align: center;
+    background-color: #000;
+    line-height: .2rem;
+    margin-top: .1rem;
+}
+.activityRules img {
+    width:1.34rem;
+    height:.3rem;
+}
+.rankState{
+    width: 100%;
+    height: 3.68rem;
+    text-align: center;
+    position: relative;
+}
+.rankState img{
+    width: 5.8rem;
+    height: 3.68rem;
+}
+.rankStateOver{
+    width: 100%;
+    /*height: 3.68rem;*/
+    text-align: center;
+    position: relative;
+}
+.rankStateOver img{
+    width: 5.8rem;
+    height: 4.8rem;
+}
+.jackpotTime{
+    position: absolute;
+    top: .2rem;
+    left: 0;
+    width: 100%;
+    text-align: center;
+}
+.jackpotTime span{
+    font-size: .28rem;
+    color: #EEE19A;
+    margin-left: .05rem;
+}
+.jackStyle{
+    width: .34rem;
+    height: .34rem;
+    display: inline-block;
+    background:#EEE19A;
+    color: #74530E!important;
+    border-radius: .03rem;
+}
+.jackpot{
+    position: absolute;
+    top: 1rem;
+    left: 0;
+    width: 100%;
+}
+.jackpot span{
+    font-size: .3rem;
+    color: #EEE19A;
+    /*vertical-align: middle;*/
+}
+.jackpot img{
+    width: .26rem;
+    height: .26rem;
+    margin-left: .06rem;
+    margin-top: -.2rem;
+    vertical-align: middle;
+}
+.jackpotMoney{
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    top: 1.5rem;
+}
+.jackpotMoney span{
+    font-size: 1.08rem;
+    color: #EEE19A;
+}
+.rankImg{
+    width: 100%;
+    height: 1rem;
+    text-align: center;
+    margin-top: .3rem;
+}
+.rankImg img{
+    width: 5.8rem;
+    height: 1rem;
+}
+.myRank{
+    width: 100%;
+    /*height: 1.7rem;*/
+    text-align: center;
+    margin-top: .32rem;
+}
+.myRankCon{
+    width:96%;
+    /*height: 1.7rem;*/
+    background: #EEE19A;
+    margin: 0 auto;
+    border-radius: .1rem;
+}
+.myRankTop{
+    border-bottom: 2px solid #e4d38c;
+}
+
+.myRankTop th{
+    width: .3rem;
+    height: .7rem;
+    /*line-height: .7rem;*/
+}
+.myRankBom{
+    height: .7rem;
+    background: #EEE19A;
+    /*line-height: .7rem;*/
+    text-align: left;
+}
+.myRankBom td{
+
+}
+.myRankBom td span{
+    font-size: .24rem;
+    color: #1E1B1B;
+}
+.myRankBom td:nth-child(1){
+    height: .7rem;
+    width: 3rem;
+}
+.myRankBom td:nth-child(1) span{
+    font-size: .24rem;
+    color: #1E1B1B;
+
+    vertical-align: middle;
+}
+
+.myRankBom td:nth-child(1) img{
+     width: .5rem;
+     height: .5rem;
+     margin-left: .1rem;
+    vertical-align: middle;
+}
+
+.myRankBom td:nth-child(5){
+    line-height: .2rem;
+    position: relative;
+    top: .2rem;
+    left: 1.35rem;
+
+}
+.myRankBom td:nth-child(5) div{
+    height: .48rem;
+    padding-left: .2rem;
+}
+.myRankBom td:nth-child(5) div img{
+    width: .18rem;
+    height: .18rem;
+    vertical-align: middle;
+}
+.myRankBom td:nth-child(5) div span{
+    font-size: .24rem;
+    color: #A16E37;
+    height: .48rem;
+    line-height: .15rem;
+    vertical-align: middle;
+    padding-left: .05rem;
+}
+.myRankBom td:nth-child(6){
+    text-align: right;
+    padding-right: .24rem;
+}
+.myRankBom td:nth-child(6) span{
+    font-size: .24rem;
+    color: #1E1B1B;
+    font-weight: bold;
+}
+
+.fistRank{
+    margin-right: .9rem;
+    display: inline-block;
+    position: relative;
+
+}
+.fistRank img{
+    width: .18rem;
+    height: .18rem;
+}
+.fistRank span{
+    font-size: .24rem;
+    color: #1E1B1B;
+    /*margin-left: .05rem;*/
+    display: inline-block;
+}
+.posRankL{
+    margin-top: .12rem;
+    line-height: .9rem;
+    height: .9rem;
+}
+.posRankL>div{
+    height: .45rem;
+    line-height: .15rem;
+    text-align: left;
+}
+.posRankL>div img{
+
+}
+.posRankL>div>span{
+    font-size:.24rem;
+    color:#1E1B1B;
+    display: inline-block;
+    text-align: left;
+
+}
+.lastRank  span{
+    font-size: .24rem;
+    color: #1E1B1B;
+    font-weight: bold;
+}
+.rankList {
+    width: 100%;
+    height: auto;
+    margin-top: .5rem;
+    border-radius: .5rem;
+    margin-bottom: 1.5rem;
+
+}
+.rankListCon{
+    width: 96%;
+    background:#EEE19A;
+    margin: 0 auto;
+    border-radius: .1rem;
+}
+.listHeader{
+    padding: 0.2rem;
+}
+.listHeader th{
+    height: .65rem;
+    font-size: .24rem;
+    color: #B18A5F;
+    text-align: center;
+}
+/*.listHeader th:nth-child(1){*/
+    /*padding-left: .1rem;*/
+    /*width: .5rem;*/
+/*}*/
+/*.listHeader th:nth-child(2){*/
+    /*width: 1.8rem;*/
+/*}*/
+/*.listHeader th:nth-child(3){*/
+    /*width: 1.2rem;*/
+/*}*/
+/*.listHeader th:nth-child(4){*/
+    /*margin-left: .1rem;*/
+    /*width: 1.1rem;*/
+/*}*/
+/*.listHeader th:nth-child(5){*/
+    /*width: .6rem;*/
+/*}*/
+/*.listHeader th:nth-child(6){*/
+    /*width: 1.4rem;*/
+    /*padding-left: .2rem;*/
+/*}*/
+
+.listBodyRank{
+    width: .34rem;
+    height: .38rem;
+    vertical-align: middle;
+}
+.listBodyHeader{
+    width: .5rem;
+    height: .5rem;
+    border-radius: 50%;
+    vertical-align: middle;
+
+}
+.listBody td{
+    border-top: 0.02rem solid #e4d38c;
+    height: 1rem;
+    text-align: center;
+    /*padding: .18rem 0;*/
+}
+table td:first-child,.table th:first-child{width: 10%;font-size: .26rem;color: #1E1B1B}
+table td:nth-child(2),table th:nth-child(2){width: 30%;}
+table td:nth-child(3),table th:nth-child(3){width:15%;}
+table td:nth-child(4),table th:nth-child(4){width: 15%;}
+table td:nth-child(5),table th:nth-child(5){width: 15%;}
+table td:nth-child(6),table th:nth-child(6){width: 15%;}
+
+.listBody td:nth-child(3) span{
+    font-size: .24rem;
+    color:#A16E37;
+}
+.listBody td:nth-child(4) span{
+    font-size: .24rem;
+    color:#A16E37;
+}
+
+.listBody td:nth-child(5) div img{
+    width: .18rem;
+    height: .18rem;
+    vertical-align: middle;
+}
+.listBody td:nth-child(5) div span{
+    font-size: .24rem;
+    color: #A16E37;
+    height: .48rem;
+    line-height: .15rem;
+    vertical-align: middle;
+    padding-left: .05rem;
+}
+.listBody td:nth-child(6){
+    text-align: center;
+    padding-right: .24rem;
+}
+.listBody td:nth-child(6) span{
+    font-size: .24rem;
+    color: #1E1B1B;
+    font-weight: bold;
+    white-space: nowrap;
+
+}
+/*.listBody td:nth-child(1){*/
+    /*padding-left: .15rem;*/
+/*}*/
+.headerName{
+    color: #1E1B1B;
+    font-size: .24rem;
+    margin-left: .05rem;
+    vertical-align: middle;
+    white-space: nowrap;
+    overflow:hidden;
+}
+.myRankTitle{padding:0.2rem;}
+.myRankTitle span{font-size: 0.26rem;color: #1E1B1B}
+.myRankTitle span:last-of-type{font-size: 0.2rem;color: #A16E37;}
+table{width: 100%;}
+.Invitation{
+    width: 100%;
+    /*margin-top: .5rem;*/
+    /*margin-bottom: .2rem;*/
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    z-index: 999;
+    height: .98rem;
+    line-height: .98rem;
+    border-top: 2px solid #333;
+    background-color: #000;
+    z-index: 999;
+}
+.Invitation button{
+    height: .8rem;
+    width: 96%;
+    background: #EEE19A;
+    font-size: .3rem;
+    color: #1E1B1B;
+    /*margin-left: 2%;*/
+    text-align: center;
+    border-radius: .1rem;
+    margin-top: .1rem;
+}
+.rulesBg{
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    display: none;
+}
+.rulesCon{
+    position: absolute;
+    top:50%;
+    left: 50%;
+    width: 6.2rem;
+    height: 7.2rem;
+    background: #ffffff;
+    border-radius: .1rem;
+    margin-left:-3.1rem;
+    margin-top:-3.6rem;
+}
+.rulesHeader{
+    height: .79rem;
+    line-height: .79rem;
+    text-align: center;
+    position: relative;
+    border-bottom: 2px solid #EDEEF4;
+}
+.rulesHeader span{
+    font-size: .3rem;
+    color: #1E1B1B;
+}
+.rulesHeader img{
+    position: absolute;
+    right: .24rem;
+    top: .3rem;
+}
+.rulesBo{
+    border-bottom: 2px solid #EDEEF4;
+    overflow-y: auto;
+    height: 72%;
+}
+.rulesBo p{
+    font-size: .24rem;
+    color: #1E1B1B;
+    padding-left: .24rem;
+    padding-right: .24rem;
+}
+.rulesBo img{
+    width: 100%;
+}
+
+.rulesBtn button{
+    width: 5.3rem;
+    height: .8rem;
+    background: #A16E37;
+    color: #ffffff;
+    font-size: .36rem;
+    text-align: center;
+    border-radius: .1rem;
+    margin-left: .45rem;
+    margin-top: .2rem;
+}
+.rankExplainBg{
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    display: none;
+}
+.rankExplain{
+    position: absolute;
+    top:50%;
+    left: 50%;
+    width: 6.2rem;
+    height:4.3rem;
+    background: #ffffff;
+    border-radius: .1rem;
+    margin-left:-3.1rem;
+    margin-top:-1.8rem;
+}
+.rulesBoTwo{
+    border-bottom: 2px solid #EDEEF4;
+    height:1.8rem;
+    padding-top: .5rem;
+}
+.rulesBoTwo p{
+    font-size: .24rem;
+    color: #1E1B1B;
+    line-height: .4rem;
+    padding-left: .24rem;
+    padding-right: .24rem;
+}

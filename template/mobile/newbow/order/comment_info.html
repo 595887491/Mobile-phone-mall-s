@@ -1,0 +1,275 @@
+<include file="public/header" title="评论详情" body=""/>
+<include file="public/header_nav" title="评论详情" href="javascript:history.back(-1);"/>
+<link rel="stylesheet" href="__STATIC__/js/photoswipe/photoswipe.css"/>
+<link rel="stylesheet" href="__STATIC__/js/photoswipe/default-skin/default-skin.css"/>
+<link rel="stylesheet" href="__STATIC__/css/new/cart4.css">
+		<div class="assess-top detailremark">
+			<div class="maleri30 clearfix">
+                <if condition="$comment_info['is_anonymous'] eq 1">
+				<span class="user-portrait fl">
+					<img src="http://cdn.cfo2o.com/data/avatar/user_head_default.png">
+				</span>
+                <div class="fl">
+                    <p class="user-name" id="user-name">匿名用户</p>
+                    <p class="assess-date">{$comment_info['add_time']|date='Y-m-d H:i:s',###}</p>
+                 </div>
+                <else/>
+                    <span class="user-portrait fl">
+					 <img src="{$user.head_pic|default='http://cdn.cfo2o.com/data/avatar/user_head_default.png'}?x-oss-process=style/s150x150">
+				    </span>
+                    <div class="fl">
+                        <p class="user-name" id="user-name">{$comment_info.nickname}</p>
+                        <p class="assess-date">{$comment_info['add_time']|date='Y-m-d H:i:s',###}</p>
+                    </div>
+                </if>
+                <span class="comment-item-star fr">
+					<span class="real-star comment-stars-width{$comment_info.goods_rank}"></span>
+                </span>
+			</div>
+		</div>
+		<div class="assess-bottom detailcomment"> 
+			<div class="maleri30">
+				<p class="assess-content" style="width: 100%;margin-top: 0;">{$comment_info.content}</p>
+				<notempty name="comment_info.img">
+                    <div class="product-img-module">
+                        <a class="J_ping" report-eventid="MProductdetail_CommentPictureTab" report-pageparam="1725965683">
+                            <ul class="jd-slider-container gallery">
+                                <foreach name="comment_info.img" item="vm" key="km">
+                                    <li class="jd-slider-item product-imgs-li" data-key="{$km}" onclick="viewPhoto(this)">
+                                        <img src="{$vm}">
+                                    </li>
+                                </foreach>
+                            </ul>
+                        </a>
+                    </div>
+				</notempty>
+			</div>
+		</div>
+        <div class="cf_all_respone">
+            全部回复( <span id="reply_count">{$reply.count}</span> )
+        </div>
+		<div class="replaylist">
+            <div class="assess-top detailremark" id="replylist">
+                    <notempty name="reply.list">
+                        <foreach name="reply.list" item="vo">
+                            <div class="restrict">
+                                <div class="maleri30">
+                                    <div class="limitbox p">
+                                        <span class="user-portrait">
+                                            <img src="{$vo['user_head_img']}?x-oss-process=style/s150x150">
+                                        </span>
+                                         <span class="user-name" style="line-height: 1.4rem;">{$vo['user_name']}</span>
+                                        <span class="assess-date" style="float: right;color: #BFC1CD;">{$vo.reply_time|date='Y-m-d H:i:s',###}</span>
+                                    </div>
+                                    <p class="replay_text" style="margin-top: .41333rem;">{$vo['content']}</p>
+                                </div>
+                            </div>
+                        </foreach>
+                    </notempty>
+                </div>
+		</div>
+        <if condition="$comment_info.user_id neq $user_id">
+            <div class="he108">
+                <div class="answersubmit">
+                    <div class="maleri30" style="margin: 0 .32rem;">
+                        <input class="vautxt" type="text" name="content" id="content"  maxlength="180" placeholder="请输入评论" data-commentid="{$comment_id}"/>
+                      <div class="fr" style="width: 4rem;margin-top: .3rem;">
+                            <p class="fl" style="margin-top: .1rem;color: #5B5858;">
+                                <i class="iconfont ass-btns-icon" style="font-size: .9rem;">&#xe6ba;</i>
+                                <span class="" style="vertical-align: .1rem;">{$reply.count}</span>
+                            </p>
+                            <div class="der_font fr" style=" margin-right: .3rem;">
+                                <p class="keep">
+                                   <i class="iconfont <if condition="in_array($user_id,explode(',',$comment_info.zan_userid))">red</if>"">&#xe60d;</i>
+                                   <span style="font-size: .55rem;color: #5B5858;vertical-align:-.07rem;margin-left: -.1rem;">
+                                       <span id="span_zan" class="<if condition="in_array($user_id,explode(',',$comment_info.zan_userid))">red</if>"">{$comment_info.zan_num|default=0}</span>
+                                  </span>
+                               </p>
+                            </div>
+                       </div>
+                    </div>
+                </div>
+            </div>
+        </if>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe.
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides.
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar" style="padding: 10px;">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <!--<button class="pswp__button pswp__button&#45;&#45;share" title="Share"></button>-->
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="__STATIC__/js/photoswipe/photoswipe.js"></script>
+<script src="__STATIC__/js/photoswipe/photoswipe-ui-default.js"></script>
+<script type="text/javascript">
+    var comment_id = {$comment_id};
+    //点赞点亮
+    $('.der_font .keep').click(function(){
+        var that = $(this);
+        var user_id = getCookie('user_id');
+        if (user_id == '') {
+            layer.open({content:'请先登录',time:2,skin:'msg'});
+            return ;
+        }
+        var zan_num = parseInt($("#span_zan").text());
+        $.ajax({
+            type: "POST",
+            data: {comment_id: comment_id},
+            dataType: 'json',
+            url: "/index.php?m=Mobile&c=Order&a=ajaxZan",
+            success: function (res) {
+                if (res.status==1) {
+                    layer.open({content:res.msg,time:2,skin:'msg'})
+                    $('#span_zan').text(zan_num + 1);
+                    that.find('i').addClass('red')
+                } else {
+                    layer.open({content:res.msg,time:2,skin:'msg'})
+                }
+            },
+            error : function(res) {
+                if( res.status == "200"){ // 兼容调试时301/302重定向导致触发error的问题
+                    layer.open({content:'请先登录!',time:2,skin:'msg'})
+                    return;
+                }
+                layer.open({content:'请求失败!',time:2,skin:'msg'})
+                return;
+            }
+        });
+    })
+    //发布评论
+    $(document).on('keypress','#content',function(event){
+      if (event.keyCode==13){
+        var user_id = getCookie('user_id');
+        var user_name = "{$user[nickname]}";
+        var content = $('#content').val();
+        var to_name = $('#user-name').text();
+        if (user_id == '') {
+            layer.open({content:'请先登录',time:2,skin:'msg'});
+            return ;
+        }
+        if (content == ''){
+            layer.open({content:'请填写内容',time:2,skin:'msg'})
+        };
+        $.ajax({
+            type: "POST",
+            data: {comment_id:comment_id,parent_id:0,content:content,user_name:user_name,to_name:to_name},
+            dataType: 'json',
+            url: "/index.php?m=Mobile&c=Order&a=replyComment",
+            success: function (data) {
+                layer.open({content:data.msg,time:2,skin:'msg'});
+                if (data.status==1) {
+                var htmlcontent = '<div class="restrict"><div class="maleri30"><div class="limitbox p">' +
+                            '<span class="user-portrait"><img src="'+data.result["user_head_img"]+'"></span>' +
+                            '<span class="user-name">'+data.result["user_name"]+'</span>' +
+                            '<span class="assess-date" style="float: right">'+data.result["reply_time"]+'</span>' +
+                            // '<div class="limitbox p"><span class="">回复：'+data.result["to_name"]+'</span></div>'+
+                            '</div><p class="replay_text">'+data.result["content"]+'</p></div></div>';
+                    $('#replylist').prepend(htmlcontent);
+                    $('#content').val('');
+                    var reply_count = parseInt($('#reply_count').text());
+                    $('#reply_count').text(reply_count+1);
+                }
+            },
+            error : function(data) {
+                if( data.status == "200"){ // 兼容调试时301/302重定向导致触发error的问题
+                    layer.open({content:'请先登录!',time:2,skin:'msg'})
+                    return;
+                }
+                layer.open({content:'请求失败!',time:2,skin:'msg'})
+                return;
+            }
+        });
+        }
+    })
+</script>
+<script>
+    function viewPhoto(obj) {
+        var key = $(obj).data('key');
+        var imgList = $(obj).parent('ul').find('img');
+        var items = [];
+        var scrinWidth = $(window).width();
+        for (var i=0;i<imgList.length;i++) {
+            var naturalWidth = imgList[i].naturalWidth,
+                naturalHeight = imgList[i].naturalHeight;//获取图片的原始宽高
+            var widthScale = ((scrinWidth)/naturalWidth).toFixed(2);
+            items.push({src:$(imgList[i]).attr('src'),
+                w:naturalWidth*widthScale,
+                h:naturalHeight*widthScale
+            })
+        }
+        // console.log(items);
+        // return false;
+        var pswpElement = document.querySelectorAll('.pswp')[0];
+        // define options (if needed)
+        var options = {
+            // optionName: 'option value'
+            // for example:
+            index: key // start at first slide
+        };
+        // Initializes and opens PhotoSwipe
+        var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+        gallery.init();
+    }
+</script>
+	</body>
+</html>

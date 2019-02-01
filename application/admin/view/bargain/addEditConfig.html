@@ -1,0 +1,163 @@
+<include file="public/layout" />
+<style>
+    dd.opt table{
+        width: 100%;
+    }
+    dd.opt tr{
+        border: 1px solid #f4f4f4;
+        padding: 8px;
+    }
+    dd.opt tr td{
+        border: 1px solid #f4f4f4;
+    }
+    .ys-btn-close {
+        position: relative;
+        top: -12px;
+        left: -16px;
+        width: 18px;
+        height: 18px;
+        border: 1px solid #ccc;
+        line-height: 18px;
+        text-align: center;
+        display: inline-block;
+        border-radius: 50%;
+        z-index: 1;
+        background-color: #fff;
+        cursor: pointer;
+    }
+    .selected-group-goods {
+        background-color: #FFF;
+        width: 162px;
+        padding: 9px;
+        margin-bottom: 10px;
+        border: solid 1px #E6E6E6;
+        box-shadow: 2px 2px 0 rgba(153,153,153,0.1);
+    }
+    .ncap-form-default input{
+        width:40px;}
+
+</style>
+<load href="__ROOT__/public/plugins/Ueditor/ueditor.config.js"/>
+<load href="__ROOT__/public/plugins/Ueditor/ueditor.all.min.js"/>
+<script type="text/javascript" charset="utf-8" src="__ROOT__/public/plugins/Ueditor/lang/zh-cn/zh-cn.js"></script>
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<style type="text/css">
+    html, body {
+        overflow: visible;
+    }
+</style>
+
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>砍价管理 - 添加或编辑砍价金额模板配置</h3>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="handleposition" method="post">
+        <input type="hidden" name="template_id" value="{$info.template_id}">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>模板名称</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="template_name" value="{$info.template_name | default=''}" placeholder="模板名称" class="input-txt">
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>砍价类型</label>
+                </dt>
+                <dd class="opt">
+                    <input name="act_type" value="0" class="choseT0" <if condition="$info.act_type eq 0">checked</if> type="radio"><label>免费拿</label>
+                    <input name="act_type" value="1" class="choseT1" <if condition="$info.act_type eq 1">checked</if> type="radio"><label>底价购</label>
+                </dd>
+            </dl>
+
+            <h4>帮好友砍价规则配置</h4> <br>
+            <h5 style="color: #CC3366">砍价免费拿</h5>
+            新用户-
+            <php>for($i=0;$i<$bargain_num;$i++){</php>
+                第{$i+1}刀:
+                <input type="text" name="new_follow_price_min_percent[]" value="{$info.new_follow_price_min_percent[$i]}" >% -
+                <input type="text" name="new_follow_price_max_percent[]" value="{$info.new_follow_price_max_percent[$i]}">%  &nbsp&nbsp
+            <php>}</php>
+             <br/><br/>
+
+            老用户-
+            <php>for($i=0;$i<$bargain_num;$i++){</php>
+                第{$i+1}刀:
+                <input type="text" name="old_follow_price_min_percent[]" value="{$info.old_follow_price_min_percent[$i]}">% -
+                <input type="text" name="old_follow_price_max_percent[]" value="{$info.old_follow_price_max_percent[$i]}">%  &nbsp&nbsp
+                下限金额:
+                <input type="text" name="old_follow_price_min[]" value="{$info.old_follow_price_min[$i]}" >元  &nbsp
+                上限金额:
+                <input type="text" name="old_follow_price_max[]" value="{$info.old_follow_price_max[$i]}">元  &nbsp&nbsp
+            <php>}</php>
+
+             <br/> <br> <br>
+
+
+            <h4>自己砍价规则配置</h4> <br>
+            <h5 style="color: #CC3366">砍价免费拿</h5>
+            <php>for($i=0;$i<4;$i++){</php>
+                第{$i+1}刀:
+                <input type="text" name="found_price_min_percent[]" value="{$info.found_price_min_percent[$i]}">% -
+                <input type="text" name="found_price_max_percent[]" value="{$info.found_price_max_percent[$i]}">%  &nbsp&nbsp
+            <php>}</php>
+
+            <div class="bot"><a id="submit" onsubmit="sb()" class="ncap-btn-big ncap-btn-green">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+
+    function verifyForm(){
+        $('span.err').hide();
+        $.ajax({
+            type: "POST",
+            url: "{:U('Admin/Bargain/addEditConfig')}",
+            data: $('#handleposition').serialize(),
+            async:false,
+            dataType: "json",
+            error: function () {
+                layer.alert("服务器繁忙, 请联系管理员!");
+            },
+            success: function (data) {
+                if (data.status == 1) {
+                    layer.msg(data.msg, {
+                        icon: 1,
+                        time: 1000
+                    }, function(){
+                        location.href = "{:U('Admin/Bargain/amountConfig')}";
+                    });
+                } else {
+                    layer.msg(data.msg, {icon: 2,time: 1000});
+                }
+            }
+        });
+    }
+
+
+
+    //商品删除按钮事件
+    $(function () {
+        $(document).on("click", '.ys-btn-close', function (e) {
+            $(this).parent().remove();
+        })
+    })
+
+    $('#submit').click(function () {
+        verifyForm();
+    });
+
+
+</script>
+</body>
+</html>

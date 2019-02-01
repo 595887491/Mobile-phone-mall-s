@@ -1,0 +1,31 @@
+<foreach $list as $v >
+    <div class="team-list">
+        <a href="{:U('Mobile/Team/info',['team_id' => $v['team_id'] , 'goods_id' => $v['goods_id']])}">
+        <div class="fl imgs">
+            <img src="{$v->original_img}" alt="">
+        </div>
+        <div class="fr team-list-right">
+            <div class="title">
+                <if condition="$v['is_shipping']"><span>包邮</span></if>
+                {$v->goods_name}
+            </div>
+            <if condition="$v['goods_remark']">
+                <p class="complete">{$v->goods_remark}</p>
+            </if>
+            <div class="people">
+                <span class="one">{$v->needer}人团</span>
+                <span>{:count($v->team_found) + count($v->team_follow) + $v->virtual_num}人已团</span>
+            </div>
+            <div class="bottom">
+                <div class="fl">
+                    <p>
+                        <span>￥</span><span>{$v->team_price}</span>
+                    </p>
+                    <span>单买:￥{$v->shop_price}</span>
+                </div>
+                <a href="{:U('Mobile/Team/info',['team_id' => $v['team_id'] , 'goods_id' => $v['goods_id']])}" class="fr">去开团</a>
+            </div>
+        </div>
+        </a>
+    </div>
+</foreach>

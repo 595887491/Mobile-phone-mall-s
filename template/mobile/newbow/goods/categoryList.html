@@ -1,0 +1,92 @@
+<include file="public/header" title="所有分类"/>
+<script src="__STATIC__/js/jquery.lazyload.js" type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" href="__STATIC__/css/new/categorylist.css">
+<div class="classreturn loginsignup">
+    <div class="content" style="margin: 0;">
+        <div class="ds-in-bl return">
+            <a href="{:U('Mobile/Index/index')}"><img src="__STATIC__/images/return.png" alt="返回"></a>
+        </div>
+        <div class="classreturn" style="background: #fff;">
+            <div class="content">
+
+                <div class="ds-in-bl search">
+                    <form action="" method="post">
+                        <div class="sear-input">
+                            <a href="{:U('Goods/ajaxSearch')}">
+                                <i class="iconfont" style="font-size: .6rem;">&#xe60b;</i>
+                                <input type="text" value="" placeholder="请输入搜索内容（例：雅诗兰黛）">
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="ds-in-bl menu">
+            <a href="{:U('Mobile/User/message_notice')}">
+                <i class="iconfont">&#xe6ba;</i>
+                <if condition="$msg_num neq 0">
+                    <span class="notice">{$msg_num}</span>
+                </if>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="flool classlist">
+    <div class="fl category1"  style="position:relative; overflow-y: scroll; height: 100%;">
+        <ul style="background-color: #fff;">
+            <assign name="m" value="0"/>
+            <foreach name="goods_category_tree" item="vo" key="k">
+                <if condition="$vo[level] eq 1">
+                    <li data-index="{$m}">
+                        <a href="javascript:void(0);" <if condition="$m eq 0"></if> data-id="{$m++}">{$vo['mobile_name']|getSubstr=0,12}</a>
+                    </li>
+                </if>
+            </foreach>
+        </ul>
+    </div>
+    <div class="fr category2" style="position:relative; overflow-y: scroll; height: 100%;" id="category2" >
+        <assign name="j" value="0"/>
+        <foreach name="goods_category_tree" key="kk" item="vo">
+            <div class="branchList" >
+                <!--广告图-s-->
+                <div class="tp-bann"  data-id="{$j++}">
+                    <adv  limit="1" item="v" pid="401">
+                        <a href="{$v.ad_link}" <if condition="$v['target'] eq 1">target="_blank"</if> >
+                        <img src="{$v[ad_code]}" title="{$v[title]}" style="{$v[style]}">
+                        </a>
+                    </adv>
+                </div>
+                <!--广告图-e-->
+                <!--分类-s-->
+                <div class="tp-class-list" style="margin: .21067rem .39867rem 0 .39867rem">
+                    <foreach name="vo.tmenu" item="v2" key="k2">
+                        <h4><a href="{:U('Mobile/Goods/goodsList',array('id'=>$v2[id]))}" >· {$v2['name']} ·</a></h4>
+                        <ul class="tp-category">
+                            <foreach name="v2.sub_menu" item="v3">
+                                <li>
+                                    <a href="{:U('Mobile/Goods/goodsList',array('id'=>$v3[id]))}">
+                                        <!--<img data-original="{$v3['image']|default='__STATIC__/images/zy.png'}?x-oss-process=style/s01" class="lazy"/>-->
+                                        <!--<img src="{$v3['image']|default='__STATIC__/images/zy.png'}?x-oss-process=style/s01" class="lazy"/>-->
+                                        <img src="__STATIC__/images/aa.png" lazyload="true" data-original="{$v3['image']|default='__STATIC__/images/zy.png'}?x-oss-process=style/s340x340" class="image-item"/>
+                                        <p>{$v3['name']}</p>
+                                    </a>
+                                </li>
+                            </foreach>
+                        </ul>
+                    </foreach>
+                </div>
+                <!--分类-e-->
+            </div>
+        </foreach>
+    </div>
+</div>
+
+<!--底部导航-start-->
+<script>
+    var ShareImgUrl = "https://{$_SERVER[HTTP_HOST]}__STATIC__/images/logo_share.png"; //分享图标
+    var ShareTitle = "尚美优品"; //分享标题
+    var ShareDesc = "尚美缤纷100+大牌,3000+优品,随你挑选"; //分享描述
+</script>
+<include file="public/footer_nav"/>
+<script src="__STATIC__/js/js/categoryList.js"></script>

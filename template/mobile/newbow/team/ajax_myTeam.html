@@ -1,0 +1,106 @@
+<volist name="teamList" id="vo">
+    <div class="myTeamList <if $vo.status == 1>testtest</if> " <if $vo.status == 1>data-start-time="{$vo.startTime}" data-end-time="{$vo.found_end_time}"  data-id="{$vo.found_id}"</if>>
+    <a href="{:U('team/myInfo')}?found_id={$vo.found_id}">
+        <!--上半部分-->
+        <div class="listComment">
+            <div class="fl listLeft">
+                <img src="__STATIC__/images/teamion.png" alt="">
+                <span>尚美自营</span>
+            </div>
+            <div class="fr listRight">
+                <if $vo.orderStatus.pay_status == 1 &&
+                    $vo.orderStatus.shipping_status == 0 && $vo.status == 2>
+                    <span style="color: #F27B12">待发货</span>
+                </if>
+                <if $vo.orderStatus.shipping_status egt 1 &&
+                    $vo.orderStatus.order_status lt 2 && $vo.status == 2>
+                    <span style="color: #FF407E">待收货</span>
+                </if>
+                <if $vo.orderStatus.order_status == 2 && $vo.status == 2>
+                    <span style="color: #F27B12">待评价</span>
+                </if>
+                <if $vo.orderStatus.order_status == 4 && $vo.status == 2>
+                    <span style="color: #5B5858">已完成</span>
+                </if>
+                <if $vo.orderStatus.pay_status != 3 && $vo.status == 3>
+                    <span style="color: #F27B12">待退款</span>
+                </if>
+                <if $vo.orderStatus.pay_status == 3>
+                    <span style="color: #5B5858">已退款</span>
+                </if>
+                <if $vo.status == 1 >
+                    <span class="hms">
+                        <span style="color: #5B5858">还差<span style="color: #D50D16;font-weight: 600">{$vo.info.needer-$vo.join}</span>人 剩余</span>
+                        <span id="hours" class="hours hmsSpan">00</span>
+                        <span style="background-color: transparent;color: #D5D7E2;font-size: .35rem;font-weight: 700;" >:</span>
+                        <span id="minte" class="minutes hmsSpan">00</span>
+                        <span style="background-color: transparent;color: #D5D7E2;font-size: .35rem;font-weight: 700;" >:</span>
+                        <span id="second" class="seconds hmsSpan">00</span>
+                        <span style="color: #5B5858">结束</span>
+                    </span>
+                </if>
+            </div>
+        </div>
+        <!--中间部分-->
+        <div class="listMiddle">
+            <div class="fl listMiddleLeft">
+                <img src="{$vo.info['original_img']}" alt="">
+                <!--拼团中的状态的图片-->
+                <if $vo.status == 1>
+                    <img src="__STATIC__/images/teamState_2.png" class="stateImg" alt="">
+                </if>
+                <!--失败状态的图片-->
+                <if $vo.status == 3>
+                    <img src="__STATIC__/images/teamState_1.png" class="stateImg" alt="">
+                </if>
+                <!--成功状态的图片-->
+                <if $vo.status == 2>
+                    <img src="__STATIC__/images/teamSuess.png" class="stateImg" alt="">
+                </if>
+            </div>
+            <div class="fr listMiddleRight">
+                <p class="listRightP">{$vo.info['goods_name']}</p>
+                <p class="listNum">{$vo.info['item_id']['key_name']}</p>
+                <p class="listMoney"><span>￥{$vo.info['team_price']}</span><span>单买￥{$vo.info['shop_price']}</span></p>
+
+                <div class="listRightNum">
+                    <span>x{$vo.goodsNum}</span>
+                </div>
+            </div>
+        </div>
+        <!--下半部分-->
+        <div class="listBottom">
+            <a href="{:U('team/myInfo')}?found_id={$vo.found_id}">
+                <button class="fr">拼团详情</button>
+            </a>
+            <if $vo.orderStatus.shipping_status egt 1 &&
+                $vo.orderStatus.order_status lt 2 && $vo.status == 2>
+                <a href="{:U('Order/express')}?order_id={$vo.order_id}">
+                    <button class="fr">查看物流</button>
+                </a>
+            </if>
+            <if $vo.orderStatus.order_status == 2>
+                <a href="{:U('Mobile/Order/add_comment')}?rec_id={$vo.recId}">
+                    <button class="fr">评价</button>
+                </a>
+            </if>
+            <if $vo.orderStatus.shipping_status egt 1 && $vo.orderStatus.order_status lt 2 && $vo.status == 2>
+                <a>
+                    <button class="fr" onclick="playSus({$vo.order_id})">确认收货</button>
+                </a>
+            </if>
+        </div>
+        <!--确认收货-s-->
+        <div class="losepay class_{$vo.order_id} closeorder">
+            <div class="teamConfirm">
+                <p class="con-lo">确定收货吗?</p>
+                <div class="con">
+                    <a class="ax fl">取消</a>
+                    <a class="are fr" href="{:U('Order/order_confirm')}?id={$vo.order_id}">确认</a>
+                </div>
+            </div>
+        </div>
+        <!--确认收货-e-->
+    </a>
+    </div>
+</volist>

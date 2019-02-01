@@ -1,0 +1,57 @@
+body{background-color: #F3F5F7;}
+.address .jd_listaddless{background-color: #fff;margin-top: .3rem;color: #1E1B1B;}
+.address .jd_listaddless:first-of-type{margin-top: 0;}
+.jd_listaddless .name{width: auto;}
+.jd_listaddless .name h1{padding-top: .1rem;}
+.jd_listaddless .name h1,.jd_listaddless .numberaddress .similars{font-size: .6rem;}
+.jd_listaddless .numberaddress .similars{line-height: .8rem;}
+.jd_listaddless .numberaddress{width: auto;padding: 0;border-bottom: 1px solid #F0F2F5;}
+.jd_listaddless .editdiv .eedit{position: static;display: block;width: 1rem;height: 1rem;}
+.jd_listaddless .number{font-size:.6rem;padding-top: .1rem;}
+.jd_listaddless .editdiv{position: static;}
+.jd_listaddless .maleri30{overflow: visible;}
+.default{font-size: .5rem;background-color: #FF407E;color: #fff;padding: .2rem .2rem;margin-top: .2rem;}
+.editdiv .bj{font-size: .55rem;    width: 2rem;height: 1rem;line-height: 1rem;
+    border: 1px solid #BFC1CD;color: #1E1B1B;background: none;outline: none;}
+.createnew{
+    position: fixed;
+    bottom: 0;
+    left:0;
+    background-color:#fff;
+    width:100%;
+    margin-left:0;
+    height: 2.4rem;
+    line-height: 1.8rem;
+    padding-top: .3rem;
+}
+.createnew a{
+    border-radius: 0.2rem;
+    background-color:#FF407E;
+    color: #fff;
+    font-size: .7rem;
+    /*display: inline-block;*/
+    width: 92%;
+    margin-left: 4%;
+    height: 1.8rem;
+}
+.createnew a i{font-size:.6rem;color:#1E1B1B; padding-right: .2rem;vertical-align: 0;}
+.jd_listaddless .name h1, .jd_listaddless .numberaddress .similars{
+    font-size: .65rem;
+}
+.editdiv .bj {
+    font-size: .55rem;
+    width: 2.2rem;
+    height: 1.2rem;
+    line-height: 1rem;
+    border: 1px solid #BFC1CD;
+    color: #1E1B1B;
+    background: none;
+    outline: none;
+    margin-left: .8rem;
+    border-radius: .1rem;
+}
+.loginsignup {
+    position: fixed;
+    top: 0;
+    z-index: 9999;
+}

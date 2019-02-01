@@ -1,0 +1,26 @@
+.apply_agreement{
+    margin-bottom: 2rem;
+}
+.apply_agreement img{
+    width: 100%;
+}
+.success_partner button{
+    position: fixed;
+    bottom: 0;
+}
+.success_partner button{
+    width: 100%;
+    height: 2rem;
+    font-size: .6rem;
+    color: white;
+    text-align: center;
+    line-height: 2rem;
+    background: #FF407E;
+    border: none;
+    box-shadow: .1rem 0.1rem 0 2px #eee;
+    border-top: 2px solid #f1f5f8;
+}
+.classreturn{
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}

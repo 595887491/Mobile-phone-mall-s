@@ -1,0 +1,11 @@
+<foreach name="goods_list" item="vo" key="k">
+    <a href="{:U('Mobile/Goods/goodsInfo',['id'=>$vo['goods_id']] )}">
+        <div class="guessItem">
+            <img class="guessItemImg" src="{$vo.original_img}?x-oss-process=style/s340x340" alt="">
+            <div class="freeShop"><img src="__STATIC__/images/freeShipp.png" alt=""></div>
+            <p class="guessTitle">{$vo.goods_remark}</p>
+            <p class="guessCom">{$vo.goods_name}</p>
+            <div class="guessItemPic"><span style="color: #4E24A8">¥</span><span style="font-size: .7rem;color: #4E24A8;font-weight: 600">{$vo[shop_price]}</span><span style="color: #BFC1CD;margin-left: .2rem;text-decoration: line-through">¥{$vo[market_price]}</span></div>
+        </div>
+    </a>
+</foreach>

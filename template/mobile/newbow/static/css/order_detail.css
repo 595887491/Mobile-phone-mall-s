@@ -1,0 +1,157 @@
+
+.order-static i{
+    font-size: .8rem;
+    vertical-align: middle;
+    margin-left: .6rem;
+}
+.order_s{padding: 0 .64rem;border-top: 1px solid #F0F2F5;margin-top: .5rem;font-size:.6rem;color: #1E1B1B;line-height: 1.5rem;}
+.edit_gtfix{color: #1E1B1B;font-size: .55rem;}
+.edit_gtfix .namephone {
+    width: 90%;
+    margin-top: .2rem;
+}
+.edit_gtfix .namephone .top{font-size: .6rem;}
+body{background-color: #F3F5F7;}
+.edit_gtfix .namephone .top .le{margin-left: 0;width: 7rem;}
+.edit_gtfix .namephone ._bot span{margin-left: 0;color: #1E1B1B;font-size: .6rem;line-height: .7rem;display: block;}
+.qqz{position: fixed;bottom: 0;left: 0;width: 100%;}
+.qqz a{border: 1px solid #BFC1CD;color: #1E1B1B; border-radius: .11333rem;height: 1.5rem;
+    display: inline-block;padding: 0;width: 4rem;text-align: center;line-height: 1.5rem;}
+.qqz .closeorder_butt{border-color: #F5316F;color: #F5316F;}
+.receiving{width: 80%;text-overflow: ellipsis;overflow: hidden;padding-top: .1rem; white-space: nowrap;text-align: left;}
+.shopprice .img_or img{ width: 3.43333rem;height: 3.43333rem;border: none;}
+.shopprice .fon_or,.shopprice .price_or{margin-top: .76267rem;}
+.shopprice .fon_or div span.bac{padding: 0;color: #BFC1CD;}
+.shopprice .fon_or h2{color: #1E1B1B;font-size: .62rem;}
+.shopprice .fon_or .num{font-size: .5rem;color: #1E1B1B;padding-left: .2rem;margin-top: .6rem;}
+.xx-list-top{border-bottom: 1px solid #F0F2F5;padding: .3rem 0;}
+.xx-list-bottom{border-top: 1px solid #F0F2F5;padding: .3rem 0;}
+.xx-list-top p,.xx-list-bottom p{color: #5B5858;}
+.leave_msg{width: 80%;border: none;height: 2rem;outline: none;    margin-top: -.1rem;padding: .1rem;}
+.closeorder .con-lo{line-height: 1.5;}
+.losepay {
+    display: none;
+    z-index: 999;
+    width: 12rem;
+    height: 3.5rem;
+    background-color: white;
+    position: fixed;
+    bottom: 0;
+    top: 50%;
+    margin-top: -3rem;
+    left: 2rem;
+    border-radius: .3rem;
+}
+.losepay .con-lo{text-align: center}
+.shopprice .fon_or{ width: 7.53333rem;padding-top: .1rem;}
+.cf_comment{
+    padding-bottom: .6rem;
+    padding-top: .6rem;
+    font-size: .65rem;
+    color: #1E1B1B;
+    background-color: white;
+    padding-left: .6rem;
+
+}
+.cf_comment_m{
+    padding-bottom: .6rem;
+    padding-top: .6rem;
+    font-size: .65rem;
+    color: #1E1B1B;
+    background-color: white;
+    padding-left: .6rem;
+    margin-top: .5rem;
+
+}
+
+.shopprice .fon_or{
+    width: 10.5rem;
+    padding-top: 0;
+}
+.shopprice .fon_or h2 {
+    color: #1E1B1B;
+    font-size: .62rem;
+    overflow: hidden;
+}
+.classreturn{
+    box-shadow:none;
+    -webkit-box-shadow: none;
+}
+.shopprice .fon_or h2 {
+    color: #1E1B1B;
+    font-size: .62rem;
+    height: 1.5rem;
+    line-height: .8rem;
+    overflow: hidden;
+}
+
+.cf_forward_bg{
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.5);
+    position: fixed;
+    top:0;
+    left: 0;
+    z-index: 99999;
+    display: none;
+}
+.cf_forward{
+    width: 80%;
+    height: 11rem;
+    background: white;
+    position: absolute;
+    top:7rem;
+    left: 1.6rem;
+    border-radius: .2rem;
+    /*box-shadow:0 0.1rem 0.5rem 1px #eee;*/
+    z-index: 9999;
+    text-align: center;
+}
+
+.forward_first{
+    font-size: .7rem;
+    color: #1E1B1B;
+    text-align: center;
+    line-height: 2rem;
+    border-bottom: 2px solid #f1f4f5;
+}
+.forward_first_img{
+    position: absolute;
+    top: .7rem;
+    right: .6rem;
+    width: .5rem;
+    height: .5rem;
+}
+.sever_img{
+    width: 2rem;
+    height: 2rem;
+}
+.shopprice .img_or img{
+    border: none;
+}
+.con{
+    border-top: 1px solid #f1f4f5;
+    width: 12rem;
+    /* overflow: hidden; */
+    background: #f1f1f1;
+    height: 1.8rem;
+    border-radius: .15rem;
+}
+.con a{
+    display: inline-block;
+    /* padding: .3rem .6rem; */
+    width: 4.5rem;
+    height: 1.8rem;
+    text-align: center;
+    line-height: 1.8rem;
+    /* border: 1px solid red; */
+    /* margin-top: .3rem; */
+    font-size: .7rem;
+}
+.ax{
+    margin-left: 1.5rem;
+    border-right: 1px solid #e1e1e1;
+}
+.are{
+    margin-right: 1rem;
+}

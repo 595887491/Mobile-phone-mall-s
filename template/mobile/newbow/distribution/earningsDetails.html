@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>收益明细</title>
+    <link rel="stylesheet" href="__STATIC__/css/style.css">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/categoryList.css"/>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/mobile-util.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
+    <link rel="stylesheet" href="__STATIC__/css/new/earningsDetails.css">
+</head>
+
+<body>
+<div class="classreturn loginsignup ">
+    <div class="content">
+        <div class="ds-in-bl return">
+            <a href="javascript:history.back()"><img src="__STATIC__/images/return.png" alt="返回"></a>
+        </div>
+        <div class="ds-in-bl search center">
+            <span style="font-size: .7rem;">收益明细</span>
+        </div>
+        <div class="ds-in-bl menu">
+          <a href="{:U('Mobile/distribution/statisticsEarns')}"><i class="iconfont details">&#xcc6c1;</i></a>
+        </div>
+    </div>
+</div>
+<div style="height: 1.87733rem;"></div>
+<div class="cf_top">
+    <i class="iconfont" onclick="opened()">&#xa622;</i>
+    <p class="ft70" style="margin-top: .3rem;">今日收益（含待返利）</p>
+    <p class="ft100" style="margin: .52rem 0;">{$order_total_today + $profit_total_today}</p>
+    <p class="ft62">
+        <span>本月收益：{$month_total_earns}</span>
+        <span>累计收益：{:sprintf("%.2f",$current_user['user_earnings'] + $current_user['agent_partner_earnings'] + $current_user['wait_income'])}</span>
+    </p>
+</div>
+<if condition="$current_user.identity.agent eq 1">
+  <div class="cf_nav">
+    <ul>
+        <li class="active" data-p="1" data-type="order">
+            <a href="javascript:;">
+                订单返利收益
+            </a>
+        </li>
+        <li class="" data-p="1" data-type="member">
+            <a href="javascript:;">
+                发展合伙人收益
+            </a>
+        </li>
+    </ul>
+    <i class="nav-flag-bar"></i>
+</div>
+</if>
+<!--加载更多S-->
+<div class="ranking_wrap" id="member" style="display: none;">
+    <notempty name="member_earnings_rows">
+    <foreach name="member_earnings_rows " item="user" key="k">
+            <div class="list">
+                <div class="timer id_{$k}" id="id_{$k}">
+                    <span class="list-timer">
+                        <if condition="date('Y') == date('Y',$k)">
+                            {:date('m月d日',$k)}
+                            <else/>
+                            {:date('Y年m月d日',$k)}
+                         </if>
+                    </span>
+                    <span>合计{$every_day_profit_earns[$k]}</span>
+                </div>
+                <foreach name="user" item="vv" key="kk">
+                    <div class="ranking_list" data-fromUserId="{$vv.from_user_id}" data-logId="{$vv.id}">
+                        <div class="ranking_list_left">
+                            <div class="avatar fl">
+                                <img src="{$vv.head_pic|default='http://cdn.cfo2o.com/data/avatar/user_head_default.png'}?x-oss-process=style/s150x150" alt="">
+                            </div>
+                            <div class="msg fl">
+                                <p class="clearfixs">
+                                    <span class="c1">{$vv.nickname}</span>
+                                    <if condition="$vv.nickname != $vv.mobile">
+                                      <span style="margin-left: .3rem;color: #BFC1CD;vertical-align: -.1rem;">{$vv.mobile}</span>
+                                    </if>
+                                    <span class="fr money-wrap">
+                              <span class="m">{:sprintf("%.2f", floatval($vv.profit_money))}</span>
+                            </span>
+                                </p>
+                                <p>
+                                    <if condition="$vv.is_divided eq 1">
+                                        <span style="color: #BFC1CD;font-size: .58rem;">
+                                            <if condition="date('Y') == date('Y',$k)">
+                                            {:date('m-d H:i', $vv.add_time)}
+                                            <else/>
+                                             {:date('Y-m-d H:i', $vv.add_time)}
+                                            </if>
+                                        </span>
+                                        <else/>
+                                        <span style="color: #BFC1CD;font-size: .58rem;">
+                                             <if condition="date('Y') == date('Y',$k)">
+                                            {:date('m-d H:i', $vv.add_time)}
+                                            <else/>
+                                             {:date('Y-m-d H:i', $vv.add_time)}
+                                            </if>
+                                        </span>
+                                    </if>
+                                    <span class="fr" style="font-size: .72rem;color: #1E1B1B;">
+                                 <span class="fr" style="font-size: .55rem;color: #BFC1CD;">
+                                    <if condition="$vv.profit_type eq 1">发展直营合伙人奖励
+                                    <elseif condition="$vv.profit_type eq 2">
+                                        <if condition="$current_user['agent_level'] == 1">
+                                            发展区县合伙人奖励
+                                            <elseif condition="$current_user['agent_level'] == 2">
+                                                发展直营合伙人奖励
+                                        </if>
+                                    <elseif condition="$vv.profit_type eq 3"/>
+                                        <if condition="$current_user['agent_level'] == 3">发展直营合伙人奖励
+                                            <else/">发展镇/街道办合伙人奖励
+                                        </if>
+                                    </if>
+                                </span>
+                            </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </foreach>
+            </div>
+        </foreach>
+        <else/>
+        <div class="cf_empty">
+            <img src="__STATIC__/images/empty_earnings_details.png" alt="" style="pointer-events: none;">
+            <p>客官大大！暂无相关信息</p>
+        </div>
+    </notempty>
+</div>
+
+<div class="ranking_wrap" id="order" style="display: block;">
+    <notempty name="order_earnings_rows">
+    <foreach name="order_earnings_rows" item="user" key="k">
+        <div class="list">
+            <div class="timer id_{$k}" id="id_{$k}">
+                <span class="list-timer">
+                      <if condition="date('Y') == date('Y',$k)">
+                            {:date('m月d日',$k)}
+                            <else/>
+                            {:date('Y年m月d日',$k)}
+                       </if>
+                   </span>
+                <span>合计{$every_day_order_earns[$k]}</span>
+            </div>
+            <foreach name="user" item="vv" key="kk">
+           <div class="ranking_list" data-fromUserId="{$vv.from_user_id}" data-logId="{$vv.id}">
+                <div class="ranking_list_left">
+                    <div class="avatar fl">
+                        <img src="{$vv.head_pic|default='http://cdn.cfo2o.com/data/avatar/user_head_default.png'}?x-oss-process=style/s150x150" alt="">
+                    </div>
+                    <div class="msg fl">
+                        <p class="clearfixs">
+                            <span class="c1">{$vv.nickname}</span>
+                            <if condition="$vv.nickname != $vv.mobile">
+                              <span style="margin-left: .3rem;color: #BFC1CD;vertical-align: -.1rem;">{$vv.mobile}</span>
+                            </if>
+                            <span class="fr money-wrap">
+                             <if condition="$vv.is_divided neq 1">
+
+                              <span class="wait"><i class="iconfont">&#xa622;</i>待返利</span>
+                             </if>
+                              <span class="m">{:sprintf("%.2f", floatval($vv.divide_money))}</span>
+                            </span>
+                        </p>
+                        <p>
+                            <if condition="$vv.is_divided eq 1">
+                                <span style="color: #BFC1CD;font-size: .58rem;">
+                                    <if condition="date('Y') == date('Y',$k)">
+                                            {:date('m-d H:i', $vv.add_time)}
+                                            <else/>
+                                             {:date('Y-m-d H:i', $vv.add_time)}
+                                            </if></span>
+                            <else/>
+                                <span style="color: #BFC1CD;font-size: .58rem;">
+                                    <if condition="date('Y') == date('Y',$k)">
+                                            {:date('m-d H:i', $vv.add_time)}
+                                            <else/>
+                                             {:date('Y-m-d H:i', $vv.add_time)}
+                                            </if></span>
+                            </if>
+                            <span class="fr" style="font-size: .72rem;color: #1E1B1B;">
+                                 <span class="fr" style="font-size: .55rem;color: #BFC1CD;">
+                                     <if condition="$vv['to_user_id'] == $vv['from_user_id']">
+
+                                      平台升级汇总
+                                         <else/>
+                                         <span style="vertical-align:0;">{$vv.remarks}</span>
+                                     </if>
+                                </span>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            </foreach>
+        </div>
+    </foreach>
+        <else/>
+        <div class="cf_empty">
+            <img src="__STATIC__/images/empty_earnings_details.png" alt="" style="pointer-events: none;">
+            <p>客官大大！暂无相关信息</p>
+        </div>
+    </notempty>
+</div>
+
+<div class="noMore" style="display: none;text-align: center;font-size: .7rem;color: #999;background: #F3F5F7;line-height: 2rem;">没有更多了</div>
+<!--收益明细说明弹窗-->
+<div class="success_box">
+    <div class="success">
+        <i class="iconfont" onclick="closed(event)">&#xa94c;</i>
+        <p class="title">收益明细说明</p>
+        <div class="content">
+            <p class="details">
+                当前总额显示的是您下级会员正在交易中的参与分成订单返利总和，订单完成（未取消、无退换货）后该笔收益直接进入您的可用收益中。
+            </p>
+            <p class="cc">其收益有三种状态</p>
+            <ul>
+                <li>
+                    <span></span>
+                    <span class="clor1"> 订单正在进行，待获得收益。</span>
+                </li>
+                <li>
+                    <span></span>
+                    <span class="clor2"> 订单已完成，收益已获得。</span>
+                </li>
+                <li>
+                    <span></span>
+                    <span class="clor3">订单失败，收益无效</span>
+                </li>
+                <li>
+                    <span></span>
+                    <span class="clor3"> 成就值过低，收益被掠</span>
+                </li>
+
+            </ul>
+        </div>
+
+        <div class="btn">
+            <a href="javascript:;" onclick="closed(event)">朕知道了</a>
+        </div>
+
+    </div>
+</div>
+
+<!--待返利收益说明弹窗-->
+<div class="success_box1 " style="">
+    <div class="success1" style="margin-top: -4.7rem;">
+        <i class="iconfont" onclick="closed(event)">&#xa94c;</i>
+        <p class="title">待返利收益说明</p>
+        <div class="content content1" id="content1">
+            待返利收益暂不能提现，订单完成后(收货7天后无退货即订单完成)方可提现，如果该笔订单取消或退货，你将不会获得该笔收入。
+        </div>
+
+        <div class="btn1">
+            <a href="javascript:;" onclick="closed(event)" style="width: 90%;">朕知道了</a>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script>
+var type = 'order',
+     id = 0,
+     p1 =1,
+     p2 = 1;
+ $('.cf_nav').on('click','li',function () {
+    var index = $(this).index();
+    $(this).addClass('active').siblings().removeClass('active');
+    if(index == 0) {
+        id = 0;
+        $('#member').hide();
+        $('#order').show();
+       $('.nav-flag-bar').css({'left':'12.2%','width':'4rem'})
+        type = 'order';
+    }
+    if(index ==1) {
+        id = 1;
+        $('#member').show();
+        $('#order').hide();
+        $('.nav-flag-bar').css({'left':'61.1%','width':'4.44rem'})
+        type = 'member';
+    }
+ })
+    function closed(event) {
+        $(event.target).closest('.success_box').hide();
+        $(event.target).closest('.success_box1').hide();
+    }
+    $('.money-wrap .wait').on('click',function () {
+        $('.success_box1 ').fadeIn(100)
+    })
+
+    function opened() {
+        $('.success_box1').show();
+    }
+
+/**
+* ajax加载更多商品
+*/
+var haveData = 1;
+var preorderFTime ='{$order_first_time}';
+var preorderLTime ='{$order_last_time}';
+var profitFTime ='{$profit_first_time}';
+var profitLTime ='{$profit_last_time}';
+
+var oldStarNode = 'id_'+preorderFTime,oldEndNode = 'id_'+preorderLTime,starNode,endNode,len;
+var oldStartMember = 'id_'+profitFTime,oldEndMember = 'id_'+profitLTime,starNode1,endNode1,len1;
+
+function ajax_sourch_submit()
+{
+    if(haveData === 0 ){
+        return
+   }
+    haveData = 0;
+
+    if(id == 0) {
+        p1++;
+        $.ajax({
+            type : "GET",
+            data:{type:type},
+            url:"/index.php?m=Mobile&c=Distribution&a=earningsDetails&is_ajax=1&p="+p1,
+            success: function(data) {
+                if ($.trim(data) != '') {
+                    $('#order').append(data);
+
+                    len = $(data).length-1;
+
+
+                     starNode = $(data)[0].childNodes[1].id;
+                     endNode = $(data)[len].childNodes[1].id;
+
+                    console.log(starNode)
+                    console.log(endNode)
+                    if (starNode == oldEndNode) {
+                        var leng = $('.'+starNode).length-1
+                        $('.'+starNode).eq(leng).hide()
+                        $('.'+starNode).eq(leng).parent().css('margin-top','-.3rem')
+                    }
+                    oldStarNode = starNode;
+                    oldEndNode = endNode;
+                    haveData = 1;
+                    $('.noMore').show();
+                }
+            }
+        });
+    }else {
+        p2++;
+        $.ajax({
+            type : "GET",
+            data:{type:type},
+            url:"/index.php?m=Mobile&c=Distribution&a=earningsDetails&is_ajax=1&p="+p2,
+            success: function(data) {
+                if ($.trim(data) != '') {
+                    $('#member').append(data);
+                    len1 = $(data).length-1;
+                    starNode1 = $(data)[0].childNodes[1].id;
+                    endNode1 = $(data)[len1].childNodes[1].id;
+
+                    if (starNode1 == oldEndMember) {
+                        var leng = $('.'+starNode).length-1
+                        $('.'+starNode1).eq(leng).hide()
+                        $('.'+starNode1).eq(leng).parent().css('margin-top','-.3rem')
+                    }
+                    oldStartMember = starNode1;
+                    oldEndMember = endNode1;
+
+                    haveData = 1;
+                    $('.noMore').show();
+                }
+            }
+        });
+    }
+}
+</script>
+</html>

@@ -1,0 +1,150 @@
+<include file="public/header" title="我的优惠券" body=""/>
+
+<link rel="stylesheet" href="__STATIC__/css/new/coupon.css">
+<div class="content" style="margin: 0;width:100%;box-shadow: 0 0.1rem 0.5rem 1px #eee;background-color: #F8F8F8;position: fixed;top: 0;left: 0;z-index: 9999">
+    <a onclick="goBack()" style="position: absolute;left: .5rem;top: 1rem"><img src="__STATIC__/images/return.png" alt="返回" style="height: .8rem;
+    margin-top: -.3rem;"></a>
+    <div style="text-align: center;height: 2.2rem;line-height: 2.2rem;">
+        <span style="font-size: .65rem;color: #1E1B1B;">我的优惠券</span>
+    </div>
+</div>
+<div class="two-bothshop">
+    <div class="maleri30 clearfix">
+        <ul>
+            <li  <if condition="$Request.param.type eq ''">class="red"</if>">
+                <a href="{:U('User/coupon')}"><span>未使用</span></a>
+            </li>
+            <li  <if condition='$Request.param.type eq 1'>class="red"</if>">
+                <a href="{:U('User/coupon',array('type'=>1))}"><span>已使用</span></a>
+            </li>
+            <li  <if condition='$Request.param.type eq 2'>class="red"</if>">
+                <a href="{:U('User/coupon',array('type'=>2))}"><span>已过期</span></a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="line"></div>
+<div class="coupon_csswri">
+    <if condition="count($coupon_list) eq 0">
+        <!--没有内容时-s--->
+        <div class="comment_con p" >
+            <div class="none" style="margin-top: 3rem">
+                <img src="__STATIC__/images/cf_conpon.png" style="pointer-events:none;">
+                <br><br>
+                <span style="color: #BFC1CD;font-size: .6rem;">客官大大！暂无卡券！</span>
+            </div>
+        </div>
+        <!--没有内容时-e--->
+    </if>
+    <div class="maleri30" style="margin-top: 3rem">
+        <ul id="user_goods_ka_1">
+            <volist name="coupon_list" id="coupon">
+                <!--未使用-->
+                <if condition="$Request.param.type eq null">
+                    <li>
+                        <div class="clearfix">
+                            <p class="cf_title fl">{$coupon.name}</p>
+                            <div class="pon_dow fr">
+                                <if condition="$coupon.use_type eq 2">
+                                    <a class="usecoupon" href="{:U('Goods/goodsList',['id'=>$coupon.category_id])}">
+                                        <elseif condition="$coupon.use_type eq 1">
+                                            <a class="usecoupon" href="{:U('Goods/goodsInfo',['id'=>$coupon.goods_id])}">
+                                <else/>
+                                <a class="usecoupon" href="/">立即使用</a>
+                                </if>
+                            </div>
+                        </div>
+                        <div class="clearfix" style="padding-top: 1.3rem;">
+                            <p class="fosi fl">¥</p><em class="money fl">{$coupon.money|intval}</em>
+                            <p  class="fl _title ">满 {$coupon.condition} 元可用</p>
+                        </div>
+                        <p class="x_time">限 {$coupon.use_start_time|date='Y.m.d',###} - {$coupon.use_end_time|date='Y.m.d',###} 使用</p>
+                    </li>
+                </if>
+
+                <!--已使用-->
+                <if condition="$Request.param.type eq 1">
+                    <li>
+                        <div class="clearfix">
+                            <p class="cf_title fl">{$coupon.name}</p>
+                            <div class="pon_dow fr">
+                                <if condition="$coupon.use_type eq 2">
+                                    <a class="usecoupon" href="{:U('Goods/goodsList',['id'=>$coupon.category_id])}">
+                                        <elseif condition="$coupon.use_type eq 1">
+                                            <a class="usecoupon" href="{:U('Goods/goodsInfo',['id'=>$coupon.goods_id])}">
+                                    <else/>
+                                    <!--<a class="usecoupon" href="/">已使用</a>-->
+                                    <img src="__STATIC__/images/cf_usered.png" alt="" class="cf_status">
+                                </if>
+                            </div>
+                        </div>
+                        <div class="clearfix" style="padding-top: 1.3rem;">
+                            <p class="fosi fl">¥</p><em class="money fl">{$coupon.money|intval}</em>
+                            <p  class="fl _title ">满 {$coupon.condition} 元可用</p>
+                        </div>
+                        <p class="x_time">限 {$coupon.use_start_time|date='Y.m.d',###} - {$coupon.use_end_time|date='Y.m.d',###} 使用</p>
+                    </li>
+                </if>
+
+                <!--已过期-->
+                <if condition="$Request.param.type eq 2">
+                    <li class="">
+                        <div class="clearfix">
+                            <p class="cf_title fl">{$coupon.name}</p>
+                            <div class="pon_dow fr">
+                                <if condition="$coupon.use_type eq 2">
+                                    <a class="usecoupon" href="{:U('Goods/goodsList',['id'=>$coupon.category_id])}">
+                                        <elseif condition="$coupon.use_type eq 1">
+                                            <a class="usecoupon" href="{:U('Goods/goodsInfo',['id'=>$coupon.goods_id])}">
+                                                <else/>
+                                                <!--<a class="usecoupon" href="/">已过期</a>-->
+                                                <img src="__STATIC__/images/cf_guoqi.png" alt="" class="cf_status">
+                                </if>
+                            </div>
+                        </div>
+                        <div class="clearfix" style="padding-top: 1.3rem;">
+                            <p class="fosi fl">¥</p><em class="money fl">{$coupon.money|intval}</em>
+                            <p  class="fl _title ">满 {$coupon.condition} 元可用</p>
+                        </div>
+                        <p class="x_time">限 {$coupon.use_start_time|date='Y.m.d',###} - {$coupon.use_end_time|date='Y.m.d',###} 使用</p>
+                    </li>
+                </if>
+            </volist>
+        </ul>
+    </div>
+
+</div>
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script>
+    var  page = 1;
+    /*** ajax 提交表单 查询订单列表结果*/
+    function ajax_sourch_submit()
+    {
+        page += 1;
+        $.ajax({
+            type : "GET",
+            url:"/index.php?m=Mobile&c=User&a=coupon&type={$Request.param.type}&is_ajax=1&p="+page,//+tab,
+            success: function(data)
+            {
+                if($.trim(data) == '')
+                    $('#getmore').hide();
+                else
+                    $("#user_goods_ka_1").append(data);
+            }
+        });
+    }
+
+    // 分享后 判断是否有上一级页面
+    function goBack(){
+        var his = document.referrer;
+        if(his) {
+            history.back(-1)
+        }else {
+            window.location.href = "{:U('Mobile/User/index')}";
+        }
+    }
+
+</script>
+<script src="js/style.js" type="text/javascript" charset="utf-8"></script>
+</body>
+</html>

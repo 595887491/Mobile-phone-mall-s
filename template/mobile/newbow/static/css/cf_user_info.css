@@ -1,0 +1,54 @@
+#cf_jump{
+     border: none;
+}
+.cf_user_comment{
+    background-color: white;
+    text-align: center;
+    font-size: .4rem;
+    color: #333;
+}
+.cf_user_comment>h1{
+    margin: 0 1.4rem;
+    /*margin-left: .2rem;*/
+}
+.cf_num{
+    margin-top: .5rem;
+    color: #5B5858;
+}
+.cf_perfect{
+    font-size: .6rem;
+    margin-top: .6rem;
+    color: #FF407E;
+}
+#cf_bottom{
+    border-bottom: 1px solid #ddd;
+}
+.classreturn .content .search span{font-size: .7rem;color: #1E1B1B; }
+.list7 .myorder .fr i{margin-top: .64733rem;}
+#cf_bottom{    border-bottom: 1px solid #F0F2F5; }
+.setting .close a{
+    background-color: #fff;
+    color: #FF407E;font-size: .8rem;margin-top: 1.2rem;line-height: 1.9rem;}
+.classreturn .content .search span{
+    font-size: .65rem;
+}
+.setting .myorder .fl span{
+    font-size: .65rem;
+}
+.setting .close a{
+    border-radius: .2rem;
+}
+.loginsignup {
+    position: fixed;
+    top: 0;
+    z-index: 9999;
+}
+.Mright{
+    width: .3rem;
+    height: .5rem;
+    opacity: .6;
+
+}
+.list7 .myorder .fr i {
+    margin-top: .78rem;
+}

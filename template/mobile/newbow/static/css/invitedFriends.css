@@ -1,0 +1,251 @@
+body{
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    overflow-x: hidden;
+    background-color: #fff;
+    font-family:'微软雅黑','PingFang SC';
+}
+a,a:hover,a:active,a:visited,a:link,a:focus{
+    -webkit-tap-highlight-color:rgba(0,0,0,0);
+    -webkit-tap-highlight-color: transparent;
+    outline:none;
+    background: none;
+    text-decoration: none;
+}
+.fr{
+    float: right;
+}
+.fl{
+    float: left;
+}
+.clearFix{
+    clear: both;
+}
+ul,p{
+    padding: 0;
+    margin: 0;
+}
+.headerRank{
+    width: 100%;
+    height: .88rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    background: white;
+}
+.headerRankCon{
+    width: 100%;
+    height: .88rem;
+    line-height: .88rem;
+    position: relative;
+}
+.tex{
+    text-align: center;
+}
+.tex span{
+    font-size: .31rem;
+    color: #1E1B1B;
+}
+.texFl{
+    margin-top: .3rem;
+    position: absolute;
+    left: .24rem;
+}
+.texFl a{
+    /*display: inline-block;*/
+    width: .5rem;
+    height: .5rem;
+}
+.texFl a img{
+    width: .2rem;
+    height: .32rem;
+}
+.homeIndex{
+    position: absolute;
+    top: .25rem;
+    right: .24rem;
+}
+.homeIndex img{
+    width: .4rem;
+    height: .42rem;
+}
+.invitedTab{
+    width: 100%;
+    background-color: #fff;
+    margin-top: .1rem;
+    height: .8rem;
+    line-height: .8rem;
+    border-bottom: 2px solid #f1f5f8;
+}
+.invitePos{
+    position: fixed;
+    top: .7rem;
+    left: 0;
+    z-index: 9999;
+}
+.invitedTab ul li{
+    width: 33.33%;
+    text-align: center;
+    font-size: .26rem;
+    float: left;
+    list-style: none;
+}
+.invitedTab .activeTab a{
+    border-bottom: 4px solid #FF407E;
+    display: inline-block;
+    color: #FF407E;
+}
+.invitedList{
+    width: 100%;
+    background-color: #fff;
+    margin-top: .8rem;
+}
+.invitedList .inviteCom{
+    margin-left: .24rem;
+    height: 1.4rem;
+    background-color: #fff;
+    border-bottom: 1px solid #f1f5f8;
+    clear: both;
+    overflow: hidden;
+}
+.invitePortrait{
+    margin-top: .2rem;
+}
+.invitePortrait img{
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+}
+.inviteDescribe{
+    margin-left: .22rem;
+    margin-top: .35rem;
+}
+.inviteDescribe p:first-child{
+    font-size: .26rem;
+    color: #1E1B1B;
+    font-weight: 600;
+}
+.inviteDescribe p:last-child{
+    font-size: .24rem;
+    color: #BFC1CD;
+    margin-top: .1rem;
+}
+.inviteState{
+    margin-right: .24rem;
+    color: #1E1B1B;
+    font-size: .24rem;
+    margin-top: .4rem;
+    text-align: right;
+}
+.inviteState .inviteStateTime{
+    margin-top: .1rem;
+    color: #BFC1CD;
+    font-size: .24rem;
+}
+.invitedListCard{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    margin-top: .01rem;
+    background-color: #fff;
+}
+.inviteCard{
+    width: 92%;
+    height: 2rem;
+    display: inline-block;
+    margin-top: .24rem;
+    font-size: .24rem;
+    clear: both;
+    /*overflow: hidden;*/
+    margin-left: 4%;
+    position: relative;
+    padding-bottom: .1rem;
+}
+.inviteCardOverdue{
+    width: 92%;
+    height: 2rem;
+    display: inline-block;
+    margin-top: .24rem;
+    font-size: .24rem;
+    clear: both;
+    overflow: hidden;
+    position: relative;
+    margin-left: 4%;
+}
+.inviteCardOne{
+    text-align: center;
+    /*width: 1rem;*/
+    /*height: 2rem;*/
+    /*display: inline-block;*/
+}
+.inviteCardOne p:first-child{
+    font-size: .24rem;
+    color: #fff;
+    margin-top: .4rem;
+    margin-left: .5rem;
+    display: inline-block;
+    font-weight: bold;
+}
+.inviteCardOneMoney{
+    font-size: .36rem;
+    color: #fff;
+    margin-left: .3rem;
+    margin-top: .2rem;
+}
+.inviteCardOneMoney span:last-child{
+    font-size: .7rem;
+    font-weight: 600;
+}
+.inviteCardTwo{
+    text-align: left;
+    margin-left: 12%;
+}
+.inviteCardTwo p:first-child{
+    font-size: .24rem;
+    color: #1E1B1B;
+    margin-top: .2rem;
+}
+.inviteCardTwo p:last-child{
+    margin-top: .5rem;
+    font-size: .18rem;
+    color: #5B5858;
+}
+.inviteCardTwo div{
+    margin-top: .16rem;
+}
+.inviteCardTwo div span:first-child{
+    font-size: .24rem;
+    color: #D50D16;
+}
+
+.inviteCardTwo div span:last-child{
+    font-size: .2rem;
+    color: #5B5858;
+}
+.inviteCardThree{
+    margin-right: .24rem;
+    position: absolute;
+    top: 1.3rem;
+    right: 0;
+}
+.inviteCardThree button{
+    width: 1.2rem;
+    height: .4rem;
+    border-radius: .25rem;
+    border: none;
+    outline: none;
+    background-color: #FF407E;
+    font-size: .2rem;
+    color: #fff;
+}
+.inviteLable{
+    position: absolute;
+    right: .24rem;
+    bottom: .5rem;
+}
+.inviteLable{
+    width: 1rem;
+    height: 1rem;
+}

@@ -1,0 +1,146 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>砍价列表</title>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/rem.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css"/>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
+    <link rel="stylesheet" href="__STATIC__/css/new/team_base.css">
+    <link rel="stylesheet" href="__STATIC__/css/bargainFreeList.css">
+</head>
+<style>
+    .bargainBanner{
+        background: url("__STATIC__/images/bargainBanner.png")no-repeat;
+        background-size: 100%;
+    }
+</style>
+<body>
+<!--header-->
+<div class="headerRank">
+    <div class="headerRankCon">
+        <div class="fl texFl">
+            <a href="{:U('Mobile/Index/index')}">
+                <img src="__STATIC__/images/return.png" alt="返回"></a>
+            </a>
+        </div>
+        <div class="tex">
+            <span>砍价列表</span>
+        </div>
+        <a href="{:U('Mobile/bargain/myBargain')}" class="myBargain">我的砍价</a>
+    </div>
+</div>
+<!--header-->
+<div style="height:.9rem;width: 100% "></div>
+
+<!--滚动消息-->
+
+ <!--banner-->
+<div class="bargainBanner">
+    <if condition="!empty($roll)">
+    <div class="content_three">
+        <div id="scroll" class="scroll" >
+            <ul class="got-user">
+                <foreach name="$roll" item="v">
+                    <li>
+                        <div class="avatar fl">
+                            <img src="{$v['head_pic']|default='http://cdn.cfo2o.com/data/avatar/user_head_default.png'}?x-oss-process=style/s150x150" alt="">
+                        </div>
+                        <div class="fl avatarCom">“{$v['nickname']}”  <if condition="$v['act_type'] eq 0"><span>免费领取</span></if> <if condition="$v['act_type'] eq 1"><span>底价购买</span></if> {$v['goods_name']}</div>
+                    </li>
+                </foreach>
+            </ul>
+        </div>
+    </div>
+    </if>
+</div>
+
+<!--列表-->
+<div class="content">
+
+</div>
+
+<div class="noMore">
+    <span>没有更多了</span>
+</div>
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script>
+    /**
+     * ajax加载更多数据
+     */
+    var flog = 0;
+    function ajax_sourch_submit()
+    {
+        if(flog == 1) {
+            return
+        }
+        ++page;
+        flog =1;
+        $.ajax({
+            type : "GET",
+            url:"/index.php?m=Mobile&c=bargain&a=bargainFreeList&p="+page,
+            success: function(data) {
+                if ($.trim(data) != '') {
+                    $('.content').append(data);
+                    flog =0;
+                }else {
+                    $('.noMore').css('display','block')
+                }
+            }
+        });
+    }
+    var  page = 0;
+    ajax_sourch_submit();
+    // 顶部滚动消息
+    var scrollIndex=0;
+    var Timer=null;
+    function scroll_f(){
+        clearInterval(Timer);
+        var ul=$("#scroll ul");
+        var li=ul.children("li");
+        $("#scroll ul").eq(0).height();
+        // var h = li.height();
+        var h=li.outerHeight(true);
+        var index=0;
+        if(li.length>0) {
+            ul.css("height",h*li.length*2);
+            ul.html(ul.html()+ul.html());
+        }
+        function run()
+        {
+            if(scrollIndex>=li.length){
+                ul.css({top:0});
+                scrollIndex=1;
+                ul.animate({top:-scrollIndex*h},200);
+            }
+            else{
+                scrollIndex++;
+
+                ul.animate({top:-scrollIndex*h},200);
+            }
+        }
+        if(li.length>0) {
+            Timer=setInterval(run,3000);
+        }
+    }
+    $(function(){
+        scroll_f();
+    })
+
+    // 判断ios 和  安卓  兼容样式问题
+    $(function () {
+        var u = navigator.userAgent;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        if(isAndroid || !isiOS){  //安卓
+
+        }else{  //苹果
+            $('.team-list-right .bottom ').css("margin-top", ".2rem");
+        }
+    });
+</script>
+</body>
+</html>

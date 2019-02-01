@@ -1,0 +1,38 @@
+.classreturn .content .search span{font-size: .7rem;color: #1E1B1B;}
+.lsu span{float: left;color: #1E1B1B;font-size: .7rem;}
+.loginsingup-input{padding: 0 .64rem 0.5rem;}
+.loginsingup-input .lsu{border-color: #F0F2F5;}
+.loginsingup-input .lsu  input,.v-identity .v-cont-wrap{width: 11rem;}
+.loginsingup-input .lsu-submit{padding: 0;margin-top: 5rem;}
+.loginsingup-input .lsu-submit input{background-color: #FF407E;font-size: .8rem;}
+.v-identity .v-cont-wrap{border: none;}
+.v-identity .v-cont-wrap>.m_phone{
+    width: 3.6rem;
+    height: 1.2rem;
+    color: #fff;
+    line-height: 1.2rem;
+    text-align: center;
+    background-color: #FF407E;
+    border-radius: .1rem;
+}
+.v-identity .v-til{color: #1E1B1B;letter-spacing: .27rem;width: auto;font-size: .7rem;}
+.v-identity .v-cont-wrap{margin-left: -.1rem;}
+.v-identity{margin-top: .42rem;}
+.loginsingup-input .lsu-submit input, .btn-goto-login{
+    border-radius: .2rem;}
+.ts{font-size: .55rem;color: #FF407E;margin-top: 2rem;}
+.classreturn .content .return{left:.42667rem;}
+.loginsingup-input .lsu input{
+    font-size: .7rem;
+    color: #1E1B1B;
+}
+#tpcode{
+    color: #1E1B1B;
+    font-size: .7rem;
+}
+.v-identity{
+    border-bottom: 1px solid #dbdbdb;
+    border-color: #F0F2F5;
+    height: 1.6rem;
+    margin-top: .6rem;
+}

@@ -1,0 +1,237 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>我的拼团</title>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/rem.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
+    <link rel="stylesheet" href="__STATIC__/css/myTeam.css">
+</head>
+<body>
+<!--header-->
+<div class="headerRank">
+    <div class="headerRankCon">
+        <div class="fl texFl">
+            <a href="javascript:history.back()">
+                <img src="__STATIC__/images/return.png" alt="返回"></a>
+            </a>
+        </div>
+        <div class="tex">
+            <span>我的拼团</span>
+        </div>
+    </div>
+</div>
+<!--header-->
+<div style="height:.9rem;width: 100% "></div>
+<!--comment-->
+<!--无拼团状态-->
+<if $count eq 0>
+<div class="noWayTeam">
+    <img src="__STATIC__/images/cf_order.png" style="pointer-events: none;width: 100%;">
+    <div>
+        <span>客官大大,暂无拼团</span>
+    </div>
+</div>
+<else/>
+<!--有拼团-->
+<div id="ad">
+    <volist name="teamList" id="vo">
+        <div class="myTeamList <if $vo.status == 1>testtest</if> " <if $vo.status == 1>data-start-time="{$vo.startTime}" data-end-time="{$vo.found_end_time}"  data-id="{$vo.found_id}"</if>>
+        <a href="{:U('team/myInfo')}?found_id={$vo.found_id}">
+            <!--上半部分-->
+            <div class="listComment">
+                <div class="fl listLeft">
+                    <img src="__STATIC__/images/teamion.png" alt="">
+                    <span>尚美自营</span>
+                </div>
+                <div class="fr listRight">
+                    <if $vo.orderStatus.pay_status == 1 &&
+                        $vo.orderStatus.shipping_status == 0 && $vo.status == 2>
+                        <span style="color: #F27B12">待发货</span>
+                    </if>
+                    <if $vo.orderStatus.shipping_status egt 1 &&
+                        $vo.orderStatus.order_status lt 2 && $vo.status == 2>
+                        <span style="color: #FF407E">待收货</span>
+                    </if>
+                    <if $vo.orderStatus.order_status == 2 && $vo.status == 2>
+                        <span style="color: #F27B12">待评价</span>
+                    </if>
+                    <if $vo.orderStatus.order_status == 4 && $vo.status == 2>
+                        <span style="color: #5B5858">已完成</span>
+                    </if>
+                    <if $vo.orderStatus.pay_status != 3 && $vo.status == 3>
+                        <span style="color: #F27B12">待退款</span>
+                    </if>
+                    <if $vo.orderStatus.pay_status == 3>
+                        <span style="color: #5B5858">已退款</span>
+                    </if>
+                    <if $vo.status == 1 >
+                    <span class="hms">
+                        <span style="color: #5B5858">还差<span style="color: #D50D16;font-weight: 600">{$vo.info.needer-$vo.join}</span>人 剩余</span>
+                        <span id="hours" class="hours hmsSpan">00</span>
+                        <span style="background-color: transparent;color: #D5D7E2;font-size: .35rem;font-weight: 700;" >:</span>
+                        <span id="minte" class="minutes hmsSpan">00</span>
+                        <span style="background-color: transparent;color: #D5D7E2;font-size: .35rem;font-weight: 700;" >:</span>
+                        <span id="second" class="seconds hmsSpan">00</span>
+                        <span style="color: #5B5858">结束</span>
+                    </span>
+                    </if>
+                </div>
+            </div>
+            <!--中间部分-->
+            <div class="listMiddle">
+                <div class="fl listMiddleLeft">
+                    <img src="{$vo.info['original_img']}?x-oss-process=style/s340x340" alt="">
+                    <!--拼团中的状态的图片-->
+                    <if $vo.status == 1>
+                        <img src="__STATIC__/images/teamState_2.png" class="stateImg" alt="">
+                    </if>
+                    <!--失败状态的图片-->
+                    <if $vo.status == 3>
+                        <img src="__STATIC__/images/teamState_1.png" class="stateImg" alt="">
+                    </if>
+                    <!--成功状态的图片-->
+                    <if $vo.status == 2>
+                        <img src="__STATIC__/images/teamSuess.png" class="stateImg" alt="">
+                    </if>
+                </div>
+                <div class="fr listMiddleRight">
+                    <p class="listRightP">{$vo.info['goods_name']}</p>
+                    <p class="listNum">{$vo.info['item_id']['key_name']}</p>
+                    <p class="listMoney"><span>￥{$vo.info['team_price']}</span><span>单买￥{$vo.info['shop_price']}</span></p>
+
+                    <div class="listRightNum">
+                        <span>x{$vo.goodsNum}</span>
+                    </div>
+                </div>
+            </div>
+            <!--下半部分-->
+            <div class="listBottom">
+                <a href="{:U('team/myInfo')}?found_id={$vo.found_id}">
+                    <button class="fr">拼团详情</button>
+                </a>
+                <if $vo.orderStatus.shipping_status egt 1 &&
+                    $vo.orderStatus.order_status lt 2 && $vo.status == 2>
+                    <a href="{:U('Order/express')}?order_id={$vo.order_id}">
+                        <button class="fr">查看物流</button>
+                    </a>
+                </if>
+                <if $vo.orderStatus.order_status == 2>
+                    <a href="{:U('Mobile/Order/add_comment')}?rec_id={$vo.recId}">
+                        <button class="fr">评价</button>
+                    </a>
+                </if>
+                <if $vo.orderStatus.shipping_status egt 1 && $vo.orderStatus.order_status lt 2 && $vo.status == 2>
+                    <a>
+                        <button class="fr" onclick="playSus({$vo.order_id})">确认收货</button>
+                    </a>
+                </if>
+            </div>
+            <!--确认收货-s-->
+            <div class="losepay class_{$vo.order_id} closeorder">
+                <div class="teamConfirm">
+                    <p class="con-lo">确定收货吗?</p>
+                    <div class="con">
+                        <a class="ax fl">取消</a>
+                        <a class="are fr" href="{:U('Order/order_confirm')}?id={$vo.order_id}">确认</a>
+                    </div>
+                </div>
+            </div>
+            <!--确认收货-e-->
+        </a>
+        </div>
+    </volist>
+</div>
+</if>
+<!--comment-->
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script>
+    function playSus(order_id) {
+        $(".class_"+order_id).show();
+    }
+
+    //取消收货按钮
+    $('.con .ax').click(function(){
+        $('.losepay').hide();
+    })
+    //确认收货按钮
+    $('.con .are').click(function(){
+        $('.losepay').hide();
+    })
+    /**
+     * ajax加载更多数据
+     */
+    var ajax_pending = false;//进行中
+    var has_more_data = true;//还有数据
+    var  page = 1;
+    function ajax_sourch_submit() {
+        if (ajax_pending || has_more_data == false) return;
+        ajax_pending = true;
+        ++page;
+        $.ajax({
+            type : "GET",
+            url:"/index.php?m=Mobile&c=team&a=myTeam&is_ajax=1&p="+page,
+            success: function(data) {
+                ajax_pending = false;
+                if ($.trim(data) != '') {
+                    $('#ad').append(data);
+                } else {
+                    has_more_data = false;
+                }
+            }
+        });
+    }
+
+    $(function () {
+        // 倒计时
+        $('#ad .testtest').each(function(i,v){
+            var endTimes = $(this).attr('data-end-time');
+            var startTimes = $(this).attr('data-start-time');
+            var found_id = $(this).attr('data-id');
+            var $this = $(this);
+            var NowTime = new Date();
+            var a = (startTimes * 1000) - NowTime.getTime();
+            var timer = setInterval(function () {
+                // var end_time = times;
+                var NowTime = new Date();
+                if (a > 0) {
+                    var t = (endTimes * 1000) - NowTime.getTime() + a;
+                }else {
+                    var t = (endTimes * 1000) - NowTime.getTime() - a;
+                }
+                // var d = Math.floor(t / 1000 / 60 / 60 / 24);
+
+                var h = Math.floor(t / 1000 / 60 / 60 % 24);
+                var m = Math.floor(t / 1000 / 60 % 60);
+                var s = Math.floor(t / 1000 % 60);
+                if (s >= 0) {
+                    // $('#date').text(d);
+                    h < 10 ? $this.find('.hours').text('0' + (h)) : $this.find('.hours').text(h);
+                    m < 10 ? $this.find('.minutes').text('0' + m) : $this.find('.minutes').text(m);
+                    s < 10 ? $this.find('.seconds').text('0' + s) : $this.find('.seconds').text(s);
+                }
+                if(h==0 && m==0 && s==0) {
+                    $.ajax({
+                        type : "GET",
+                        url:"{:U('team/changeStatus')}",
+                        data:{
+                            found_id:found_id
+                        },
+                        success: function(data) {
+                            if (data.code = 200) {
+                                clearInterval(timer);
+                                location.reload();
+                            }
+                        }
+                    });
+                }
+            },1000)
+        });
+    });
+
+</script>
+</body>
+</html>

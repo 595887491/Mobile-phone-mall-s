@@ -1,0 +1,112 @@
+<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script type="text/javascript">
+    if (typeof(ShareLink) == 'undefined' || ShareLink == ''){
+        var ShareLink = "http://{$_SERVER[HTTP_HOST]}/index.php?m=Mobile&c=Index&a=index"; //默认分享链接
+    }
+//    alert("<?php echo strtolower(CONTROLLER_NAME);?>");
+//    alert("<?php echo strtolower(ACTION_NAME);?>");
+
+if (typeof(ShareImgUrl) == 'undefined' || ShareImgUrl == ''){
+    var ShareImgUrl = "http://{$Think.server.SERVER_NAME}{$tpshop_config['shop_info_store_logo']}"; //分享图标
+}
+
+if (typeof(ShareTitle) == 'undefined' || ShareTitle == ''){
+    var ShareTitle = "{$tpshop_config['shop_info_store_title']}"; //分享标题
+}
+
+if (typeof(ShareDesc) == 'undefined' || ShareDesc == ''){
+    var ShareDesc = "{$tpshop_config['shop_info_store_desc']}"; //分享描述
+}
+
+
+var user_id = getCookie('user_id'); // 当前用户id
+// 如果已经登录了, 并且是分销商
+if(parseInt(user_id) > 0)
+{									
+	ShareLink = ShareLink + "&distribute_parent_id="+user_id;
+}
+$(function() {
+// && parseInt(user_id)>0
+	if(isWeiXin()){
+		$.ajax({
+			type : "POST",
+			url:"/index.php?m=Mobile&c=Index&a=ajaxGetWxConfig&t="+Math.random(),
+			data:{'askUrl':encodeURIComponent(location.href.split('#')[0])},		
+			dataType:'JSON',
+			success: function(res)
+			{
+				//微信配置
+				wx.config({
+				    debug: false, 
+				    appId: res.appId,
+				    timestamp: res.timestamp, 
+				    nonceStr: res.nonceStr, 
+				    signature: res.signature,
+				    jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage','onMenuShareQQ','onMenuShareQZone','hideOptionMenu','scanQRCode'] // 功能列表，我们要使用JS-SDK的什么功能
+				});
+			},
+			error:function(){
+				return false;
+			}
+		});
+		// config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在 页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready 函数中。
+		wx.ready(function(){
+		    // 获取"分享到朋友圈"按钮点击状态及自定义分享内容接口
+		    wx.onMenuShareTimeline({
+		        title: ShareTitle, // 分享标题
+		        link:ShareLink,
+		        desc: ShareDesc,
+		        imgUrl:ShareImgUrl // 分享图标
+		    });
+
+		    // 获取"分享给朋友"按钮点击状态及自定义分享内容接口
+		    wx.onMenuShareAppMessage({
+		        title: ShareTitle, // 分享标题
+		        desc: ShareDesc, // 分享描述
+		        link:ShareLink,
+		        imgUrl:ShareImgUrl // 分享图标
+		    });
+			// 分享到QQ
+			wx.onMenuShareQQ({
+		        title: ShareTitle, // 分享标题
+		        desc: ShareDesc, // 分享描述
+		        link:ShareLink,
+		        imgUrl:ShareImgUrl // 分享图标
+			});	
+			// 分享到QQ空间
+			wx.onMenuShareQZone({
+		        title: ShareTitle, // 分享标题
+		        desc: ShareDesc, // 分享描述
+		        link:ShareLink,
+		        imgUrl:ShareImgUrl // 分享图标
+			});
+
+		   <if condition=" (strtolower(CONTROLLER_NAME) == 'cart' && strtolower(ACTION_NAME) != 'cart4') || (strtolower(CONTROLLER_NAME) == 'distribution' && strtolower(ACTION_NAME) != 'commonuserindex') || (strtolower(CONTROLLER_NAME) == 'user')">
+
+                <if condition="(strtolower(CONTROLLER_NAME) == 'user' && (strtolower(ACTION_NAME) == 'invitegift' || strtolower(ACTION_NAME) == 'index' || strtolower(ACTION_NAME) == 'beInvited'))">
+
+                <else/>
+                    wx.hideOptionMenu();  // 用户中心 隐藏微信菜单
+            </if>
+		   </if>
+		});
+	}
+});
+
+function isWeiXin(){
+    var ua = window.navigator.userAgent.toLowerCase();
+    if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+        return true;
+    }else{
+        return false;
+    }
+}
+</script>
+<!--微信关注提醒 start-->
+<style type="text/css">
+#cover{display:none;position:absolute;left:0;top:0;z-index:18888;opacity:0.7;}
+#guide{display:none;position:absolute;top:5px;z-index:19999;}
+#guide img{width: 70%;height: auto;display: block;margin: 0 auto;margin-top: 10px;}
+div.layui-m-layerchild h3{font-size:0.64rem;height:1.24rem;line-height:1.24rem;}
+.layui-m-layercont img{height:8.96rem;width:8.96rem;}
+</style>

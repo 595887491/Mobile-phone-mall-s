@@ -1,0 +1,25 @@
+<include file="public/header" title="支付失败" body="g4"/>
+<include file="public/header_nav" title="支付失败" href="{:U('mobile/Cart/index')}"/>
+<script src="__PUBLIC__/js/md5.min.js"></script>
+<link rel="stylesheet" href="__STATIC__/css/new/payEerror.css">
+<div class="cf_box">
+    <div class="cf_order">
+        <span style="letter-spacing: .2rem;">订单号</span>:
+        <span>{$order['order_sn']}</span>
+    </div>
+    <div class="cf_money">
+        <span>付款金额 :</span>
+        <span class="red"><span style="font-size: .5rem;">¥</span> {$order['order_amount']}</span>
+    </div>
+</div>
+<div class="cf_failure_box">
+    <div class="cf_failure_logo">
+        <i class="iconfont">&#xe600;</i>
+        <p>支付失败!</p>
+    </div>
+
+    <p  class="cf_failure_p" style="">订单支付失败，可以再次支付</p>
+    <a href="{:U('/Mobile/Order/order_detail',array('id'=>$order['order_id']))}">再次支付</a>
+</div>
+</body>
+</html>

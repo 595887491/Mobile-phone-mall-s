@@ -1,0 +1,267 @@
+<include file="public/layout" />
+<style>
+    dd.opt table{
+        width: 100%;
+    }
+    dd.opt tr{
+        border: 1px solid #f4f4f4;
+        padding: 8px;
+    }
+    dd.opt tr td{
+        border: 1px solid #f4f4f4;
+    }
+    .ys-btn-close {
+        position: relative;
+        top: -12px;
+        left: -16px;
+        width: 18px;
+        height: 18px;
+        border: 1px solid #ccc;
+        line-height: 18px;
+        text-align: center;
+        display: inline-block;
+        border-radius: 50%;
+        z-index: 1;
+        background-color: #fff;
+        cursor: pointer;
+    }
+    .selected-group-goods {
+        background-color: #FFF;
+        width: 162px;
+        padding: 9px;
+        margin-bottom: 10px;
+        border: solid 1px #E6E6E6;
+        box-shadow: 2px 2px 0 rgba(153,153,153,0.1);
+    }
+
+</style>
+<load href="__ROOT__/public/plugins/Ueditor/ueditor.config.js"/>
+<load href="__ROOT__/public/plugins/Ueditor/ueditor.all.min.js"/>
+<script type="text/javascript" charset="utf-8" src="__ROOT__/public/plugins/Ueditor/lang/zh-cn/zh-cn.js"></script>
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<style type="text/css">
+    html, body {
+        overflow: visible;
+    }
+</style>
+
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>全球购 - 添加与编辑全球购场馆</h3>
+                <h5>全球购</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="handleposition" method="post">
+        <input type="hidden" name="id" value="{$info.id}">
+        <input type="hidden" name="is_select" value="00">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>场馆名</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="hall_name" value="{$info.hall_name | default=''}" class="input-txt">
+                    <p class="notic">场馆名</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label> 英文名</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="hall_name_en" value="{$info.hall_name_en | default=''}" class="input-txt">
+                    <p class="notic">英文名</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label> 关联国家</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="country_id" value="{$info.country_id | default=''}" class="input-txt">
+                    <p class="notic">关联国家id,以','逗号间隔</p>
+                </dd>
+
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>Banner图</label>
+                </dt>
+                <dd class="opt">
+                    <div class="input-file-show">
+                        <span class="show">
+                            <a id="img_a" target="_blank" class="nyroModal" rel="gal" href="">
+                                <i id="img_i" class="fa fa-picture-o" onmouseover="layer.tips('<img src={$info.banner_img | default=\'\'}>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();"></i>
+                            </a>
+                        </span>
+                        <span class="type-file-box">
+                            <input type="text" id="topic_img" name="banner_img" value="{$info.banner_img | default=''}" class="type-file-text">
+                            <input type="button" name="button" id="button1" value="选择上传..." class="type-file-button">
+                            <input class="type-file-file" onClick="GetUploadify(1,'','activity','img_call_back')" size="30" hidefocus="true" nc_type="change_site_logo" title="点击前方预览图可查看大图，点击按钮选择文件并提交表单后上传生效">
+                        </span>
+                    </div>
+                    <span class="err"></span>
+                    <p class="notic">请上传图片格式文件</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>热门品牌</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="hot_brand_id" value="{$info.hot_brand_id | default=''}" class="input-txt">
+                    <p class="notic">请输入品牌ID，多个品牌以逗号分隔</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>选择优惠商品</label>
+                </dt>
+                <dd class="opt">
+                    <div style="overflow: hidden;" id="selected_group_goods">
+                        <volist name="global_goods" id="goods">
+                            <empty name="goods[SpecGoodsPrice]">
+                                <div style="float: left;margin-right: 20px">
+                                    <input type="hidden" name="goods[{$goods.goods_id}][goods_id]" value="{$goods.goods_id}"/>
+                                    <input type="hidden" name="store_count[]" value="{$goods.store_count}"/>
+                                    <div class="ys-btn-close" style="top: 15px;left: 172px;">×</div>
+                                    <div class="selected-group-goods">
+                                        <div class="goods-thumb"><img style="width: 162px;height: 162px" src="{$goods['original_img']}"/></div>
+                                        <div class="goods-name">
+                                            <a target="_blank" href="{:U('Home/Goods/goodsInfo',array('id'=>$goods['goods_id']))}">{$goods.goods_name}</a>
+                                        </div>
+                                        <div class="goods-price">商城价：￥{$goods.shop_price} <br/>库存:{$goods.store_count}</div>
+                                    </div>
+                                </div>
+                                <else/>
+                                <volist name="goods[SpecGoodsPrice]" id="spec">
+                                    <if condition="$spec.prom_type eq 3 AND $spec.prom_id eq $info.id">
+                                        <div style="float: left;margin-right: 20px">
+                                            <input type="hidden" name="" value="{$goods.goods_id}"/>
+                                            <input type="hidden" name="" value="{$spec.item_id}"/>
+                                            <input type="hidden" name="" value="{$spec.store_count}"/>
+                                            <div class="ys-btn-close" style="top: 15px;left: 172px;">×</div>
+                                            <div class="selected-group-goods">
+                                                <div class="goods-thumb"><img style="width: 162px;height: 162px" src=""/></div>
+                                                <div class="goods-name">
+                                                    <a target="_blank"
+                                                       href="{:U('Home/Goods/goodsInfo',array('id'=>$goods['goods_id']))}">{$goods.goods_name}{$spec.key_name}</a>
+                                                </div>
+                                                <div class="goods-price">商城价：￥00库存:00</div>
+                                            </div>
+                                        </div>
+                                    </if>
+                                </volist>
+                            </empty>
+                        </volist>
+                    </div>
+                    <span class="err" id="err_goods" style="color:#F00; display:none;">选择商品</span>
+                    <p class="notic">
+                        <a onclick="selectGoods()" class="ncap-btn"><i class="fa fa-search"></i>选择商品</a>
+                    </p>
+                </dd>
+            </dl>
+
+            <div class="bot"><a id="submit" onsubmit="sb()" class="ncap-btn-big ncap-btn-green">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+
+    function verifyForm(){
+        $('span.err').hide();
+        $.ajax({
+            type: "POST",
+            url: "{:U('Admin/GlobalPurchase/addEdit')}",
+            data: $('#handleposition').serialize(),
+            async:false,
+            dataType: "json",
+            error: function () {
+                layer.alert("服务器繁忙, 请联系管理员!");
+            },
+            success: function (data) {
+                if (data.status == 1) {
+                    layer.msg(data.msg, {
+                        icon: 1,
+                        time: 1000
+                    }, function(){
+                        location.href = "{:U('Admin/GlobalPurchase/index')}";
+                    });
+                } else {
+                    layer.msg(data.msg, {icon: 2,time: 1000});
+                }
+            }
+        });
+    }
+    function call_back(goodsItem){
+        var html = '';
+        $.each(goodsItem, function (index, item) {
+            if (item.goods_id != 'on') {
+                if (item.spec != null) {
+                    //有规格
+                    $.each(item.spec, function (i, o) {
+                        html += '<div style="float: left;margin-right: 20px"><div class="ys-btn-close" style="top: 15px;left: 172px;">×</div>' +
+                            '<input type="hidden" name="goods[' + item.goods_id + '][goods_id]" value="' + item.goods_id + '"/>' +
+                            '<input type="hidden" name="goods[' + item.goods_id + '][item_id][' + i + ']" value="' + o.item_id + '"/>' +
+                            '<div class="selected-group-goods"><div class="goods-thumb">' +
+                            '<img style="width: 162px;height: 162px" src="' + o.spec_img + '"/></div> <div class="goods-name"> ' +
+                            '<a target="_blank" href="/index.php?m=Home&c=Goods&a=goodsInfo&id=' + item.goods_id + '">' + item.goods_name + o.key_name + '</a> </div>' +
+                            '<input type="hidden" name="store_count[]" value="'+o.store_count+'"/>' +
+                            ' <div class="goods-price">商城价：￥' + o.price + '库存:' + o.store_count + '</div> </div></div>';
+                    });
+                } else {
+                    html += '<div style="float: left;margin-right: 20px"><div class="ys-btn-close" style="top: 15px;left: 172px;">×</div>' +
+                        '<input type="hidden" name="goods[' + item.goods_id + '][goods_id]" value="' + item.goods_id + '"/>' +
+                        '<div class="selected-group-goods"><div class="goods-thumb">' +
+                        '<img style="width: 162px;height: 162px" src="' + item.goods_image + '"/></div> <div class="goods-name"> ' +
+                        '<a target="_blank" href="/index.php?m=Home&c=Goods&a=goodsInfo&id=' + item.goods_id + '">' + item.goods_name + '</a> </div>' +
+                        '<input type="hidden" name="store_count[]" value="'+item.store_count+'"/>' +
+                        ' <div class="goods-price">商城价：￥' + item.goods_price + '库存:' + item.store_count + '</div> </div></div>';
+                }
+            }
+        });
+        $('#selected_group_goods').append(html);
+        layer.closeAll('iframe');
+    }
+
+    function img_call_back(fileurl_tmp) {
+        $("#topic_img").val(fileurl_tmp);
+        $("#img_a").attr('href', fileurl_tmp);
+        $("#img_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+
+    function selectGoods(){
+        var url = "{:U('GlobalPurchase/search_goods')}";
+        layer.open({
+            type: 2,
+            title: '选择商品',
+            shadeClose: true,
+            maxmin:true,
+            shade: 0.3,
+            area: ['90%', '90%'],
+            content: url,
+        });
+    }
+
+
+    //商品删除按钮事件
+    $(function () {
+        $(document).on("click", '.ys-btn-close', function (e) {
+            $(this).parent().remove();
+        })
+    })
+
+    $('#submit').click(function () {
+        verifyForm();
+    })
+</script>
+</body>
+</html>

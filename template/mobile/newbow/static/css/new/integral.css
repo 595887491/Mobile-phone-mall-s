@@ -1,0 +1,70 @@
+div.cuptyp {
+    box-sizing: content-box;
+    border: 2px solid transparent;
+}
+
+div.checked {
+    border: 2px solid #e23435;
+}
+
+.phoneclck {
+    /*部分手机不能点击问题*/
+    cursor: pointer
+}
+div.cuptyp {
+    box-sizing: content-box;
+    border: 2px solid transparent;
+}
+
+div.checked {
+    border: 2px solid #e23435;
+}
+
+.phoneclck {
+    /*部分手机不能点击问题*/
+    cursor: pointer
+}
+.edit_gtfix{ background-color: #545454;}
+.edit_gtfix .namephone{color: #fff;}
+.edit_gtfix .namephone .top{font-size: .6rem;}
+.edit_gtfix .youjter .mright{
+    margin-top: 1.23733rem;
+    color: #fff;
+    font-size: .6rem;
+    width: .34133rem;
+    height: .59733rem;
+    display: block;
+    float: left;}
+.edit_gtfix .namephone .top .le{margin-left: 0;}
+.edit_gtfix .namephone{width: 88%;margin-top: .2rem;}
+.edit_gtfix .namephone ._bot span{font-size: .6rem;}
+.edit_gtfix .namephone ._bot .icon{color: #ffcc00;}
+.fill-orderlist{margin-top: 0;}
+.shopprice .img_or img{    width: 3.43333rem;height: 3.43333rem;}
+.shopprice .fon_or{margin-top: .76267rem;}
+.shopprice .fon_or h2{font-size: .6rem;color: #1E1B1B;padding: 0;height: 1.3rem;}
+.shopprice .fon_or div{color: #BFC1CD;margin-top: 0;}
+.fill-orderlist .shopprice .price_or p.red{color: #1E1B1B;font-size: .5rem;text-align: left;margin-top: .4rem;  }
+.shopprice .fon_or{width: 10.73333rem;}
+.invoice .myorder .order .fr span{color: #BFC1CD}
+.information_dr{background-color: transparent;}
+.maleri30{padding: 0 .64rem;margin: 0;}
+.invoice .myorder {padding: 0 .64rem;}
+.incorise input[type="text"],.incorise input[type="password"] {width: 9.10667rem;height: 1.92rem;border: none;}
+.incorise input[type="button"]{    float: right;padding:.2rem;height: auto;margin-top: .3rem;width: auto;font-size: .6rem;
+    border: 1px solid #FF407E;color: #FF407E;border-radius: .1rem;}
+.usejfye{font-size: 1rem;color: #ddd;background-color: transparent;}
+.customer-messa p{font-size: .6rem;color: #1E1B1B;padding-top: .62667rem;}
+.open{color: #FF407E;}
+.close{color: #dddddd;}
+.invoice .myorder .order .fl span.couponssl{background-color: transparent;color: #FF407E;margin-left: 0;}
+.customer-messa textarea{outline: none;margin: .62667rem 0;}
+.customer-messa .xianzd{    right: .81333rem;}
+.xx-list p .fr span{margin-left: 0;}
+.payit .fl p{color: #FF407E;}
+.payit .fr a{background-color: #FF407E;}
+.payit .fr{width: 6rem;}
+.payit{position: fixed;bottom: 0;left: 0;background-color: #fff;width: 100%;}
+.bagrr{background-color: #FF407E}
+.radios-choice-h label>input[type="radio"]{width: .712rem;    vertical-align: sub;
+    height: .712rem;}

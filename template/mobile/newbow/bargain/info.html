@@ -1,0 +1,1216 @@
+<!DOCTYPE>
+<html>
+<head>
+    <title>
+        <if condition="$activity_info['act_type'] == 0">
+            砍价免费拿
+        <else/>
+            砍价底价购
+    </if>
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/jjj.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <!--地址插件-->
+    <script src="__STATIC__/ICalendar/mobileSelects.js"></script>
+    <link rel="stylesheet" href="__STATIC__/ICalendar/mobileSelect.css">
+    <!--<link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>-->
+    <link rel="stylesheet" href="__STATIC__/css/new/team_base.css">
+    <link rel="stylesheet" href="__STATIC__/css/user_index.css">
+    <link rel="stylesheet" href="__STATIC__/css/new/getFree.css">
+</head>
+<!--微信关注提醒 start-->
+<style type="text/css">
+    .popup .popup-box{width: 80%;left: 10%;}
+    #cover{display:none;position:absolute;left:0;top:0;z-index:18888;opacity:0.7;}
+    #guide{display:none;position:absolute;top:5px;z-index:19999;}
+    #guide img{width: 70%;height: auto;display: block;margin: 0 auto;margin-top: 10px;}
+    div.layui-m-layerchild h3{font-size:0.64rem;height:1.24rem;line-height:1.24rem;}
+    .layui-m-layercont img{height:8.96rem;width:8.96rem;}
+    #timeWrap{opacity: 0;}
+</style>
+<body id="body">
+<!--header-->
+<div class="headerRank">
+    <a href="javascript:goBack()" class="back" style="left:0;top:0;display: inline-block;padding:.25rem .3rem;
+width: auto;height: auto;">
+        <img src="__STATIC__/images/return.png" alt="返回" style=""></a>
+    </a>
+    <div class="txt">
+        <if condition="$activity_info['act_type'] == 0">
+            砍价免费拿
+            <else/>
+            砍价底价购
+        </if>
+    </div>
+    <a href="{:U('Mobile/Index/index')}" class="myTeam" style="padding-top: .2rem;">
+        <img src="__STATIC__/images/homeIndex.png" alt="">
+    </a>
+</div>
+<div style="height: .88rem;"></div>
+<!--header-->
+<!--砍价用户信息-->
+<div class="content_one p25">
+    <if condition="$user">
+       <div class="avatar fl">
+           <img src="{$user.head_pic}?x-oss-process=style/s150x150" alt="">
+       </div>
+        <div class="fl msg">
+            <p>{$user.nickname}</p>
+             <if condition="!$is_mine"><p>谢谢你帮我砍价！</p>
+                 <else/>
+                 <p>砍成功后为你发货
+                     <if condition="$bargain_info['address_id'] == 0 && empty($is_share) && $is_mine && $bargain_info['status'] lt 3">，<span onclick="perfect_address()">请完善收货地址</span></if></p>
+             </if>
+        </div>
+    <else/>
+        <div class="fl" style="color: #1E1B1B;font-size: .24rem;margin-top: .18rem;">
+            你还未登录 <a href="{:U('Mobile/User/login')}" style="color: #D50D16">5秒极速登录后砍价</a>
+        </div>
+    </if>
+    <div class="fr">
+        <a href="{:U('Mobile/bargain/bargainRule')}">
+            活动规则
+            <img src="__STATIC__/images/new/rule_logo.png" alt="" class="rule_logo">
+        </a>
+    </div>
+</div>
+<!--商品-->
+<div class="content_two">
+    <a href="{:U('mobile/Goods/goodsInfo',['id'=>$activity_info.goods_id])}">
+        <img src="{$activity_info.original_img}?x-oss-process=style/s340x340" alt="" class="fl">
+        <div class="fr">
+            <p class="title" id="t">
+                <if condition="$activity_info.is_free_shipping">
+                <span>包邮</span>
+                </if>
+                {$activity_info.goods_name}</p>
+            <p class="complete" style="height: .35rem;">{$activity_info.goods_remark}</p>
+            <p class="price">
+                <span>
+                    <if condition="$activity_info['act_type'] == 0">
+                    ￥0
+                    <else/>
+                    底价:￥{$activity_info.min_price}</if>
+                </span>
+                <span style="font-size: .2rem;color: #5B5858;font-weight: 500;padding-left: .1rem;">原价:￥{$activity_info.shop_price}</span>
+            </p>
+            <if condition="$activity_info['act_type'] == 0">
+                <a href="{:U('mobile/Goods/goodsInfo',['id'=>$activity_info.goods_id])}" class="btn">砍价免费领</a>
+                <else/>
+                <a href="{:U('mobile/Goods/goodsInfo',['id'=>$activity_info.goods_id])}" class="btn">砍价底价购</a>
+            </if>
+            <!--砍价过期-->
+            <if condition="$bargain_info['status'] == 4">
+            <img src="__STATIC__/images/new/bargain-overdue.png" alt="">
+            </if>
+            <!--砍价成功-->
+            <if condition="$bargain_info['is_success'] == 1 && $bargain_info['status'] != 4 && $is_order == 0">
+              <img src="__STATIC__/images/new/bargain-succeed.png" alt="">
+            </if>
+            <!--购买失败-->
+            <if condition="$is_overTime == 1 && $bargain_info['is_success'] ==1">
+               <img src="__STATIC__/images/new/buy-failure.png" alt="">
+            </if>
+            <!--购买成功-->
+            <if condition="$is_order == 1">
+               <img src="__STATIC__/images/new/buy-succeed.png" alt="">
+            </if>
+        </div>
+    </a>
+</div>
+<!--砍价按钮(未登录)-->
+<if condition="!$is_login && empty($is_share) && $bargain_info['is_success'] == 0">
+    <div class="bargain-btn" onclick="goLogin()">点我砍一刀</div>
+</if>
+<!--砍价按钮及砍价进度 已登录-->
+<if condition="$is_login && empty($is_share) && $bargain_info['is_success'] == 0 && $bargain_info['status'] lt 3">
+<div class="bargain-schedule" style="">
+   <p>
+       <span>已砍</span><span style="color: #D50D16;font-weight: bold;"><span style="font-weight: 500;">￥</span>{$bargain_info['have_bargain_price']}</span>
+       <span style="margin-left: .3rem;">还差</span><span style="color: #D50D16;font-weight: bold;"><span style="font-weight: 500;">￥</span>{$bargain_info['surplus_price']}</span>
+   </p>
+   <div class="pmgressbar">
+       <div class="pmgressbared"></div>
+   </div>
+    <!--未分享-->
+    <if condition="$bargain_info['current_bargain_info']['current_share_type'] ==0 && $bargain_info['current_bargain_info']['current_share_status'] ==0">
+       <div class="bargain-btn" style="margin: .46rem auto;" onclick="shareFriend()">分享给好友，多砍一刀</div>
+    </if>
+    <if condition="($bargain_info['current_bargain_info']['current_share_type'] ==1 && $bargain_info['current_bargain_info']['current_share_status'] ==1) ||($bargain_info['current_bargain_info']['current_share_type'] ==3 && $bargain_info['current_bargain_info']['current_share_status'] ==0) ">
+        <div class="bargain-btn" style="margin: .46rem auto;" onclick="shareQun()">分享2个群聊，多砍{$bargain_info['bargain_info']['shareInfo']['next_bargain_price']|default=$bargain_info['current_bargain_info']['next_bargain_price']}元</div>
+    </if>
+    <if condition="$bargain_info['current_bargain_info']['current_share_type'] ==3 && $bargain_info['current_bargain_info']['current_share_status'] ==1">
+        <div class="bargain-btn" style="margin: .46rem auto;" onclick="shareFriend()">喊好友砍一刀</div>
+    </if>
+    <div>
+        还剩
+        <span class="end-time" style="font-weight: bold;"><span class="hours"></span>:<span class="minutes"></span>:<span class="seconds"></span></span>
+        过期，快来砍价吧
+    </div>
+</div>
+</if>
+
+<!--发起者已登陆且第一次进入自动砍-->
+<if condition="$is_login && $bargain_info['bargain_info']['cut_no'] ==1 && $is_share ==0 && $bargain_info['is_success'] == 0">
+<div class="popup-mark" style=""></div>
+<div class="popup" style="">
+    <img src="__STATIC__/images/new/share-zz.png" alt="" class="share-zz">
+    <div  class="popup-box share-popup" style="margin-top: -2.1rem;">
+        <p class="title">恭喜你</p>
+        <div class="content">
+            <p class="">成功砍掉<span style="font-size: .3rem;color: #D50D16;font-weight: bold;">￥{$bargain_info['bargain_info']['reduce_price']}</span></p>
+            <img src="__STATIC__/images/new/bargain-share-logo.png" alt="">
+            <p>点击右上角 <span style="font-weight: bold;font-size: .5rem;line-height: 0;vertical-align: .04rem;">...</span>, 分享给好友可以<span style="font-weight: bold;color: #D50D16;">多砍一刀</span></p>
+        </div>
+    </div>
+</div>
+</if>
+<!--砍成功(砍价免费拿)-->
+<if condition="$is_login && empty($is_share) && $bargain_info['is_success'] == 1 && $activity_info['act_type'] == 0 && $bargain_info['status'] ==2">
+    <div class="bargain-alert succ">
+        <img src="__STATIC__/images/new/icon_kjcg.png" alt="">
+        砍价成功
+    </div>
+   <a href="{:U('Mobile/bargain/bargainFreeList')}" style="display: block;margin: .46rem auto;width: 80%;background-color: #B037A4;text-align: center;-->
+line-height: .8rem;color: #fff;font-size: .3rem;" class="bargain-btn">再砍一次</a>
+</if>
+<!--帮砍者已登陆-->
+<if condition="$is_share ==1 && $is_login && $bargain_info['is_success'] == 0 && $bargain_info['status'] lt 3 && empty($bargain_info['bargain_info']['is_over_times'])">
+<div class="bargain-schedule">
+    <p class="bargain-alert" style="margin-top: 0;color: #74236C;">已帮好友砍价</p>
+    <a href="{:U('Mobile/bargain/bargainFreeList')}" class="bargain-btn" style="margin: .46rem auto;margin-top: .3rem;margin-bottom: .52rem;display: block;background-color: #b037a4;">我也要底价购买</a>
+    <p>
+        <span>已砍</span><span style="color: #D50D16;font-weight: bold;"><span
+            style="font-weight: 500;">￥</span>{$bargain_info['have_bargain_price']}</span>
+        <span style="margin-left: .3rem;">还差</span><span style="color: #D50D16;font-weight: bold;"><span
+            style="font-weight: 500;">￥</span>{$bargain_info['surplus_price']}</span>
+    </p>
+    <div class="pmgressbar" style="margin-bottom: .5rem;">
+        <div class="pmgressbared"></div>
+    </div>
+
+    <div>
+        还剩
+        <span class="end-time" style="font-weight: bold;"><span class="hours"></span>:<span class="minutes"></span>:<span class="seconds"></span></span>
+        过期，快来砍价吧
+    </div>
+</div>
+</if>
+
+<if condition="$bargain_info['bargain_info']['is_over_times'] == 1 && $bargain_info['bargain_info']['is_over_times'] ==1">
+    <div class="bargain-alert fail">
+        <img src="__STATIC__/images/new/icon_sb.png" alt="">
+        当日帮砍次数已达{$today_bargain_limit}次
+    </div>
+    <div class="bargain-schedule">
+        <if condition="$activity_info['act_type'] == 1">
+        <a href="{:U('Mobile/bargain/bargainFreeList')}" class="bargain-btn" style="margin: 0 auto;margin-top: 0rem;margin-bottom: .52rem;display: block;background-color: #b037a4;">我也要底价购买</a>
+            <else/>
+        <a href="{:U('Mobile/bargain/bargainFreeList')}" class="bargain-btn" style="margin: 0 auto;margin-top: 0rem;margin-bottom: .52rem;display: block;background-color: #b037a4;">我也要免费拿</a>
+        </if>
+        <div>
+            还剩
+            <span class="end-time" style="font-weight: bold;"><span class="hours"></span>:<span class="minutes"></span>:<span class="seconds"></span></span>
+            过期，快来砍价吧
+        </div>
+    </div>
+</if>
+<!--帮砍者未登陆-->
+<if condition="$is_share ==1 && !$is_login && $bargain_info['is_success'] == 0 && empty($bargain_info['bargain_info']['is_over_times'])">
+<div class="bargain-schedule">
+    <div class="bargain-btn" style="margin: .46rem auto;margin-top:0;margin-bottom: .52rem;" onclick="goLogin()">帮忙砍价</div>
+    <p>
+        <span>已砍</span><span style="color: #D50D16;font-weight: bold;"><span
+            style="font-weight: 500;">￥</span>{$bargain_info['bargain_info']['reduce_price']}</span>
+        <span style="margin-left: .3rem;">还差</span><span style="color: #D50D16;font-weight: bold;"><span
+            style="font-weight: 500;">￥</span>{$bargain_info['surplus_price']}</span>
+    </p>
+    <div class="pmgressbar" style="margin-bottom: .5rem;">
+        <div class="pmgressbared"></div>
+    </div>
+
+    <div>
+        还剩
+        <span class="end-time" style="font-weight: bold;"><span class="hours"></span>:<span class="minutes"></span>:<span class="seconds"></span></span>
+        过期，快来砍价吧
+    </div>
+</div>
+</if>
+<!--帮砍者砍失败-->
+<if condition="$is_login && $bargain_info['status'] == 4 && !$is_mine && $is_share == 1">
+<div class="bargain-alert fail">
+    <img src="__STATIC__/images/new/icon_sb.png" alt="">
+    砍价已过期
+</div>
+<a href="{:U('Mobile/bargain/bargainFreeList')}" style="display: block;margin: .46rem auto;width: 80%;background-color: #B037A4;text-align: center;
+line-height: .8rem;color: #fff;font-size: .3rem;"  class="bargain-btn">我也要免费拿</a>
+</if>
+<!--砍失败-->
+<if condition="$bargain_info['status'] == 4 && $is_login  && $is_mine">
+<div class="bargain-alert fail">
+<img src="__STATIC__/images/new/icon_sb.png" alt="">
+    砍价已过期。再砍一次，我就不信砍不成功！
+</div>
+<a href="{:U('Mobile/bargain/bargainFreeList')}" style="display: block;margin: .46rem auto;width: 80%;background-color: #B037A4;text-align: center;
+line-height: .8rem;color: #fff;font-size: .3rem;" class="bargain-btn">再砍一次</a>
+</if>
+<!--帮砍者砍成功-->
+<if condition="$is_login && $is_share ==1 && $bargain_info['status'] ==2 && !$is_mine">
+<div class="bargain-alert succ">
+    <img src="__STATIC__/images/new/icon_kjcg.png" alt="">
+    好友已砍价成功
+</div>
+<a href="{:U('Mobile/bargain/bargainFreeList')}" style="display: block;margin: .46rem auto;width: 80%;background-color: #B037A4;text-align: center;
+line-height: .8rem;color: #fff;font-size: .3rem;"   class="bargain-btn">我也要免费拿</a>
+</if>
+<!--砍价用户轮播-->
+<!--砍价成功（购买成功）-->
+<if condition="$is_login && $is_order == 1 && $is_mine && $bargain_info['is_success'] ==1 && $activity_info['act_type'] == 1">
+<div class="bargain-alert succ">
+<img src="__STATIC__/images/new/icon_kjcg.png" alt="">
+    底价购买成功
+</div>
+<a href="{:U('Mobile/bargain/bargainFreeList')}" style="display: block;margin: .46rem auto;width: 80%;background-color: #B037A4;text-align: center;
+line-height: .8rem;color: #fff;font-size: .3rem;" class="bargain-btn">再砍一次</a>
+</if>
+
+<if condition="$is_login && $bargain_info['status'] ==4 && $is_order ==2 && $is_mine && empty($is_share)">
+<div class="bargain-alert fail">
+    <img src="__STATIC__/images/new/icon_sb.png" alt="">
+    下单支付超时，你已放弃底价购买
+</div>
+<a href="{:U('Mobile/bargain/bargainFreeList')}" style="display: block;margin: .46rem auto;width: 80%;background-color: #B037A4;text-align: center;-->
+line-height: .8rem;color: #fff;font-size: .3rem;" class="bargain-btn">再砍一次</a>
+</if>
+<!--砍价成功-->
+<if condition="$is_login && empty($is_share) && $bargain_info['is_success'] ==1 && $activity_info['act_type'] == 1 && $is_mine && $bargain_info['status'] ==2 && $is_order != 1">
+<div class="bargain-alert succ">
+    <img src="__STATIC__/images/new/icon_kjcg.png" alt="">
+    恭喜你，砍价成功，成功砍掉￥{$bargain_info['have_bargain_price']}
+</div>
+<div class="time-wrap">
+    <div class="time end-time" id="timeWrap">
+        <span class="time-item hours" class="hour"></span>
+        :
+        <span class="time-item minutes" id="minite"></span>
+        :
+        <span class="time-item seconds" id="second"></span>
+        <span style="font-weight: normal;padding-left: .05rem;">内下单</span>
+    </div>
+</div>
+<if condition="empty($is_order)">
+<a href="javascript:order()" class="bargain-btn" style="margin: 0 auto;display: block;width: 80%;background-color: #B037A4;text-align: center;
+line-height: .8rem;color: #fff;font-size: .3rem;">立即下单（￥{$bargain_info['price']}）</a></if>
+    <if condition="$is_order ==2">
+    <a href="{:U('Mobile/Order/order_detail',array('id'=>$bargain_info['order_id']))}   " class="bargain-btn" style="margin: 0 auto;display: block;width: 80%;background-color: #B037A4;text-align: center;
+line-height: .8rem;color: #fff;font-size: .3rem;">去支付（￥{$bargain_info['price']}）</a></if>
+<p style="font-size: .24rem;color: #74236C;text-align: center;margin: .2rem 0 .4rem;">24小时内未成功下单支付，视为放弃底价购的机会</p>
+</if>
+<!--砍价用户轮播-->
+<div class="user_show">
+   <if condition="!$is_login && empty($is_share)">
+       <div class="title">
+           <p class="line" style="left: 0;"></p>
+           <p>他们已免费领取啦</p>
+           <p class="line" style="right: 0;"></p>
+       </div>
+        <!--已登录-->
+       <else/>
+        <div class="title" style="width: 32%;">
+            <p class="line" style="left: 0;"></p>
+            <p>砍价亲友团</p>
+            <p class="line" style="right: 0;"></p>
+        </div>
+    </if>
+    <div id="scroll">
+        <ul>
+            <foreach name="$user_data" item="v">
+                <li>
+                    <div class="avatar fl">
+                        <img src="{$v.head_pic|default='http://cdn.cfo2o.com/data/avatar/user_head_default01.png'}?x-oss-process=style/s150x150" alt="">
+                    </div>
+                    <p class="name fl">{$v.nickname}</p>
+                    <if condition="!$is_login && empty($is_share)">
+                       <p class="del fr">已免费领取</p>
+                        <else/>
+                        <p class="del fr" style="color: #585858;">
+                            砍掉
+                            <span style="color: #D50D16;">￥{$v.reduce_price}</span>
+                        </p>
+                    </if>
+                </li>
+            </foreach>
+        </ul>
+    </div>
+
+</div>
+<!--精选好物-->
+<div class="guessLike">
+    <div class="guessLikeTop">
+        <img src="__STATIC__/images/new/jxhw.png" alt="">
+    </div>
+    <div class="guessList clearBoth" style="background-color: #FFF0FA;">
+        <foreach name="$goods_data" item="v">
+            <a href="{:U('mobile/Goods/goodsInfo',['id'=>$v.goods_id])}">
+                <div class="guessItem">
+                    <!--src="{$v[original_img]}?x-oss-process=style/s01"-->
+                    <img class="lazy" data-original="{$v[original_img]}?x-oss-process=style/s340x340" alt="">
+                    <p class="guessTitle">{$v['goods_remark']}</p>
+                    <p class="guessCom">{$v['goods_name']}</p>
+                    <div class="guessDiv"><span style="color: #FF407E">¥</span><span style="font-size: .32rem;color: #FF407E;font-weight: bold;">{$v['shop_price']}</span><span style="color: #BFC1CD;margin-left: .2rem;text-decoration: line-through">¥{$v['market_price']}</span></div>
+                </div>
+            </a>
+        </foreach>
+    </div>
+</div>
+<div class="noMore" style="background-color: #FFF0FA;">
+    <span>没有更多了</span>
+</div>
+
+<!--未登录提示弹窗-->
+<div class="popup goLogin" style="display: none;">
+  <div class="popup-box">
+     <p class="title">未登录</p>
+     <p class="del">登录后才能砍价哟~</p>
+      <div class="btn">
+          <a href="javascript:;" class="fl" onclick="closed(this)">取消</a>
+          <a href="{:U('Mobile/User/login')}" class="fr">5秒极速登录</a>
+      </div>
+  </div>
+</div>
+<!--帮砍者已登陆（分享说明）-->
+<if condition="$is_login && $bargain_info['bargain_info'] !='' && $is_share==1 && $bargain_info['bargain_info']['is_have_bargain'] == 0 && empty($bargain_info['bargain_info']['is_over_times'])">
+<div class="popup-mark" style=""></div>
+<div class="popup" style="">
+    <img src="__STATIC__/images/new/share-zz.png" alt="" class="share-zz">
+    <div  class="popup-box share-popup" style="margin-top: -2.15rem;">
+        <p class="title" style="color: #D50D16;">恭喜你</p>
+        <div class="content" style="padding-top:.42rem;padding-bottom: 0;">
+            <p class="">成功砍掉<span style="font-size: .3rem;color: #D50D16;font-weight: bold;">￥{$bargain_info['bargain_info']['reduce_price']}</span></p>
+                <img src="__STATIC__/images/new/bargain-share-logo.png" alt="">
+        </div>
+        <if condition="$activity_info['act_type'] ==1">
+        <a href="{:U('Mobile/bargain/bargainFreeList')}" style="display: block;width: 100%;background-color: #FF407E;text-align: center;
+line-height: .8rem;color: #fff;font-size: .3rem;">推荐你也来底价领取</a>
+        </if>
+       <if condition="$activity_info['act_type'] ==0">
+        <a href="{:U('Mobile/bargain/bargainFreeList')}" style="display: block;width: 100%;background-color: #FF407E;text-align: center;
+line-height: .8rem;color: #fff;font-size: .3rem;">推荐你也免费拿</a>
+        </if>
+    </div>
+</div>
+</if>
+
+<!--发起者已登陆（成功邀请6人砍价）-->
+<if condition="$is_login && !$bargain_info['bargain_info'] && $bargain_info['bargain_info']['cut_no'] ==4">
+<div class="popup" style="">
+    <img src="__STATIC__/images/new/share-zz.png" alt="" class="share-zz">
+    <div  class="popup-box share-popup" style="margin-top: -2.1rem;">
+        <p class="title">成功邀请{$bargain_user}人砍价</p>
+        <div class="content">
+            <p class="">多砍了<span style="font-size: .3rem;color: #D50D16;font-weight: bold;">￥{$bargain_info['bargain_info']['reduce_price']}</span></p>
+            <img src="__STATIC__/images/new/bargain-share-logo.png" alt="">
+            <p>就快砍价成功了，继续分享</p>
+        </div>
+    </div>
+</div>
+</if>
+<!--发起者已登陆（首次分享成功）-->
+<if condition="$is_login && $bargain_info['bargain_info'] && $bargain_info['current_bargain_info']['current_share_type'] ==1 && $bargain_info['current_bargain_info']['current_share_status'] ==1">
+<div class="popup-mark" style=""></div>
+<div class="popup share-crowd" style="">
+    <img src="__STATIC__/images/new/share-zz.png" alt="" class="share-zz">
+    <div  class="popup-box share-popup" style="margin-top: -2.4rem;">
+        <p class="title">首次分享成功</p>
+        <div class="content">
+            <p class="">多砍了<span style="font-size: .3rem;color: #D50D16;font-weight: bold;">￥{$bargain_info['bargain_info']['reduce_price']}</span></p>
+            <img src="__STATIC__/images/new/bargain-share-logo.png" alt="">
+            <p>继续分享2个群聊，再<span style="font-weight: bold;color: #D50D16;">多砍￥{$bargain_info['current_bargain_info']['next_bargain_price']}</span></p>
+            <p style="margin-top: .15rem;">进度：<span style="color: #D50D16;">0/2</span></p>
+        </div>
+    </div>
+</div>
+</if>
+<!--发起者已登陆（已经分享了群聊）-->
+<if condition="$is_login && $bargain_info['current_bargain_info']['current_share_type'] ==3 && $bargain_info['current_bargain_info']['current_share_status'] ==0 && $bargain_info['current_bargain_info']['current_share_num'] ==1">
+<div class="popup-mark" style=""></div>
+<div class="popup share-crowd" style="">
+    <img src="__STATIC__/images/new/share-zz.png" alt="" class="share-zz">
+    <div  class="popup-box share-popup" style="margin-top: -2.4rem;">
+        <p class="title">成功分享1个群</p>
+        <div class="content">
+            <img src="__STATIC__/images/new/bargain-share-logo.png" alt="">
+            <p>继续分享2个群聊，再<span style="font-weight: bold;color: #D50D16;">多砍￥{$bargain_info['current_bargain_info']['next_bargain_price']}</span></p>
+            <p style="margin-top: .15rem;">进度：<span style="color: #D50D16;">1/2</span></p>
+        </div>
+    </div>
+</div>
+</if>
+
+<!--发起者已登陆（成功分享两个群）-->
+<if condition="$is_login && $bargain_info['current_bargain_info']['current_share_type'] ==3 && $bargain_info['current_bargain_info']['current_share_status']==1 && $bargain_info['bargain_info']">
+<div class="popup-mark" style=""></div>
+<div class="popup" style="">
+    <img src="__STATIC__/images/new/share-zz.png" alt="" class="share-zz">
+    <div  class="popup-box share-popup" style="margin-top: -2.1rem;">
+        <p class="title">成功分享2个群</p>
+        <div class="content">
+            <p class="">多砍了<span style="font-size: .3rem;color: #D50D16;font-weight: bold;">￥{$bargain_info['bargain_info']['reduce_price']}</span></p>
+            <img src="__STATIC__/images/new/bargain-share-logo.png" alt="">
+            <p>再邀请6人砍价，可再<span style="font-weight: bold;color: #D50D16;">多砍一次</span></p>
+        </div>
+    </div>
+</div>
+</if>
+<!--成功邀请6人砍价-->
+<if condition="$is_login && $bargain_info['current_bargain_info']['current_share_type'] ==3 && $bargain_info['current_bargain_info']['current_share_status']==1 && $bargain_info['bargain_info']['cut_no'] ==4">
+<div class="popup-mark" style=""></div>
+<div class="popup" style="">
+    <img src="__STATIC__/images/new/share-zz.png" alt="" class="share-zz">
+    <div  class="popup-box share-popup" style="margin-top: -2.1rem;">
+        <p class="title">成功邀请6人砍价</p>
+        <div class="content">
+            <p class="">多砍了<span style="font-size: .3rem;color: #D50D16;font-weight: bold;">￥{$bargain_info['bargain_info']['reduce_price']}</span></p>
+            <img src="__STATIC__/images/new/bargain-share-logo.png" alt="">
+            <p>就快砍价成功了，继续分享</p>
+        </div>
+    </div>
+</div>
+</if>
+<!--帮砍者已登陆（砍价成功）-->
+<if condition="$bargain_info['is_success'] == 1 && $bargain_info['status'] != 4 && $is_order == 0 && $is_mine ">
+<div class="popup" style="display: none;">
+    <img src="__STATIC__/images/new/share-zz.png" alt="" class="share-zz">
+    <div  class="popup-box share-popup" style="margin-top: -2.1rem;">
+        <p class="title">恭喜你</p>
+        <div class="content">
+            <img src="__STATIC__/images/new/bargain-yes.png" alt="" style="width: 1.37rem;height: 1.55rem;margin-top: .1rem;">
+            <p style="font-size: .3rem;color: #30C37C;">砍价成功啦</p>
+        </div>
+    </div>
+</div>
+</if>
+<!--选择地址弹窗-->
+<div class="popup checked-address" style="display: none;">
+  <div class="address_popup">
+     <div class="title">
+         <p>选择你的收货地址</p>
+         <p>以便砍价成功后为你发货</p>
+         <div class="close-btn" onclick="closed(this)">
+             <img src="__STATIC__/images/xqgg_icon_quxiao.png" alt="" style="width: .21rem;height: .21rem;">
+         </div>
+
+     </div>
+      <ul class="address-list" id="addAddress"></ul>
+      <div class="add_address">
+          <a href="javascript:;" onclick="add_new_address()">
+              <img src="__STATIC__/images/new/add_address_logo.png" alt="">
+              添加新的收货地址
+          </a>
+      </div>
+  </div>
+</div>
+
+<!--添加收货地址-->
+<div class="popup add_new_address" style="display: none;">
+    <div class="popup-box" style="border-radius: .1rem;margin-top: -3.35rem;width: 80%;left: 10%;">
+        <div class="title">添加收货地址
+            <div class="close-btn" onclick="closed(this)">
+                <img src="__STATIC__/images/xqgg_icon_quxiao.png" alt="" style="width: .21rem;height: .21rem;">
+            </div>
+        </div>
+        <div class="address-msg">
+            <div class="address-msg-item">
+                <span>联系人：</span><input type="text" placeholder="请输入联系人姓名" name="name">
+            </div>
+            <div class="address-msg-item">
+                <span>联系电话：</span><input type="text" placeholder="请输入联系人电话" name="phone">
+            </div>
+            <div class="address-msg-item">
+                <span class="fl">选择地区：</span><div type="text" id="trigger3" class="fl">请选择区域</div>
+                <img src="__STATIC__/images/cf_right_more1.png" alt="" class="more fr">
+            </div>
+            <div class="address-msg-item">
+                <span class="fl" style="margin-top: -.03rem;">详细地址：</span><textarea name="address" id="" placeholder="请输入详细地址"></textarea>
+            </div>
+        </div>
+        <div class="btn address-btn">
+            <a href="javascript:;" class="add-address-btn">确认</a>
+        </div>
+    </div>
+</div>
+
+<!--确认收货地址-->
+<div class="popup ensure-address" style="display: none;">
+    <div class="popup-box" style="border-radius: .1rem;">
+        <p class="title">确认收货地址</p>
+        <div class="sure-address">
+            <p><span class="name"></span>  <span class="mobile"></span></p>
+            <p class="address"></p>
+        </div>
+        <div class="btn">
+            <a href="javascript:;" class="fl" onclick="closed(this)">取消</a>
+            <a href="javascript:;" class="fr" id="ensure">确认</a>
+        </div>
+    </div>
+</div>
+
+<!--点击按钮弹出弹窗（还未分享过）-->
+<div class="popup share-first" style="display: none;">
+    <img src="__STATIC__/images/new/share-zz.png" alt="" class="share-zz">
+    <div  class="popup-box share-popup" style="margin-top: -1.1rem;">
+            <div class="content" style="padding: .55rem 0;">
+                <p style="font-size: .3rem;">点击右上角 <span style="font-weight: bold;font-size: .5rem;line-height: 0;vertical-align: .04rem;">...</span></p>
+                <p style="font-size: .34rem;color: #D50D16;margin-top: .2rem;">喊好友砍一刀</p>
+            </div>
+    </div>
+</div>
+
+<div class="popup share-flock" style="display: none;">
+    <img src="__STATIC__/images/new/share-zz.png" alt="" class="share-zz">
+    <div  class="popup-box share-popup" style="margin-top: -1.1rem;">
+        <div class="content" style="padding: .55rem 0;">
+            <p style="font-size: .3rem;">点击右上角 <span style="font-weight: bold;font-size: .5rem;line-height: 0;vertical-align: .04rem;">...</span></p>
+            <!--<p style="font-size: .34rem;color: #D50D16;margin-top: .2rem;">喊好友砍一刀</p>-->
+            <p style="font-size: .3rem;margin-top: .2rem;">分享2个群聊，<span style="color: #D50D16">多砍{$bargain_info['bargain_info']['shareInfo']['next_bargain_price']|default=$bargain_info['current_bargain_info']['next_bargain_price']}元</span></p>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" class="server_time" value="{$now_time}">
+<input type="hidden" class="end_time" value="{$bargain_info['found_end_time']}">
+<!--遮罩层-->
+<div class="popup-mark" id="popup-mark" style="display: none;"></div>
+</body>
+<!--分享结束-->
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script type="text/javascript" src="__STATIC__/js/jquery.lazyload.js"></script>
+<script>
+    // 判断是否有缓存 数据 猜你喜欢  返回到浏览位置
+    var page ;
+    page = 0
+    var getFreePage = sessionStorage.getItem("getFreePage");
+    var ajax_pending = false;//进行中
+    var has_more_data = true;//还有数据
+    var datahtml ='';
+    if(getFreePage != '') {
+        page = getFreePage;
+        ajax_sourch_submit();
+    }else{
+        page =0;
+        ajax_sourch_submit();
+    }
+    /**
+     * ajax加载更多数据
+     */
+    function ajax_sourch_submit() {
+        if (ajax_pending || has_more_data == false) return;
+        ajax_pending = true;
+        ++page;
+        $.ajax({
+            type : "GET",
+            url:"/index.php?m=Mobile&c=Bargain&a=getPreferSelectGoods&p="+page,
+            success: function(data) {
+                ajax_pending = false;
+                if ($.trim(data) != '') {
+                    $('.guessList').append(data);
+                    datahtml += data;
+                    sessionStorage.setItem("getFreePage",page);
+                    sessionStorage.setItem("getFreeData", datahtml);
+                    //加载更多时 懒加载配置
+                    $("img.lazy").lazyload({effect: "fadeIn"});
+                    $("img.lazy").lazyload({ threshold :180});
+                } else {
+                    has_more_data = false;
+                    $('.noMore').show()
+                }
+            }
+        });
+    }
+
+
+    // 判断是否有缓存 数据 猜你喜欢  返回到浏览位置
+    $(function () {
+        var a = sessionStorage.getItem("getFreeData");
+        if(a != '') {
+            $('.guessList').html(a);
+        }
+    });
+    // var page = sessionStorage.getItem("userPage")
+
+    // 懒加载  相关配置
+    $(function() {
+        $("img.lazy").lazyload({effect: "fadeIn"});
+    });
+    $("img.lazy").lazyload({ threshold :180});
+    $("img.lazy").lazyload({
+        placeholder : "/template/mobile/newbow/static/images/aa.png", //用图片提前占位
+        // placeholder,值为某一图片路径.此图片用来占据将要加载的图片的位置,待图片加载时,占位图则会隐藏
+        effect: "slideDown", // 载入使用何种效果
+        // effect(特效),值有show(直接显示),fadeIn(淡入),slideDown(下拉)等,常用fadeIn
+        threshold: 150, // 提前开始加载
+        // threshold,值为数字,代表页面高度.如设置为200,表示滚动条在离目标位置还有200的高度时就开始加载图片,可以做到不让用户察觉
+        event: 'click',  // 事件触发时才加载
+        // event,值有click(点击),mouseover(鼠标划过),sporty(运动的),foobar(…).可以实现鼠标莫过或点击图片才开始加载,后两个值未测试…
+        container: $(".guessItem"),  // 对某容器中的图片实现效果
+        // container,值为某容器.lazyload默认在拉动浏览器滚动条时生效,这个参数可以让你在拉动某DIV的滚动条时依次加载其中的图片
+        failurelimit : 10 // 图片排序混乱时
+        // failurelimit,值为数字.lazyload默认在找到第一张不在可见区域里的图片时则不再继续加载,但当HTML容器混乱的时候可能出现可见区域内图片并没加载出来的情况,failurelimit意在加载N张可见区域外的图片,以避免出现这个问题.
+    });
+    // 判断ios 和  安卓  兼容样式问题
+    $(function () {
+        var u = navigator.userAgent;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        if(isAndroid || !isiOS){  //安卓
+
+        }else{  //苹果
+            // $('.guessItem .guessCom').css("height",".7rem")
+        }
+    });
+</script>
+<script>
+    // 判断ios 和  安卓  兼容样式问题
+    $(function () {
+        var u = navigator.userAgent;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        if(isAndroid || !isiOS){  //安卓
+           $('.content_two .fr .title>span').css('vertical-align','.06rem')
+        }else{  //苹果
+
+        }
+    });
+</script>
+<script>
+    //滚动
+    var scrollIndex=0;
+    var Timer=null;
+    function scroll_f(){
+        clearInterval(Timer);
+        var ul=$("#scroll ul");
+        var li=ul.children("li");
+        $("#scroll ul").eq(0).height();
+        // var h = li.height();
+        var h=li.outerHeight(true);
+        var index=0;
+        if(li.length>3) {
+            ul.css("height",h*li.length*2);
+            ul.html(ul.html()+ul.html());
+        }
+        function run()
+        {
+            if(scrollIndex>=li.length){
+                ul.css({top:0});
+                scrollIndex=1;
+                ul.animate({top:-scrollIndex*h},200);
+            }
+            else{
+                scrollIndex++;
+                ul.animate({top:-scrollIndex*h},200);
+            }
+        }
+        if(li.length>3) {
+            Timer=setInterval(run,3000);
+        }
+    }
+    $(function(){
+       scroll_f();
+        // 计算砍价条的长度
+       var ww = <if condition="$bargain_info['have_bargain_price']">{$bargain_info['have_bargain_price']}<else/>0</if>;
+       var short =  <if condition="$bargain_info['surplus_price']">{$bargain_info['surplus_price']}<else/>0</if>;
+       var w = (ww/(ww+short)*100)+'%';
+       $('.pmgressbared').css('width',w);
+       setTimeout(function () {
+           $('#timeWrap').css('opacity','1')
+       },1000)
+    });
+$(function () {
+    var server_time = $('.server_time').val();
+    var end_time = $('.end_time').val();
+    var NowTime1 =  Date.parse(new Date());
+    var flag = (server_time*1000) - NowTime1;
+    var ti = Math.abs(flag);
+    var timer =setInterval(function () {
+        var NowTime = new Date();
+        if(flag >0) {
+            var t = (end_time*1000) -NowTime.getTime()-ti;
+        }else {
+            var t = (end_time*1000) -NowTime.getTime()+ti;
+        }
+        var d = Math.floor(t / 1000 / 60 / 60 / 24);
+        var h = Math.floor(t / 1000 / 60 / 60);
+        var m = Math.floor(t / 1000 / 60 % 60);
+        var s = Math.floor(t / 1000 % 60);
+        if (s >= 0) {
+            // $('#date').text(d);
+            h < 10 ? $('.end-time').find('.hours').text('0' + (h)) : $('.end-time').find('.hours').text(h);
+            m < 10 ? $('.end-time').find('.minutes').text('0' + m) : $('.end-time').find('.minutes').text(m);
+            s < 10 ? $('.end-time').find('.seconds').text('0' + s) : $('.end-time').find('.seconds').text(s);
+        }
+        //当前时间转换成时间戳
+        // var NowDate =  Date.parse(new Date()) / 1000;
+        if(h==0 && m==0 && s==0) {
+            clearInterval(timer);
+            location.reload();
+        }
+    },1000);
+})
+
+    // 关闭弹窗
+    function closed(obj) {
+        $(obj).closest('.popup').hide();
+        $('.popup-mark').hide();
+        $('body').css('overflow','auto');
+    }
+
+    var mobileSelect4 = new MobileSelect({
+        trigger: '#trigger3',
+        title: '地区选择',
+        wheels: [
+            {data:[
+                    {
+                        id:'1',
+                        value:'',
+                        childs:[
+                            {id:'A1',value:''},
+                        ]
+                    }
+                ]}
+        ],
+        position:[22,0,0],
+        callback:function(indexArr, data){
+            console.log(data); //返回选中的json数据
+            // for(var i = 0 ;i<data.length;i++) {
+            //    console.log(i)
+            // }
+            sessionStorage.setItem('Bargain-province-id',data[0].id);
+            sessionStorage.setItem('Bargain-city-id',data[1].id);
+            sessionStorage.setItem('Bargain-district-id',data[2].id);
+        }
+    });
+
+    $.ajax({
+        type: "POST",
+        url: "/mobile/Bargain/getRegion",
+        data: {},
+        dataType: "json",
+        success: function(res){
+            //这里假设获取到的res.data为：
+            // [{
+            //     id:'1',
+            //     value:'更新后数据',
+            //     childs:[
+            //         {id:'A1',value:'apple'},
+            //         {id:'A2',value:'banana'},
+            //         {id:'A3',value:'orange'}
+            //     ]
+            // }]
+            mobileSelect4.updateWheels(res.data);
+        }
+    });
+</script>
+<script>
+    //点击遮罩层
+    $('.popup-mark').on('click',function () {
+        $('.popup').hide();
+        $('.popup-mark').hide();
+        $('body').css('overflow','auto');
+    })
+    //去登陆提示
+    function goLogin() {
+       $('.goLogin').show();
+        $('.popup-mark').show();
+    }
+      //免费拿砍价成功判断是否填写地址
+    var $act_type = "{$activity_info['act_type']}";
+    var $address_id = "{$bargain_info['address_id']}";
+    var $status = "{$bargain_info['status']}";
+    var $is_order = "{$is_order}";
+    var $is_mine = "{$is_mine}";
+    var $is_login = "{$is_login}";
+    if($act_type ==0 && $address_id==0 && $status ==2 && $is_order==0 && $is_mine && $is_login) {
+        perfect_address()
+    }
+    //在黑幕层阻挡touch事件
+    // var shield = document.getElementById('popup-mark');
+    // shield.addEventListener("touchstart",function(e){
+    //     e.stopPropagation();
+    //     e.preventDefault();
+    // },false);
+    // 完善收货地址
+    function perfect_address() {
+       $('.checked-address').show();
+        $('.popup-mark').show();
+        $('body').css('overflow','hidden');
+        var htmls = '';
+        $.get('/Mobile/Bargain/getUserAddressList',function (res) {
+             for(var i = 0 ;i<res.data.lists.length;i++) {
+                 // console.log(res.data.lists)
+                 htmls += '<li data-address='+res.data.lists[i].address_id+' onclick="checked_address(this)">\n' +
+                     '               <div class="fl">\n' +
+                     '                   <p>\n' +
+                     '                       <span class="name">'+res.data.lists[i].consignee+'</span>\n' +
+                     '                       <span style="padding-left: .2rem;" class="mobile">'+res.data.lists[i].mobile+'</span>\n' +
+                     '                   </p>\n' +
+                     '                   <p class="address">'+res.data.lists[i].address+'</p>\n' +
+                     '               </div>\n' +
+                     '                <img src="__STATIC__/images/cf_right_more1.png" alt="" class="fr">\n' +
+                     '        </li>';
+             }
+            $('#addAddress').html(htmls);
+            // console.log(htmls);
+        })
+    }
+    // 分享给好友，多砍一刀
+    function shareFriend() {
+        var islogin ="{$is_login}";
+        var isShare = "{$bargain_info['bargain_info']['shareInfo']['current_share_num']}";
+        // if(islogin && isShare == 1) {
+          $('.popup-mark').show();
+          $('.share-first').show();
+    }
+    //分享两个群聊
+    function shareQun() {
+        var islogin ="{$is_login}";
+        var isShare = "{$bargain_info['bargain_info']['shareInfo']['current_share_num']}";
+        // if(islogin && isShare == 1) {
+        $('.popup-mark').show();
+        $('.share-flock').show();
+    }
+    //选择地址
+    function checked_address(obj) {
+        $('.ensure-address').show();
+        $('.popup-mark').show();
+        $('.checked-address').hide();
+        var nickname = $(obj).find('.name').text();
+        var mobile = $(obj).find('.mobile').text();
+        var address = $(obj).find('.address').text();
+        $('.ensure-address .name').html(nickname);
+        $('.ensure-address .mobile').html(mobile);
+        $('.ensure-address .address').html(address);
+        var dataJson = {
+            found_id:<if condition="$bargain_info['found_id']">{$bargain_info['found_id']}<else/>0</if>,
+            address_id:$(obj).data('address')
+        };
+        $('#ensure').on('click',function () {
+            $.ajax({
+                url:'/Mobile/Bargain/addUserAddress',
+                type:'POST',
+                data:dataJson,
+                success:function (res) {
+                    if(res.code == 1) {
+                        layer.open({content:'确认地址成功',time:2,skin:'msg'});
+                        $('.ensure-address').hide();
+                        $('.popup-mark').hide();
+                        window.location.reload();
+                    }else {
+                        layer.open({content:'确认地址失败',time:2,skin:'msg'});
+                        $('.ensure-address').hide();
+                        $('.popup-mark').hide();
+                    }
+                }
+            })
+        })
+    }
+    //添加新的地址
+    function add_new_address() {
+       $('.checked-address').hide();
+       $('.add_new_address').show();
+       $('.add-address-btn').on('click',function () {
+           var nickname= $('.address-msg').find("input[name='name']").val();
+           var mobile= $('.address-msg').find("input[name='phone']").val();
+           var region= $('.address-msg').find("#trigger3").text();
+           var address= $('.address-msg').find("textarea[name='address']").val();
+           var user_address_msg = {};
+           if(!nickname){
+               layer.open({content:"请输入联系人姓名",time:2,skin:"msg"});
+               return false
+           }
+           if(!/^1\d{10}$/.test(mobile)){
+               layer.open({content:"请输入联系人电话",time:2,skin:"msg"});
+               return false
+           }
+           if(region =='请选择区域'){
+               layer.open({content:'请选择区域',time:2,skin:"msg"});
+               return false
+           }
+           if(address ==''){
+               layer.open({content:'请输入详细地址',time:2,skin:"msg"});
+               return false
+           }else {
+               var province = sessionStorage.getItem('Bargain-province-id');
+               var city = sessionStorage.getItem('Bargain-city-id');
+               var district = sessionStorage.getItem('Bargain-district-id');
+               user_address_msg={
+                   consignee:nickname,
+                   mobile:mobile,
+                   province:province,
+                   city:city,
+                   district:district,
+                   // region:region,
+                   address:address,
+                   is_default:'',
+                   id:''
+               };
+               console.log(user_address_msg);
+
+               $.ajax({
+                   type : "POST",
+                   url:"{:U('Mobile/User/add_address')}",//+tab,
+                   dataType:'JSON',
+                   data :user_address_msg,
+                   success: function(data)
+                   {
+                       if(data.status == 1){
+                           layer.open({content:data.msg,time:2,skin:'msg',end:function(){
+                                   // window.location.href=data.url;
+                               $('.add_new_address').hide();
+                               $('.ensure-address').show();
+                               $('.ensure-address .name').html(nickname);
+                               $('.ensure-address .mobile').html(mobile);
+                               var h = region+address;
+                               $('.ensure-address .address').html(h);
+                               // console.log(data.result)
+                                   var dataJson = {
+                                       found_id:<if condition="$bargain_info['found_id']">{$bargain_info['found_id']}<else/>0</if>,
+                                       address_id:data.result
+                                   };
+                                $('#ensure').on('click',function () {
+                                    $.ajax({
+                                        url:'/Mobile/Bargain/addUserAddress',
+                                        type:'POST',
+                                        data:dataJson,
+                                        success:function (res) {
+                                             if(res.code == 1) {
+                                                 layer.open({content:'确认地址成功',time: 2,skin:'msg'});
+                                                 $('.ensure-address').hide();
+                                                 $('.popup-mark').hide();
+                                                 location.reload();
+                                             }else {
+                                                 layer.open({content:'确认地址失败',time:2,skin:'msg'});
+                                                 $('.ensure-address').hide();
+                                                 $('.popup-mark').hide();
+                                             }
+                                        }
+                                    })
+                                })
+                           }});
+                       }else{
+                           layer.open({content:data.msg,time:2,skin:'msg'});
+                       }
+                   },
+                   error:function(){
+                       layer.open({content:'请稍后再试',time:2,skin:'msg'});
+                   }
+               });
+           }
+       })
+    }
+    function goBack() {
+        var url = document.referrer;
+        var list_url = "https://"+location.host+"/Mobile/bargain/bargainFreeList.html";
+        if(url == '') {
+           window.location.href= list_url;
+        }
+        if(url == list_url)  {
+            window.location.href= list_url;
+        }
+        if(url != list_url && url!='') {
+            history.back();
+        }
+    }
+    //
+    function order() {
+        // var address= "{$bargain_info['address_id']}";
+        // if(address != 0) {
+            location.href="{:U('Mobile/Cart/cart2',array('action'=>'bargain','goods_num'=>'1','goods_id'=>$activity_info.goods_id,'item_id'=>$bargain_info['found_id']))}";
+        // }else {
+        //     layer.open({content:'请完善收货地址',time:2,skin:"msg"});
+        // }
+    }
+</script>
+<!-- 微信浏览器 调用微信 分享js-->
+<script>
+    var ShareImgUrl = "{$activity_info.share_img}"; //分享图标
+    var ShareTitle ="{$activity_info.share_title}" ; //分享标题
+    var ShareDesc = "{$activity_info.share_desc}"; //分享描述
+    var ShareLink = "{:U('Mobile/bargain/info',array('item_id'=>$activity_info['item_id'],'activity_id'=>$activity_info['activity_id'],'found_id'=>$bargain_info['found_id'],'is_share'=>1),true,true)}"; //分享描述
+</script>
+<script type="text/javascript">
+    if (typeof(ShareLink) == 'undefined' || ShareLink == ''){
+        var ShareLink = "http://{$_SERVER[HTTP_HOST]}/index.php?m=Mobile&c=Index&a=index"; //默认分享链接
+    }
+    //    alert("<?php echo strtolower(CONTROLLER_NAME);?>");
+    //    alert("<?php echo strtolower(ACTION_NAME);?>");
+
+    if (typeof(ShareImgUrl) == 'undefined' || ShareImgUrl == ''){
+        var ShareImgUrl = "http://{$Think.server.SERVER_NAME}{$tpshop_config['shop_info_store_logo']}"; //分享图标
+    }
+
+    if (typeof(ShareTitle) == 'undefined' || ShareTitle == ''){
+        var ShareTitle = "{$tpshop_config['shop_info_store_title']}"; //分享标题
+    }
+
+    if (typeof(ShareDesc) == 'undefined' || ShareDesc == ''){
+        var ShareDesc = "{$tpshop_config['shop_info_store_desc']}"; //分享描述
+    }
+
+
+    var user_id = getCookie('user_id'); // 当前用户id
+    // 如果已经登录了, 并且是分销商
+    if(parseInt(user_id) > 0)
+    {
+        ShareLink = ShareLink + "&distribute_parent_id="+user_id;
+    }
+    $(function() {
+// && parseInt(user_id)>0
+        if(isWeiXin()){
+            $.ajax({
+                type : "POST",
+                url:"/index.php?m=Mobile&c=Index&a=ajaxGetWxConfig&t="+Math.random(),
+                data:{'askUrl':encodeURIComponent(location.href.split('#')[0])},
+                dataType:'JSON',
+                success: function(res)
+                {
+                    //微信配置
+                    wx.config({
+                        debug: false,
+                        appId: res.appId,
+                        timestamp: res.timestamp,
+                        nonceStr: res.nonceStr,
+                        signature: res.signature,
+                        jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage','onMenuShareQQ','onMenuShareQZone','hideOptionMenu','scanQRCode'] // 功能列表，我们要使用JS-SDK的什么功能
+                    });
+                },
+                error:function(){
+                    return false;
+                }
+            });
+            // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在 页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready 函数中。
+            wx.ready(function(){
+                // 获取"分享到朋友圈"按钮点击状态及自定义分享内容接口
+                wx.onMenuShareTimeline({
+                    title: ShareTitle, // 分享标题
+                    link:ShareLink,
+                    desc: ShareDesc,
+                    imgUrl:ShareImgUrl,// 分享图标
+                    success: function () {
+                        // 用户点击了分享后执行的回调函数
+                    var dataJson = {
+                        found_id:<if condition="$bargain_info['found_id']">{$bargain_info['found_id']}<else/>0</if>,
+                        user_id	:<if condition="$user['user_id']">{$user['user_id']}<else/>0</if>,
+                    };
+                     $.ajax({
+                         type:'POST',
+                         url:'/Mobile/Bargain/info',
+                         data:dataJson,
+                         success:function (res) {
+                              if(res.code ==1) {
+                                  window.location.reload()
+                              }
+                         }
+                     })
+                    }
+                });
+
+                // 获取"分享给朋友"按钮点击状态及自定义分享内容接口
+                wx.onMenuShareAppMessage({
+                    title: ShareTitle, // 分享标题
+                    desc: ShareDesc, // 分享描述
+                    link:ShareLink,
+                    imgUrl:ShareImgUrl, // 分享图标
+                    success: function () {
+                        // 用户点击了分享后执行的回调函数
+                        var dataJson = {
+                            found_id:<if condition="$bargain_info['found_id']">{$bargain_info['found_id']}<else/>0</if>,
+                            user_id	:<if condition="$user['user_id']">{$user['user_id']}<else/>0</if>,
+                        };
+                        $.ajax({
+                            type:'POST',
+                            url:'/Mobile/Bargain/bargainShare',
+                            data:dataJson,
+                            success:function (res) {
+                                if(res.code ==1) {
+                                    window.location.reload()
+                                }
+                            }
+                        })
+                    }
+                });
+                // 分享到QQ
+                wx.onMenuShareQQ({
+                    title: ShareTitle, // 分享标题
+                    desc: ShareDesc, // 分享描述
+                    link:ShareLink,
+                    imgUrl:ShareImgUrl, // 分享图标
+                    success: function () {
+                        // 用户点击了分享后执行的回调函数
+                        var dataJson = {
+                            found_id:<if condition="$bargain_info['found_id']">{$bargain_info['found_id']}<else/>0</if>,
+                            user_id	:<if condition="$user['user_id']">{$user['user_id']}<else/>0</if>,
+                    };
+                        $.ajax({
+                            type:'POST',
+                            url:'/Mobile/Bargain/info',
+                            data:dataJson,
+                            success:function (res) {
+                                if(res.code ==1) {
+                                    window.location.reload()
+                                }
+                            }
+                        })
+                    }
+                });
+                // 分享到QQ空间
+                wx.onMenuShareQZone({
+                    title: ShareTitle, // 分享标题
+                    desc: ShareDesc, // 分享描述
+                    link:ShareLink,
+                    imgUrl:ShareImgUrl, // 分享图标
+                    success: function () {
+                        // 用户点击了分享后执行的回调函数
+                        var dataJson = {
+                            found_id:<if condition="$bargain_info['found_id']">{$bargain_info['found_id']}<else/>0</if>,
+                            user_id	:<if condition="$user['user_id']">{$user['user_id']}<else/>0</if>,
+                    };
+                        $.ajax({
+                            type:'POST',
+                            url:'/Mobile/Bargain/info',
+                            data:dataJson,
+                            success:function (res) {
+                                if(res.code ==1) {
+                                    window.location.reload()
+                                }
+                            }
+                        })
+                    }
+                });
+
+            <if condition=" (strtolower(CONTROLLER_NAME) == 'cart' && strtolower(ACTION_NAME) != 'cart4') || (strtolower(CONTROLLER_NAME) == 'distribution' && strtolower(ACTION_NAME) != 'commonuserindex') || (strtolower(CONTROLLER_NAME) == 'user')">
+
+                    <if condition="(strtolower(CONTROLLER_NAME) == 'user' && (strtolower(ACTION_NAME) == 'invitegift' || strtolower(ACTION_NAME) == 'index' || strtolower(ACTION_NAME) == 'beInvited'))">
+
+                    <else/>
+                wx.hideOptionMenu();  // 用户中心 隐藏微信菜单
+            </if>
+                </if>
+            });
+        }
+    });
+
+    function isWeiXin(){
+        var ua = window.navigator.userAgent.toLowerCase();
+        if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+            return true;
+        }else{
+            return false;
+        }
+    }
+</script>
+
+</html>

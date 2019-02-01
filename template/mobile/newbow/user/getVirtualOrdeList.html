@@ -1,0 +1,130 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>卡券订单</title>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/rem.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
+    <link rel="stylesheet" href="__STATIC__/css/cardList.css">
+</head>
+<body>
+<!--header-->
+<div class="headerRank">
+    <div class="headerRankCon">
+        <div class="fl texFl">
+            <a href="{:U('User/index')}">
+                <img src="__STATIC__/images/return.png" alt="返回"></a>
+            </a>
+        </div>
+        <div class="tex">
+            <span>卡券订单</span>
+        </div>
+    </div>
+</div>
+<!--header-->
+<div style="height:.9rem;width: 100% "></div>
+
+<!--无订单状态-->
+<if condition="$count eq 0">
+    <div class="noWayTeam">
+        <img src="__STATIC__/images/cf_order.png" style="pointer-events: none;width: 100%;">
+        <div>
+            <span>客官大大,暂无订单</span>
+        </div>
+    </div>
+<else />
+    <!--有订单状态-->
+<div class="listCard">
+    <volist name="$info" id="v">
+        <a href="{:U('Mobile/User/getVirtualOrderInfo')}?order_id={$v.order_id}">
+            <div class="cardList">
+                <div class="clearFix cardListCon">
+                    <div class="fl cardListLeft">
+                        <img src="{$v.original_img}?x-oss-process=style/s340x340" alt="">
+                    </div>
+                    <div class="fl cardListRight">
+                        <P class="titleP">{$v.goods_name}</P>
+                        <p class="titleNum">数量: {$v.goods_num}</p>
+                        <p class="titleAll">总价: <span>¥{$v.total_amount}</span></p>
+                    </div>
+                    <div  class="cardState">
+                        <if condition="$v.is_comment eq 0 &&  $v.is_consume eq 1 ">
+                            <span style="color: #F2790E">待评价</span>
+                        </if>
+                        <if condition="$v.order_status eq 3 ">
+                            <span style="color: #5B5858">已取消</span>
+                        </if>
+                        <if condition="$v.pay_status eq 0 && $v.order_status eq 0">
+                            <span style="color: #F2790E">待付款</span>
+                        </if>
+
+                        <if condition="$v.pay_status eq 3">
+                            <span style="color: #5B5858">已退款</span>
+                        </if>
+                        <if condition="$v.is_consume eq 0 &&  $v.is_consume eq 0 && $v.pay_status eq 1">
+                            <span style="color: #FF407E">未消费</span>
+                        </if>
+                        <if condition="$v.is_consume eq 1 && $v.is_comment eq 1">
+                            <span style="color: #5B5858">已完成</span>
+                        </if>
+                    </div>
+                </div>
+                <!--按钮-->
+                <div class="cardBtn">
+                    <if condition="$v.pay_status eq 0 && $v.order_status eq 0">
+                    <a href="{:U('Cart/cart4')}?order_id={$v.order_id}">
+                            <button class="fr">去付款</button>
+                        </a>
+                    </if>
+                    <if condition="$v.is_consume == 0 && $v.pay_status == 1">
+                    <a href="{:U('Mobile/User/getVirtualOrderInfo')}?order_id={$v.order_id}">
+                            <button class="fr">查看卡券</button>
+                        </a>
+                    </if>
+                    <if condition="$v.pay_status eq 3 || ($v.is_comment eq 1 && $v.is_consume eq 1) || $v.order_status eq 3">
+                        <a href="{:U('Virtual/goodsInfo')}?id={v.goods_id}">
+                            <button class="fr">再来一单</button>
+                        </a>
+                    </if>
+                    <if condition="$v.is_comment eq 0 &&  $v.is_consume eq 1 ">
+                        <a href="{:U('Mobile/Order/add_comment')}?rec_id={$v.rec_id}">
+                            <button class="fr">去评价</button>
+                        </a>
+                    </if>
+                </div>
+            </div>
+        </a>
+    </volist>
+</div>
+</if>
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script>
+    /**
+     * ajax加载更多数据
+     */
+    var ajax_pending = false;//进行中
+    var has_more_data = true;//还有数据
+    var  page = 1;
+    function ajax_sourch_submit() {
+        if (ajax_pending || has_more_data == false) return;
+        ajax_pending = true;
+        ++page;
+        $.ajax({
+            type : "GET",
+            url:"/index.php?m=Mobile&c=User&a=getVirtualOrdeList&is_ajax=1&p="+page,
+            success: function(data) {
+                ajax_pending = false;
+                if ($.trim(data) != '') {
+                    $('.listCard').append(data);
+                } else {
+                    has_more_data = false;
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

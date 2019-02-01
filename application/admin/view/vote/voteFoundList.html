@@ -1,0 +1,343 @@
+<include file="public/layout" />
+<script type="text/javascript" src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+
+<style>
+    .typeTab {float: left!important;margin-right: 144px;}
+
+    .newTypeTab li{
+        width: 100px;
+        height: 40px;
+        background-color: #F1F5F8;
+        font-size: 16px;
+        color: #1E1B1B;
+        margin-left: 1px;
+        text-align: center;
+        line-height: 40px;
+        border-radius: 1px;
+        cursor:pointer;
+    }
+    .newTypeTab{border: 1px solid #ddd;border-bottom: none;border-radius: 15px 15px 0 0;overflow: hidden}
+    .currentChange{
+        background-color: #fff!important;
+        color: rgba(24, 144, 255, 1)!important;
+    }
+    .item-title{line-height: 40px;border:none;}
+    .page{background-color: #f1f1f1;padding: 82px 1% 0 1%;}
+    .add{width: 60px;height:25px;line-height: 25px;border-radius: 5px;text-align: center;background-color: rgba(24, 144, 255, 1);}
+    .newTypeTab{border: none;}
+    .newTypeTab li{background-color:transparent;font-size: 12px;height: 20px;line-height: 20px;}
+    .newTypeTab li:nth-child(2){border: 1px solid #ddd;border-top:none;border-bottom: none;}
+  .flexigrid .bDiv td div{line-height: 52px;}
+    .flexigrid .bDiv td.sign div {margin-top: 5px;}
+    #searchText{height: 30px;border-radius:5px 0 0 5px;overflow: hidden;}
+    #searchText input{height: 30px;}
+    .partnerList {float: left;margin-left: 15px;}
+</style>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h3>投票活动详情</h3>
+                <h5>参与用户</h5>
+            </div>
+        </div>
+    </div>
+    <div style="background-color: #fff;padding: 30px 10px;">
+        <!-- 操作说明 -->
+        <div class="tDiv">
+            <div class="tDiv2">
+                <div class="fbutton">
+                    <if $activity eq 3>
+                        <div class="add"title="已开奖" style=" float: left;">
+                            <span style="color: #fff">开奖</span>
+                        </div>
+                        <div class="add" onclick="openPrize({$vote_id})"  title="开奖" style="float: left;margin-left: 10px;background: #0ba4da; border:1px solid #0ba4da;">
+                            <span style="color: #fff">已开奖</span>
+                        </div>
+                        <else/>
+                        <div class="add" onclick="openPrize({$vote_id})"  title="点击开奖" style="float: left;background: #0ba4da; border:1px solid #0ba4da; ">
+                            <span style="color: #fff">开奖</span>
+                        </div>
+                        <div class="add"title="已开奖" style=" float: left;margin-left: 10px;background: #d7d7d7;text-align: center">
+                            <span style="color: #fff">已开奖</span>
+                        </div>
+                    </if>
+                </div>
+            </div>
+            <div style="clear:both"></div>
+        </div>
+
+        <div class="flexigrid">
+            <div class="" style="margin-bottom: 10px;">
+
+                <form class="navbar-form form-inline"  method="post" action=""  name="search-form2" id="search-form2" style="">
+                    <input type="hidden" name="user_ids" value="">
+                    <input type="hidden" name="order_by" value="">
+                    <input type="hidden" name="sort" value="desc">
+                    <input type="hidden" name="typeTab" value=""  class="typeTabVal">
+
+
+                    <div class="sDiv" style="padding-top: 10px;width: 100%;padding-bottom: 30px;">
+                        <div class="typeTab">
+                            <ul class="tab-base nc-row newTypeTab">
+                                <li class="currentChange"><span>全部用户</span></li>
+                                <li value="1"><span>审核通过</span></li>
+                                <li value="2"><span>审核失败</span></li>
+                            </ul>
+                        </div>
+                    <div class="" style="float: right;">
+                        <div class="sDiv2" id="searchText">
+                            <input type="text" size="30" style="width:220px;" name="keywords" class="qsbox" placeholder="用户ID、昵称、手机号" value="{$search.searchValue}">
+                        </div>
+                        <div class="sDiv2" style="width: 70px;height: 30px;border: none;">
+                            <input type="button" style="width: 100%;height: 100%;background-color: #2cbca3;color: #fff;" onclick="ajax_get_table('search-form2',1)" class="btn" value="搜索">
+                        </div>
+                     </div>
+                    </div>
+                </form>
+            </div>
+            <div class="hDiv">
+                <div class="hDivBox" id="ajax_return">
+                    <table cellspacing="0" cellpadding="0">
+                        <thead>
+                        <tr>
+                            <th axis="col0">
+                                <div style="width: 24px;"><i class="ico-check sign"></i></div>
+                            </th>
+                            <th align="center" abbr="found_id" axis="col3" class="">
+                                <div style="text-align: center; width: 40px;" class="orderState">编号</div>
+                            </th>
+                            <th align="center" abbr="user_id" axis="col6" class="">
+                                <div style="text-align: center; width: 50px;" class="userSort">用户ID</div>
+                            </th>
+                            <th align="center" axis="col4" class="">
+                                <div style="text-align: center; width: 150px;" class="">用户信息</div>
+                            </th>
+                            <th align="center" axis="col4" class="">
+                                <div style="text-align: center; width: 60px;" class="sortNum">图片</div>
+                            </th>
+                            <th align="center" axis="col5" class="">
+                                <div style="text-align: center; width: 90px;" class="sortAmount">昵称</div>
+                            </th>
+                            <th align="center"  axis="col6" class="">
+                                <div style="text-align: center; width: 140px;" class="">描述</div>
+                            </th>
+                            <th align="center" abbr="vote_number"  axis="col6" class="">
+                                <div style="text-align: center; width: 50px;" class="">票数</div>
+                            </th>
+                            <th align="center" abbr="vote_users"  axis="col4" class="">
+                                <div style="text-align: left; width: 60px;" class="">投票用户数</div>
+                            </th>
+                            <th align="center" abbr="ranking" axis="col4" class="">
+                                <div style="text-align: center; width: 50px;" class="orderState">当前排名</div>
+                            </th>
+                            <th align="center" axis="col6" class="">
+                                <div style="text-align: center; width: 110px;" class="sortAdd">参与时间</div>
+                            </th>
+                            <th align="center" axis="col6" class="">
+                                <div style="text-align: center; width: 60px;" class="sortPay">审核状态</div>
+                            </th>
+                            <th align="center" axis="col1" class="">
+                                <div style="text-align: center; width: 60px;">操作</div>
+                            </th>
+
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="bDiv" style="height: auto;">
+                <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+
+                </div>
+                <div class="iDiv" style="display: none;"></div>
+            </div>
+            <!--分页位置-->
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript">
+    ajax_get_table('search-form2',1);
+
+
+    //选项卡
+    $('.typeTab li ').click(function() {
+        var v = $(this).val();
+        $("input[name='typeTab']").val(v);
+        ajax_get_table('search-form2',1);
+        $(".typeTab li").eq($(this).index()).addClass("currentChange").siblings().removeClass('currentChange');
+    });
+
+    // 点击刷新数据
+    var ssort = 'sasc';
+    var on_sclick = 0;
+    $('.hDivBox > table>thead>tr>th').hover(
+        function () {
+            if(typeof($(this).attr('abbr')) == "undefined"){
+                return false;
+            }
+            $(this).addClass('thOver');
+            if($(this).hasClass('sorted')){
+                if(ssort == 'sasc'){
+                    $(this).find('div').removeClass('sasc');
+                    $(this).find('div').addClass('sdesc');
+                }else{
+                    $(this).find('div').removeClass('sdesc');
+                    $(this).find('div').addClass('sasc');
+                }
+            }else{
+                $(this).find('div').addClass(ssort);
+            }
+        }, function () {
+            if(typeof($(this).attr('abbr')) == "undefined"){
+                return false;
+            }
+            if(on_sclick == 0){
+                if($(this).hasClass('sorted')){
+                    if(ssort == 'sdesc'){
+                        $(this).find('div').removeClass('sasc');
+                        $(this).find('div').addClass('sdesc');
+                    }else{
+                        $(this).find('div').removeClass('sdesc');
+                        $(this).find('div').addClass('sasc');
+                    }
+                }else{
+                    $(this).find('div').removeClass(ssort);
+                }
+            }
+            $(this).removeClass("thOver");
+            on_sclick = 0;
+        }
+    );
+    $('.hDivBox > table>thead>tr>th').click(function(){
+
+        if(!$(this).hasClass("currentDom")){
+            $(this).parent().find("th").removeClass("currentDom");
+            $(this).addClass("currentDom");
+            $("input[name='sort']").val("desc");
+        }
+
+
+        if(typeof($(this).attr('abbr')) == "undefined"){
+            return false;
+        }
+        if($(this).hasClass('sorted')){
+            $(this).find('div').removeClass(ssort);
+            if(ssort == 'sdesc'){
+                ssort = 'sasc';
+            }else{
+                ssort = 'sdesc';
+            }
+            $(this).find('div').addClass(ssort);
+            on_sclick = 1;
+        }else{
+            $('.hDivBox > table>thead>tr>th').removeClass('sorted');
+            $('.hDivBox > table>thead>tr>th').find('div').removeClass(ssort);
+            $(this).addClass('sorted');
+            $(this).find('div').addClass(ssort);
+            var hDivBox_th_index = $(this).index();
+            var flexigrid_tr =   $('#flexigrid > table>tbody>tr')
+            flexigrid_tr.each(function(){
+                $(this).find('td').removeClass('sorted');
+                $(this).children('td').eq(hDivBox_th_index).addClass('sorted');
+            });
+        }
+
+
+        if( $(this).children("div").hasClass("sasc") ){
+            $("input[name='sort']").val("desc");
+        }else {
+            $("input[name='sort']").val("asc");
+        }
+
+        sort($(this).attr('abbr'));
+
+
+    });
+
+    $('.fa-refresh').click(function(){
+        location.href = location.href;
+    });
+
+    //选中全部
+    $('.hDivBox .sign').click(function(){
+        var sign = $('#flexigrid > table>tbody>tr');
+        if($(this).parent().hasClass('trSelected')){
+            sign.each(function(){
+                $(this).removeClass('trSelected');
+            });
+            $(this).parent().removeClass('trSelected');
+        }else{
+            sign.each(function(){
+                $(this).addClass('trSelected');
+            });
+            $(this).parent().addClass('trSelected');
+        }
+    });
+
+    //ajax 抓取页面
+    function ajax_get_table(tab,page){
+        cur_page = page; //当前页面 保存为全局变量
+        $.ajax({
+            type : "POST",
+            url:"/index.php/Admin/Vote/voteFoundList/p/"+page,//+tab,
+            data : $('#'+tab).serialize(),// 你的formid
+            success: function(data){
+                $("#flexigrid").html('');
+                $("#flexigrid").append(data);
+
+                // 表格行点击选中切换
+                $('#flexigrid > table>tbody >tr').click(function(){
+                    $(this).toggleClass('trSelected');
+                });
+
+            }
+        });
+    }
+
+    // 点击排序
+    function sort(field){
+        $("input[name='order_by']").val(field);
+        //切换顺序
+        var v = $("input[name='sort']").val() == 'desc' ? 'asc' : 'desc';
+        $("input[name='sort']").val(v);
+
+        ajax_get_table('search-form2',cur_page);
+    }
+
+
+
+    //绑定change事件，当下拉框内容发生变化时启动事件
+    $("#chosed").bind("change",function(){
+        var searchValue = $('#chosed option:selected').val();
+        if (searchValue == 'user'){
+            $("#searchText").html("<input type=\"text\" size=\"30\" style=\"width:220px;\" name=\"keywords\" class=\"qsbox\" value=\"{$search.searchValue}\" placeholder=\"用户ID、昵称、手机号\">");
+        }
+        if (searchValue == 'goods'){
+            $("#searchText").html("<input type=\"text\" size=\"30\" style=\"width:220px;\" name=\"keywords\" class=\"qsbox\"  value=\"{$search.searchValue}\" placeholder=\"商品名称、商品ID\">");
+        }
+    });
+
+    function openPrize(vote_id) {
+        //iframe层
+
+        layer.open({
+            type: 2,
+            title: '排行',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['520px', '90%'],
+            content: "/index.php?m=Admin&c=Vote&a=openPrize&vote_id"+vote_id //iframe的url
+        });
+    }
+
+
+
+
+</script>
+</body>
+</html>

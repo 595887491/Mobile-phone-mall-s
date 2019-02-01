@@ -1,0 +1,548 @@
+<!DOCTYPE>
+<html>
+<head>
+    <title>收益中心</title>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/rem.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <!--<link rel="stylesheet" href="__STATIC__/css/style.css">-->
+    <script src="__STATIC__/js/need/swiper-4.3.3.min.js"  type="text/javascript" ></script>
+    <link rel="stylesheet" href="__STATIC__/js/need/swiper-4.3.3.min.css">
+    <!--<link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>-->
+    <link rel="stylesheet" href="__STATIC__/css/new/team_base.css">
+    <link rel="stylesheet" href="__STATIC__/css/new/distributuion_index.css">
+</head>
+<style>
+    .partnerTips{
+        background-color: #50031C;
+        width: 100%;
+        height: .8rem;
+        font-size: .24rem;
+        color: #fff!important;
+        line-height: .8rem;
+    }
+    .partnerTipsLeft{
+        padding-left: .24rem;
+    }
+    .partnerTipsRight{
+        padding-right: .24rem;
+
+    }
+    .panterBtn{
+        padding: .1rem .24rem;
+        background-color: #0D0236;
+        color: #fff;
+        font-size: .22rem;
+        border-radius: .1rem;
+        margin-left: .1rem;
+    }
+    .panterBtn span{
+        color: #fff!important;
+    }
+</style>
+<body style="">
+    <!-- 正常合伙人 试用合伙人到期提醒-->
+    <if condition="$user_identity['partner']">
+        <!--提示文字类型一 1个月即将过期-->
+        <if condition="$user_identity['partner']['is_about_to_expire'] eq 1">
+            <div class="partnerTipsOne partnerTips eq 0">
+                <div class="fl partnerTipsLeft">
+                    合伙人身份即将到期，现在续费 <span style="color:#FFC12B">赠送1个月</span>
+                </div>
+                <div class="fr partnerTipsRight">
+                    <a href="{:U('Mobile/Distribution/verifiyInviteCode',['invite_partner_code'=>$user_identity['partner']['agent_id']])}"style="color: #fff">
+                        <span>查看详情 ＞</span>
+                    </a>
+                </div>
+            </div>
+        </if>
+
+        <!--提示文字类型二   已过期 宽限期内-->
+        <if condition="$user_identity['partner']['in_grace_eriod'] eq 1 && $user_identity['partner']['status'] eq 4">
+            <div class="partnerTipsOne partnerTips">
+                <div class="fl partnerTipsLeft">
+                    合伙人身份已到期，<span style="color: #FFC12B">30天</span>宽限期内续费不影响收益！
+                </div>
+                <div class="fr partnerTipsRight">
+                    <a href="{:U('Mobile/Distribution/verifiyInviteCode',['invite_partner_code'=>$user_identity['partner']['agent_id']])}"style="color: #fff">
+                        <span>查看详情 ＞</span>
+                    </a>
+                </div>
+            </div>
+        </if>
+        <!--提示文字三  已过期 宽限期外-->
+        <if condition="$user_identity['partner']['status'] eq 2">
+            <div class="partnerTipsOne partnerTips partnerTipsClose">
+                <div class="fl partnerTipsLeft " >
+                    <a href="{:U('Mobile/Distribution/verifiyInviteCode',['invite_partner_code'=>$user_identity['partner']['agent_id']])}" style="color: #fff">
+                        合伙人身份已到期，续费成功享合伙人8项权益！<span style="color: #FFC12B">立即续费</span>
+                    </a>
+                </div>
+                <div class="fr partnerTipsRight" onclick="showTips()">
+                    <span style="font-size: .4rem;color: #fff">×</span>
+                </div>
+            </div>
+        </if>
+        <!-- 试用合伙人 提示文字一  小于7天的提醒  试用期内-->
+        <if condition="$user_identity['partner']['in_try_out'] neq 0 && $user_identity['partner']['status'] eq 5">
+            <div class="partnerTipsOne partnerTips">
+                <div class="fl partnerTipsLeft">
+                    合伙人试用仅剩 <span style="color:#FFC12B">{$user_identity['in_try_out']}</span>天，申请成为合伙人继续享收益
+                </div>
+                <div class="fr partnerTipsRight">
+                    <a href="{:U('Mobile/Distribution/verifiyInviteCode',['invite_partner_code'=>$user_identity['partner']['agent_id']])}"style="color: #fff">
+                        <span>查看详情 ＞</span>
+                    </a>
+                </div>
+            </div>
+        </if>
+
+        <!--试用期的外-->
+        <if condition="$user_identity['partner']['in_try_out'] eq 0 && $user_identity['partner']['status'] eq 6">
+            <div class="partnerTipsOne partnerTips partnerTipsClose">
+                <div class="fl partnerTipsLeft">
+                    <a href="{:U('Mobile/Distribution/verifiyInviteCode',['invite_partner_code'=>$user_identity['partner']['agent_id']])}" style="color: #fff">
+                        合伙人试用已结束，<span style="color:#FFC12B;">续费成为合伙人继续享收益</span>
+                    </a>
+                </div>
+                <div class="fr partnerTipsRight" onclick="showTips()">
+                    <span style="font-size: .4rem;color: #fff">×</span>
+                </div>
+            </div>
+        </if>
+    </if>
+   <div class="top">
+       <div class="header">
+           <a href="{:U('Mobile/User/index')}" class="fl">
+               <img src="__STATIC__/images/new/nav_icon_back.png" alt="">
+           </a>
+           <if condition="!$data.identity['partner'] && $data.identity['agent'] eq 1">
+             <div class="fr" onclick="code()">
+               <span>合伙人邀请码</span>
+               <a href="javascript:;"><img src="__STATIC__/images/new/sdl_nav_icon_ewm.png" alt=""></a>
+             </div>
+           </if>
+           <if condition="$data.identity['partner'] && $data.identity['agent'] eq 1">
+               <div class="fr" onclick="code()">
+                   <span>合伙人邀请码</span>
+                   <a href="javascript:;"><img src="__STATIC__/images/new/sdl_nav_icon_ewm.png" alt=""></a>
+               </div>
+           </if>
+       </div>
+
+       <div class="center">
+           <p>可提现收益</p>
+           <p><notempty name="$data['can_pick_money']">{$data['can_pick_money']}<else/>0</notempty></p>
+           <button class="go_cash">去提现</button>
+       </div>
+       <!--合伙人-->
+       <if condition="$data['identity']['partner'] && $data['identity']['agent'] eq 0">
+           <ul class="bottom">
+             <li>
+                <p><notempty name="$data['wait_earnings']">{$data['wait_earnings']}<else/>0</notempty></p>
+                 <div class="p1">
+                     <span>待返利收益</span>
+                     <img src="__STATIC__/images/new/sdl_icon_sm.png" alt="">
+                 </div>
+             </li>
+               <li>
+                   <p><notempty name="$data['have_earnings']">{$data['have_earnings']}<else/>0</notempty></p>
+                   <div class="p1">
+                       <span>已返利收益</span>
+                       <!--<img src="__STATIC__/images/new/sdl_icon_sm.png" alt="">-->
+                   </div>
+               </li>
+               <li>
+                   <p><notempty name="$data['total_earnings']">{$data['total_earnings']}<else/>0</notempty></p>
+                   <div class="p1">
+                       <span>累计收益</span>
+                   </div>
+               </li>
+           </ul>
+       </if>
+        <!--服务商-->
+       <if condition="!$data['identity']['partner']  && $data['identity']['agent'] eq 1">
+           <ul class="bottom">
+               <li>
+                   <p><notempty name="$data['wait_earnings']">{$data['wait_earnings']}<else/>0</notempty></p>
+                   <div class="p1">
+                       <span>待返利收益</span>
+                       <img src="__STATIC__/images/new/sdl_icon_sm.png" alt="">
+                   </div>
+               </li>
+               <li>
+                   <p><notempty name="$data['agent_earnings']">{$data['have_earnings']}<else/>0</notempty></p>
+                   <div class="p1">
+                       <span>已返利收益</span>
+                       <!--<img src="__STATIC__/images/new/sdl_icon_sm.png" alt="">-->
+                   </div>
+               </li>
+               <li>
+                   <p><notempty name="$data['total_earnings']">{$data['total_earnings']}<else/>0</notempty></p>
+                   <div class="p1">
+                       <span>累计收益</span>
+                   </div>
+               </li>
+           </ul>
+       </if>
+       <!--合伙人和服务商-->
+       <if condition="$data['identity']['partner']  && $data['identity']['agent'] eq 1">
+           <ul class="bottom">
+               <li>
+                   <p><notempty name="$data['wait_earnings']">{$data['wait_earnings']}<else/>0</notempty></p>
+                   <div class="p1">
+                       <span>待返利收益</span>
+                       <img src="__STATIC__/images/new/sdl_icon_sm.png" alt="">
+                   </div>
+               </li>
+               <li>
+                   <p><notempty name="$data['agent_partner_earnings']">{$data['have_earnings']}<else/>0</notempty></p>
+                   <div class="p1">
+                       <span>已返利收益</span>
+                       <!--<img src="__STATIC__/images/new/sdl_icon_sm.png" alt="">-->
+                   </div>
+               </li>
+               <li>
+                   <p><notempty name="$data['total_earnings']">{$data['total_earnings']}<else/>0</notempty></p>
+                   <div class="p1">
+                       <span>累计收益</span>
+                   </div>
+               </li>
+           </ul>
+       </if>
+   </div>
+   <div class="content">
+     <div class="earnings">
+        <a href="{:U('Mobile/distribution/earningsDetails')}">
+            <img src="__STATIC__/images/new/sdl_icon_symx.png" alt="">
+            <span>收益明细</span>
+        </a>
+        <a href="{:U('Mobile/distribution/withdrawalDetail')}" style="float: right;">
+            <img src="__STATIC__/images/new/sdl_icon_txmx.png" alt="">
+            <span>提现明细</span>
+        </a>
+     </div>
+       <div class="member">
+         <div class="_top">
+             <span>我的会员</span>
+             <if condition="($user_identity['partner']['is_about_to_expire'] eq 1) || ($user_identity['partner']['in_grace_eriod'] eq 1 && $user_identity['partner']['status'] eq 4) || ($user_identity['partner']['status'] eq 2) || ($user_identity['partner']['in_try_out'] neq 0 && $user_identity['partner']['status'] eq 5) || ($user_identity['partner']['in_try_out'] eq 0 && $user_identity['partner']['status'] eq 6)">
+             <!--按钮续费-->
+                 <a href="{:U('Mobile/Distribution/verifiyInviteCode',['invite_partner_code'=>$user_identity['partner']['agent_id']])}" class="fr panterBtn" >
+                     <span >去续费</span>
+                 </a>
+             </if>
+             <!--服务商-->
+             <if condition="!$data.identity['partner'] && $data.identity['agent'] eq 1">
+                 <span class="fr endTime"></span>
+             </if>
+             <!--服务商合合伙人-->
+             <if condition="$data.identity['partner'] && $data.identity['agent'] eq 1">
+                 <span class="fr endTime"></span>
+             </if>
+             <!--合伙人-->
+             <if condition="$data.identity['partner'] && $data.identity['agent'] eq 0">
+                 <span class="fr endTime"></span>
+             </if>
+
+         </div>
+           <!--服务商-->
+           <if condition="!$data.identity['partner'] && $data.identity['agent'] eq 1">
+               <ul>
+                   <li>
+                       <a href="{:U('Mobile/distribution/memberList',array('type'=>'0'))}">
+                           <p><notempty name="$data['partner_num']">{$agentCount}<else/>0</notempty></p>
+                           <p>代管服务商</p>
+                       </a>
+                   </li>
+                   <li>
+                       <a href="{:U('Mobile/distribution/memberList',array('type'=>'3'))}">
+                           <p><notempty name="$data['partner_num']">{$data['partner_num']}<else/>0</notempty></p>
+                           <p>合伙人</p>
+                       </a>
+                   </li>
+                   <li>
+                       <a href="{:U('Mobile/distribution/memberList',array('type'=>'1'))}">
+                           <p><notempty name="$data['first_child_num']">{$data['first_child_num']}<else/>0</notempty></p>
+                           <p>一级会员</p>
+                       </a>
+                   </li>
+                   <li>
+                       <a href="{:U('Mobile/distribution/memberList',array('type'=>'2'))}">
+                           <p><notempty name="$data['second_child_num']">{$data['second_child_num']}<else/>0</notempty></p>
+                           <p>二级会员</p>
+                       </a>
+                   </li>
+               </ul>
+           </if>
+
+           <!--服务商合合伙人-->
+           <if condition="$data.identity['partner'] && $data.identity['agent'] eq 1">
+               <ul>
+                   <li>
+                       <a href="{:U('Mobile/distribution/memberList',array('type'=>'0'))}">
+                           <p><notempty name="$data['partner_num']">{$agentCount}<else/>0</notempty></p>
+                           <p>代管服务商</p>
+                       </a>
+                   </li>
+                   <li>
+                       <a href="{:U('Mobile/distribution/memberList',array('type'=>'3'))}">
+                           <p><notempty name="$data['partner_num']">{$data['partner_num']}<else/>0</notempty></p>
+                           <p>合伙人</p>
+                       </a>
+                   </li>
+                   <li>
+                       <a href="{:U('Mobile/distribution/memberList',array('type'=>'1'))}">
+                           <p><notempty name="$data['first_child_num']">{$data['first_child_num']}<else/>0</notempty></p>
+                           <p>一级会员</p>
+                       </a>
+                   </li>
+                   <li>
+                       <a href="{:U('Mobile/distribution/memberList',array('type'=>'2'))}">
+                           <p><notempty name="$data['second_child_num']">{$data['second_child_num']}<else/>0</notempty></p>
+                           <p>二级会员</p>
+                       </a>
+                   </li>
+               </ul>
+           </if>
+             <!--合伙人-->
+          <if condition="$data.identity['partner'] && $data.identity['agent'] eq 0">
+           <ul class="partner">
+               <li>
+                  <a href="{:U('Mobile/distribution/memberList',array('type'=>'1'))}">
+                       <p><notempty name="$data['first_child_num']">{$data['first_child_num']}<else/>0</notempty></p>
+                       <p>一级会员</p>
+                  </a>
+               </li>
+               <li>
+                   <a href="{:U('Mobile/distribution/memberList',array('type'=>'2'))}">
+                       <p><notempty name="$data['second_child_num']">{$data['second_child_num']}<else/>0</notempty></p>
+                       <p>二级会员</p>
+                   </a>
+               </li>
+           </ul>
+         </if>
+       </div>
+       <if condition="$data.identity['partner'] && $data.identity['agent'] eq 0">
+       <div class="partnership">
+          <p>我的服务商</p>
+           <div class="partnership_w">
+               <div class="avatar fl">
+                   <img src="{$data.agentInfo.head_pic}?x-oss-process=style/s150x150" alt="">
+               </div>
+               <div class="msg fl">
+                   <p>{$data.agentInfo.nickname}</p>
+                   <p>{$data.agentInfo.be_partner_start}邀请你成为合伙人</p>
+               </div>
+               <a href="tel:{$data.agentInfo.mobile}" class="fr">
+                   <img src="__STATIC__/images/new/call_phone_logo.png" alt=""/>
+                   联系TA
+               </a>
+           </div>
+       </div>
+       </if>
+
+       <div class="more">
+         <p>邀请好友</p>
+         <p>注册并消费</p>
+         <a href="{:U('/Mobile/User/inviteGift')}">赚取更多收益 ></a>
+       </div>
+   </div>
+   <!--提现-->
+   <div class="deposit_popup Withdraw">
+        <div class="deposit_pop">
+            <p class="title">提现</p>
+            <img src="__STATIC__/images/cf_close.png" alt="" class="close">
+            <div style="padding: 0 .24rem;">
+                <p class="comment">1. 提现到银行卡，提现金额为100的倍数，提现时间为每周一9:00-16:00，预计3个工作日到账</p>
+                <p class="comment">2. 转出到余额，立即生效。(目前余额只可用于平台消费，<span style="color: #D50D16">暂不支持提现到银行卡</span>)</p>
+
+                <if condition="$limit_money eq 1">
+                    <a href="{:U('Mobile/distribution/withdrawDeposit')}" class="bank">提现到银行卡</a>
+                    <else/>
+                    <a href="javascritp:;" class="bank" style="background-color: #BFC1CD;border-color: transparent;">余额不足100,暂不能提现</a>
+                </if>
+                <a href="javascript:;" class="balance">转出到余额</a>
+          </div>
+        </div>
+   </div>
+   <!--转出到余额-->
+   <div class="deposit_popup" id="Balance" style="">
+       <div class="deposit_pop" style="">
+           <p class="title">转出到余额</p>
+           <img src="__STATIC__/images/cf_close.png" alt="" class="close">
+           <div class="withdraw_money">
+               <span class="r">¥</span>
+               <input type="text" id="can_money" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')" placeholder="可转入:{$data['can_pick_money']}"/>
+               <span class="all fr" onclick="all_balance()">全部转出</span>
+           </div>
+           <p class="comment withdraw_alert" style="font-size: .26rem;">提示: 转出到余额，立即生效，余额暂不支持提现到银行卡</p>
+           <div style="padding: 0 .24rem;">
+               <a href="javascript:;" class="bank" style="margin: .3rem 0;">确认转出</a>
+           </div>
+       </div>
+   </div>
+
+   <!--余额转出成功-->
+   <div class="deposit_popup Success" style="">
+       <div class="deposit_pop" style="text-align: center;">
+           <img src="__STATIC__/images/cf_success.png" alt="" class="logo">
+           <img src="__STATIC__/images/cf_close.png" alt="" class="close">
+           <p class="" style="text-align: center;font-size: .3rem;color: #1E1B1B;">转出成功</p>
+           <p class="comment withdraw_alert" style="font-size: .26rem;text-align: center;">本次转出余额: <span class="money_l"></span></p>
+           <div style="padding: 0 .24rem;">
+               <a href="{:U('Mobile/Distribution/touchbalanceDetail')}" class="balance" >查看余额</a>
+           </div>
+       </div>
+   </div>
+
+   <!--余额转出失败-->
+   <div class="deposit_popup Failure" style="">
+       <div class="deposit_pop" style="text-align: center;">
+           <img src="__STATIC__/images/cf_fail.png" alt="" class="logo">
+           <img src="__STATIC__/images/cf_close.png" alt="" class="close">
+           <p class="" style="text-align: center;font-size: .3rem;color: #1E1B1B;">转出成功</p>
+           <p class="comment withdraw_alert" style="font-size: .26rem;text-align: center;">本次转出余额: <span class="money_l"></span> </p>
+           <div style="padding: 0 .24rem;">
+               <a href="javascript:againPop()" class="balance">再次转出</a>
+           </div>
+       </div>
+   </div>
+
+<div class="code_popup">
+  <div class="code_pop">
+      <p>合伙人邀请码 {$agentInviteCode}</p>
+      <img src="{$agentQRCodeUrl}" alt="">
+      <p style="color: #5B5858;">普通用户扫描此码申请合伙人</p>
+      <img src="__STATIC__/images/qx.png" alt="" class="clos" onclick="code_close(this)">
+  </div>
+</div>
+<div class="explain_popup obtain" style="">
+   <div class="explain_pop" style="padding: .4rem .5rem .8rem;margin-top: -2.1rem;">
+       <p class="title">待返利收益说明</p>
+       <img src="__STATIC__/images/cf_close.png" alt="" class="close" onclick="code_close(this)">
+       <p class="details">待返利收益暂不能提现，订单完成后(收货7天后无退货即订单完成)方可提现，如果该笔订单取消或退货，你将不会获得该笔收入。</p>
+       <button onclick="code_close(this)">知道了</button>
+   </div>
+</div>
+
+<div class="explain_popup not_obtain" style="">
+   <div class="explain_pop" style="padding: .4rem .5rem .8rem;margin-top: -2.1rem;">
+       <p class="title">待返利收益说明</p>
+       <img src="__STATIC__/images/cf_close.png" alt="" class="close" onclick="code_close(this)">
+       <p class="details">待返利收益暂不能提现，订单完成后(收货7天后无退货即订单完成)方可提现，如果该笔订单取消或退货，你将不会获得该笔收入。</p>
+       <button onclick="code_close(this)">知道了</button>
+   </div>
+</div>
+</body>
+<script>
+    // 点击关闭合伙人续费提醒
+    var out_time = "{$user_identity['partner']['try_out_time']}"?"{$user_identity['partner']['try_out_time']}":"";
+    var in_time_two;
+    function showTips() {
+        sessionStorage.setItem('in_time_two',1);
+        $('.partnerTipsClose').css('display','none')
+    }
+    in_time_two =sessionStorage.getItem('in_time_two');
+    in_time_two = in_time_two ? in_time_two : 0;
+    if(in_time_two != out_time){
+        $('.partnerTipsClose').css('display','none')
+    }
+
+    var timeStyle, endTime;
+    endTime = "{$data['be_partner_end']}"?"{$data['be_partner_end']}":"";
+    endTime = endTime*1000;
+    //时间戳转化为时间格式
+
+    var formatDate = function(){
+        var time = new Date(endTime);
+        var y=time.getFullYear();
+        var m=time.getMonth()+1;
+        var d=time.getDate();
+        m = m<10?("0"+m):m;
+        d = d<10?("0"+d):d;
+        timeStyle = y+"-"+m+"-"+d;
+    };
+    formatDate();
+    $('.endTime').html('身份有效期至:'+timeStyle);
+
+
+
+    // 去提现
+    $('.go_cash').on('click',function () {
+        $('.Withdraw').show();
+        $('.Withdraw .balance').on('click',function () {
+            $('#Balance').show();
+            $('.Withdraw').hide();
+            $('#Balance .bank').on('click',function () {
+                   var userMoeny = $("#can_money").val();
+                   var balanceMoeny ="{$data['can_pick_money']}" ? parseFloat({$data['can_pick_money']}) : 0;
+                   // console.log(userMoeny);
+                   // console.log(balanceMoeny);
+                   if(userMoeny == ''){
+                       layer.open({content:"金额不能为空",time:2,skin:"msg"});
+                       return false;
+                   }
+                   if(userMoeny < 0.1 ){
+                       layer.open({content:"金额不能小于0.01",time:2,skin:"msg"});
+                       return false;
+                   }
+                   if(userMoeny > balanceMoeny){
+                       layer.open({content:"金额不能大于可提现金额",time:2,skin:"msg"});
+                       return false;
+                   }
+                   if(userMoeny != '' && userMoeny <= balanceMoeny ){
+                       var loading =  layer.open({content:"转出中...",time:300000,skin:"msg",type:2});
+                       $.ajax({
+                           type : "post",
+                           url:'/Mobile/Distribution/shiftToBalances',
+                           data:{userMoney:userMoeny},
+                           success: function(data) {
+                               if(data.code == 1){
+                                   layer.close(loading);
+                                   $('.money_l').text( $('#can_money').val());
+                                   $("#can_money").val('');
+                                   $('#Balance').css('display','none');
+                                   $('.Success').css('display','block');
+                               }else {
+                                   $('#can_money').val();
+                                   $('.money_l').text( $('#can_money').val());
+                                   layer.close(loading);
+                                   $('.Failure').css('display','block');
+                               }
+                           }
+                       });
+
+                   }
+            })
+        })
+    });
+    // 关闭弹窗
+    $('.deposit_pop .close').on('click',function () {
+        $(this).closest('.deposit_popup').hide();
+    })
+    // 全部转出
+    function all_balance() {
+        $('#can_money').val({$data['can_pick_money']})
+    }
+    function againPop() {
+       $('.Failure').hide();
+       $('.Withdraw').show();
+    }
+    // 关闭服务商二维码
+    function code_close(obj) {
+        $(obj).closest('.code_popup').hide();
+        $(obj).closest('.explain_popup').hide();
+    }
+    function code() {
+        $('.code_popup').show();
+    }
+    $('.bottom li:first-child').on('click',function () {
+        $('.obtain').show();
+    })
+
+    $('.more').on('click',function () {
+        location.href="{:U('/Mobile/User/inviteGift')}";
+    })
+</script>
+</html>

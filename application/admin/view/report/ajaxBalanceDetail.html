@@ -1,0 +1,81 @@
+<div class="comment">
+    <span>余额支付订单数量: <em>{$count}</em></span>
+    <span>余额支付总: <em>{$totalBalance}</em></span>
+</div>
+<div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+    <table>
+        <tbody>
+            <foreach $balance_list as $list>
+                <tr>
+                    <td align="left" class="">
+                        <div style="text-align: center; width: 198px;">{$list.order_sn}</div>
+                    </td>
+                    <td align="left" class="">
+                        <div style="text-align: center; width: 300px;">{$list.address}</div>
+                    </td>
+                    <td align="left" class="">
+                        <div style="text-align: center; width: 50px;">{$list.total_amount}</div>
+                    </td>
+                    <td align="left" class="">
+                        <div style="text-align: center; width: 50px;">{$list.order_amount}</div>
+                    </td>
+                    <td align="left" class="">
+                        <div style="text-align: center; width: 50px;">{$list.user_money}</div>
+                    </td>
+                    <td align="left" class="">
+                        <div style="text-align: center; width: 50px;">{$list.pay_name}</div>
+                    </td>
+                    <td align="left" class="">
+                        <div style="text-align: center; width: 50px;">{$list.order_status}</div>
+                    </td>
+                    <td align="left" class="">
+                        <div style="text-align: center; width: 120px;">{:date('Y-m-d H:i:s',$list.add_time)}</div>
+                    </td>
+                    <td align="left" class="">
+                        <div style="text-align: center; width: 120px;">{:date('Y-m-d H:i:s',$list.pay_time)}</div>
+                    </td>
+                </tr>
+            </foreach>
+        </tbody>
+    </table>
+</div>
+<!--分页位置-->
+<div class="ftitle">
+    <h5>总共<span id="user_count"></span>条记录</h5>
+</div>
+{$page}
+<script>
+    $(".pagination  a").click(function(){
+        var page = $(this).data('p');
+        ajax_get_table('search-form2',page);
+    });
+    $(document).ready(function(){
+        // 表格行点击选中切换
+        $('#flexigrid >table>tbody>tr').click(function(){
+            $(this).toggleClass('trSelected');
+        });
+        $('#user_count').empty().html("{$pager->totalRows}");
+    });
+    function delfun(obj) {
+        // 删除按钮
+        layer.confirm('确认删除？', {
+            btn: ['确定', '取消'] //按钮
+        }, function () {
+            $.ajax({
+                type: 'post',
+                url: $(obj).attr('data-url'),
+                data: {id : $(obj).attr('data-id')},
+                dataType: 'json',
+                success: function (data) {
+                    layer.closeAll();
+                    if (data.status == 1) {
+                        $(obj).parent().parent().parent().remove();
+                    } else {
+                        layer.alert(data.msg, {icon: 2});
+                    }
+                }
+            })
+        }, function () {
+        });
+    }
+</script>

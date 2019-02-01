@@ -1,0 +1,27 @@
+<include file="public/header" title="修改昵称" body=""/>
+<include file="public/header_nav" title="修改昵称"  href="{:U('Mobile/User/userinfo')}"/>
+<style>
+    .classreturn .content .search span{font-size: .7rem;color: #1E1B1B;}
+    .lsu span{float: left;color: #1E1B1B;font-size: .7rem;}
+    .loginsingup-input{padding: 0 .64rem;}
+    .loginsingup-input .lsu{border-color: #F0F2F5;}
+    .loginsingup-input .lsu  input{width: 12rem;}
+    .loginsingup-input .lsu-recharge>span{width: auto;margin-top: -.05rem;}
+    .loginsingup-input .lsu-submit{padding: 0;margin-top: 5rem;}
+    .loginsingup-input .lsu-submit input{background-color: #FF407E;font-size: .8rem;}
+</style>
+    <div class="loginsingup-input ma-to-20">
+        <form action="{:U('Mobile/User/userinfo')}" method="post">
+            <div class="lsu lsu-recharge">
+                <span>昵称: </span>
+                <input type="text" name="nickname" value="{$user.nickname}" placeholder="请输入昵称" onBlur="checkMobilePhone(this.value);"/>
+            </div>
+            <div class="lsu-submit">
+                <input type="submit" name="" id="" value="确定修改" />
+            </div>
+        </form>
+    </div>
+<script>
+</script>
+</body>
+</html>

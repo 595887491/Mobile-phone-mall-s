@@ -1,0 +1,139 @@
+body{
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+    width: 100%;
+    background-color: #f1f5f8;
+    font-family:'微软雅黑','PingFang SC';
+}
+.fr{
+    float: right;
+}
+.fl{
+    float: left;
+}
+.clearFix{
+    clear: both;
+}
+ul,p{
+    padding: 0;
+    margin: 0;
+}
+.headerRank{
+    width: 100%;
+    height: .88rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    background: white;
+}
+.headerRankCon{
+    width: 100%;
+    height: .88rem;
+    line-height: .88rem;
+    position: relative;
+}
+.tex{
+    text-align: center;
+}
+.tex span{
+    font-size: .31rem;
+    color: #1E1B1B;
+}
+.texFl{
+    margin-top: .3rem;
+    position: absolute;
+    left: .24rem;
+}
+.texFl a{
+    /*display: inline-block;*/
+    width: .5rem;
+    height: .5rem;
+}
+.texFl a img{
+    width: .2rem;
+    height: .32rem;
+}
+.cardList{
+    height: 3rem;
+    position: relative;
+    background-color: #fff;
+    width: 100%;
+    overflow-x: hidden;
+    margin-top: .1rem;
+    padding-bottom: .15rem;
+}
+.cardListCon{
+    padding: .24rem 0 0 .24rem;
+    width: 100%;
+    margin-top: .1rem;
+    height: 1.9rem;
+    /*border-bottom: 2px solid #f1f5f8;*/
+
+}
+.cardListLeft img{
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: .05rem;
+}
+.cardListRight{
+    font-size: .24rem;
+    margin-left: .24rem;
+}
+.cardListRight .titleP{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+    height: .63rem;
+    width: 3.8rem;
+    font-size: .26rem;
+    color: #1E1B1B;
+}
+.titleNum{
+    color: #5B5858;
+    font-size: .24rem;
+    margin-top: .15rem;
+}
+.titleAll{
+    color: #5B5858;
+    font-size: .24rem;
+    /*margin-top: .05rem;*/
+}
+.titleAll span{
+    color: #FF407E;
+    font-weight: bold;
+}
+.cardState{
+    position: absolute;
+    font-size: .26rem;
+    right: .24rem;
+}
+.cardBtn{
+    /*width: 100%;*/
+    /*height: .8rem;*/
+    margin-left: .24rem;
+    border-top: 2px solid #f1f5f8;
+}
+.cardBtn button{
+    padding: 0 .15rem;
+    height: .52rem;
+    border-radius: 0.05rem;
+    font-size: .24rem;
+    text-align: center;
+    color: #5B5858;
+    background-color: #fff;
+    border: 1px solid #5B5858;
+    margin-right: .24rem;
+    margin-top: .2rem;
+}
+.noWayTeam{
+    width: 100%;
+    text-align: center;
+}
+.noWayTeam div span{
+    font-size: .24rem;
+    text-align: center;
+}

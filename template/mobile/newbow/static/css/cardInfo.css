@@ -1,0 +1,371 @@
+body{
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+    width: 100%;
+    background-color: #f1f5f8;
+    font-family:'微软雅黑','PingFang SC';
+}
+.fr{
+    float: right;
+}
+.fl{
+    float: left;
+}
+.clearFix{
+    clear: both;
+}
+ul,p{
+    padding: 0;
+    margin: 0;
+}
+.headerRank{
+    width: 100%;
+    height: .88rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    background: white;
+}
+.headerRankCon{
+    width: 100%;
+    height: .88rem;
+    line-height: .88rem;
+    position: relative;
+}
+.tex{
+    text-align: center;
+}
+.tex span{
+    font-size: .31rem;
+    color: #1E1B1B;
+}
+.texFl{
+    margin-top: .3rem;
+    position: absolute;
+    left: .24rem;
+}
+.texFl a{
+    /*display: inline-block;*/
+    width: .5rem;
+    height: .5rem;
+}
+.texFl a img{
+    width: .2rem;
+    height: .32rem;
+}
+.cardInfo{
+    /*width: 100%;*/
+    height: 2rem;
+    position: relative;
+    background-color: #fff;
+    margin-top: .1rem;
+}
+.cardInfoCon{
+    /*width: 100%;*/
+    font-size: .24rem;
+    height: 2rem;
+}
+.cardInfoLeft{
+    margin: .24rem 0 0 .24rem;
+}
+.cardInfoLeft img{
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: .01rem;
+}
+.cardInfoRight{
+    margin: .24rem 0 0 .24rem;
+}
+.titleP{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+    min-height: .68rem;
+    width: 5rem;
+    font-size: .26rem;
+    color: #1E1B1B;
+}
+.titleAll{
+    font-size: .24rem;
+    color: #5B5858;
+    margin-top: .4rem;
+}
+.titleAll span{
+    color: #FF407E;
+    font-weight: bold;
+}
+.cardState{
+    position: absolute;
+    right: .24rem;
+    font-size: .24rem;
+    top: 1.4rem;
+    color: #1E1B1B;
+}
+.cardCode{
+    /*width: 100%;*/
+    height: auto;
+    /*padding: .1rem 0 0 0;*/
+    background-color: #fff;
+    margin-top: .1rem;
+}
+.cardTime{
+    /*width: 100%;*/
+    height: .75rem;
+    line-height: .72rem;
+    font-size: .24rem;
+    padding-left: .24rem;
+    border-bottom: 2px solid #f1f5f8;
+    position: relative;
+}
+.cardTime span:first-child{
+    color: #5B5858;
+}
+.cardTime span:nth-child(2){
+    position: absolute;
+    left: 1.3rem;
+}
+.cardSt{
+    position: absolute;
+    right: .24rem;
+}
+.cardTimeImg{
+    margin-left: 2.9rem;
+    width: .21rem;
+    height: .21rem;
+    vertical-align: middle;
+}
+.noPlay{
+    /*width: 100%;*/
+    height: auto;
+    background-color: #fff;
+    margin-top: .1rem;
+    font-size: .24rem;
+    padding-top: .3rem;
+    padding-bottom: .3rem;
+    text-align: center;
+}
+.noPlayMoney{
+    color: #1E1B1B;
+    font-size:.24rem;
+}
+.noPlayMoney span{
+    color: #FF407E;
+    font-size:0.24rem;
+    font-weight: bold;
+}
+.noPlay a button{
+    width: 3.3rem;
+    height: .62rem;
+    background-color:#FF407E;
+    font-size: .26rem;
+    text-align: center;
+    border-radius: .08rem;
+    color: #fff;
+    margin-top: .2rem;
+    border: 1px solid #FF407E;
+}
+.cardPlayT{
+    color: #5B5858;
+    font-size:.24rem;
+    margin-top: .1rem;
+}
+.cardRest{
+    /*width: 100%;*/
+    height: auto;
+    background-color: #fff;
+    margin-top: .1rem;
+    font-size: .24rem;
+    color: #1E1B1B;
+    padding-top: .4rem;
+    padding-bottom: .4rem;
+    text-align: center;
+}
+.cardRest p:first-child span{
+    color: #FF407E;
+    font-weight: bold;
+}
+.cardRest p:last-child{
+    color: #5B5858;
+    margin-top: .2rem;
+}
+.mealAll{
+    /*width: 100%;*/
+    height: auto;
+    background-color: #fff;
+    margin-top: .1rem;
+}
+.cardMeal{
+    /*width: 100%;*/
+    height: .7rem;
+    font-size: .24rem;
+
+}
+.cardMeal p {
+    margin-left: .24rem;
+    height: .7rem;
+    line-height: .7rem;
+    color: #5B5858;
+    border-bottom: 2px solid #f1f5f8;
+}
+.mealCon{
+    /*width: 100%;*/
+    font-size: .24rem;
+    color:#5B5858;
+    padding-top: .2rem;
+    padding-bottom: .2rem;
+    /*margin:0 .24rem;*/
+}
+.mealCon p{
+    /*width: 100%;*/
+    font-size: .24rem;
+    margin:0 .24rem;
+}
+.mealCon img{
+    width: 100%;
+}
+.textures {
+    /*width: 100%;*/
+    height: .7rem;
+}
+.textures div{
+    margin-left: .24rem;
+    height: .7rem;
+    line-height: .7rem;
+    font-size: .24rem;
+    color: #000;
+    border-top: 2px solid #f1f5f8;
+}
+.textures div img{
+    vertical-align: bottom;
+    margin-right: .24rem;
+    margin-top: .21rem;
+}
+.orderDetails{
+    /*width: 100%;*/
+    height: 4.2rem;
+    background-color: #fff;
+    margin-top: .1rem;
+    margin-bottom: 1.5rem;
+}
+.cardDetail{
+    /*width: 100%;*/
+    height: .7rem;
+    line-height: .7rem;
+}
+.cardDetail p{
+    margin-left: .24rem;
+    font-size: .24rem;
+    height: .7rem;
+    color: #1E1B1B;
+    border-bottom: 2px solid #f1f5f8;
+}
+.cardPrice{
+    /*width: 100%;*/
+    padding-left: .24rem;
+    font-size: .24rem;
+    padding-top: .22rem;
+    height: 2.5rem;
+}
+.cardPriceCom{
+    /*width: 100%;*/
+    height: .66rem;
+}
+.cardPriceCom span:first-child{
+    color: #5B5858;
+    font-size: .24rem;
+}
+.cardPriceCom span:last-child{
+    color: #1E1B1B;
+    font-size: .24rem;
+    margin-right: .45rem;
+}
+
+.cardBtn{
+    width: 100%;
+    height: 1rem;
+    background-color: #fff;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    z-index: 999;
+    border-top: 2px solid #f1f5f8;
+}
+.cardBtn a{
+    text-decoration: none;
+    display: inline-block;
+    margin-right: .24rem;
+    margin-top: .2rem;
+}
+.cardBtn button{
+    font-size: .24rem;
+    color: #1E1B1B;
+    text-align: center;
+    border: 1px solid #BFC1CD;
+    padding: .15rem .15rem;
+    background-color: #fff;
+    /*margin-top: -.85rem;*/
+    border-radius: 0.05rem;
+
+}
+
+.losepay {
+    display: none;
+    z-index: 9999;
+    width:100%;
+    height: 100%;
+    background-color: rgba(0,0,0,.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+.teamConfirm{
+    width: 90%;
+    height: 1.9rem;
+    margin-left: 5%;
+    background-color: #fff;
+    position: relative;
+    top: 50%;
+    margin-top: -1rem;
+    border-radius: .2rem;
+    text-align: center;
+}
+.con-lo{
+    height: 1rem;
+    line-height: 1rem;
+    font-size: .26rem;
+    padding: 0;
+    margin: 0;
+    border-bottom: 2px solid #f1f5f8;
+}
+.con{
+    width: 100%;
+    height: 1rem;
+}
+.con .ax{
+    width:49.5%;
+    text-align: center;
+    display: inline-block;
+    height: .8rem;
+    color: #1E1B1B;
+    line-height: .8rem;
+    font-size: .26rem;
+    border-right: 2px solid #f1f5f8;
+}
+.con .are{
+    width: 49.5%;
+    text-align: center;
+    display: inline-block;
+    height: .8rem;
+    color: #1E1B1B;
+    font-size: .26rem;
+    text-decoration: none;
+    line-height: .8rem;
+}
+.layui-m-layer-msg .layui-m-layercont{
+    font-size: .26rem;
+    color: #fff;
+}

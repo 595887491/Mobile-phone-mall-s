@@ -1,0 +1,93 @@
+body{width: 100%;background: url("../../images/new/prize_back.jpg")repeat-y;background-size: 100% auto;}
+.voteRule{padding: .1rem .25rem .9rem .25rem;}
+.voteRule >div{font-size: .26rem;color:#022B26;margin-top: .25rem;font-weight: bold;}
+.voteRule >div span{font-size: .26rem;color: #022B26;font-weight: 500;}
+.voteRule>ul{padding-left: .2rem;}
+.voteRule>ul li{margin-top: .25rem;}
+.goods{margin-top: .1rem;}
+.voteRule>ul li .mc .fl{width: .04rem;height: .16rem;background-color: #A66508;margin-top: .1rem}
+.voteRule>ul li .mc span{color:#A66508;padding-left: .1rem;}
+.goods::after{display: block;content: '';clear: both;overflow: hidden;height: 0;}
+.goods .fl{width: 1.4rem;height: 1.4rem;background: url("../../images/new/vote_rule_jp.png")no-repeat;background-size: 100% 100%;}
+.goods .fl img{width: 100%;height: 100%;position: relative;z-index: -1;}
+.goods .fr{width: 77%;}
+.goods .fr p:first-of-type{width: 100%;color: #022B26;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;
+font-weight: bold;}
+.goods .fr p:nth-child(2){font-size: .24rem;color: #597C77;display: -webkit-box;-webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;overflow: hidden;min-height: .7rem;}
+.goods .fr p:last-of-type{font-size: .24rem;color: #022B26;}
+.goods .fr p:last-of-type span{font-weight: bold;}
+.voteRule  .rule p{font-weight: 500;padding-left: .2rem;margin-top: .35rem;}
+.voteRule  .rule p:first-of-type{margin-top: .2rem;}
+.voteRule  .rule p>span{font-weight: bold;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,42 @@
+<include file="public/header" title="登录"  body=""/>
+<include file="public/header_nav" title="登录"  href="javascript:history.back(-1);"/>
+<link rel="stylesheet" href="__STATIC__/css/new/loginEnter.css">
+<div class="logo-wrap-bg">
+    <img src="__STATIC__/images/login_logo.png" alt="LOGO"/>
+</div>
+
+<div class="loginsingup-input">
+    <a href="javascript:;" onclick="cfWarrant()">
+        <img src="__STATIC__/images/login_wx.png" alt="">
+        微信用户一键登录
+    </a>
+    <a href="{:U('mobile/User/reg')}" class="phone-login">
+        <img src="__STATIC__/images/login_mobile.png" alt="">
+        手机号登录/注册
+    </a>
+    <p>新人专享188元优惠大礼包</p>
+</div>
+<script type="text/javascript">
+    // 判断是否微信登陆  是否显示第三方登录
+    function isWeiXin() {
+        var ua = window.navigator.userAgent.toLowerCase();
+        // console.log(ua);
+        if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    function cfWarrant() {
+        if(isWeiXin()){     //是微信浏览器打开
+            // alert(111);
+            location.href="{:U('Mobile/User/wechatOauth')}"
+
+
+        }else{             //不是微信浏览器打开
+            alert('不是微信浏览器打开')
+        }
+    }
+    </script>
+</body>
+</html>

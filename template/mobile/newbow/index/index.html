@@ -1,0 +1,790 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>尚美缤纷</title>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/rem.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css"/>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/need/swiper-4.3.3.min.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" href="__STATIC__/js/need/swiper-4.3.3.min.css">
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
+    <link rel="stylesheet" href="__STATIC__/css/animate.css">
+    <link rel="stylesheet" href="__STATIC__/css/newIndex.css">
+</head>
+<style>
+    .lineActiveBottom .swiper-container .swiper-slide{
+        width: 5.8rem;
+        margin-left: .25rem;
+    }
+    .selectedActiveList .swiper-container .swiper-slide{
+        width: auto;
+    }
+    #flashSaleBottom .swiper-container .swiper-slide{
+        width: auto;
+    }
+    .banner .swiper-container .swiper-pagination-bullet{
+        background-color: #fff;
+        opacity: 1;
+
+    }
+    .banner .swiper-container .swiper-pagination-bullet-active{
+        background-color: #FF407E;
+
+    }
+</style>
+<body>
+<!--顶部滚动广告栏  轮播图-s-->
+<div class="banner" id="banner">
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+            <adv pid ="9" limit="8" item="v">
+                <div class="swiper-slide itemBan">
+                    <a href="{$v.ad_link}">
+                        <img src="{$v[ad_code]}?x-oss-process=style/s750x750" title="{$v[title]}"  alt="">
+                    </a>
+                </div>
+            </adv>
+        </div>
+        <div class="swiper-pagination" style="bottom: 18px"></div>
+    </div>
+</div>
+<!--顶部滚动广告栏-e-->
+
+<!--搜素功能-->
+<div class="top" id="top">
+    <div class="indexSearch" style="z-index: 99999">
+        <img  src="__STATIC__/images/header_nav.png" class="searchPic" alt="">
+        <a href="{:U('Mobile/Goods/ajaxSearch')}" >
+            <input type="text" placeholder="搜索商品">
+        </a>
+    </div>
+    <div class="bgCover" ></div>
+</div>
+
+<!--cf 头条-->
+<div class="headerLine">
+    <a href="{:U('Mobile/bargain/test')}">
+      <img src="__STATIC__/images/headerLine.png" alt="">
+    </a>
+</div>
+
+<div class="firstPart">
+    <!--菜单栏-->
+    <div class="indexNav clearFix">
+        <ul>
+            <li>
+                <a href="{:U('Goods/goodsList',['id' => 1000])}">
+                <span>
+                    <img src="__STATIC__/images/headerNew_01.png" alt="基础护肤" /><br />
+                    <span>基础护肤</span>
+                </span>
+                </a>
+            </li>
+            <li>
+                <a href="{:U('Goods/goodsList',['id' => 1003])}">
+                <span>
+                    <img src="__STATIC__/images/headerNew_02.png" alt="彩妆香水" /><br />
+                    <span>彩妆香水</span>
+                </span>
+                </a>
+            </li>
+            <li>
+                <a href="{:U('Goods/goodsList',['id' => 1001])}">
+                <span>
+                    <img src="__STATIC__/images/headerNew_03.png" alt="家居个护" /><br />
+                    <span>家居个护</span>
+                </span>
+                </a>
+            </li>
+            <li>
+                <a href="{:U('Goods/goodsList',['id' => 1002])}">
+                <span>
+                    <img src="__STATIC__/images/headerNew_04.png" alt="婴童用品" /><br />
+                    <span>婴童用品</span>
+                </span>
+                </a>
+            </li>
+            <li>
+                <a href="{:U('Goods/goodsList',['id' => 1004])}">
+                <span>
+                    <img src="__STATIC__/images/headerNew_05.png" alt="男士护理" /><br />
+                    <span>男士护理</span>
+                </span>
+                </a>
+            </li>
+            <li>
+                <a href="{:U('Goods/goodsList',['id' => 1006])}">
+                <span>
+                    <img src="__STATIC__/images/headerNew_06.png" alt="食品保健" /><br />
+                    <span>食品保健</span>
+                </span>
+                </a>
+            </li>
+            <li>
+                <a href="{:U('Goods/goodsList',['id' => 1005])}">
+                <span>
+                    <img src="__STATIC__/images/headerNew_07.png" alt="尚美生活" /><br />
+                    <span>尚美生活</span>
+                </span>
+                </a>
+            </li>
+            <li>
+                <a href="{:U('Goods/categoryList')}">
+                <span>
+                    <img src="__STATIC__/images/headerNew_08.png" alt="全部分类" /><br />
+                    <span>全部分类</span>
+                </span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!--新用户-->
+     <if condition="$flag">
+        <div class="newUserBag">
+            <div class="newUser">
+                <div class="newUserTop">
+                    <img src="__STATIC__/images/newUser.png" alt="">
+                </div>
+                <div class="newUserBot">
+                    <div class="fl newUserBotLeft"><a href="{:U('Mobile/Index/newUserGift')}"><img src="__STATIC__/images/newUserBag.png" alt=""></a></div>
+                    <div class="fr newUserBotRight"><a href="{:U('Mobile/Index/newUserFirstWelfare')}"><img src="__STATIC__/images/newUserBagTwo.png" alt=""></a></div>
+                </div>
+            </div>
+        </div>
+     </if>
+</div>
+
+<!--团购和砍价入口-->
+<div class="teamBargainCover">
+    <div class="teamBargain">
+        <div class="fl teamBargainLeft">
+            <a href="{:U('Mobile/team/index')}">
+                <img src="__STATIC__/images/teamIndex.png" class="teamBargainImg" alt="">
+            </a>
+        </div>
+        <div class="fr teamBargainRight">
+            <a href="{:U('Mobile/bargain/bargainFreeList')}">
+                <img src="__STATIC__/images/bargainIdex.png" class="teamBargainImg" alt="">
+                <div class="bargainFront">
+                    <ul class="">
+                       <li class="bargainActive animated  flipInX">拒绝任何套路</li>
+                       <li class="animated  flipInX">多款好货砍价</li>
+                       <li class="animated  flipInX">不拿白不拿</li>
+                       <li class="animated  flipInX">平台在售商品</li>
+                    </ul>
+                </div>
+                <img src="__STATIC__/images/bargainGif.gif" class="bargainImg" alt="">
+            </a>
+        </div>
+    </div>
+</div>
+<!--秒杀-->
+<div class="flashSale">
+    <div class="flashSaleTop">
+        <div class="fl flashSaleLeft">
+            <span class="titleP">限时抢购</span>
+            <if condition="$now_time gt $start_time">
+                <span class="flashCom">{:date('H',$start_time)}点场</span>
+            <else />
+                <span class="flashCom">{:date('H',$start_time)}点场即将开场</span>
+            </if>
+            <if condition="$now_time gt $start_time">
+                <span class="hms">
+                    <span id="hours">00</span>
+                    <span style="background-color: transparent;color: #3d3d3d;font-size: .24rem;font-weight: 700;">:</span>
+                    <span id="minte">00</span>
+                    <span style="background-color: transparent;color: #3d3d3d;font-size: .24rem;font-weight: 700;">:</span>
+                    <span id="second">00</span>
+                </span>
+            </if>
+        </div>
+        <a href="{:U('Mobile/Activity/flash_sale_list')}">
+            <div class="fr flashSaleRight">
+                <span>MORE</span>
+                <img  class="fr" src="__STATIC__/images/cf_left_more.png" alt="">
+            </div>
+        </a>
+    </div>
+    <!--列表-->
+    <div class="flashSaleBottom" id="flashSaleBottom">
+        <if condition="count($flash_sale_list) eq 0">
+            <div style="font-size: .24rem;text-align: center">暂无抢购商品...</div>
+            <else/>
+            <div class="swiper-container" >
+                <div class="swiper-wrapper">
+                    <foreach name="flash_sale_list" item="v">
+                        <div class="swiper-slide">
+                            <a href="{:U('mobile/Goods/goodsInfo',['id'=>$v.goods_id])}">
+                                <div class="flashGoods">
+                                    <img src="{$v[original_img]}?x-oss-process=style/s340x340" alt="">
+                                    <p>{$v['goods_name']}</p>
+                                    <div><span style="color: #FF407E">¥</span><span style="font-size: .34rem;color: #FF407E">{$v[price]}</span><span style="color: #BFC1CD;margin-left: .1rem">省</span><span style="color: #BFC1CD">¥{$v[save_money]}</span></div>
+                                </div>
+                            </a>
+                        </div>
+                    </foreach>
+                    <div class="swiper-slide">
+                        <div class="flashGoods falseMore">
+                            <a href="{:U('Mobile/Activity/flash_sale_list')}">
+                                <img src="__STATIC__/images/falseMore.png" alt="">
+                            </a>
+                            <p style="visibility: hidden">{$v['goods_name']}</p>
+                            <div style="visibility: hidden"><span style="color: #FF407E">¥</span><span style="font-size: .34rem;color: #FF407E">{$v[price]}</span><span style="color: #BFC1CD;margin-left: .1rem">省</span><span style="color: #BFC1CD">¥{$v[save_money]}</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </if>
+
+    </div>
+</div>
+
+<!--拼团活动-->
+<div class="teamActive">
+    <div>
+        <adv  limit="1" item="v" pid="51331">
+            <a href="{$v[ad_link]}">
+                <img src="{$v[ad_code]}?x-oss-process=style/s750x750" alt="" style="height: 2rem">
+            </a>
+        </adv>
+    </div>
+</div>
+
+<!--尚美头条-->
+<div class="lineActive">
+    <div class="lineActiveTop clearFix">
+        <div class="fl lineActiveTopLeft"><span>CF头条</span></div>
+        <div CLASS="fr lineActiveTopRight"><a href="{:U('mobile/article/cfFrontPageList')}"><span>MORE</span><img  class="fr" src="__STATIC__/images/cf_left_more.png" alt=""></a></div>
+    </div>
+    <div class="lineActiveBottom" id="lineActiveBottom">
+        <div class="swiper-container ">
+            <div class="swiper-wrapper">
+                <foreach name="cf_article_toutiao" item="v">
+                    <div class="swiper-slide">
+                        <a href="{:U('mobile/article/articleDetail',['article_id'=>$v.article_id])} /">
+                            <div class="lineActiveCom">
+                                <img  src="{$v[thumb]}?x-oss-process=style/s750x750" alt="">
+                                <div class="lineComment clearFix">
+                                    <div class="commentTitle clearFix">
+                                        <p class="fl commentTitleLeft " id="<if condition="$v['best_low_price'] eq 0">commentTitleLeft</if>">{$v['title']}</p>
+                                        <if condition="$v['best_low_price'] neq 0">
+                                           <p class="fr commentTitleRight">{$v['best_low_price']}元起</p>
+                                        </if>
+                                    </div>
+                                    <!--<div class="articleDes">-->
+                                    <p class="articleDes" >{$v['description']}</p>
+                                    <!--</div>-->
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </foreach>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--品牌上新-->
+<div class="newBrand" >
+    <div class="newBrandTop clearFix">
+        <div class="fl newBrandTopLeft"><span>品牌上新</span></div>
+        <a href="{:U('Goods/goodsTopic',['topic_id' => 18])}">
+           <div CLASS="fr newBrandTopRight"><span>MORE</span><img  class="fr" src="__STATIC__/images/cf_left_more.png" alt=""></div>
+        </a>
+    </div>
+    <div class="newBrandBottom" id="newBrandBottom">
+        <div class="swiper-container" style="overflow: visible">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <foreach name="new_goods_data" item="v" key="o">
+                        <if condition="$o elt 2">
+                            <a href="{:U('mobile/Goods/goodsInfo',['id'=>$v.goods_id])}">
+                                <div class="newBrandGoods">
+                                    <img src="{$v[original_img]}?x-oss-process=style/s340x340" style="width: 2.18rem;height: 2.18rem" alt="">
+                                    <p>{$v['goods_name']}</p>
+                                    <div><span style="color: #FF407E">¥</span><span style="font-size: .34rem;color: #FF407E">{$v['shop_price']}</span><span style="color: #BFC1CD;margin-left: .15rem;text-decoration: line-through">¥{$v['market_price']}</span></div>
+                                </div>
+                            </a>
+                        </if>
+                    </foreach>
+                </div>
+                <div class="swiper-slide">
+                    <foreach name="new_goods_data" item="v" key="o">
+                        <if condition="$o egt 3 && $o elt 5">
+                            <a href="{:U('mobile/Goods/goodsInfo',['id'=>$v.goods_id])}">
+                                <div class="newBrandGoods">
+                                    <img src="{$v[original_img]}?x-oss-process=style/s340x340" alt="">
+                                    <p>{$v['goods_name']}</p>
+                                    <div><span style="color: #FF407E">¥</span><span style="font-size: .34rem;color: #FF407E">{$v['shop_price']}</span><span style="color: #BFC1CD;margin-left: .15rem;text-decoration: line-through">¥{$v['market_price']}</span></div>
+                                </div>
+                            </a>
+                        </if>
+                    </foreach>
+                </div>
+                <div class="swiper-slide">
+                    <foreach name="new_goods_data" item="v" key="o">
+                        <if condition="$o egt 6 && $o elt 8">
+                            <a href="{:U('mobile/Goods/goodsInfo',['id'=>$v.goods_id])}">
+                                <div class="newBrandGoods">
+                                    <img src="{$v[original_img]}?x-oss-process=style/s340x340" alt="">
+                                    <p>{$v['goods_name']}</p>
+                                    <div><span style="color: #FF407E">¥</span><span style="font-size: .34rem;color: #FF407E">{$v['shop_price']}</span><span style="color: #BFC1CD;margin-left: .15rem;text-decoration: line-through">¥{$v['market_price']}</span></div>
+                                </div>
+                            </a>
+                        </if>
+                    </foreach>
+                </div>
+            </div>
+            <div class="swiper-pagination" style="bottom: -.5rem"></div>
+        </div>
+    </div>
+</div>
+
+<!--全球购-->
+<div class="worldShop">
+    <div class="worldShopTop">
+        <img src="__STATIC__/images/allShop.png" alt="">
+    </div>
+    <div class="worldShopTom">
+        <adv  limit="1" item="v" pid="51335">
+            <!--<a href="{$v[ad_link]}">-->
+                <img  src="{$v[ad_code]}?x-oss-process=style/s750x750" alt="" style="height: 1.3rem">
+            <!--</a>-->
+        </adv>
+    </div>
+    <div class="worldShopList">
+        <ul>
+            <a href="{:U('mobile/goods/globalPurchase',['id'=>1])}">
+                <li><img  src="__STATIC__/images/japanHouse.png?x-oss-process=style/s340x340" alt=""></li>
+            </a>
+            <a href="{:U('mobile/goods/globalPurchase',['id'=>3])}">
+                <li><img  src="__STATIC__/images/AmericaHouse.png?x-oss-process=style/s340x340" alt=""></li>
+            </a>
+            <a href="{:U('mobile/goods/globalPurchase',['id'=>2])}">
+                <li><img  src="__STATIC__/images/KoreaHouse.png?x-oss-process=style/s340x340" alt=""></li>
+            </a>
+            <a href="{:U('mobile/goods/globalPurchase',['id'=>4])}">
+                <li><img  src="__STATIC__/images/NewHouse.png?x-oss-process=style/s340x340" alt=""></li>
+            </a>
+        </ul>
+    </div>
+</div>
+
+<!--精选活动-->
+<if condition="$choicenessActivityGoods neq null">
+<div style="background-color: #fff">
+    <div class="selectedActiveTop">
+        <img src="__STATIC__/images/activeSel.png" alt="">
+    </div>
+    <foreach name="$choicenessActivityGoods" item="v">
+        <div class="selectedActive">
+            <!-- 向上的三角形 -->
+            <div class="selectedActiveBot">
+                <a href="{:U('mobile/Goods/goodsTopic',['topic_id'=>$v.topic_id])}">
+                    <img  src="{$v.topic_img}?x-oss-process=style/s750x750" alt="">
+                </a>
+                <div class="triangle_border_up"></div>
+            </div>
+            <!--列表-->
+            <div class="selectedActiveList" >
+                <div class="swiper-container" >
+                    <div class="swiper-wrapper">
+                       <foreach name="$v.goods" item="vo">
+                            <div class="swiper-slide">
+                                <a href="{:U('mobile/Goods/goodsInfo',['id'=>$vo.goods_id])}">
+                                    <div class="activeList">
+                                        <img  src="{$vo.original_img}?x-oss-process=style/s340x340" alt="">
+                                        <p>{$vo.goods_name}</p>
+                                        <div><span style="color: #FF407E">¥</span><span style="font-size: .34rem;color: #FF407E">{$vo.shop_price}</span><span style="color: #BFC1CD;margin-left: .2rem;text-decoration: line-through">¥{$vo.market_price}</span></div>
+                                    </div>
+                                </a>
+                            </div>
+                       </foreach>
+                        <div class="swiper-slide">
+                            <a href="{:U('mobile/Goods/goodsTopic',['topic_id'=>$v.topic_id])}">
+                                <div class="activeList">
+                                    <img src="__STATIC__/images/falseMore.png" alt="">
+                                    <div style="visibility: hidden;width: 2.12rem">{$vo.goods_name}</div>
+                                    <div style="visibility: hidden"><span style="color: #FF407E">¥</span><span style="font-size: .34rem;color: #FF407E">{$vo.shop_price}</span><span style="color: #BFC1CD;margin-left: .2rem;text-decoration: line-through">¥{$vo.market_price}</span></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+             </div>
+            <div style="height: .1rem;background-color: #f1f5f8;width: 100%"></div>
+        </div>
+    </foreach>
+</div>
+</if>
+<!--精选活动 一-->
+
+<!--猜你喜欢-->
+<div class="guessLike">
+    <div class="guessLikeTop">
+        <img src="__STATIC__/images/guessLike.png" alt="">
+    </div>
+    <div class="guessList clearFix">
+        <foreach name="$favourite_goods" item="v">
+            <a href="{:U('mobile/Goods/goodsInfo',['id'=>$v.goods_id])}">
+                <div class="guessItem">
+                    <!--src="{$v[original_img]}?x-oss-process=style/s01"-->
+                    <img class="lazy" data-original="{$v[original_img]}?x-oss-process=style/s340x340" alt="">
+                    <p class="guessTitle">{$v['goods_remark']}</p>
+                    <p class="guessCom">{$v['goods_name']}</p>
+                    <div class="guessDiv"><span style="color: #FF407E">¥</span><span style="font-size: .34rem;color: #FF407E">{$v['shop_price']}</span><span style="color: #BFC1CD;margin-left: .2rem;text-decoration: line-through">¥{$v['market_price']}</span></div>
+                </div>
+            </a>
+        </foreach>
+    </div>
+</div>
+
+<div class="noMore">
+    <span>没有更多了</span>
+</div>
+
+
+<div style="height: 1rem;width: 100%;clear: both"></div>
+<!--关注微信号  start-->
+<if condition="$isWechat eq 1">
+    <if condition="$isSubscribe neq 1">
+        <div class="cf_follow_me" onclick="cf_pop()">
+            <img src="__STATIC__/images/cf_follow_me.png" alt="">
+        </div>
+    </if>
+</if>
+<!--关注微信号  end-->
+
+<!--尚美 二维码-->
+<div class="smbf_code" style="display: none;">
+    <img src="http://cdn.cfo2o.com/public/upload/other/smbf_code.png?x-oss-process=style/s01" alt="" class="code">
+    <img src="__STATIC__/images/code_close.png" alt="" class="close-btn" onclick="close_code()">
+</div>
+<!--关注微信号  end-->
+<!--返回顶部  start-->
+<div class="back_top">
+    <a href="#"> <img src="__STATIC__/images/cf_back_top.png" alt=""></a>
+</div>
+<!--返回顶部  end-->
+<div class="footer clearFix">
+    <ul>
+        <a href="{:U('Mobile/Index/index')}">
+            <li class="activeChoose"><img src="__STATIC__/images/cf_homed.png" alt=""><br><span>首页</span></li>
+        </a>
+        <a href="{:U('Mobile/Goods/categoryList')}">
+            <li><img src="__STATIC__/images/cf_class.png" alt=""><br><span>分类</span></li>
+        </a>
+        <a href="{:U('Mobile/Cart/index')}" >
+            <li style="position: relative" ><img src="__STATIC__/images/cf_shopping.png" alt=""><br><span>购物车</span><div class="numCart"></div> </li>
+
+        </a>
+        <a href="{:U('Mobile/User/index')}">
+            <li><img src="__STATIC__/images/cf_my.png" alt=""><br><span>我的</span></li>
+
+        </a>
+    </ul>
+</div>
+
+<!--新人礼包 188-->
+<div class="ordinaryPopBg" >
+    <div class="ordinary ">
+        <a onclick="jumpGift()">
+            <img src="__STATIC__/images/giftIndex.png" class="bigGift" alt="">
+        </a>
+        <div class="closePop" onclick="closeCode()"><img src="__STATIC__/images/qx.png" id="closePopImg" alt=""></div>
+    </div>
+</div>
+
+
+
+<!--分享开始-->
+<script>
+    // http://cdn.cfo2o.com/public/upload/other/logo_share.png
+    var ShareImgUrl ="https://{$_SERVER[HTTP_HOST]}__STATIC__/images/logo_share.png"; //分享图标
+    var ShareTitle = "一家有线下沙龙体验活动的化妆品平台"; //分享标题
+    var ShareDesc = "尚美缤纷是一家有线下沙龙体验活动的化妆品平台，美妆老师、美妆产品超正点"; //分享描述
+</script>
+<include file="public/wx_share"/>
+<!--分享结束-->
+
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script type="text/javascript" src="__STATIC__/js/jquery.lazyload.js"></script>
+<script>
+    // 轮播图配置
+    new Swiper('#banner .swiper-container',{
+        pagination: {
+            el: '#banner .swiper-pagination',
+            bulletElement : 'li',
+        },
+        autoplay:{
+            disableOnInteraction: false,//默认true
+            delay:3000,//默认3000
+        },
+
+        loop:true
+    });
+    // // 品牌上新图配置
+      new Swiper ('#newBrandBottom .swiper-container', {
+        autoplay: false,//可选选项，自动滑动
+        loop : true,  //循环切换
+        // 如果需要分页器
+        pagination: {
+            el: '#newBrandBottom .swiper-pagination',
+
+        },
+    });
+
+    // 尚美头条配置
+    new Swiper('#lineActiveBottom .swiper-container', {
+        slidesPerView: 'auto',
+        freeMode: true,
+        pagination: {
+            el: '#lineActiveBottom .swiper-pagination',
+            clickable: true,
+        },
+    });
+
+    // 秒杀配置
+    new Swiper('#flashSaleBottom .swiper-container', {
+        slidesPerView: 'auto',
+        freeMode: true,
+        pagination: {
+            el: '#flashSaleBottom .swiper-pagination',
+            clickable: true,
+        },
+    });
+    // 精选活动配置
+    new Swiper('.selectedActiveList .swiper-container', {
+        slidesPerView: 'auto',
+        freeMode: true,
+        pagination: {
+            el: '.selectedActiveList .swiper-pagination',
+            clickable: true,
+        },
+    });
+
+    // 188 礼包
+    function closeCode() {
+        $('.ordinaryPopBg').hide();
+        localStorage.setItem('wind_flag',2)
+    }
+    function jumpGift() {
+        $('.ordinaryPopBg').hide();
+        localStorage.setItem('wind_flag',2);
+        location.href="{:U('mobile/Index/newUserGift')}"
+    }
+    var open_wind_flag = "{$open_wind_flag}";
+    if(open_wind_flag){
+        $('.ordinaryPopBg').show();
+    }
+    var isPop = localStorage.getItem('wind_flag');
+    if(isPop == 2 ){
+        $('.ordinaryPopBg').hide();
+    }
+
+    // 出现滚动条时出返回顶部按钮  开始
+    $(function() {
+        if ($(window).scrollTop() < 800) {
+            $('.back_top ').css('display','none');
+        }
+
+        $(window).scroll(function() {
+            if ($(window).scrollTop() >= 800) {
+                $('.back_top ').css('display','block');
+            } else {
+                $('.back_top ').css('display','none');
+            }
+        });
+        $('.back_top ').click(function() {
+            $("html,body").animate({
+                scrollTop: 0
+            }, 1000);
+        });
+    });
+    //滚动事件 / 滑动搜索的效果
+    $(function(){
+        var $body = $('body');
+        var setCoverOpacity = function() {
+            $('.bgCover').css({
+                opacity: ((($(document).scrollTop() / $('.banner').height()) > 1) ? 1 : ($(document).scrollTop() / $('.banner').height()))
+            });
+        };
+        //初始化设置背景透明度
+        // setCoverOpacity();
+        //监听滚动条事件，改变透明度
+        $(window).scroll(function() {
+            setCoverOpacity();
+        });
+    });
+
+    // 秒杀模块倒计时
+    function GetRTime(end_time){
+        var NowTime = new Date();
+        var t = (end_time*1000) - NowTime.getTime();
+        var d=Math.floor(t/1000/60/60/24);
+        var h=Math.floor(t/1000/60/60%24);
+        var m=Math.floor(t/1000/60%60);
+        var s=Math.floor(t/1000%60);
+        if(s >= 0){
+            return (d * 24 + h) + '时' + m + '分' +s+'秒';
+        }
+    }
+
+    $(function () {
+        function GetRTime2(){
+            var end_time  = {$end_time};
+            var NowTime = new Date();
+            var t = (end_time*1000) - NowTime.getTime();
+            var d=Math.floor(t/1000/60/60/24);
+            var h=Math.floor(t/1000/60/60%24);
+            var m=Math.floor(t/1000/60%60);
+            var s=Math.floor(t/1000%60);
+            if(s >= 0) {
+                if (h == 0) {
+                    // $('.hms').html((d * 24 + h) + '时' + m + '分' +s+'秒');
+                    $('.hms').css('background-color','transparent');
+                    d * 24 + h<10? $('#hours').text('0'+(d * 24 + h)):$('#hours').text(d * 24 + h);
+                    m<10 ? $('#minte').text('0'+m) :$('#minte').text(m) ;
+                    s<10 ? $('#second').text('0'+s) :$('#second').text(s);
+                } else {
+                    $('.hms').css('background-color','transparent');
+                    d * 24 + h<10? $('#hours').text('0'+(d * 24 + h)):$('#hours').text(d * 24 + h);
+                    m<10 ? $('#minte').text('0'+m) :$('#minte').text(m) ;
+                    s<10 ? $('#second').text('0'+s) :$('#second').text(s);
+
+                }
+            }
+        }
+        setInterval(GetRTime2,1000);
+    });
+
+    /**
+     * ajax加载更多数据
+     */
+    var ajax_pending = false;//进行中
+    var has_more_data = true;//还有数据
+    var  page = 0;
+    var datahtml ='';
+    function ajax_sourch_submit() {
+        if (ajax_pending || has_more_data == false) return;
+        ajax_pending = true;
+        ++page;
+        $.ajax({
+            type : "GET",
+            url:"/index.php?m=Mobile&c=Index&a=ajaxGetGuessUserLike&p="+page,
+            success: function(data) {
+                ajax_pending = false;
+                if ($.trim(data) != '') {
+                    $('.guessList').append(data);
+                    datahtml += data;
+                    sessionStorage.setItem("moreData", datahtml);
+                    //加载更多时 懒加载配置
+                    $("img.lazy").lazyload({effect: "fadeIn"});
+                    $("img.lazy").lazyload({ threshold :180});
+                    // setTimeout(function () {
+                    //     sessionStorage.removeItem("moreData");
+                    // },5000);
+                } else {
+                    has_more_data = false;
+                    $('.noMore').show()
+                }
+            }
+        });
+    }
+
+    // 判断是否有缓存 数据 猜你喜欢  返回到浏览位置
+    $(function () {
+        var a = sessionStorage.getItem("moreData");
+        if(a != '') {
+            $('.guessList').html(a);
+        }
+    });
+
+    // console.log(a);
+    // 点击弹出微信公众号
+    function cf_pop() {
+        $('.smbf_code').show();
+    }
+    function close_code(){
+        $('.smbf_code').hide();
+    }
+
+    // 判断ios 和  安卓  兼容样式问题
+    $(function () {
+        var u = navigator.userAgent;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        if(isAndroid || !isiOS){  //安卓
+
+        }else{  //苹果
+            // $('.flashGoods p').css("height", ".65rem");
+            $('.flashGoods  p').css("height", ".66rem")
+            $('.indexSearch input').css("width", "90%")
+            $('.swipleGo input').css("width", "90%");
+            $('.searchPic').css("top", ".32rem")
+            // $('.searchPicTwo').css("top", ".35rem")
+        }
+    });
+    //判断 购物车数量
+    $(document).ready(function(){
+        var cart_cn = getCookie('cn');
+        if(cart_cn == ''){
+            $.ajax({
+                type : "GET",
+                url:"/index.php?m=Home&c=Cart&a=header_cart_list",//+tab,
+                success: function(data){
+                    cart_cn = getCookie('cn');
+                    if (cart_cn>0) {
+                        $('.numCart').show().html(cart_cn);
+                    }
+                    $('#cart_quantity').html(cart_cn);
+                }
+            });
+        }
+        if (cart_cn>0) {
+            $('.numCart').show().html(cart_cn);
+        }
+        $('#cart_quantity').html(cart_cn);
+    });
+
+    // 砍价文字 滚动效果
+
+    // $('.bargainFront ul li').eq(0).addClass('bargainActive');
+    var index= -1;
+
+    setInterval(function () {
+        index ++;
+        if(index >3){
+            index = 0;
+        }
+        $('.bargainFront ul li').removeClass('bargainActive');
+        $('.bargainFront ul li').eq(index).addClass('bargainActive');
+    },1000);
+
+
+    // 懒加载  相关配置
+    $(function() {
+        $("img.lazy").lazyload({effect: "fadeIn"});
+    });
+    $("img.lazy").lazyload({ threshold :200});
+    $("img.lazy").lazyload({
+        placeholder : "/template/mobile/newbow/static/images/aa.png", //用图片提前占位
+        // placeholder,值为某一图片路径.此图片用来占据将要加载的图片的位置,待图片加载时,占位图则会隐藏
+        effect: "fadeIn", // 载入使用何种效果
+        // effect(特效),值有show(直接显示),fadeIn(淡入),slideDown(下拉)等,常用fadeIn
+        threshold: 200, // 提前开始加载
+        // threshold,值为数字,代表页面高度.如设置为200,表示滚动条在离目标位置还有200的高度时就开始加载图片,可以做到不让用户察觉
+        event: 'click',  // 事件触发时才加载
+        // event,值有click(点击),mouseover(鼠标划过),sporty(运动的),foobar(…).可以实现鼠标莫过或点击图片才开始加载,后两个值未测试…
+        container: $(".guessItem"),  // 对某容器中的图片实现效果
+        // container,值为某容器.lazyload默认在拉动浏览器滚动条时生效,这个参数可以让你在拉动某DIV的滚动条时依次加载其中的图片
+        failurelimit : 10 // 图片排序混乱时
+        // failurelimit,值为数字.lazyload默认在找到第一张不在可见区域里的图片时则不再继续加载,但当HTML容器混乱的时候可能出现可见区域内图片并没加载出来的情况,failurelimit意在加载N张可见区域外的图片,以避免出现这个问题.
+    });
+</script>
+
+</body>
+</html>

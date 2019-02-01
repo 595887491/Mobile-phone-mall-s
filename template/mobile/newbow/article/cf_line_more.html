@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>头条列表</title>
+    <link rel="stylesheet" href="__STATIC__/css/style.css">
+    <link rel="stylesheet" href="__STATIC__/css/cf_line_more.css">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css"/>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
+</head>
+<body>
+    <div class="content">
+        <a onclick="goBack()" style="position: absolute;left: .5rem;top: 1rem"><img src="__STATIC__/images/return.png" alt="返回" style="height: .8rem;
+    margin-top: -.3rem;"></a>
+        <div style="text-align: center;height: 2.2rem;line-height: 2.2rem;-webkit-box-shadow: 0 0.1rem 0.5rem 1px #eee;">
+            <span style="font-size: .8rem;color: #1E1B1B;">尚美头条</span>
+        </div>
+    </div>
+    <div id="cf_content_list">
+        <foreach $article_datas as $v>
+            <php>
+                $pics = explode('|',$v['cf_pics']);
+            </php>
+            <if condition="$v.cf_videos">
+                <a href="{:U('article/articleDetail',['article_id' => $v['article_id']])}">
+                    <!--视频模块-->
+                    <div class="cf_video" onclick="vidoPlay()">
+                        <p>{$v['title']}</p>
+                        <div style="position: relative">
+                            <video src="{:config('aliyun_oss.Oss_cdn')}{$v.cf_videos}"  id="videoPlay" controls="controls">
+                            </video>
+                        </div>
+                        <div class="video_bottom">
+                            <span>{:date('Y.m.d',$v['publish_time'])}</span>
+                            <span>{$v['click']}人浏览</span>
+                            <if condition="$v['goods_nums'] neq 0">
+                                <span style="margin-left: 10rem;color:#5B5858 ">{$v['goods_nums']}件宝贝</span>
+                            </if>
+                        </div>
+                    </div>
+                </a>
+            <elseif condition="empty($v.cf_videos) && $v.cf_pics && (count($pics) gt 3)">
+                <a href="{:U('article/articleDetail',['article_id' => $v['article_id']])}">
+                    <!--多张图片模块-->
+                    <div class="cf_comment">
+                        <p>{$v['title']}</p>
+                        <div style="clear: both;overflow: hidden">
+                            <ul>
+                                <foreach name="pics"  item ='vv'>
+                                    <li>
+                                        <img src="{:config('aliyun_oss.Oss_cdn')}{$vv}" width="" alt="">
+                                    </li>
+                                </foreach>
+                            </ul>
+                        </div>
+
+                        <div class="cf_time_num">
+                            <span>{:date('Y.m.d',$v['publish_time'])}</span>
+                            <span>{$v['click']}人浏览</span>
+                            <if condition="$v['goods_nums'] neq 0">
+                                <span style="margin-left: 10rem;color:#5B5858 ">{$v['goods_nums']}件宝贝</span>
+                            </if>
+                        </div>
+                    </div>
+                </a>
+            <else/>
+            <div class="cf_connent">
+                <a href="{:U('article/articleDetail',['article_id' => $v['article_id']])}">
+                    <div class="cf_line">
+                        <div class="fl cf_line_con">
+                            <p >{$v['title']}</p>
+                            <span class="cf_span_f">{:date('Y.m.d',$v['publish_time'])}</span>
+                            <span class="cf_span_g">{$v['click']}人浏览</span>
+
+                        </div>
+                        <div class="fr cf_line_img">
+                            <img src="{$v['thumb']}">
+                        </div>
+                        <if condition="$v['goods_nums'] neq 0">
+                         <span class="cf_span_data">{$v['goods_nums']}件宝贝</span>
+                        </if>
+                    </div>
+                </a>
+            </div>
+            </if>
+        </foreach>
+    </div>
+    <script>
+        var ShareImgUrl = "https://{$_SERVER[HTTP_HOST]}__STATIC__/images/logo_share.png"; //分享图标
+        var ShareTitle = "尚美头条列表"; //分享标题
+        var ShareDesc = "这些达人分享的东西超棒!快去看看吧!"; //分享描述
+        var ShareLink = "http://{$_SERVER[HTTP_HOST]}/index.php/mobile/article/cfFrontPageList"; //分享链接
+    </script>
+    <!-- 微信浏览器 调用微信 分享js-->
+    <include file="public/wx_share"/>
+    <!-- 微信浏览器 调用微信 分享js  end-->
+    <script src="__STATIC__/js/newTwo/cf_line_more.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+        // 分享后 判断是否有上一级页面
+        function goBack(){
+            var his = document.referrer;
+            if(his) {
+                history.back(-1)
+            }else {
+                window.location.href = "{:U('Mobile/Index/index')}";
+            }
+        }
+    </script>
+</body>
+</html>

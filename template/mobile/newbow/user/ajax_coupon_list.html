@@ -1,0 +1,87 @@
+<volist name="coupon_list" id="coupon">
+    <!--未使用-->
+    <if condition="$Request.param.type eq null">
+        <li>
+            <div class="clearfix">
+                <p class="cf_title fl">{$coupon.name}</p>
+                <div class="pon_dow fr">
+                    <!--<p>{$tpshop_config['shop_info_store_name']}</p>-->
+                    <!--<p>{$coupon.use_scope}</p>-->
+
+                    <if condition="$coupon.use_type eq 2">
+                        <a class="usecoupon" href="{:U('Goods/goodsList',['id'=>$coupon.category_id])}">
+                            <elseif condition="$coupon.use_type eq 1">
+                                <a class="usecoupon" href="{:U('Goods/goodsInfo',['id'=>$coupon.goods_id])}">
+                                    <else/>
+                                    <a class="usecoupon" href="/">立即使用</a>
+                    </if>
+
+
+                </div>
+            </div>
+            <div class="clearfix" style="padding-top: 1.3rem;">
+                <p class="fosi fl">¥</p><em class="money fl">{$coupon.money|intval}</em>
+                <p  class="fl _title ">满 {$coupon.condition} 元可用</p>
+            </div>
+            <p class="x_time">限{$coupon.use_end_time|date='Y-m-d',###}前使用</p>
+        </li>
+    </if>
+
+    <!--已使用-->
+    <if condition="$Request.param.type eq 1">
+        <li>
+            <div class="clearfix">
+                <p class="cf_title fl">{$coupon.name}</p>
+                <div class="pon_dow fr">
+                    <!--<p>{$tpshop_config['shop_info_store_name']}</p>-->
+                    <!--<p>{$coupon.use_scope}</p>-->
+
+                    <if condition="$coupon.use_type eq 2">
+                        <a class="usecoupon" href="{:U('Goods/goodsList',['id'=>$coupon.category_id])}">
+                            <elseif condition="$coupon.use_type eq 1">
+                                <a class="usecoupon" href="{:U('Goods/goodsInfo',['id'=>$coupon.goods_id])}">
+                                    <else/>
+                                    <!--<a class="usecoupon" href="/">已使用</a>-->
+                                    <img src="__STATIC__/images/cf_usered.png" alt="" class="cf_status">
+                    </if>
+
+
+                </div>
+            </div>
+            <div class="clearfix" style="padding-top: 1.3rem;">
+                <p class="fosi fl">¥</p><em class="money fl">{$coupon.money|intval}</em>
+                <p  class="fl _title ">满 {$coupon.condition} 元可用</p>
+            </div>
+            <p class="x_time">限{$coupon.use_end_time|date='Y-m-d',###}前使用</p>
+        </li>
+    </if>
+
+    <!--已过期-->
+    <if condition="$Request.param.type eq 2">
+        <li class="">
+            <div class="clearfix">
+                <p class="cf_title fl">{$coupon.name}</p>
+                <div class="pon_dow fr">
+                    <!--<p>{$tpshop_config['shop_info_store_name']}</p>-->
+                    <!--<p>{$coupon.use_scope}</p>-->
+
+                    <if condition="$coupon.use_type eq 2">
+                        <a class="usecoupon" href="{:U('Goods/goodsList',['id'=>$coupon.category_id])}">
+                            <elseif condition="$coupon.use_type eq 1">
+                                <a class="usecoupon" href="{:U('Goods/goodsInfo',['id'=>$coupon.goods_id])}">
+                                    <else/>
+                                    <!--<a class="usecoupon" href="/">已过期</a>-->
+                                    <img src="__STATIC__/images/cf_guoqi.png" alt="" class="cf_status">
+                    </if>
+
+
+                </div>
+            </div>
+            <div class="clearfix" style="padding-top: 1.3rem;">
+                <p class="fosi fl">¥</p><em class="money fl">{$coupon.money|intval}</em>
+                <p  class="fl _title ">满 {$coupon.condition} 元可用</p>
+            </div>
+            <p class="x_time">限{$coupon.use_end_time|date='Y-m-d',###}前使用</p>
+        </li>
+    </if>
+</volist>

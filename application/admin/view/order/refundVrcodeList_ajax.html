@@ -1,0 +1,93 @@
+<div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+    <table style="width: 100%;">
+        <tbody>
+        <if condition="empty($vrCode) eq true " >
+            <tr data-id="0">
+                <td class="no-data" align="center" axis="col0" colspan="50">
+                    <i class="fa fa-exclamation-circle"></i>没有符合条件的记录
+                </td>
+            </tr>
+            <else/>
+            <volist name="vrCode" id="list">
+                <tr data-order-id="{$list.order_id}">
+                    <td class="sign" axis="col0">
+                        <div style="width: 24px;"><i class="ico-check"></i></div>
+                    </td>
+                    <td align="left" abbr="order_sn" axis="col3" class="">
+                        <div style="text-align: left; width: 160px;" class="">{$list.orderInfo.order_sn}</div>
+                    </td>
+                    <td align="left" abbr="consignee" axis="col4" class="">
+                        <div style="text-align: left; width: 120px;" class="">{$list.orderInfo.goods_name}</div>
+                    </td>
+                    <td align="center" abbr="article_time" axis="col6" class="">
+                        <div style="text-align: center; width: 80px;" class="">{$list.orderInfo.user_id}</div>
+                    </td>
+                    <td align="center" abbr="article_time" axis="col6" class="">
+                        <div style="text-align: center; width: 100px;height: 50px" class="">
+                            <img style="width: 20px;height:20px;border-radius: 50%" src="{$list.head_pic|default='http://cdn.cfo2o.com/data/avatar/1523631369812.jpg'}" alt="">{$list.orderInfo.nickname} <br/>
+                            {$list.orderInfo.mobile}</div>
+                    </td>
+                    <td align="center" abbr="article_time" axis="col6" class="">
+                        <div style="text-align: center; width: 100px;" class="">￥{$list.orderInfo.goods_price}</div>
+                    </td>
+
+                    <td align="center" abbr="article_time" axis="col6" class="">
+                        <div style="text-align: center; width: 180px;" class="">
+                            <if $list.orderInfo.add_time!=0>
+                                {$list.orderInfo.add_time|date='Y-m-d H:i:s',###}
+                            </if>
+                        </div>
+                    </td>
+                    <td align="center" abbr="article_time" axis="col6" class="">
+                        <div style="text-align: center; width: 180px;" class="">
+                            <if $list.orderInfo.pay_time != 0>
+                                {$list.orderInfo.pay_time|date='Y-m-d H:i:s',###}
+                            </if>
+                        </div>
+                    </td>
+                    <td align="center" abbr="article_time" axis="col6" class="">
+                        <div style="text-align: center; width: 100px;" class="">
+                            <if $list.refund_lock == 1>
+                                <span style="color: #999999"> 待处理</span>
+                            </if>
+                            <if $list.refund_lock == 3>
+                                <span style="color: #009900">已退款</span>
+                            </if>
+                            <if $list.refund_lock == 4>
+                                <span style="color: #FF0000">已拒绝</span>
+                            </if>
+
+                        </div>
+                    </td>
+                    <td align="center" axis="col1" class="handle" align="center">
+                        <div style="text-align: center; ">
+                            <a class="btn green" href="{:U('Order/refundVrcodeInfo',array('rec_id'=>$list['rec_id']))}"><i class="fa fa-list-alt"></i>详情</a>
+                        </div>
+                    </td>
+                    <td align="" class="" style="width: 100%;">
+                        <div>&nbsp;</div>
+                    </td>
+                </tr>
+            </volist>
+        </if>
+        </tbody>
+    </table>
+</div>
+
+<div class="partnerList">
+    {$page}
+</div>
+
+<script>
+    // 点击分页触发的事件
+    $(".pagination  a").click(function(){
+        cur_page = $(this).data('p');
+        ajax_get_table('search-form2',cur_page);
+    });
+    function search_agent(real_name) {
+        $('#identity').val(2);
+        $('#keywords').val(real_name);
+        ajax_get_table('search-form2',1);
+    }
+    $('.ftitle>h5').empty().html("(共{$count}条记录)");
+</script>

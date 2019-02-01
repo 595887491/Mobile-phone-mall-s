@@ -1,0 +1,82 @@
+<div class="comment">
+    <em id="select_time">{$times}</em>
+    <span>余额支付用户数量: <em>{$user_count}</em> </span>
+    <span>余额支付订单数量: <em>{$order_count|default=0}</em></span>
+    <span>余额支付总: <em>{$total_balance}</em></span>
+</div>
+
+<div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+    <table  cellspacing="0" cellpadding="0">
+        <tbody>
+        <volist name="balance_list" id="list">
+            <tr data-id="{$list['user_id']}">
+                <!--<td class="sgin" width="10px" style="width: 20px;">-->
+                    <!--<div style="width: 24px;"><i class="ico-check"></i></div>-->
+                <!--</td>-->
+                <td align="center" axis="col4" style="width:185px;">
+                    <div style="text-align: center;width:185px; " class=""  >{$list.add_times}</div>
+                </td>
+                <td align="center" axis="col2" class="" style="width:185px;">
+                    <div style="text-align: center; width:185px;" class="">{$list.nickname}</div>
+                </td>
+                <td align="center" abbr="user_moneys"  axis="col4" class="" style=" width: 185px;">
+                    <div style="text-align: center; width: 185px; " class="">{$list.user_moneys}</div>
+                </td>
+                <td align="center" abbr="order_nums"  axis="col4" style=" width: 75px;" >
+                    <div style="text-align: center;  width: 75px;" class="">{$list.order_nums}</div>
+                </td>
+                <td align="center" axis="col4" class="handle" style="width: 150px;">
+                    <div  style="text-align: center;width: 150px; ">
+                        <a class="btn blue" onclick="balance_detail({$list['user_id']})"><i class="fa fa-pencil-square-o"></i>明细</a>
+                    </div>
+                </td>
+            </tr>
+
+        </volist>
+        </tbody>
+    </table>
+    </div>
+<!--分页位置-->
+<div class="ftitle">
+    <h5>总共<span id="user_count"></span>条记录</h5>
+</div>
+{$page}
+<script>
+    $(".pagination  a").click(function(){
+        var page = $(this).data('p');
+        ajax_get_table('search-form2',page);
+    });
+    $(document).ready(function(){
+        // 表格行点击选中切换
+        $('#flexigrid >table>tbody>tr').click(function(){
+            $(this).toggleClass('trSelected');
+        });
+        $('#user_count').empty().html("{$pager->totalRows}");
+    });
+    function delfun(obj) {
+        // 删除按钮
+        layer.confirm('确认删除？', {
+            btn: ['确定', '取消'] //按钮
+        }, function () {
+            $.ajax({
+                type: 'post',
+                url: $(obj).attr('data-url'),
+                data: {id : $(obj).attr('data-id')},
+                dataType: 'json',
+                success: function (data) {
+                    layer.closeAll();
+                    if (data.status == 1) {
+                        $(obj).parent().parent().parent().remove();
+                    } else {
+                        layer.alert(data.msg, {icon: 2});
+                    }
+                }
+            })
+        }, function () {
+        });
+    }
+
+    function balance_detail(user_id) {
+        location.href = 'Admin/Report/balanceDetail?user_id='+user_id+'&time='+$('#times').val()+'&start_time='+$('#add_time_begin').val()+'&end_time='+$('#add_time_end').val();
+    }
+</script>

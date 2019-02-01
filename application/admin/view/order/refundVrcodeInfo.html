@@ -1,0 +1,305 @@
+<include file="public/layout" />
+<script type="text/javascript" src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+<style>
+    @font-face {
+        font-family: 'iconfont';  /* project id 709796 */
+        src: url('//at.alicdn.com/t/font_709796_h9es25uvbou.eot');
+        src: url('//at.alicdn.com/t/font_709796_h9es25uvbou.eot?#iefix') format('embedded-opentype'),
+        url('//at.alicdn.com/t/font_709796_h9es25uvbou.woff') format('woff'),
+        url('//at.alicdn.com/t/font_709796_h9es25uvbou.ttf') format('truetype'),
+        url('//at.alicdn.com/t/font_709796_h9es25uvbou.svg#iconfont') format('svg');
+    }
+    .flexigrid .tDiv{border: none;background: transparent;}
+    .flexigrid .fbutton{border-right: dotted 0px transparent;}
+
+    .flexigrid .bDiv td div{height: auto;padding: 0;margin: 0;}
+    .flexigrid .bDiv td>div{padding: 10px 8px;line-height: 42px;}
+    .flexigrid .bDiv td div.avatar{  width: 34px;height: 34px;margin-top: 5px;border-radius:34px;border: 1px solid #ddd;overflow: hidden;}
+    .avatar img{width: 100%;height: 100%;}
+    .details_wrap{margin-top: 20px;border: 1px solid #ddd;border-radius: 5px;padding: 10px 10px 50px 10px;}
+    .details_wrap .titile{border-left: 3px solid #2cbca3;line-height: 15px;padding-left: 8px;}
+    .details_wrap ul li{float: left;}
+    .details_wrap ul{margin-top: 20px;}
+    .details_wrap ul li:nth-child(2){border-left: 1px solid #ddd;border-right: 1px solid #ddd;}
+    .details_wrap ul li div>p{color:#CCCCCC;}
+    .details_wrap ul li div>p>span{color: #333;font-size: 14px;}
+    .earing p:first-of-type,.timer p:first-of-type{margin-top: 0;}
+    .earing p,.timer p{margin-top: 10px;}
+    .timer button{margin-left: 35px;margin-top: 20px;;opacity: .8;transition: .3s;border: none;font-size: 14px;border-radius: 3px;cursor:pointer;display: block;padding: 10px;background: red;color: #fff;}
+    .timer button:hover{opacity: 1;}
+    .nav li {float: left;width: 100px;text-align: center;border: 1px solid #ddd;line-height: 33px;border-radius: 5px 5px 0 0;z-index: 99;
+        background-color:rgba(242, 242, 242, 1);border-bottom: none;transition: .3s;margin-left: 5px;cursor: pointer;position: relative;}
+    .nav li:first-of-type{margin-left: 0;}
+    .nav li a,.member-nav li a{color: #999;display: block;width: 100%;height: 100%;}
+    .member-nav li{float: left;width: 80px;text-align: center;margin-left: 10px;color: #999;line-height: 30px;cursor: pointer;}
+    .member-nav li:first-of-type{margin-left: 0;}
+    .member-nav li:hover{border-bottom: 2px solid #555;color: #555;}
+    .member-nav li.checkeds a{color: #000;}
+
+    .box{margin-top: 30px;text-align: center;width:auto;line-height: 30px}
+    .box th{width:250px;text-align: center;background: #ebebeb}
+    .box td{text-align: center}
+    .clearfix{clear: both;overflow: hidden;margin-left: 45px;margin-right: 50px;font-size: 15px;line-height: 30px;}
+    .clearfix li{border: none;}
+</style>
+<body style="background-color: rgb(255, 255, 255); overflow: auto; cursor: default; -moz-user-select: inherit;">
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title">
+            <div class="subject">
+                <h5><a href="{:url('Order/refundVrcodeList')}">卡券退款单列表</a>><a href="">卡券退款单详情</a>(订单:{$orderInfo.order_sn})</h5>
+            </div>
+        </div>
+    </div>
+    <!-- 操作说明 -->
+    <!--<div id="explanation" class="explanation" style=" width: 99%; height: 100%;">-->
+    <!--<div id="checkZoom" class="title"><i class="fa fa-lightbulb-o"></i>-->
+    <!--<h4 title="提示相关设置操作时应注意的要点">操作提示</h4>-->
+    <!--<span title="收起提示" id="explanationZoom" style="display: block;"></span>-->
+    <!--</div>-->
+    <!--<ul>-->
+    <!--<li>卡券订单详情</li>-->
+    <!--</ul>-->
+    <!--</div>-->
+    <div class="details_wrap">
+        <p class="titile">退款订单信息</p>
+        <ul class="clearfix">
+            <li>
+                <div class="clearfix" style="color: #666666;">
+                    订单编号:{$orderInfo.order_sn} <br/>
+                    下单时间:{$orderInfo.add_time | date='Y-m-d H:i:s',###} <br/>
+                    用户ID:{$orderInfo.user_id} <br/>
+
+                </div>
+            </li>
+            <li>
+                <div class="clearfix" style="color: #666666;">
+                    订单状态:
+                    <span>
+                     <if $orderInfo.pay_status eq 0>
+                         <span style="margin-left: 10px">-</span>
+                     </if>
+                      <if $orderInfo.pay_status eq 3>
+                         已支付/<span style="color: #FF0000">已退款</span>
+                     </if>
+                    <if ($orderInfo.pay_status eq 1 || $orderInfo.pay_status eq 2) && $orderInfo.order_status eq 0  >
+                        <span style="color: #1890FF">已支付</span> / 已消费 / 已评价 /  已完成
+                    </if>
+                        <if $orderInfo.consumption eq 1>
+                        已支付 / <span style="color: #1890FF">已消费</span> / 已评价 /  已完成
+                    </if>
+                        <if $orderInfo.is_comment eq 1 && $orderInfo.order_status neq 4>
+                        已支付 / 已消费 / <span style="color: #1890FF">已评价</span> /  已完成
+                    </if>
+                        <if $orderInfo.order_status eq 4 && $orderInfo.is_comment eq 1>
+                       已支付 / 已消费 / 已评价 /  <span style="color: #1890FF">已完成</span>
+                    </if>
+                    </span> <br/>
+                    支付时间:
+                    <if $orderInfo.pay_time==''>
+                        <span style="margin-left: 10px">-</span>
+                        <else />
+                        {$orderInfo.pay_time | date='Y-m-d H:i:s',###}
+                    </if> <br/>
+                    <div>
+                        <div style="float: left">用户信息:</div>
+                        <div style="float: left;margin-left: 5px">
+                            <img style="display: block;float: left" width="40px;"height="40px" src="{$orderInfo.head_pic|default='http://cdn.cfo2o.com/data/avatar/1523631369812.jpg'}" alt="">
+                            <div style="float: left;margin-left: 5px;">
+                                <div>{$orderInfo.nickname}</div>
+                                <div>{$orderInfo.mobile}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="clearfix" style="color: #666666;">
+                    支付方式:
+                    <span style="margin-left: 10px">
+                        <if ($orderInfo.pay_name=='支付宝' || $orderInfo.pay_name=='手机网站支付宝') && $orderInfo.user_money==0 && $orderInfo.pay_status !=0>
+                             <img src="__PUBLIC__/static/images/u121.png" alt="">支付宝支付
+                            <elseif  ($orderInfo.pay_name=='支付宝' || $orderInfo.pay_name=='手机网站支付宝') && $orderInfo.user_money!=0 && $orderInfo.pay_status !=0 />
+                            <img src="__PUBLIC__/static/images/u121.png" alt=""><img src="__PUBLIC__/static/images/u123.png" alt="">
+                            支付宝+余额支付
+                            <elseif $orderInfo.pay_name=='微信支付'&& $orderInfo.user_money==0 && $orderInfo.pay_status !=0 />
+                            <img src="__PUBLIC__/static/images/u122.png" alt="">微信支付
+                            <elseif $orderInfo.pay_name=='微信支付'&& $orderInfo.user_money!=0 && $orderInfo.pay_status !=0 />
+                            <img src="__PUBLIC__/static/images/u122.png" alt=""><img src="__PUBLIC__/static/images/u123.png" alt="">
+                            微信+余额支付
+                            <elseif $orderInfo.pay_name==''&& $orderInfo.pay_status !=0  />
+                            <img src="__PUBLIC__/static/images/u123.png" alt="">
+                            余额支付
+                            <else/>
+                            -
+                        </if>
+                    </span> <br/>
+                </div>
+            </li>
+            <li>
+                <div class="clearfix" style="color: #666666;" >
+                    交易流水号: <span style="margin-left: 10px">{$orderInfo.transaction_id | default='-'}</span> <br/>
+                </div>
+            </li>
+
+        </ul>
+    </div>
+    <div class="details_wrap">
+        <p class="titile">商品信息</p>
+        <table class="box" style=" margin-bottom: 20px;">
+            <thead>
+            <tr>
+                <th>商品ID</th>
+                <th>商品</th>
+                <th>购买数量</th>
+                <th>单价</th>
+                <th>总价</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{$orderInfo.goods_id}</td>
+                <td>
+                    <img width="20px" height="20px" src="{$orderInfo.original_img}" alt="">{$orderInfo.goods_name}
+                </td>
+                <td>{$orderInfo.goods_num}</td>
+                <td>￥{$orderInfo.goods_price}</td>
+                <td>￥{$orderInfo.goods_price * $orderInfo.goods_num}</td>
+            </tr>
+            </tbody>
+        </table> <br/>
+        <span>金额明细: &nbsp<span>总价:￥{$orderInfo.total_amount}</span>&nbsp&nbsp
+        <span>余额: &nbsp -￥{$orderInfo.user_money}</span>&nbsp&nbsp
+        <span>应付: <span style="color: #FF0000">￥{$orderInfo.order_amount}</span></span>
+        </span>
+    </div>
+
+    <form action="{:url('Order/refundVrorder')}" id="refund_form" method="post">
+    <div class="details_wrap">
+        <p class="titile" style="margin-bottom: 10px">退款处理</p>
+        <if condition="$vrCode.refund_lock eq 1">
+            <dl class="row">
+                <dt class="tit">
+                    <label>退款商品数量:&nbsp 1</label>
+                </dt>
+                <dt class="tit">
+                    <label>退款金额: &nbsp <span style="color: #FF0000">￥<span class="amount">{$orderInfo.goods_price}</span></span></label>
+                </dt>
+                <dt class="tit">
+                    <label>审核意见</label>
+                </dt>
+                <dd class="opt">
+                    <label class="pay_status"><input type="radio" name="pay_status" value="3" checked>同意退款</label>
+                    <label class="pay_status"><input type="radio" name="pay_status" value="4">拒绝退款</label>
+                </dd>
+            </dl>
+            <dl class="row refund_type">
+                <dt class="tit">
+                    <label>退款方式</label>
+                </dt>
+                <dd class="opt">
+                    <label><input type="radio" name="refund_type" value="0" checked>支付原路退回</label>
+                    <label><input type="radio" name="refund_type" value="1">退到用户余额</label>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="note">处理备注</label>
+                </dt>
+                <dd class="opt" style="margin-left:10px">
+                    <textarea id="remark" name="remark" style="width:600px" rows="6"  placeholder="请输入操作备注" class="tarea"></textarea>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt  class="tit"></dt>
+                <dd class="opt" style="margin-left:10px">
+                    <input type="hidden" name="rec_id"  value="{$vrCode.rec_id}">
+                    <input type="hidden" name="order_id"  value="{$orderId}">
+                    <a href="JavaScript:;" onClick="refundOrder();" class="ncap-btn-big ncap-btn-green" id="submitBtn">确认提交</a>
+                </dd>
+            </dl>
+        </if>
+        <if condition="$vrCode.refund_lock eq 3">
+            <dl class="row">
+                <dt class="tit">
+                    <label>退款信息：&nbsp 已退款</label>
+                </dt>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label for="note">处理备注：</label>
+                </dt>
+                <dd class="opt" style="margin-left:10px">
+                    <textarea id="admin_note" name="remark" style="width:600px" rows="6"  placeholder="请输入操作备注" class="tarea">{$vrCode.remark}</textarea>
+                </dd>
+            </dl>
+        </if>
+        <if condition="$vrCode.refund_lock eq 4">
+            <dl class="row">
+                <dt class="tit">
+                    <label for="note">处理备注</label>
+                </dt>
+                <dd class="opt" style="margin-left:10px">
+                    <textarea id="admin_note2" name="admin_note" style="width:600px" rows="6"  placeholder="请输入操作备注" class="tarea">{$vrCode.remark}</textarea>
+                </dd>
+            </dl>
+        </if>
+    </div>
+    </form>
+
+</div>
+
+
+</body>
+<script>
+    function refundOrder(){
+        var remark = $('#remark').val();
+        if(remark == ''){
+            layer.alert('请填写备注', {icon: 2});
+            return false;
+        }
+        refundOrders();
+    }
+    //审核意见
+    $(document).on('click','.pay_status',function(){
+        var pay_status = $(this).find('input[name="pay_status"]').val();
+        if(pay_status == 4){
+            $('.refund_type').hide()
+        }else{
+            $('.refund_type').show()
+        }
+    })
+    //退款
+    function refundOrders() {
+        layer.confirm('确定退款吗？', {
+            btn: ['确定','不确定'] //按钮
+        }, function(){
+            var index = layer.load(1, {
+                shade: [0.1,'#fff'] //0.1透明度的白色背景
+            });
+            $.ajax({
+                type : "POST",
+                url:"/index.php/Admin/Order/refundVrOrder",
+                data : $('#refund_form').serialize(),
+                success: function(data){
+                    if (data.data == 1){
+                        layer.msg(data.msg, {icon: 1});
+                        setTimeout("location.reload()",1000);
+                    }
+                    if(data.data == -1){
+                        layer.msg(data.msg, {icon: 2});
+                        setTimeout("location.reload()",1000);
+                    }
+                    if(data.data == -2){
+                        layer.msg(data.msg, {icon: 2});
+                        layer.close(index);
+                    }
+                }
+            });
+        });
+    }
+
+</script>
+</html>

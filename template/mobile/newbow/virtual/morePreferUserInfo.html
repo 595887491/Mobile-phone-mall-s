@@ -1,0 +1,109 @@
+<!DOCTYPE>
+<html>
+<head>
+    <title>完善资料</title>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/rem.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <!--<link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>-->
+    <link rel="stylesheet" href="__STATIC__/css/new/team_base.css">
+    <link rel="stylesheet" href="__STATIC__/css/new/perfectInfo.css">
+
+    <!-- 微信浏览器 调用微信 分享js-->
+    <if condition="$team_found.status eq 1 && is_weixin() eq 1">
+        <include file="public/wx_share"/>
+        <script>
+            var ShareImgUrl = "{$teamInfo.original_img}"; //分享图标
+            var ShareTitle ="我刚用￥{$teamInfo.team_price}拼了一件好货，就差{$team_found.need-$team_found.join}人啦，快来加入！" ; //分享标题
+            var ShareDesc = "{$teamInfo.goods_name}";  //分享描述
+            var ShareLink = "http://{$_SERVER[HTTP_HOST]}/index.php/mobile/Team/joinGroup/found_id/{$team_found.found_id}/distribute_parent_id/{:session('user')['user_id']}"; //分享描述
+        </script>
+    </if>
+</head>
+
+<body style="background: #fff;">
+<!--header-->
+<div class="headerRank">
+    <a href="javascript:history.back()" class="back">
+    <img src="__STATIC__/images/return.png" alt="返回"></a>
+    </a>
+    <div class="txt">
+        完善资料
+    </div>
+    <!--<a href="javascript:;" class="myTeam" style="padding-top: .2rem;">-->
+       <!--跳过-->
+    <!--</a>-->
+</div>
+<div style="height: .88rem;background-color: #F1F5F8;"></div>
+<!--header-->
+<div class="content">
+  <div class="top">
+      共需添加<span style="color: #D50D16;">{$user_num}</span>位体检人信息
+  </div>
+  <ul class="people_num">
+      <foreach name="form_data_info" item="v" key="k" >
+          <if condition="$v">
+              <a href="{:U('/Mobile/User/getVirtualOrderInfo',['id'=>$v.id,'show_order' => $k])}" style="text-decoration: none;color: #5B5858;display: block;">
+              <li class="item rule">
+                    <div class="fl">{$v.full_name}</div>
+                    <div class="fr">
+                        <span>{$v.mobile}</span>
+                        <i class="iconfont" style="font-size: .28rem;">&#xe6ab;</i>
+                    </div>
+                </li>
+              </a>
+              <else/>
+              <a href="{:U('Mobile/Virtual/preferUserInfo',['order_id' => $order_id,'goods_num' => 1,'show_order' => $k])}" style="text-decoration: none;color: #5B5858;display: block;">
+              <li class="item rule">
+                  <div class="fl">添加体检人信息</div>
+                  <div class="fr">
+                      <span></span>
+                      <i class="iconfont" style="font-size: .28rem;">&#xe6ab;</i>
+                  </div>
+              </li>
+              </a>
+          </if>
+      </foreach>
+    </ul>
+     <a href="javascript:addSubmit(event)" class="add-btn">
+         添加完成
+     </a>
+
+    <div class="explain">
+        <p>添加完成后，您的专属体检顾问会电话联系您确认信息，最终的体检分院与日期以您与顾问确认的信息为准</p>
+        <p style="margin-top: .07rem;">若需要修改信息或调整体检分院和日期，可与您的专属顾问直接沟通，电话：<a href="tel:{$mobile}" style="color: #1E1B1B;">{$mobile}</a></p>
+    </div>
+</div>
+
+<!--跳过弹窗-->
+<div class="popup isSkip">
+    <div class="popup-wrap">
+        <p>还有{$no_complete_num}人资料未完成</p>
+        <p>跳过后你可在卡券订单详情页面完善体检信息</p>
+        <div class="btn-wrap">
+            <a href="javascript:;" class="fl" onclick="close_popup(event)">继续填写</a>
+            <a href="javascript:;" class="fr" style="color: #fff;background-color: #FF407E;">跳过</a>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    // 关闭弹窗
+    function close_popup(event) {
+        event.stopPropagation();
+        $(event.target).closest('.popup').hide();
+    }
+    function addSubmit() {
+        var num ={$no_complete_num};
+       if(num != 0) {
+          $('.isSkip').show();
+          $('.btn-wrap .fr').on('click',function () {
+              window.location.href="/Mobile/User/getVirtualOrderInfo.html?order_id={$order_id}";
+          })
+       }else {
+           window.location.href="/Mobile/User/getVirtualOrderInfo.html?order_id={$order_id}";
+       }
+    }
+</script>
+</html>

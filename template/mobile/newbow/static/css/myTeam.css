@@ -1,0 +1,252 @@
+body{
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+    width: 100%;
+    background-color: #f1f5f8;
+    font-family:'微软雅黑','PingFang SC';
+}
+.fr{
+    float: right;
+}
+.fl{
+    float: left;
+}
+.headerRank{
+    width: 100%;
+    height: .88rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    background: white;
+}
+.headerRankCon{
+    width: 100%;
+    height: .88rem;
+    line-height: .88rem;
+    position: relative;
+}
+.tex{
+    text-align: center;
+}
+.tex span{
+    font-size: .31rem;
+    color: #1E1B1B;
+}
+.texFl{
+    margin-top: .3rem;
+    position: absolute;
+    left: .24rem;
+}
+.texFl a{
+    /*display: inline-block;*/
+    width: .5rem;
+    height: .5rem;
+}
+.texFl a img{
+    width: .2rem;
+    height: .32rem;
+}
+.myTeamList{
+    width: 100%;
+    height: 3.75rem;
+    background-color: #fff;
+    font-size: .24rem;
+    margin-top: .1rem;
+}
+.listComment{
+    width: 100%;
+    height: .8rem;
+    line-height: .8rem;
+    border-bottom: 2px solid #f1f5f8;
+}
+.listLeft{
+    padding-left: .24rem;
+}
+.listLeft img{
+    width: .25rem;
+    height:.24rem;
+    vertical-align: middle;
+}
+.listLeft span{
+    font-size: .26rem;
+    color: #1E1B1B;
+    vertical-align: middle;
+}
+.listRight{
+    padding-right: .24rem;
+}
+.listRight span{
+    font-size: .24rem;
+    color: #F27B12;
+}
+.listMiddle{
+    width: 100%;
+    height: 2rem;
+    clear: both;
+    overflow-x: hidden;
+    border-bottom: 2px solid #f1f5f8;
+    /*margin-left: .24rem;*/
+}
+.listMiddleLeft{
+    /*width: 1.5rem;*/
+    /*width: 28%;*/
+    height: 1.5rem;
+    border: 2px solid #F2F2F2;
+    border-radius: .1rem;
+    margin-left: .24rem;
+    margin-top: .24rem;
+    position: relative;
+}
+.listMiddleLeft img{
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: .05rem;
+}
+
+.listMiddleRight{
+    /*width: 5.4rem;*/
+    width: 73%;
+    height:1.5rem;
+    font-size: .26rem;
+    color: #1E1B1B;
+    position: relative;
+}
+.listRightP{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+    padding-right: .26rem;
+    height: .65rem;
+    /*line-height: .32rem;*/
+}
+.listNum{
+    color: #BFC1CD;
+    font-size: .24rem;
+    margin-top: -.1rem;
+    height: .25rem;
+}
+.listMoney{
+    /*width: 2.8rem;*/
+    margin-top: -.1rem;
+
+}
+.listMoney span:first-child{
+    font-size: .24rem;
+    color: #FF407E;
+}
+.listMoney span:last-child{
+    font-size: .24rem;
+    color: #BFC1CD;
+    margin-left: .2rem;
+}
+.listRightNum{
+    font-size: .24rem;
+    color: #1E1B1B;
+    position: absolute;
+    right: .24rem;
+    top:.85rem;
+}
+.listBottom{
+    width: 100%;
+    height: .9rem;
+    /*padding-right: .24rem;*/
+}
+.listBottom button{
+    border:1px solid #5B5858;
+    width: 1.5rem;
+    height: .6rem;
+    border-radius: .05rem;
+    background-color: #fff;
+    font-size: .24rem;
+    margin-top: .15rem;
+    margin-right: .24rem;
+}
+.listMiddleLeft .stateImg{
+    width: .85rem;
+    height: .44rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.hms{
+    /*display: none*/
+}
+.hms .hmsSpan{
+    background-color: #EDEEF4;
+    /*padding: .05rem;*/
+    border-radius: .05rem;
+    color:#5B5858;
+    display: inline-block;
+    width: .39rem;
+    height: .39rem;
+    line-height: .39rem;
+    text-align: center;
+}
+.losepay {
+    display: none;
+    z-index: 9999;
+    width:100%;
+    height: 100%;
+    background-color: rgba(0,0,0,.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+.teamConfirm{
+    width: 90%;
+    height: 1.9rem;
+    margin-left: 5%;
+    background-color: #fff;
+    position: relative;
+    top: 50%;
+    margin-top: -1rem;
+    border-radius: .2rem;
+    text-align: center;
+}
+.con-lo{
+    height: 1rem;
+    line-height: 1rem;
+    font-size: .26rem;
+    padding: 0;
+    margin: 0;
+    border-bottom: 2px solid #f1f5f8;
+}
+.con{
+    width: 100%;
+    height: 1rem;
+}
+.con .ax{
+    width:49.5%;
+    text-align: center;
+    display: inline-block;
+    height: .8rem;
+    color: #1E1B1B;
+    line-height: .8rem;
+    border-right: 2px solid #f1f5f8;
+}
+.con .are{
+    width: 49.5%;
+    text-align: center;
+    display: inline-block;
+    height: .8rem;
+    color: #1E1B1B;
+    text-decoration: none;
+    line-height: .8rem;
+}
+.noWayTeam{
+    width: 100%;
+    height: 100%;
+    /*background-size: cover;*/
+    /*background-color: #fff;*/
+}
+.noWayTeam div{
+    text-align: center;
+}
+.noWayTeam div span{
+    font-size: .24rem;
+    color: #1E1B1B;
+}

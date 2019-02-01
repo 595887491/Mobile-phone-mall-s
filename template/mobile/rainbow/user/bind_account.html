@@ -1,0 +1,93 @@
+<include file="public/header" title="绑定手机账号" body=""/>
+<link rel="stylesheet" type="text/css" href="__STATIC__/css/cf_bind_num.css"/>
+<div class="classreturn loginsignup">
+    <div class="content">
+        <div class="ds-in-bl return">
+            <a href="javascript:history.back(-1);"><img src="__STATIC__/images/return.png" alt="返回"></a>
+        </div>
+        <div class="ds-in-bl search center">
+            <span>绑定手机账号</span>
+        </div>
+        <!--<div class="ds-in-bl menu">
+            <a href="javascript:void(0);"><img src="__STATIC__/images/class1.png" alt="菜单"></a>
+        </div>-->
+    </div>
+</div>
+<div class="loginsingup-input ma-to-20">
+    <form action="" method="post" onsubmit="return submitverify(this)">
+        <div class="lsu">
+            <span class="ico ico-telephone"></span>
+            <input type="text" name="mobile" id="mobile" value=""  placeholder="请输入手机号码">
+        </div>
+        <div class="lsu">
+            <span class="ico ico-password"></span>
+            <input type="text" name="mobile_code" id="mobile_code" value=""  placeholder="请输入验证码">
+            <a class="btn-text-message" id="cf_new_num" rel="mobile" onClick="sendcode(this)">获取验证码</a>
+        </div>
+
+        <div class="lsu-submit">
+            <input type="submit" name="" id="sub" value="确认">
+        </div>
+    </form>
+</div>
+<script src="__STATIC__/js/style.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript" charset="utf-8">
+    //验证表单
+    function submitverify(obj){
+        var password = $.trim($('#password').val());
+        if(mobile ==''){
+            layer.open({content:'手机号码不能为空',time:3});
+            return false;
+        }
+        if(mobile_code ==''){
+            layer.open({content:'密码不能为空',time:3});
+            return false;
+        }
+        if(mobile_code.length < 4 || mobile_code.length > 4){
+            layer.open({content:'密码长度不能少于6位',time:3});
+            return false;
+        }
+        $(obj).onsubmit();
+    }
+
+    //发送短信验证码
+    function sendcode(obj) {
+        var mobile = $.trim($('#mobile').val());
+        if (mobile == '') {
+            showErrorMsg('手机不能空');
+            flag = false;
+        } else if (checkMobile(mobile)) { //判断手机格式
+            $.ajax({
+                url: '/index.php?m=Home&c=Api&a=send_validate_code&t=' + Math.random(),
+                type: 'post',
+                dataType: 'json',
+                data: {type: $(obj).attr('rel'), send: $.trim($('#mobile').val()), scene: 1},
+                success: function (res) {
+                    // console.dir(res);
+                    if (res.status == 1) {
+                        //成功
+                        countdown(obj)
+                        showErrorMsg(res.msg);
+                    } else {
+                        //失败
+                        showErrorMsg(res.msg);
+                    }
+                }
+            });
+            flag = true;
+        } else {
+            showErrorMsg('* 手机号码格式不正确');
+            flag = false;
+        }
+    }
+
+    /**
+     * 提示弹窗
+     * */
+    function showErrorMsg(msg){
+        layer.open({content:msg,time:2});
+    }
+
+</script>
+</body>
+</html>

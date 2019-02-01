@@ -1,0 +1,92 @@
+<include file="public/header" title="我的收藏" body=""/>
+<include file="public/header_nav" title="我的收藏" href="javascript:history.back(-1)"/>
+<style>
+    .guesslike ul li{width: 48%;margin-top: .4rem;position: static;}
+    .guesslike ul li:first-child,.guesslike ul li:nth-child(2){margin-top: 0;}
+    /*.guesslike ul li:nth-child(2n+1){padding-right: 0;}*/
+    .guesslike ul li:nth-child(even){float: right}
+    .guesslike ul li:nth-child(odd){float: left;}
+    .likeshop{padding: 0 3%;text-align: center;}
+    .guesslike ul li .similer-product img{width: 100%;}
+    .hot_goods_div{padding:.3rem .2rem;text-align: left;}
+    .thirdlogin{border-top: none;}
+    .similar-product-text{color: #1E1B1B;font-size: .6rem;margin-bottom: .64133rem;}
+    .cart_list{background: #fff;}
+    .nonenothing{padding: 1.4rem  0;}
+    .nonenothing a{border:1px solid #BFC1CD;width: 5rem;font-size: .6rem;display: inline-block;padding: 0;line-height: 1.3rem;border-radius: .6rem;}
+    .nonenothing p{padding-top:1.5rem;padding-bottom: .5rem;font-size: .5rem;color: #1E1B1B;}
+    .nonenothing img{ width: 3.60533rem;height: 2.58667rem;}
+    .loginlater a{background-color: transparent;color: #FF407E;margin-left: 0;}
+    .plus .mp_minous, .plus .mp_plus{line-height: 100%;}
+    .sc_list .deleshow .prices{margin: 0;overflow: visible;}
+    .guesslike .likeshop{margin-top: .3rem;}
+    .guesslike .likeshop ul li .similer-product .similar-product-text{text-align: left;}
+    .similar-product-price span{color: #FF407E;}
+    .similar-product-text{margin-top: .5rem;}
+    .similar-product-price .guess-button{ font-size: .5rem;right: 2.36667rem;border-radius: .8rem;color: #5B5858;border-color: #5B5858;}
+    .similar-product-price .dele-button{right: 0;color: #FF407E;border-color: #FF407E;}
+    .none{margin: 0;    margin-top: 1rem;}
+    .none img{width: 100%;height: 100%;}
+    .goto{display: block;width: 3.3rem;height:1.2rem;border: 1px solid #FF407E;color: #FF407E;font-size:.7rem;
+        line-height: 1.2rem;margin: 0 auto;border-radius: 1rem;margin-top: 1rem;text-align: center;}
+</style>
+<if condition="empty($goods_list)" >
+    <!--没有收藏-s-->
+    <div class="comment_con p">
+        <!--<div class="none"><img src="__STATIC__/images/none.png"><br><br>亲，此处还没有收藏哦~</div>-->
+        <div class="none"><img src="__STATIC__/images/cf_collect.png">
+           <p style="margin-top: 3rem;color: #BFC1CD;margin-bottom:2rem;">客官大大！暂无相关信息</p>
+        </div>
+        <a href="/" class="goto">去逛逛</a>
+    </div>
+    <!--没有收藏-e-->
+<else/>
+    <div class="floor guesslike">
+        <div class="likeshop">
+            <ul id="goods_list clearfix">
+                <foreach name="goods_list" item="good">
+                    <li>
+                        <div class="similer-product">
+                            <a class="simidibl" href="{:U('Goods/goodsInfo',array('id'=>$good[goods_id]))}">
+                                <img src="{$good.original_img}"/>
+                                <span class="similar-product-text">{$good[goods_name]|getSubstr=0,20}</span>
+                            </a>
+                                <span class="similar-product-price">
+                                    <span class="fl"> ¥<span class="big-price">{$good[shop_price]}</span></span>
+                                     <a href="{:U('Mobile/User/cancel_collect', ['collect_id'=>$good[collect_id]])}"><span class="guess-button  J_ping">删除</span></a>
+                                    <a href="{:U('Goods/goodsList',['id'=>$good.cat_id])}"><span class="guess-button dele-button J_ping">看相似</span></a>
+                                </span>
+                        </div>
+                    </li>
+                </foreach>
+            </ul>
+        </div>
+    </div>
+</if>
+<!--底部导航-start-->
+<include file="public/footer_nav"/>
+<!--底部导航-end-->
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script  type="text/javascript" charset="utf-8">
+    /**
+     * ajax加载更多
+     * */
+    var page = 1;
+    function ajax_sourch_submit()
+    {
+        page += 1;
+        $.ajax({
+            type : "GET",
+            url:"/index.php/Mobile/User/collect_list?is_ajax=1&p="+page,//+tab,
+            success: function(data)
+            {
+                if($.trim(data) != '')
+                {
+                    $("#goods_list").append(data);
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

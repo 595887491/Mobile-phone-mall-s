@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>分享说明</title>
+    <link rel="stylesheet" href="__STATIC__/css/style.css">
+    <link rel="stylesheet" href="__STATIC__/css/commonUserIndex.css">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css"/>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/mobile-util.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
+</head>
+<div class="classreturn loginsignup " style="position: fixed">
+    <div class="content">
+        <div class="ds-in-bl return">
+            <a href="javascript:history.back()"><img src="__STATIC__/images/return.png" alt="返回"></a>
+        </div>
+        <div class="ds-in-bl search center">
+            <span>成为合伙人</span>
+        </div>
+    </div>
+</div>
+<body>
+
+<a onclick="scanQRCode()" class="code_s"><img src="__STATIC__/images/code_dis.png" style="width: 1rem;height: 1rem" alt="扫一扫"></a>
+<div style="margin-bottom: 2rem">
+    <img src="http://cdn.cfo2o.com/public/upload/other/applay.png?x-oss-process=style/s01" width="100%" style="height: 35rem;pointer-events: none;" alt="">
+</div>
+<if condition="$data['apply_status'] eq -1">
+    <div class="bg_status">
+        <div class="cf_status">
+            <a href="{:U('Mobile/distribution/applyAgreement')}">
+                <span>申请成为合伙人</span>
+            </a>
+        </div>
+    </div>
+
+</if>
+<if condition="$data['apply_status'] eq 0">
+    <div class="bg_status">
+        <div class="cf_status">
+            <span >申请中</span>
+        </div>
+    </div>
+</if>
+<if condition="$data['apply_status'] eq -2">
+    <div class="bg_status">
+        <div class="cf_status">
+            <!--<a href="{:U('Mobile/distribution/applyAgreement')}">-->
+            <span onclick="scanQRCode()">请扫服务商二维码成为合伙人</span>
+            <!--</a>-->
+        </div>
+    </div>
+</if>
+<include file="public/wx_share"/>
+</body>
+
+<script>
+    var isWechat = "{$isWechat}" ? 1 : 0;
+    function scanQRCode() {
+        if (isWechat) {
+            wx.scanQRCode({
+                needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+                success: function (res) {
+                    var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+                }
+            });
+        } else {
+            layer.open({content:'请使用微信扫一扫',time:2,skin:'msg'});
+        }
+    }
+</script>
+</html>

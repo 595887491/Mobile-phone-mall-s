@@ -1,0 +1,157 @@
+<if condition="$full_page eq 1">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>会员订单</title>
+    <link rel="stylesheet" href="__STATIC__/css/style.css">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/categoryList.css"/>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/mobile-util.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
+    <link rel="stylesheet" href="__STATIC__/css/new/memberOrder.css">
+</head>
+<include file="public/header_nav" title="会员订单" href="javascript:history.back(-1)"/>
+<body>
+
+<div class="cf_top">
+    <i class="iconfont" onclick="opened()">&#xa622;</i>
+    <ul>
+        <li>
+            <p>{$subOrderAmount.all_order_count}</p>
+            <p>下属会员总订单数</p>
+        </li>
+        <li>
+            <p style="font-size: 1.2rem;">{$subOrderAmount.all_order_amount}</p>
+            <p>下属会员订单总金额</p>
+        </li>
+        <li>
+            <p>{$subOrderAmount.complete_probability}</p>
+            <p>订单成交率</p>
+        </li>
+    </ul>
+</div>
+
+<div class="ranking_wrap" id="member">
+</if>
+<notempty name="$memberOrder">
+    <foreach name="$memberOrder" item="item">
+    <div class="ranking_list" >
+        <div class="ranking_list_left">
+            <div class="avatar fl">
+                <img src="{$item.head_pic|default='http://cdn.cfo2o.com/data/avatar/user_head_default.png'}?x-oss-process=style/s150x150" alt="">
+            </div>
+
+            <if condition="$item.relative_level eq 1">
+                <div class="member_one cf_member"></div>
+                <elseif condition="$item.relative_level eq 2">
+                    <div class="member_two cf_member"></div>
+                    <else/>
+                    <div class="member_bf cf_member"></div>
+            </if>
+            <div class="msg fl">
+                <p class="clearfixs">
+                    <span class="c1 fl">{$item.nickname}</span>
+                    <if condition="$item.order_status eq 3 or $item.order_status eq 5">
+                        <span class="status fl">退</span>
+                    </if>
+                    <if condition="$item.prom_type neq 0">
+                        <span class="status fl">促</span>
+                    </if>
+                    <!--<span class="status fl">退</span>-->
+                    <span class="fr clor4" style="font-size: .55rem;">
+                    <if condition="$item.relative_level eq 1">
+                        一级会员
+                    <elseif condition="$item.relative_level eq 2">
+                        二级会员
+                    <else/>
+                        缤纷收益
+                    </if>
+                    </span>
+                </p>
+
+                <if condition="$item.prom_type neq 0 or $item.order_status eq 3 or $item.order_status eq 5">
+                    <p>
+                        <span>{$item.mobile}</span>
+                        <span class="fr clor4">{$item.nickname}</span>
+                    </p>
+                    <p>
+                        <span>{$item.add_time}</span>
+                        <span class="fr get_money clor4" style="">{$item.order_amount}</span>
+                    </p>
+                    <else/>
+                    <p>
+                        <span>{$item.mobile}</span>
+                        <span class="fr">{$item.nickname}</span>
+                    </p>
+                    <p>
+                        <span>{$item.add_time}</span>
+                        <span class="fr get_money" style="">{$item.order_amount}</span>
+                    </p>
+                </if>
+
+
+            </div>
+        </div>
+    </div>
+    </foreach>
+    <else/>
+    <if condition="$full_page eq 1">
+    <div class="cf_empty">
+        <img src="__STATIC__/images/empty_other.png" alt="" style="pointer-events: none;">
+        <p>客官大大！暂无相关信息</p>
+    </div>
+    </if>
+</notempty>
+<if condition="$full_page eq 1">
+
+</div>
+<div class="success_box">
+    <div class="success">
+        <i class="iconfont" onclick="closed(event)">&#xa94c;</i>
+        <p class="title">收益明细说明</p>
+        <div class="content">
+            <p class="details">
+                当前页面显示的是您下属会员（一级会员、二级会员、缤纷会员）的订单成交信息，其中标记“促”、“退”的订单不参与分成噢。另外订单成交总额和成交总数量会纳入您合伙人
+                身份成就值的考核中，过低的成就值可能会丧失缤纷会员的收益噢！
+            </p>
+        </div>
+
+        <div class="btn">
+            <a href="javascript:;" onclick="closed(event)">朕知道了</a>
+        </div>
+
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script>
+    function closed(event) {
+        $(event.target).closest('.success_box').hide();
+    }
+    function opened() {
+        $('.success_box').show();
+    }
+    /**
+     * ajax加载更多数据
+     */
+    var  page = 1;
+    function ajax_sourch_submit()
+    {
+        ++page;
+        $.ajax({
+            type : "GET",
+            url:"/index.php?m=Mobile&c=Distribution&a=memberOrder&is_ajax=1&p="+page,
+            success: function(data) {
+                if ($.trim(data) != '') {
+                    $('#member').append(data);
+                }
+            }
+        });
+    }
+</script>
+</html>
+</if>

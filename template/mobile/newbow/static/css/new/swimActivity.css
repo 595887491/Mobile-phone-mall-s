@@ -1,0 +1,78 @@
+.content_one{width: 100%;height: 7rem;background: url("../../images/swimActivity/swimActivity_content_one.png") no-repeat;
+background-size: 100% 100%;}
+.fl{float: left;}.fr{float: right;}
+.top{padding:.2rem .26rem;height: .82rem;}
+.top::after{content: '';display: block;clear: both;visibility: hidden;font-size: 0;}
+.top img{    width: .18rem;position: absolute;top:.25rem;left: .26rem;
+    height: .32rem;}
+.top .fr{font-size: .3rem;color: #013E56;position: absolute;right: .26rem;top:.23rem;}
+.top div{text-align: center;color: transparent;padding-top: .03rem;font-size: .3rem;}
+.activity-txt{text-align: center;    margin-top: 48.5%;color: #013E56;font-size: .26rem;}
+.activity-txt p span{color: #FF2400;}
+.activity-txt p:first-of-type{font-size: .4rem;color:#FF2400;}
+.activity-txt p:nth-child(2){margin: .25rem 0 .2rem;}
+.content_two{width: 100%;height: 7rem;background: url("../../images/swimActivity/swimActivity_content_two.png") no-repeat;
+padding-top: 1.7rem;background-size: 100% 100%;}
+.activity-explain{width: 80%;margin: 0 auto;padding: 0 .26rem;}
+.list-back{width: .48rem;height: .5rem;font-size: .26rem;color:#013E56;margin-left: .25rem;}
+.list-key1{background: url("../../images/swimActivity/hd_icon_one.png") no-repeat;background-size: 100% 100%;}
+.activity-explain li::after,.got-user li::after{content: '';display: block;clear: both;visibility: hidden;font-size: 0;}
+.list-key2{background: url("../../images/swimActivity/hd_icon_two.png") no-repeat;background-size: 100% 100%;}
+.list-key3{background: url("../../images/swimActivity/hd_icon_three.png") no-repeat;background-size: 100% 100%;}
+.activity-explain li{margin-top: .32rem;}
+.activity-explain li div{margin-right: .15rem;}
+.activity-explain li span{font-size: .26rem;color: #013E56;margin-top:0rem;line-height: 1.5;}
+.activity-explain li span a{font-size:.26rem;color:#0190C8;padding-bottom:.05rem;border-bottom:2px solid #0190C8;}
+.share_btn{display: block;width: 76%;margin: 0 auto;height:.77rem;font-size: .3rem;text-align: center;margin-top: .4rem;line-height: .67rem;}
+.btn1{color: #013E56;background: url("../../images/swimActivity/hd_jz_but.png") no-repeat;background-size: 100% 100%;}
+.btn2{color: #7EB1C5;background: url("../../images/swimActivity/hd_jz_but1.png") no-repeat;background-size: 100% 100%;}
+.content_three{width: 100%;height: 7.2rem;padding-top: 19%;
+    background: url("../../images/swimActivity/swimActivity_content_three.png") no-repeat;background-size: 100% 100%;}
+.got-user{width: 100%;position: absolute;top:0;left: 0;}
+#scroll{width: 80%;margin: 0 auto;overflow: hidden;height: 3.3rem;position: relative;}
+.got-user li {margin-top: 0;box-sizing: border-box;padding: 0.2rem .26rem;border-bottom: 1px solid #60B0BB;}
+.got-user li .avatar{width: .72rem;height: .72rem;border-radius: .72rem;overflow: hidden;}
+.got-user li .avatar img{width: 100%;height: 100%;}
+.got-user li .phone{line-height: .72rem;margin-left: .15rem;}
+.got-user li .static{line-height: .72rem;}
+.content_four{width: 100%;height: 7.17rem;
+    background: url("../../images/swimActivity/swimActivity_content_four.png") no-repeat;background-size: 100% 100%;}
+.content_five{width: 100%;height: 7.2rem;
+    background: url("../../images/swimActivity/swimActivity_content_five.png") no-repeat;background-size: 100% 100%;}
+.content_six{width: 100%;height: 7.2rem;
+    background: url("../../images/swimActivity/swimActivity_content_six.png") no-repeat;background-size: 100% 100%;}
+.content_seven{width: 100%;height: 12rem;
+    background: url("../../images/swimActivity_content_seven.png") no-repeat;background-size: 100% 100%;}
+.content_seven{padding-top: 67%;}
+.content_seven_list{height: 1.6rem;width:75%;margin: 0 auto;margin-top: .2rem;background: #fff;padding: .2rem .15rem;}
+.content_seven_list::after{content:'';display: block;clear: both;visibility: hidden;height: 0;}
+.content_seven_list .avatar{width: 1.22rem;height: 1.22rem;border-radius: .05rem;}
+.content_seven_list .avatar img{width: 100%;height: 100%;}
+.content_seven_list .fr{width: 74%;font-size: .2rem;}
+.content_seven_list .fr .title{font-size: .24rem;color: #013E56;display: -webkit-box;-webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;overflow: hidden;}
+.content_seven_list .fr .types{font-size: .2rem;color: #3DA7D1;margin: .1rem 0 .2rem;}
+.content_seven_list .fr .money span:first-of-type{color: #013E56;font-size: .2rem;}
+.content_seven_list .fr .money span.m{color: #013E56;font-size: .3rem;font-weight: bold;}
+.content_seven_list .fr .money span.old{color: #3DA7D1;font-size: .2rem;text-decoration: line-through;}
+.content_eight{width: 100%;height: 4.85rem;padding-top: .25rem;
+    background: url("../../images/swimActivity/swimActivity_content_eight.png") no-repeat;background-size: 100% 100%;}
+.share_popup{position: fixed;width: 100%;left: 0;top:0;z-index: 99999999;}
+.shade_mark{position: fixed;top:0;left: 0;width: 100%;height: 100%;background: rgba(0,0,0,.7);z-index: 999;}
+.rule_popup{width: 80%;background: #fff;position:fixed;top:50%;left:10%;z-index: 999;border-radius: .1rem;margin-top: -3.4rem;}
+.rule_popup .top{font-size: .3rem;color: #1E1B1B;text-align: center;border-bottom: 1px solid #EDEEF4;}
+.rule_popup .top .close{position: absolute;right: .06rem;top: -.1rem;padding: .2rem;}
+.rule_detail{padding:0 .25rem;font-size: .24rem;color: #1E1B1B;padding-bottom: .25rem;height: 5rem;overflow-y: auto;}
+.rule_detail>p{margin-top: .22rem;}
+.rule_detail .det span{display: block;padding-left: 1em;padding-top: .05rem;}
+.rule_detail .det span:first-of-type{padding-left: 0;padding-top: 0;}
+.ikown{width: 90%;height: .8rem;line-height: .8rem;background: #0190C8;font-size: .36rem;
+    color: #fff;border: none;border-top: 1px solid #EDEEF4;outline: none;display: block;margin: .1rem auto;border-radius: .1rem;}
+.smbf_code{position: fixed;top:0;left: 0;width: 100%;height: 100%;background: rgba(0,0,0,.7);z-index: 9999;}
+.smbf_code .bor{position: fixed;top:12%;left: 10%;width: 80%;height: 76%;z-index: 99999;}
+.smbf_code .code{width: 100%;}
+.smbf_code .close-btn{position: absolute;bottom: 0;left: 50%;width: .58rem;height: .58rem;margin-left: -.29rem;}
+
+
+
+

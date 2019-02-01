@@ -1,0 +1,38 @@
+
+<foreach name="ranking_rows" item="user" key="k">
+   <div class="ranking_list">
+       <div class="ranking_list_left">
+           <div class="avatar fl">
+               <img src="{$user.head_pic|default='http://cdn.cfo2o.com/data/avatar/user_head_default.png'}?x-oss-process=style/s150x150" alt="">
+            </div>
+           <if condition="$user.rank eq 1">
+           <div class="ranking_img no1">{$user.rank}</div>
+           <elseif condition="$user.rank eq 2"/>
+           <div class="ranking_img no2">{$user.rank}</div>
+           <elseif condition="$user.rank eq 3"/>
+           <div class="ranking_img no3">{$user.rank}</div>
+           <else/>
+           <div class="ranking_img no_ranking">{$user.rank}</div>
+           </if>
+            <div class="msg fl">
+                <p>{$user.nickname|default='佚名用户'}</p>
+                <p>累计分享{$user.share_days}天</p>
+            </div>
+           <span class="fr">{$user.wallet_accumulate_income}元</span>
+       </div>
+   </div>
+</foreach>
+<notempty name="ranking_rows">
+<script>
+    $(function () {
+        var u = navigator.userAgent;
+        var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+        var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+        if(isAndroid || !isiOS){  //安卓
+            $('.ranking_img').css('line-height','2.32222rem');
+        }else{  //苹果
+            $('.ranking_img').css('line-height','2.122rem');
+        }
+    })
+</script>
+</notempty>

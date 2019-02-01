@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>我的砍价</title>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/rem.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css"/>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
+    <link rel="stylesheet" href="__STATIC__/css/myBargain.css">
+</head>
+<body>
+<!--header-->
+<div class="headerRank">
+    <div class="headerRankCon">
+        <div class="fl texFl">
+            <a href="javascript:history.back()">
+                <img src="__STATIC__/images/return.png" alt="返回"></a>
+            </a>
+        </div>
+        <div class="tex">
+            <span>我的砍价</span>
+        </div>
+    </div>
+</div>
+<!--header-->
+<div style="height: .9rem"></div>
+<!--列表-->
+
+<if condition=" empty($list) eq true">
+    <div class="noBargain">
+        <img src="__STATIC__/images/cf_order.png" style="pointer-events: none;width: 100%;">
+        <p>客官大大,暂无砍价</p>
+        <div>
+            <a href="{:U('Mobile/bargain/bargainFreeList')}">
+                <button>去砍价</button>
+            </a>
+        </div>
+    </div>
+    <else />
+    <div class="content"></div>
+    <div class="noMore">
+        <span>没有更多了</span>
+    </div>
+</if>
+
+
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script>
+    /**
+     * ajax加载更多数据
+     */
+    var flog = 0;
+    function ajax_sourch_submit() {
+        if(flog == 1) {
+            return
+        }
+        ++page;
+        flog =1;
+        $.ajax({
+            type : "GET",
+            url:"/index.php?m=Mobile&c=bargain&a=myBargain&p="+page,
+            success: function(data) {
+                if ($.trim(data) != '') {
+                    flog =0;
+                    $('.content').append(data);
+                    teamTime();
+                }else {
+                    $('.noMore').css('display','block')
+                }
+            }
+        });
+    }
+    var  page = 0;
+    ajax_sourch_submit();
+    // getTime();
+
+    // 倒计时模块倒计时
+    
+        // 倒计时
+    function teamTime() {
+        $('.content .teamTime').each(function(i,v){
+            var endTimes = $(this).attr('data-end-time');
+            var startTimes = $(this).attr('data-start-time');
+            // var found_id = $(this).attr('data-id');
+            var $this = $(this);
+            var NowTime = new Date();
+            var a = (startTimes * 1000) - NowTime.getTime();
+            var timer = setInterval(function () {
+                // var end_time = times;
+                var NowTime = new Date();
+                if (a > 0) {
+                    var t = (endTimes * 1000) - NowTime.getTime() -a;
+                }else {
+                    var t = (endTimes * 1000) - NowTime.getTime() +a;
+                }
+                var h = Math.floor(t / 1000 / 60 / 60);
+                var m = Math.floor(t / 1000 / 60 % 60);
+                var s = Math.floor(t / 1000 % 60);
+                if (s >= 0) {
+                    // $('#date').text(d);
+                    h < 10 ? $this.find('.hours').text('0' + h) : $this.find('.hours').text(h);
+                    m < 10 ? $this.find('.minutes').text('0' + m) : $this.find('.minutes').text(m);
+                    s < 10 ? $this.find('.seconds').text('0' + s) : $this.find('.seconds').text(s);
+                }
+                if(h==0 && m==0 && s==0) {
+                    clearInterval(timer);
+                    location.reload();
+                }
+            },1000)
+        });
+    }teamTime();
+
+</script>
+</body>
+</html>

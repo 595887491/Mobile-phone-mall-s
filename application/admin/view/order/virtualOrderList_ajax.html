@@ -1,0 +1,142 @@
+<div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+<table style="width: 100%;">
+<tbody>
+<if condition="empty($orderList) eq true " >
+    <tr data-id="0">
+        <td class="no-data" align="center" axis="col0" colspan="50">
+            <i class="fa fa-exclamation-circle"></i>没有符合条件的记录
+        </td>
+    </tr>
+<else/>
+<volist name="orderList" id="list">
+    <tr data-order-id="{$list.order_id}">
+        <td class="sign" axis="col0">
+            <div style="width: 24px;"><i class="ico-check"></i></div>
+        </td>
+        <td align="left" abbr="order_sn" axis="col3" class="">
+            <div style="text-align: left; width: 140px;" class="">{$list.order_sn}</div>
+        </td>
+        <td align="left" abbr="consignee" axis="col4" class="">
+            <div style="text-align: left; width: 100px;" class="">{$list.goods_name}</div>
+        </td>
+        <td align="center" abbr="article_time" axis="col6" class="">
+            <div style="text-align: center; width: 80px;" class="">{$list.user_id}</div>
+        </td>
+        <td align="center" abbr="article_time" axis="col6" class="">
+            <div style="text-align: center; width: 100px;height: 50px" class="">
+                <img style="width: 20px;height:20px;border-radius: 50%" src="{$list.head_pic|default='http://cdn.cfo2o.com/data/avatar/1523631369812.jpg'}" alt="">{$list.nickname} <br/>
+                {$list.mobile}</div>
+        </td>
+        <td align="center" abbr="article_time" axis="col6" class="">
+            <div style="text-align: center; width: 60px;" class="">{$list.goods_num}</div>
+        </td>
+        <td align="center" abbr="article_time" axis="col6" class="">
+            <div style="text-align: center; width: 80px;" class="">￥{$list.pay}</div>
+        </td>
+        <td align="center" abbr="article_time" axis="col6" class="">
+            <div style="text-align: center; width: 60px;" class="">
+                <if $list.pay_status != 0 >
+                    <span style="color: #009900">已支付</span>
+                    <elseif $list.pay_status== 0 />
+                    <span style="color: #999999">未支付</span>
+                </if>
+            </div>
+        </td>
+        <td align="center" abbr="article_time" axis="col6" class="">
+            <div style="text-align: center; width: 100px;" class="">
+                <if $list.pay_name =='微信支付' &&  $list.user_money==0 && $list.pay_status !=0>
+                    <img src="__PUBLIC__/static/images/u122.png" alt="">
+                </if>
+                <if $list.pay_name =='微信支付' &&  $list.user_money!=0 && $list.pay_status !=0 >
+                <img src="__PUBLIC__/static/images/u122.png" alt="">
+                <img src="__PUBLIC__/static/images/u123.png" alt="">
+                </if>
+                <if ($list.pay_name =='手机网站支付宝' || $list.pay_name =='支付宝') &&  $list.user_money==0 && $list.pay_status !=0>
+                    <img src="__PUBLIC__/static/images/u121.png" alt="">
+                </if>
+                <if ($list.pay_name =='手机网站支付宝' || $list.pay_name =='支付宝') &&  $list.user_money!=0 && $list.pay_status !=0 >
+                <img src="__PUBLIC__/static/images/u121.png" alt="">
+                <img src="__PUBLIC__/static/images/u123.png" alt="">
+                </if>
+                <if $list.pay_name =='' && $list.pay_status != 0>
+                    <img src="__PUBLIC__/static/images/u123.png" alt="">
+                </if>
+            </div>
+        </td>
+        <td align="center" abbr="article_time" axis="col6" class="">
+            <div style="text-align: center; width: 100px;" class="">
+                <if $list.isFillIn == 1>
+                    已填
+                    <else/>
+                    未填
+                </if>
+            </div>
+        </td>
+        <td align="center" abbr="article_time" axis="col6" class="">
+            <div style="text-align: center; width: 100px;" class="">
+                <if $list.pay_status == 0 && $list.order_status == 0>
+                    <span style="color: #999999">待付款</span>
+                </if>
+                <if $list.order_status == 3>
+                    <span style="color: #CCCCCC">已取消</span>
+                </if>
+                <if $list.is_consume == 0 && $list.pay_status !=0 && $list.pay_status lt 3>
+                    <span style="color: #009900">未消费</span>
+                </if>
+                <if $list.is_consume == 1 && $list.is_comment == 1 && $list.order_status ==4>
+                    <span style="color: #1890FF">已完成</span>
+                </if>
+                <if $list.is_consume == 1 && $list.is_comment == 0>
+                    <span style="color: #993300">待评价</span>
+                </if>
+                <if $list.pay_status == 3>
+                    <span style="color: #FF0000">已退款</span>
+                </if>
+            </div>
+        </td>
+        <td align="center" abbr="article_time" axis="col6" class="">
+            <div style="text-align: center; width: 150px;" class="">
+                <if $list.add_time!=0>
+                    {$list.add_time|date='Y-m-d H:i',###}
+                </if>
+            </div>
+        </td>
+        <td align="center" abbr="article_time" axis="col6" class="">
+            <div style="text-align: center; width: 150px;" class="">
+                <if $list.pay_time != 0>
+                    {$list.pay_time|date='Y-m-d H:i',###}
+                </if>
+            </div>
+        </td>
+        <td align="center" axis="col1" class="handle" align="center">
+            <div style="text-align: center; ">
+                <a class="btn green" href="{:U('Order/virtualOrderInfo',array('order_id'=>$list['order_id']))}"><i class="fa fa-list-alt"></i>查看</a>
+            </div>
+        </td>
+        <td align="" class="" style="width: 100%;">
+            <div>&nbsp;</div>
+        </td>
+    </tr>
+</volist>
+</if>
+</tbody>
+</table>
+</div>
+
+<div class="partnerList">
+    {$page}
+</div>
+
+<script>
+    // 点击分页触发的事件
+    $(".pagination  a").click(function(){
+        cur_page = $(this).data('p');
+        ajax_get_table('search-form2',cur_page);
+    });
+    function search_agent(real_name) {
+        $('#identity').val(2);
+        $('#keywords').val(real_name);
+        ajax_get_table('search-form2',1);
+    }
+    $('.ftitle>h5').empty().html("(共{$count}条记录)");
+</script>

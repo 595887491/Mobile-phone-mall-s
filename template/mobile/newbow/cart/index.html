@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>购物车</title>
+    <link rel="stylesheet" href="__STATIC__/css/style.css">
+    <link rel="stylesheet" href="__STATIC__/css/categoryList.css">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css"/>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/style.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/mobile-util.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/jquery.lazyload.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <script src="__STATIC__/js/swipeSlide.min.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
+    <link rel="stylesheet" href="__STATIC__/css/new/cart_index.css">
+</head>
+<body class="[body]">
+<div class="classreturn loginsignup ">
+    <div class="content">
+        <div class="ds-in-bl return">
+            <a href="javascript:goBack()"><img src="__STATIC__/images/return.png" alt="返回"></a>
+        </div>
+        <div class="ds-in-bl search center">
+            <span>购物车</span>
+        </div>
+        <div id="cf_compile" <empty name="cartList">style="display: none"</empty>>编辑</div>
+        <div class="ds-in-bl menu">
+            <a href="{:U('Mobile/User/message_notice')}">
+                <i class="iconfont">&#xe6ba;</i>
+                <if condition="$msg_num neq 0">
+                    <span class="notice">{$msg_num}</span>
+                </if>
+            </a>
+        </div>
+    </div>
+</div>
+<div style="height: 1.87733rem;"></div>
+<div id="activity"></div>
+<if condition="empty($user['user_id'])">
+    <!--###用户未登录###-->
+    <div class="loginlater">
+        <span>登录后可同步电脑和手机购物车!</span>
+        <a href="{:U('Mobile/User/login')}">去登录</a>
+    </div>
+</if>
+    <div class="cart_list" style="">
+        <div class="nonenothing nonenothing_card" <notempty name="cartList">style="display: none"</notempty>>
+        <if condition="count($coupon_list) eq 0">
+        <!--购物车没有商品-s-->
+        <div class="nonenothing" <notempty name="cartList">style="display: none"</notempty>>
+            <img src="__STATIC__/images/cf_none.png"/>
+            <p style="">购物车空空啦</p>
+            <a href="{:U('Mobile/Index/index')}">去逛逛</a>
+        </div>
+        <!--购物车没有商品-e-->
+        <!--购物车没有商品但有优惠券 s-->
+            <else/>
+             <p>恭喜您有{:count($coupon_list)}张优惠券可使用</p>
+            <foreach name="$coupon_list" item="coupon">
+             <div class="cf_goods_card clearfix">
+                 <div class="cf_noting_l fl">
+                     <p>优惠券</p>
+                     <p><span>¥</span><span>{:round($coupon.money, 0)}</span></p>
+                 </div>
+                 <div class="cf_noting_r fl">
+                     <div  class="cf_tops" style="min-height: 2.5rem;">
+                         <!--<p>可购买雅诗兰黛部分商品</p>-->
+                         <p>{$coupon.name}</p>
+                         <p class="cf_mj">{$coupon.use_condition}</p>
+                     </div>
+                     <p class="cf_boxs">
+                         <span class="">{:date('Y-m-d', $coupon.use_end_time)}前使用</span>
+                         <if condition="$coupon.isget eq 0" >
+                         <a href="{:U('Mobile/Activity/coupon_list')}" class="cf_qgg fr">去领取</a>
+                         <else/>
+                         <a href="{$coupon.user_url}" class="cf_qgg use fr">去使用</a>
+                         </if>
+                     </p>
+                 </div>
+             </div>
+            </foreach>
+            <div class="cf_noting">
+                <img src="__STATIC__/images/noting2.png" class=""/>
+                <p class="" style="">购物车空空啦</p>
+            </div>
+            <a href="{:U('Mobile/Index/index')}">去逛逛</a>
+            </if>
+        </div>
+      <!--购物车没有商品但有优惠券 e-->
+       <!--提交栏-s-->
+        <div class="orderlists_box">
+        <volist name="cartList" id="cart">
+              <div class="orderlistshpop" id="cart_list_{$cart.id}" data-cart-id="{$cart['id']}">
+                  <if condition="$cart.prom_goods">
+                      <div class="cf_discounts" style="background: #fff;"><span>{$cart.prom_goods.title}</span>{$cart.prom_goods.info}</div>
+                  </if>
+
+                <div class="maleri30">
+                    <!--商品列表-s-->
+                    <div class="sc_list">
+                        <div class="radio fl ">
+                            <!--商品勾选按钮-->
+                            <span onClick="checkGoods(this)" <if condition="$cart[selected] eq 1" >class="che check_t"<else/>class="che"</if>>
+                             <i>
+                                 <input name="checkItem" type="checkbox" style="display:none;" value="{$cart.id}" <if condition="$cart[selected] eq 1">checked="checked"</if>>
+                             </i>
+                             </span>
+                        </div>
+                        <div class="shopimg fl">
+                            <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$cart[goods_id]))}">
+                                <!--商品图片-->
+                                <img src="{$cart.goods.original_img}/s340x340 ">
+                            </a>
+                        </div>
+                        <div class="deleshow fr">
+                            <div class="deletes clearfix">
+                                <!--商品名-->
+                                <span class="similar-product-text fl" style="margin-bottom: .15rem;">
+                                    <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$cart[goods_id]))}">{$cart[goods_name]}</a>
+                                </span>
+                            </div>
+                            <!--商品属性，规格-->
+                            <p class="weight">{$cart[spec_key_name]}</p>
+                            <div class="prices clearfix" >
+                                <p class="price fl">
+                                    <!--<span style="color: #1E1B1B">¥</span>-->
+                                    <span id="cart_{$cart.id}_member_goods_price">{$cart.member_goods_price}</span>
+                                    <span style="color: #BFC1CD;font-size: .45rem;text-decoration:line-through;margin-left: .2rem;">¥ {$cart.market_price}</span>
+                                </p>
+                                <!--加减数量-->
+                                <div class="plus fr get_mp">
+                                    <span class="mp_minous">-</span>
+                                    <span class="mp_mp _cf_mp" style="">
+                                        <input name="chan  geQuantity_{$cart['id']}" type="text" id="changeQuantity_{$cart['id']}" value="{$cart['goods_num']}" onkeyup="this.value=this.value.replace(/[^\d]/g,'')" class="input-num"/>
+                                    </span>
+                                    <span class="mp_plus" style="">+</span>
+                                </div>
+                                <p class="sc_pri fr" style="display: none;">库存不足
+                                    <input  type="hidden" name="goods_num[{$v.id}]"  value="0"  class="input-num" />
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <!--商品列表-e-->
+                </div>
+                  <a class="deleteBtn delescj deleteGoods" href="javascript:;" data-cart-id="{$cart['id']}">删除</a>
+            </div>
+        </volist>
+        </div>
+        <notempty name="cartList">
+            <div class="foohi foohiext">
+                <div class="payit ma-to-20 payallb" style="bottom: 2.1rem;background: #fff;border-top: 1px solid #ddd">
+                    <div class="fl alllef">
+                        <div class="radio fl">
+                                <span class="che alltoggle checkFull" onClick="checkGoods(this)">
+                                    <i style="vertical-align: top;width: 0.7rem;height: 0.7rem;"></i>
+                                </span>
+                        </div>
+                        <span class="all" style="font-size: .6rem;line-height: 2.3rem;">全选</span>
+                        <div class="youbia">
+                            <p class=""><span class="pmo">合计：</span>
+                                <span style="font-size: .7rem;">¥</span> <span id="total_fee" style="font-size: .75rem;">0.00</span></p>
+                            <p class="lastime"><span id="goods_fee">已优惠：¥  0.00</span></p>
+                        </div>
+                    </div>
+                    <div class="fr">
+                        <a href="javascript:void(0);" onclick="cart_submit();" class="cf-complate">去结算</a>
+                        <a href="javascript:void(0);" style="display: none;" class="delete-goods">删除</a>
+                    </div>
+                </div>
+            </div>
+            <!--提交栏-e-->
+            <script type="text/javascript">
+                $(document).ready(function(){
+                    initDecrement();
+                    initCheckBox();
+                });
+            </script>
+         </notempty>
+    </div>
+<!--看看热卖-start-->
+<div class="hotshop seehotsho">
+</div>
+<div class="floor guesslike">
+    <div class="likeshop">
+        <ul>
+            <foreach name="hot_goods" item="good">
+                <li>
+                    <a href="{:U('Mobile/goods/goodsInfo',array('id'=>$good[goods_id]))}">
+                        <div class="similer-product">
+                            <img class="lazy" data-original="{$good[original_img]}/s340x340"/>
+                            <!--<img src="{$good[goods_id]|goods_thum_images=200,200}"/>-->
+                            <div class="hot_goods_div">
+                                <if condition="$good[is_jx] eq 1">
+                                    <span class="cf_choiceness">精选</span>
+                                </if>
+                                <span class="similar-product-text" style="height: auto;overflow:hidden;text-overflow:ellipsis;
+                         display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-height: 1.3">{$good[goods_name]}</span>
+                                    <span class="similar-product-price"><span style="font-size: .45rem;">¥</span> <span class="big-price">{$good[shop_price]}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            </foreach>
+        </ul>
+    </div>
+    <div class="add">没有更多了</div>
+    <div id="main" style="display: none;"></div>
+</div>
+</div>
+<!--看看热卖-end-->
+<div style="height: 2.2rem;"></div>
+<!--底部导航-start-->
+<include file="public/footer_nav"/>
+<script>
+    $(document).ready(function(){
+        AsyncUpdateCart();
+    });
+    //点击结算
+    function cart_submit() {
+        //获取选中的商品个数
+        var j = 0;
+        $('input[name^="checkItem"]:checked').each(function () {
+            j++;
+        });
+        //选择数大于0
+        if (j > 0) {
+            //跳转订单页面
+            window.location.href = "{:U('Mobile/Cart/cart2')}"
+        } else {
+            layer.open({content: '请选择要结算的商品！', time: 2,skin:'msg'});
+            return false;
+        }
+    }
+    //购物车对象
+    function CartItem(id, goods_num,selected) {
+        this.id = id;
+        this.goods_num = goods_num;
+        this.selected = selected;
+    }
+    //初始化计算订单价格
+    function AsyncUpdateCart(){
+        var cart = new Array();
+        var inputCheckItem = $("input[name^='checkItem']");
+        inputCheckItem.each(function(i,o){
+            var id = $(this).attr("value");
+            var goods_num = $(this).parents('.sc_list').find("input[id^='changeQuantity']").attr('value');
+            if ($(this).attr("checked") == 'checked') {
+                var cartItemCheck = new CartItem(id,goods_num,1);
+                cart.push(cartItemCheck);
+            }else{
+                var cartItemNoCheck = new CartItem(id,goods_num,0);
+                cart.push(cartItemNoCheck);
+            }
+        })
+        $.ajax({
+            type : "POST",
+            url:"{:U('Mobile/Cart/AsyncUpdateCart')}",//,
+            dataType:'json',
+            data: {cart: cart},
+            success: function(data){
+                if(data.status == 1){
+                    if (data.activity) {
+                        $('#activity').html("<div class='cf_discounts'><span>优惠</span>"+data.activity+"</div>");
+                    } else {
+                        $('#activity').html("");
+                    }
+                    $('#goods_num').empty().html(data.result.goods_num);
+                    $('#total_fee').empty().html(data.result.total_fee);
+                    $('#goods_fee').empty().html('已优惠：¥ '+ data.result.goods_fee);
+                    var cartList =  data.result.cartList;
+                    if(cartList.length > 0){
+                        for(var i = 0; i < cartList.length; i++){
+                            $('#cart_'+cartList[i].id+'_goods_price').empty().html('<span style="font-size: .48rem;">¥ </span>'+cartList[i].goods_price);
+                            $('#cart_'+cartList[i].id+'_member_goods_price').empty().html('<span style="font-size: .48rem;">¥ </span>'+cartList[i].member_goods_price);
+                            $('#cart_'+cartList[i].id+'_total_price').empty().html('<span style="font-size: .48rem;">¥ </span>'+cartList[i].total_fee);
+                            $('#cart_'+cartList[i].id+'_market_price').empty().html('<span style="font-size: .48rem;">¥ </span>'+(cartList[i].member_goods_price*cartList[i].goods_num).toFixed(2)); //活动价格
+                        }
+                    }else{
+                        $('.total_price').empty();
+                        $('.cut_price').empty();
+                    }
+                }else{
+                    $('#goods_num').empty().html(data.result.goods_num);
+                    $('#total_fee').empty().html(data.result.total_fee);
+                    $('#goods_fee').empty().html('已优惠：¥ '+ data.result.goods_fee);
+                }
+            }
+        });
+    }
+    //商品数量加减
+    $(function(){
+        //加数量
+        $('.mp_minous').click(function(){
+            if(!$(this).hasClass('disable')){
+                var inputs = $(this).siblings('.mp_mp').find('input');
+                var val = inputs.val();
+                if(val>0){
+                    val--;
+                }
+                inputs.val(val);
+                inputs.attr('value',val);
+                initDecrement();
+                changeNum(this);
+            }
+        })
+        //减数量
+        $('.mp_plus').click(function(){
+            var inputs = $(this).siblings('.mp_mp').find('input');
+            var val = inputs.val();
+            val++;
+            if(val > 200){
+                val = 200;
+                layer.msg("购买商品数量不能大于200",{icon:2});
+            }
+            inputs.val(val);
+            inputs.attr('value',val);
+            initDecrement();
+            changeNum(this);
+        })
+        $(document).on("blur", '.get_mp input', function (e) {
+            var changeQuantityNum = parseInt($(this).val());
+            if(changeQuantityNum <= 0){
+                layer.open({
+                    content: '商品数量必须大于0'
+                    ,btn: ['确定']
+                });
+                $(this).val($(this).attr('value'));
+            }else{
+                $(this).attr('value', changeQuantityNum);
+            }
+            initDecrement();
+            changeNum(this);
+        })
+    })
+    //勾选商品
+    function checkGoods(obj){
+        if($(obj).hasClass('check_t')){
+            //改变颜色
+            $(obj).removeClass('check_t');
+            //取消选中
+            $(obj).find('input').attr('checked',false);
+        }else {
+            //改变颜色
+            $(obj).addClass('check_t');
+            //勾选选中
+            $(obj).find('input').attr('checked',true);
+        }
+
+        //选中全选多选框
+        if($(obj).hasClass('checkFull')){
+            if($(obj).hasClass('check_t')){
+                $(".che").each(function(i,o){
+                    $(this).addClass('check_t');
+                    $(this).find('input').attr('checked',true);
+                })
+            }else{
+                $(".che").each(function(i,o){
+                    $(this).removeClass('check_t');
+                    $(this).find('input').attr('checked',false);
+                })
+            }
+        }
+    }
+    //更改购买数量对减购买数量按钮的操作
+    function initDecrement(){
+        $("input[id^='changeQuantity']").each(function(i,o){
+            if($(o).val() == 1){
+                $(o).parents('.get_mp').find('.mp_minous').addClass('disable');
+            }
+            if($(o).val() > 1){
+                $(o).parents('.get_mp').find('.mp_minous').removeClass('disable');
+            }
+        })
+    }
+    //多选框点击事件
+    $(function () {
+        $(document).on("click", '.che', function (e) {
+            checkGoods($(this));
+            initCheckBox();
+            AsyncUpdateCart();
+        })
+    })
+    //更改购物车请求事件
+    function changeNum(obj){
+        var checkall = $(obj).parents('.orderlistshpop').find('.che');
+        if(!checkall.hasClass('check_t')){
+            checkGoods(checkall);
+            initCheckBox();
+        }
+        var input = $(obj).parents('.get_mp').find('input');
+        var cart_id = input.attr('id').replace('changeQuantity_','');
+        var goods_num = input.attr('value');
+        var cart = new CartItem(cart_id, goods_num, 1);
+        $.ajax({
+            type: "POST",
+            url: "{:U('Mobile/Cart/changeNum')}",//+tab,
+            dataType: 'json',
+            data: {cart: cart},
+            success: function (data) {
+                if(data.status == 1){
+                    AsyncUpdateCart();
+                }else{
+                    input.val(data.result.limit_num);
+                    input.attr('value',data.result.limit_num);
+                    layer.open({
+                        content: data.msg
+                        ,btn: ['确定']
+                    });
+                    initDecrement();
+                }
+            }
+        });
+    }
+
+    //getOffsetSum 获取相对与document的偏移量
+    function getOffsetSum(ele) {
+        left = 0;
+        while (ele) {
+            // top += ele.offsetTop;
+            left += ele.offsetLeft;
+            ele = ele.offsetParent;
+        }
+        /*  alert(left+" : "+top);*/
+        return { left: left}
+    }
+    //删除购物车商品
+    $(function () {
+        //删除购物车商品事件
+        $(".cart_list").on("click", '.deleteGoods', function (e) {
+            var cart_ids = new Array();
+            cart_ids.push($(this).attr('data-cart-id'));
+            // console.log(cart_ids)
+            layer.open({
+                content: '确定要删除此商品吗?'
+                ,btn: ['确定', '取消']
+                ,yes: function(index){
+                    layer.close(index);
+                    $.ajax({
+                        type : "POST",
+                        url:"{:U('Mobile/Cart/delete')}",
+                        dataType:'json',
+                        data: {cart_ids: cart_ids},
+                        success: function(data){
+                            if(data.status == 1){
+                                for (var i = 0; i < cart_ids.length; i++) {
+                                    $('#cart_list_' + cart_ids[i]).remove();
+                                }
+                                var store_div = $('.orderlistshpop');
+                                if(store_div.length == 0){
+                                    location.reload();
+                                }
+                            }else{
+                                layer.msg(data.msg,{icon:2});
+                            }
+                            AsyncUpdateCart();
+                        }
+                    });
+                }
+            });
+        })
+    });
+    var j = 0;
+    $('input[name^="checkItem"]:checked').each(function () {
+        j++;
+    });
+    // 点击编辑
+    $('#cf_compile').on('click',function () {
+        if($(this).text() == '编辑') {
+            $(this).text('完成')
+            $('.youbia').css('display','none')
+            $('.cf-complate').css('display','none')
+            $('.delete-goods').css('display','block')
+            var j = 0;
+            var cart_ids =[];
+            $('input[name^="checkItem"]:checked').each(function () {
+                j++;
+                cart_ids.push($(this).closest('.orderlistshpop').attr('data-cart-id'))
+            });
+            // console.log(cart_ids.length)
+
+            $('.delete-goods').on('click',function () {
+                var j = 0;
+                var cart_ids =[];
+                $('input[name^="checkItem"]:checked').each(function () {
+                    j++;
+                    cart_ids.push($(this).closest('.orderlistshpop').attr('data-cart-id'))
+                });
+                if(cart_ids.length != 0) {
+                    layer.open({
+                        content: '确定要删除此商品吗?'
+                        ,btn: ['确定', '取消']
+                        ,yes: function(index){
+                            layer.close(index);
+                            $.ajax({
+                                type : "POST",
+                                url:"{:U('Mobile/Cart/delete')}",
+                                dataType:'json',
+                                data: {cart_ids: cart_ids},
+                                success: function(data){
+                                    if(data.status == 1){
+                                        for (var i = 0; i < cart_ids.length; i++) {
+                                            $('#cart_list_' + cart_ids[i]).remove();
+                                        }
+                                        var store_div = $('.orderlistshpop');
+                                        if(store_div.length == 0){
+                                            location.reload();
+                                        }
+                                    }else{
+                                        layer.msg(data.msg,{icon:2});
+                                    }
+                                    AsyncUpdateCart();
+                                }
+                            });
+                        }
+                    });
+                }
+                else {
+                    layer.open({content: '请选择要删除的商品！', time: 2,skin:'msg'});
+                }
+            })
+        }
+        else {
+            $(this).text('编辑')
+            $('.youbia').css('display','block')
+            $('.cf-complate').css('display','block')
+            $('.delete-goods').css('display','none')
+        }
+
+    })
+    /**
+     * 检测选项框
+     */
+    function initCheckBox(){
+        var checkBoxsFlag = true;
+        $("input[name^='checkItem']").each(function(i,o){
+            if ($(this).attr("checked") != 'checked') {
+                checkBoxsFlag = false;
+            }
+        })
+        if(checkBoxsFlag == false){
+            $('.checkFull').removeClass('check_t');
+        }else{
+            $('.checkFull').addClass('check_t');
+        }
+    }
+    /*
+    * 描述：html5苹果手机向左滑动删除特效
+    */
+    window.addEventListener('load', function() {
+        var initX; //触摸位置
+        var moveX; //滑动时的位置
+        var X = 0; //移动距离
+        var objX = 0; //目标对象位置
+        var objP = document.getElementsByClassName('orderlistshpop')
+        for(var i =0;i<objP.length;i++) {
+            objP[i].addEventListener('touchstart', function(event) {
+                // event.preventDefault();
+                var obj = this
+                // if (obj.className == "orderlistshpop") {
+                initX = event.targetTouches[0].pageX;
+                objX = (obj.style.WebkitTransform.replace(/translateX\(/g, "").replace(/px\)/g, "")) * 1;
+                // console.log(objX)
+                // }
+                if (objX == 0) {
+                    obj.addEventListener('touchmove', function(event) {
+                        // event.preventDefault();
+                        // var obj = document.getElementById('cart_list_{$cart.id}')
+                        // if (obj.className == "orderlistshpop") {
+                        moveX = event.targetTouches[0].pageX;
+                        X = moveX - initX;
+                        if (X >= 0) {
+                            obj.style.WebkitTransform = "translateX(" + 0 + "px)";
+                        } else if (X < 0) {
+                            var l = Math.abs(X);
+                            obj.style.WebkitTransform = "translateX(" + -l + "px)";
+                            if (l > 80) {
+                                l = 80;
+                                obj.style.WebkitTransform = "translateX(" + -l + "px)";
+                            }
+                            // }
+                        }
+                    });
+                } else if (objX < 0) {
+                    obj.addEventListener('touchmove', function(event) {
+                        // event.preventDefault();
+                        // var obj = document.getElementById('cart_list_{$cart.id}')
+                        // if (obj.className == "orderlistshpop") {
+                        moveX = event.targetTouches[0].pageX;
+                        X = moveX - initX;
+                        if (X >= 0) {
+                            var r = -80 + Math.abs(X);
+                            obj.style.WebkitTransform = "translateX(" + r + "px)";
+                            if (r > 0) {
+                                r = 0;
+                                obj.style.WebkitTransform = "translateX(" + r + "px)";
+                            }
+                        } else { //向左滑动
+                            obj.style.WebkitTransform = "translateX(" + -4 + "rem)";
+                        }
+                        // }
+                    });
+                }
+            })
+            objP[i].addEventListener('touchend', function(event) {
+                var obj = this;
+                // event.preventDefault();
+                objX = (obj.style.WebkitTransform.replace(/translateX\(/g, "").replace(/px\)/g, "")) * 1;
+                if (objX != -80) {
+                    obj.style.WebkitTransform = "translateX(" + 0 + "px)";
+                    objX = 0;
+                } else {
+                    obj.style.WebkitTransform = "translateX(" + -4 + "rem)";
+                    objX = -80;
+                }
+                // }
+            })
+        }
+
+    })
+    //返回上一级
+    function goBack() {
+        var historyUrl = document.referrer;
+        if(historyUrl !==''){
+            window.history.go( -1 );
+        }else {
+            location.href = "{:U('/Mobile/Index/index')}"
+        }
+    }
+
+    // 懒加载  相关配置
+    $(function() {
+        $("img.lazy").lazyload({effect: "fadeIn"});
+    });
+    $("img.lazy").lazyload({ threshold :180});
+    $("img.lazy").lazyload({
+        placeholder : "/template/mobile/newbow/static/images/a.png", //用图片提前占位
+        // placeholder,值为某一图片路径.此图片用来占据将要加载的图片的位置,待图片加载时,占位图则会隐藏
+        effect: "show", // 载入使用何种效果
+        // effect(特效),值有show(直接显示),fadeIn(淡入),slideDown(下拉)等,常用fadeIn
+        threshold: 150, // 提前开始加载
+        // threshold,值为数字,代表页面高度.如设置为200,表示滚动条在离目标位置还有200的高度时就开始加载图片,可以做到不让用户察觉
+        event: 'click',  // 事件触发时才加载
+        // event,值有click(点击),mouseover(鼠标划过),sporty(运动的),foobar(…).可以实现鼠标莫过或点击图片才开始加载,后两个值未测试…
+        container: $(".guesslike"),  // 对某容器中的图片实现效果
+        // container,值为某容器.lazyload默认在拉动浏览器滚动条时生效,这个参数可以让你在拉动某DIV的滚动条时依次加载其中的图片
+        failurelimit : 10 // 图片排序混乱时
+        // failurelimit,值为数字.lazyload默认在找到第一张不在可见区域里的图片时则不再继续加载,但当HTML容器混乱的时候可能出现可见区域内图片并没加载出来的情况,failurelimit意在加载N张可见区域外的图片,以避免出现这个问题.
+    });
+
+</script>
+</body>
+</html>
+
+
+

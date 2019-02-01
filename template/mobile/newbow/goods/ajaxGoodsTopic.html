@@ -1,0 +1,31 @@
+   <foreach name="$goods_list" item="goods" key="k">
+    <div class="orderlistshpop p addimgchan ajaxbox">
+        <div class="maleri30">
+            <a href="{:U('Mobile/Goods/goodsInfo',array('id'=>$goods.goods_id))}" class="item">
+                <div class="sc_list se_sclist clearfix">
+                    <div class="shopimg fl">
+                        <img src="{$goods.original_img}?x-oss-process=style/s340x340">
+                    </div>
+                    <div class="deleshow fr">
+                        <div class="deletes">
+                            <span class="similar-product-text" style="height: auto;line-height: 1.2; overflow: hidden;text-overflow: ellipsis;
+    display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 2;">{$goods.goods_name}</span>
+                        </div>
+                        <!--<ul class="cf_discounts_box">-->
+                        <!--<li class="clor-jx">精选</li>-->
+                        <!--<li class="clor-mj">满减</li>-->
+                        <!--<li class="clor-zk">优惠券</li>-->
+                        <!--</ul>-->
+                        <div class="bot">
+                            <div class="prices fl">
+                                <p class="sc_pri"><span style="vertical-align: bottom;">¥</span><span>{$goods.shop_price}</span></p>
+                            </div>
+                            <p class="weight fr"><span>市场价 </span><span>¥</span>&nbsp;<span>{$goods.market_price}</span></p>
+                            <!--<p class="weight"><span>0</span><span>条评价</span></p>-->
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    </foreach>

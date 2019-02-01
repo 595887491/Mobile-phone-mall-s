@@ -1,0 +1,121 @@
+<include file="public/header" title="我的评价" body="f3"/>
+<include file="public/header_nav" title="我的评价" href="{:U('/Mobile/User/index')}"/>
+<style>
+    .similar-product-text a{
+        color: #1E1B1B;
+        font-size: .7rem;
+    }
+    .pall0{
+        color: #BFC1CD;
+        font-size: .6rem;
+        padding: 0;
+    }
+    .dapco .cf_check_m{
+        border: 1px solid #FF407E;
+        color: #FF407E;
+        margin-top: -1rem;
+        padding: .3rem .4rem;
+        border-radius: .2rem;
+    }
+    .bg_white .fukcuid{
+        padding-bottom: 1.5rem;
+    }
+    .shopprice{
+        background-color: #fff;
+        margin-top: .4rem;
+        padding: .3rem .64rem;
+        padding-bottom: 1rem;
+    }
+    .quedbox{
+        margin: 0;
+    }
+</style>
+<div class="pjiscion p after-set-li">
+    <ul>
+        <a href="{:U('Mobile/Order/comment',array('status'=>-1))}">
+            <li <if condition='$Request.param.status eq -1'>class="red"</if>>
+                <p>全部评价</p><p></p>
+            </li>
+        </a>
+        <a href="{:U('Mobile/Order/comment',array('status'=>0))}" >
+            <li <if condition='$Request.param.status eq 0'>class="red"</if>>
+                <p>待评价</p><p></p>
+            </li>
+        </a>
+        <a href="{:U('Mobile/Order/comment',array('status'=>1))}">
+            <li <if condition='$Request.param.status eq 1'>class="red"</if>>
+                <p>已评价</p><p></p>
+            </li>
+        </a>
+    </ul>
+</div>
+<div class="quedbox bg_white">
+    <!--<div class="sonfbst">-->
+        <!--<div class="maleri30">-->
+            <!--<span><i class="fbs"></i>立即发表评价晒图，最多可获得50积分</span>-->
+        <!--</div>-->
+    <!--</div>-->
+    <if condition="empty($comment_list)">
+        <div class="nonenothing">
+            <img src="__STATIC__/images/nothing.png"/>
+            <p>没找到相关记录</p>
+            <a href="{:U('Mobile/Index/index')}">去逛逛</a>
+        </div>
+<else/>
+    <div class="fukcuid mae">
+        <!--<div class="maleri30">-->
+            <foreach name="comment_list" item="v1">
+                <div class="shopprice dapco p" style="">
+                    <div class="img_or fl"><img src="{$v1[original_img]}"></div>
+                    <div class="fon_or fl">
+                        <h2 class="similar-product-text">
+                            <a href="{:U('Goods/goodsInfo',array('id'=>$v1[goods_id]))}">{$v1[goods_name]}</a>
+                            <p class="pall0">{$v1[spec_key_name]}</p>
+                        </h2>
+                        <p class="pall0">{$v1.add_time|date='Y-m-d H:i',###}</p>
+                        <!--<div class="dyeai">-->
+                            <if condition="$v1[is_comment] eq 0">
+                                <a class="compj cf_check_m" href="{:U('Mobile/Order/add_comment',array('rec_id'=>$v1[rec_id]))}">评价订单</a>
+                                <else/>
+                                <a class="compj nomar cf_check_m"  href="{:U('Mobile/Order/comment_info',array('comment_id'=>$v1[comment_id]))}">查看评价</a>
+                            </if>
+                        <!--</div>-->
+                    </div>
+                    <!--<div class="dyeai">-->
+                    <!--<if condition="$v1[is_comment] eq 0">-->
+                        <!--<a class="compj" href="{:U('Mobile/Order/add_comment',array('rec_id'=>$v1[rec_id]))}"><i class="said"></i>评价订单</a>-->
+                        <!--<else/>-->
+                        <!--<a class="compj nomar" id="cf_check_m" href="{:U('Mobile/Order/comment_info',array('comment_id'=>$v1[comment_id]))}">查看评价</a>-->
+                    <!--</if>-->
+                    <!--</div>-->
+                </div>
+            </foreach>
+        <!--</div>-->
+    </div>
+    </if>
+</div>
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script type="text/javascript">
+    /**
+     * ajax加载更多商品
+     */
+    var  page = 1;
+    function ajax_sourch_submit()
+    {
+        ++page;
+        $.ajax({
+            type : "GET",
+            url:"/index.php?m=Mobile&c=Order&a=comment&is_ajax=1&status={$Request.param.status}&p="+page,
+            success: function(data) {
+                if ($.trim(data) == '') {
+                    $('#getmore').hide();
+                    return false;
+                } else {
+                    $('.maleri30').append(data);
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

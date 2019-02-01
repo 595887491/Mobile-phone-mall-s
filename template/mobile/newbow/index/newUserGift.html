@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>新人礼包</title>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/rem.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css"/>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/need/swiper-4.3.3.min.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" href="__STATIC__/js/need/swiper-4.3.3.min.css">
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico}" media="screen"/>
+    <link rel="stylesheet" href="__STATIC__/css/newUserGift.css">
+</head>
+<body>
+<div class="headerRank">
+    <div class="headerRankCon">
+        <div class="fl texFl">
+            <a onclick="goBack()">
+                <img src="__STATIC__/images/return.png" alt="返回"></a>
+            </a>
+        </div>
+        <div class="tex">
+            <span>新人礼包</span>
+        </div>
+    </div>
+</div>
+<!--header-->
+<!--banner-->
+<div class="giftBanner">
+    <img src="http://cdn.cfo2o.com/public/upload/other/giftBanner.png?x-oss-process=style/s01" alt="">
+</div>
+<!--优惠券-->
+<div class="newGift">
+    <if condition="$flag">
+        <img class="newGiftImg" src="__STATIC__/images/newGift.png" alt="">
+        <else/>
+        <img class="newGiftImg" src="__STATIC__/images/oldGift.png" alt="">
+    </if>
+    <if condition="$is_login">
+        <if condition="$is_new_user">
+            <if condition="$flag">
+                <!--新用户 立即领取-->
+                <div class="giftBtn" onclick="getGift()">
+                    <img src="__STATIC__/images/btnGift_02.png" alt="">
+                </div>
+                <else />
+                <!--立即使用-->
+                <div class="giftBtnTwo" >
+                    <a href="{:U('Mobile/Index/newUserFirstWelfare')}">
+                    <img src="__STATIC__/images/btnGift_03.png" alt="">
+                    </a>
+                    <a href="{:U('Mobile/User/coupon')}">查看我的优惠券 ></a>
+                </div>
+                <div class="already">
+                    <img src="__STATIC__/images/already.png" alt="">
+                </div>
+            </if>
+            <else />
+            <!--仅限新用户-->
+            <div class="giftBtn">
+                <img src="__STATIC__/images/btnGift_01.png" alt="">
+            </div>
+        </if>
+        <else />
+        <!--立即领取-->
+        <div class="giftBtn" onclick="getGift()">
+           <img src="__STATIC__/images/btnGift_02.png" alt="">
+        </div>
+    </if>
+</div>
+<div class="activeCom">
+    <img src="__STATIC__/images/activeCom.png" alt="">
+</div>
+<!--登录提示弹窗-->
+<div class="giftBg">
+    <div class="giftCom">
+        <p>未登录</p>
+        <p class="giftP">登录后才能领取</p>
+        <div>
+            <button class="fl" onclick="cancelGo()">取消</button>
+            <button class="fr" onclick="goSign()">去登录</button>
+        </div>
+    </div>
+</div>
+
+<!--成功提示框-->
+<div class="successGift">
+    <div>
+        <img src="__STATIC__/images/giftA.png" alt="">
+        <span>领取成功</span>
+    </div>
+</div>
+<!--失败提示框-->
+<div class="failGift">
+    <div>
+        <img src="__STATIC__/images/giftB.png" alt="">
+        <span>领取失败</span>
+    </div>
+</div>
+
+<!--分享开始-->
+<script>
+    // http://cdn.cfo2o.com/public/upload/other/logo_share.png
+    var ShareImgUrl ="https://{$_SERVER[HTTP_HOST]}__STATIC__/images/shareNoney.png"; //分享图标
+    var ShareTitle = "送你￥188元新人大礼包，立即领取>>"; //分享标题
+    var ShareDesc = "尚美缤纷-一家有线下沙龙体验活动的化妆品平台"; //分享描述
+    var ShareLink = "http://{$_SERVER[HTTP_HOST]}/index.php/mobile/Index/newUserGift"; //分享链接
+</script>
+<include file="public/wx_share"/>
+<!--分享结束-->
+<script>
+    // 立即领取请求
+    function getGift() {
+        $.ajax({
+            type : "GET",
+            url:"/Mobile/Index/getNewUserGiftCounpon",
+            success: function(data) {
+                if (data.code==200) {
+                    $('.successGift').css('display','block')
+                    setTimeout(function () {
+                        location.reload();
+                    },2000)
+                }
+                if(data.code == -1){
+                    $('.failGift').css('display','block');
+                    setTimeout(function () {
+                        location.reload();
+                    },2000)
+                }
+                if(data.code == -2){
+                    $('.giftBg').show()
+                }
+            }
+        });
+    }
+    function cancelGo() {
+        $('.giftBg').hide()
+    }
+    function goSign() {
+        location.href ="{:U('Mobile/User/login')}";
+    }
+    // 分享后 判断是否有上一级页面
+    function goBack(){
+        var his = document.referrer;
+        if(his) {
+            history.back(-1)
+        }else {
+            window.location.href = "{:U('Mobile/Index/index')}";
+        }
+    }
+
+</script>
+</body>
+</html>

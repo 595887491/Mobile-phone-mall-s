@@ -1,0 +1,33 @@
+
+.cf_status{
+    margin-top: .5rem;
+    /*padding-left: .5rem;*/
+    position: fixed;
+    bottom: 0;
+    background-color:#FF407E;
+    width: 93%;
+    height: 1.8rem;
+    margin-left: 4%;
+    border-radius: .2rem;
+    line-height: 1.8rem;
+    font-size: .7rem;
+    color: #fff;
+    text-align: center;
+}
+.cf_status span{
+    color: #fff;
+    margin-left: -0.3rem;
+}
+.code_s{
+    position: fixed;
+    right: .5rem;
+    top: .5rem;
+    z-index: 99;
+}
+.bg_status{
+    position: fixed;
+    bottom: 0;
+    background-color:#fff;
+    width: 100%;
+    height: 1.8rem;
+}

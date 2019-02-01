@@ -1,0 +1,116 @@
+<include file="public/header" title="搜索"  body=""/>
+<include file="public/header_nav" title="搜索" href="javascript:history.back(-1);"/>
+
+		<div class="p search_pl">
+			<div class="maleri30">
+				<div class="search2">
+                    <form method="post" action="{:U('Goods/search')}" id="sourch_form">
+                        <div class="le_inp">
+							<i class="iconfont" style="font-size: .8rem;">&#xe60b;</i>
+							<input type="text" name="q" id="q" value="" onkeydown="if(event.keyCode==13){ajaxsecrch();}" placeholder="请输入搜索内容（例：雅诗兰黛）"/></div>
+                        <a href="javascript:;" onclick="ajaxsecrch()">
+							<!--<div class="ri_ss"><img src="__STATIC__/images/sea.png"/></div>-->
+							搜索</a>
+                    </form>
+				</div>
+			</div>
+		</div>
+		<div class="near-le-ri p">
+			<div class="maleri30">
+				<span>搜索历史</span>
+				<img src="__STATIC__/images/dele.png" id="delete_cookie"/>
+			</div>
+		</div>
+		<div class="lb_showhide se_shien p" style="display: block;">
+			<div class="maleri30" style="margin: 0 .24rem;	">
+				<if condition="$search_history">
+				<ul id="searchWrap">
+					<foreach name="$search_history" item="wd">
+						<li><a href="{:U('Goods/search',array('q'=>$wd))}" <if condition="$k eq 0">class="ht"</if>>{$wd}</a></li>
+					</foreach>
+				</ul>
+				<else>
+				<p id="nomore" style="text-align: center;font-size: .5rem;color: #ddd;">暂无搜索历史~</p>
+				</if>
+			</div>
+		</div>
+		<div class="near-le-ri p">
+			<div class="maleri30">
+				<span>热门搜索</span>
+                <!--<a href="">-->
+                    <!--<img src="__STATIC__/images/refresh.png"/>-->
+                <!--</a>-->
+			</div>
+		</div>
+		<div class="lb_showhide se_shien p" style="display: block;">
+			<div class="maleri30"  style="margin: 0 .24rem;">
+				<ul>
+                    <foreach name="tpshop_config.hot_keywords" item="wd" key="k">
+                        <li><a href="{:U('Goods/search',array('q'=>$wd))}" <if condition="$k eq 0">class="ht"</if>>{$wd}</a></li>
+                    </foreach>
+				</ul>
+			</div>
+		</div>
+
+        <!--底部导航-start-->
+        <include file="public/footer_nav"/>
+        <!--底部导航-end-->
+</body>
+</html>
+<script>
+   //设置cookie
+    function setCookie(cname,cvalue,exdays){
+        var d = new Date();
+        d.setTime(d.getTime()+(exdays*24*60*60*1000));
+        var expires = "expires="+d.toGMTString();
+        document.cookie = cname+"="+cvalue+"; "+expires;
+    }
+    //获取cookie
+    function getCookie(cname){
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++) {
+            var c = ca[i].trim();
+            if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
+        }
+        return "";
+    }
+
+    var getHestory =getCookie('searchVal');
+   	function ajaxsecrch(){
+        if($.trim($('#q').val()) != ''){
+            $("#sourch_form").submit();
+            var searchValue = $('#q').val().trim();
+            var history = getCookie("searchVal");
+            var history_array = history == '' ? [] : JSON.parse(history);
+            if (history_array.indexOf(searchValue) == -1) {
+                history_array.unshift(searchValue);
+                setCookie("searchVal",JSON.stringify(history_array),30);
+			}
+            $('#nomore').css('display','none');
+        }else{
+            layer.open({content:'请输入搜索关键字',time:2});
+        }
+    }
+
+    // 删除历史
+   $('#delete_cookie').on('click',function () {
+       var val = ''
+	   if(getHestory){
+		   layer.open({
+			   content:'确认删除全部历史记录？',
+			   btn: ['确认', '取消'],
+			   shadeClose: false, //默认：true，是否点击遮罩时关闭层
+			   yes: function() {
+				   setCookie("searchVal",val,0);
+				   $('#nomore').css('display','block');
+				   location.reload()
+			   },
+			   no: function() {},
+		   });
+       }
+   })
+   $(function(){
+        $('#q').focus();
+    })
+</script>

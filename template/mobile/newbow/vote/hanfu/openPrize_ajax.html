@@ -1,0 +1,19 @@
+<foreach name="$ranking" item="v" key="k">
+    <div class="ranking-list">
+        <a href="{:U('/Mobile/vote/voteMainInfo',['found_id'=>$v['found_id']])}">
+            <div class="ranking-list-img">
+                <img class="lazy" data-original="{$v['my_photo']}?x-oss-process=style/s340x340" alt="">
+            </div>
+            <p class="title">
+                <span>{$v['title']}</span>
+                <span class="fr">{$v['vote_number']}票</span>
+            </p>
+            <p class="details">
+                {$v['slogan']}
+            </p>
+
+            <p class="ranking">第{$v.user_rank}名</p>
+            <p class="ranking-num">{$v['found_id']}号</p>
+        </a>
+    </div>
+</foreach>

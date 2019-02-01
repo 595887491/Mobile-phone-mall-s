@@ -1,0 +1,299 @@
+<!DOCTYPE>
+<html>
+<head>
+    <title>参团</title>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/rem.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <!--<link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>-->
+    <link rel="stylesheet" href="__STATIC__/css/joinGroup.css">
+</head>
+<body>
+<!--header-->
+<div class="headerRank">
+    <div class="headerRankCon">
+        <div class="texFl">
+            <a onclick="goBack()">
+                <img src="__STATIC__/images/return.png" alt="返回"></a>
+            </a>
+        </div>
+        <div class="tex">
+            <span>参团</span>
+        </div>
+        <a href="{:U('Mobile/Index/index')}"  class="homeIndex">
+            <img src="__STATIC__/images/homeIndex.png"  alt="">
+        </a>
+    </div>
+</div>
+<!--header-->
+<div style="height:1rem;width: 100%"></div>
+<div class="oneTab">
+    <!--拼团商品-->
+    <div class="content">
+        <div class="team-list">
+            <div class="fl listImg">
+                <img src="{$teamInfo.goods.original_img}" alt="">
+            </div>
+            <div class="fr team-list-right">
+                <div class="title">
+                    <p class="titleP"><if $teamInfo.is_shipping ==1><span id="by">包邮</span></if><span style="font-weight: 600">{$teamInfo.goods_name}</span></p>
+                </div>
+                <p class="complete">{$teamInfo.goods.goods_remark}</p>
+                <div class="people">
+                    <span class="one">{$teamInfo.needer}人团</span>
+                    <span>{$teamInfo.teamed}人已团</span>
+                </div>
+                <div class="bottom">
+                    <div class="fl">
+                        <p>
+                            <span class="">￥</span>
+                            <span class="bottomMoney">{$teamInfo.price}</span>
+                            <span>单买:￥{$teamInfo.goods_price}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="stateImg">
+                <!--失败-->
+                <if $teamInfo.status == 3>
+                    <img src="__STATIC__/images/failTeam.png" alt="">
+                </if>
+                <!--成功-->
+                <if $teamInfo.status == 2>
+                    <img src="__STATIC__/images/successTeam.png" alt="">
+                </if>
+            </div>
+        </div>
+    </div>
+
+    <!--参团人数-->
+    <div class="teamClass">
+        <div class="teamClassTop">
+            <div class="teamFirst">
+                <img src="{$teamInfo.head_pic|default='http://cdn.cfo2o.com/data/avatar/user_head_default.png'}?x-oss-process=style/s340x340" alt="" class="teamFirstImg">
+                <img src="__STATIC__/images/tuanzhang.png" alt="" id="taggle">
+            </div>
+            <volist name="followUser" id="vi">
+                <div class="teamSen"><img src="{$vi.follow_user_head_pic}" alt=""></div>
+            </volist>
+            <?php for($i=0;$i<$teamInfo['need']-$teamInfo['join'];$i++){?>
+            <div class="teamSen"><img src="__STATIC__/images/defaults.png" alt=""></div>
+            <?php }?>
+
+        </div>
+        <if $teamInfo.status == 1>
+            <div class="teamTime">
+              <span class="hms">
+                    <span style="color: #5B5858">还差<span style="color: #D50D16;font-weight: 600">{$teamInfo.needer-$teamInfo.join}</span>人 剩余</span>
+                    <span id="hours" class="hmsSpan hours">00</span>
+                    <span style="background-color: transparent;color: #EDEEF4;font-size: .35rem;font-weight: 700;" >:</span>
+                    <span id="minte" class="hmsSpan minutes">00</span>
+                    <span style="background-color: transparent;color: #EDEEF4;font-size: .35rem;font-weight: 700;" >:</span>
+                    <span id="second" class="hmsSpan seconds">00</span>
+                    <span style="color: #5B5858">结束</span>
+                </span>
+            </div>
+            <else/>
+            <div class="teamTime">
+                <if $teamInfo.status == 3>
+                    <span>拼团时间已结束</span>
+                </if>
+                <if $teamInfo.needer == $teamInfo.join && $teamInfo.status == 2>
+                    <span>此团已满员</span>
+                </if>
+            </div>
+        </if>
+        <div class="Invitation">
+            <if $teamInfo.status == 1 && $inTeam == 2>
+                <if $teamInfo.needer_type == 1 && $isNewUser == 2 >
+                    <a onclick="confire()">
+                        <button>立即参团(仅限新用户)</button>
+                    </a>
+                 <else/>
+                <a href="{:U('mobile/team/addOrder')}?found_id={$teamInfo.found_id}&team_id={$teamInfo.team_id}&goods_num=1&goods_id={$teamInfo.goods_id}&item_id={$teamInfo.item_id}">
+                    <button>立即参团</button>
+                </a>
+                </if>
+            </if>
+            <if $teamInfo.status == 1 && $inTeam == 1><button onclick="share_popup()">立即邀请好友参团</button></if>
+            <if $teamInfo.status == 3 || $teamInfo.status == 2>
+                <a href="{:U('mobile/team/info')}?team_id={$teamInfo.team_id}&goods_id={$teamInfo.goods_id}">
+                    <button>重新开团</button>
+                </a>
+            </if>
+        </div>
+        <div class="teamFlaw">
+            <if $teamInfo.status == 1 && $inTeam == 2>
+                <span class="teamActive">① 支付开团或参团<img src="__STATIC__/images/right_02.png" alt="" style="width: .11rem;height: .15rem;margin-left: .2rem"></span>
+                <else/>
+                <span>① 支付开团或参团<img src="__STATIC__/images/right_02.png" alt="" style="width: .11rem;height: .15rem;margin-left: .2rem"></span>
+            </if>
+            <if $teamInfo.need gt $teamInfo.join && $teamInfo.status == 1  && $inTeam == 1>
+                <span class="teamActive">② 邀请好友参团 <img src="__STATIC__/images/right_02.png" alt="" style="width: .11rem;height: .15rem;margin-left: .1rem"></span>
+                <else/>
+                <span>② 邀请好友参团 <img src="__STATIC__/images/right_02.png" alt="" style="width: .11rem;height: .15rem;margin-left: .1rem"></span>
+            </if>
+
+            <if $isFull == 1>
+                <span style="color:#30c37c ">③ 拼团成功，分别发货</span>
+            </if>
+            <if $teamInfo.status == 3>
+                <span class="teamActive">③ 人数不足自动退款</span>
+            </if>
+            <if $teamInfo.status != 3 && $isFull != 1 && $isFull != 2 && $teamInfo.status != 2 || $teamInfo.status == 1>
+                <span>③ 团满发货，不满退款</span>
+            </if>
+        </div>
+    </div>
+
+    <!--产品参数-->
+    <div class="parameter">
+        <div class="parameterHeader">
+            <img src="__STATIC__/images/parameter.png" alt="">
+        </div>
+        <div class="de_table">
+            <table  border="1" bordercolor="#EDEEF4" style="border-collapse:collapse;">
+                <tr>
+                    <td>商品名称</td>
+                    <td>{$teamInfo.goods_name}</td>
+                </tr>
+                <if $teamInfo.goods.brand_id != null>
+                    <tr>
+                        <td>品牌</td>
+                        <td>{$teamInfo.goods.brand_id}</td>
+                    </tr>
+                </if>
+                <volist name="param" id="vi">
+                    <tr>
+                        <td>{$vi.attr_name}</td>
+                        <td>{$vi.attr_value}</td>
+                    </tr>
+                </volist>
+            </table>
+        </div>
+    </div>
+
+    <!--产品详情-->
+    <div class="parameterCom">
+        <div class="parameterComHeader">
+            <img src="__STATIC__/images/parameterCom.png" alt="">
+        </div>
+        <div class="parameterComment">
+            {$teamInfo['goods']['goods_content']}
+        </div>
+    </div>
+
+    <!--分享弹窗-->
+    <div class="share_popup" style="display: none;">
+        <img src="__STATIC__/images/share_money.png" alt="" style="width: 100%;"/>
+    </div>
+    <!--遮罩层-->
+    <div class="shade_mark" style="display: none;" onclick="closeAll(event)"></div>
+</div>
+<script>
+    //点击遮罩层关闭所有弹窗
+    function closeAll(event) {
+        event.stopPropagation();
+        $(event.target).hide();
+        $('.share_popup').hide();
+        $('.specification_popup').slideUp();
+    }
+
+    //赚钱分享弹窗
+    function share_popup() {
+        $('.shade_mark').show();
+        $('.share_popup').show()
+    }
+    // 判断参团资格
+    function confire() {
+        layer.open({content:"该活动只限新用户参团!",time:2,skin:"msg"});
+    }
+//    var foundId = {$teamInfo.found_id};
+//    $.ajax({
+//        type: "POST",
+//        dataType: "json",
+//        url: "{:U('team/joinTeamInfo')}",
+//        data:{
+//            found_id:foundId
+//        },
+//        success: function (data) {
+//            if (data.code == 1) {
+//                layer.open({content:data.message,time:2,skin:"msg"});
+//            }
+//            if(data.code == 2){
+//                layer.open({content:data.message,time:2,skin:"msg"});
+//            }
+//        }
+//    });
+    // 倒计时
+    var end_time  = {$teamInfo.found_end_time};
+    var start_time  = {$startTime};
+    var found_id = {$teamInfo.found_id};
+    var NowTime = new Date();
+    var $this = $('.hms');
+    var a = (start_time * 1000) - NowTime.getTime();
+    var timer = setInterval(function () {
+        var NowTime = new Date();
+        if (a > 0) {
+            var t = (end_time * 1000) - NowTime.getTime() + a;
+
+        }else {
+            var t = (end_time * 1000) - NowTime.getTime() - a;
+        }
+        var h = Math.floor(t / 1000 / 60 / 60 % 24);
+        var m = Math.floor(t / 1000 / 60 % 60);
+        var s = Math.floor(t / 1000 % 60);
+        if (s >= 0) {
+            h < 10 ? $this.find('.hours').text('0' + (h)) : $this.find('.hours').text(h);
+            m < 10 ? $this.find('.minutes').text('0' + m) : $this.find('.minutes').text(m);
+            s < 10 ? $this.find('.seconds').text('0' + s) : $this.find('.seconds').text(s);
+        }
+        if(h==0 && m==0 && s==0) {
+            $.ajax({
+                type : "GET",
+                url:"{:U('team/changeStatus')}",
+                data:{
+                    found_id:found_id
+                },
+                success: function(data) {
+                    if (data.code = 200) {
+                        clearInterval(timer);
+                        location.reload();
+                    }
+                }
+            });
+        }
+    },1000);
+    
+    function goBack() {
+        var historyUrl = document.referrer;
+        if(historyUrl !==''){
+            window.history.go( -1 );
+        }else {
+            location.href = "{:U('/Mobile/Team/index')}"
+        }
+    }
+</script>
+<!-- 微信浏览器 调用微信 分享js-->
+<if $teamInfo.status == 2 || $teamInfo.status == 3>
+    <script>
+        var ShareImgUrl = "{$teamInfo.goods.original_img}"; //分享图标
+        var ShareTitle ="拼团火爆进行中，正品行货，超低价格，快来看看！" ; //分享标题
+        var ShareDesc = "{$teamInfo.goods.goods_name}"; //分享名称
+        var ShareLink = "http://{$_SERVER[HTTP_HOST]}/index.php/mobile/Team/joinGroup/found_id/{$teamInfo.found_id}"; //分享描述
+    </script>
+</if>
+<if $teamInfo.status == 1>
+    <script>
+        var ShareImgUrl = "{$teamInfo.goods.original_img}"; //分享图标
+        var ShareTitle ="我刚用￥{$teamInfo.price}拼了一件好货，就差{$teamInfo.needer-$teamInfo.join}人啦，快来加入！" ; //分享标题
+        var ShareDesc = "{$teamInfo.goods.goods_name}"; //分享名称
+        var ShareLink = "http://{$_SERVER[HTTP_HOST]}/index.php/mobile/Team/joinGroup/found_id/{$teamInfo.found_id}"; //分享描述
+    </script>
+</if>
+
+<include file="public/wx_share"/>
+
+</body>
+</html>

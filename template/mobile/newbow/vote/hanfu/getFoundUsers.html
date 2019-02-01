@@ -1,0 +1,14 @@
+<foreach name="$found_list" item="v">
+    <div  class="voteCom" data-id="{$v['found_id']}">
+        <div class="voteComment"></div>
+        <div class="Mask" ><a href="{:U('/Mobile/vote/voteMainInfo',['found_id'=>$v['found_id']])}"></a></div>
+        <img class="lazy" data-original="{$v['my_photo']}?x-oss-process=style/s340x340"  alt="">
+        <div class="voteNumber">{$v['found_id']}号</div>
+        <div class="describe">
+            <span class="fl describeLeft">{$v['title']}</span>
+            <span class="fr describeRight describe_{$v['found_id']}">{$v['vote_number']}票</span>
+        </div>
+        <p>{$v['slogan']}</p>
+        <div class="clickVote" onclick="jumpCom({$v['found_id']})"></div>
+    </div>
+</foreach>

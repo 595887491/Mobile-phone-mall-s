@@ -1,0 +1,145 @@
+<include file="public/header" title="收货地址" body="pore_add"/>
+<include file="public/header_nav" title="收货地址" href="javascript:history.back(-1)"/>
+<style>
+    body{background-color: #F3F5F7}
+    .address .jd_listaddless{background-color: #fff;margin-top: .3rem;color: #1E1B1B;}
+   .address .jd_listaddless:first-of-type{margin-top: 0;}
+    .jd_listaddless .name{width: auto;}
+    .jd_listaddless .name h1{padding-top: .1rem;}
+    .jd_listaddless .name h1,.jd_listaddless .numberaddress .similars{font-size: .6rem;}
+    .jd_listaddless .numberaddress .similars{line-height: .8rem;}
+    .jd_listaddless .numberaddress{width: auto;padding: 0;border-bottom: 1px solid #F0F2F5;}
+    .jd_listaddless .editdiv .eedit{position: static;display: block;width: 1rem;height: 1rem;}
+    .jd_listaddless .number{font-size:.6rem;padding-top: .1rem;}
+    .jd_listaddless .editdiv{position: static;}
+    .jd_listaddless .maleri30{overflow: visible;}
+    .default{font-size: .5rem;background-color: #FF407E;color: #fff;padding: .1rem .2rem;margin-top: .2rem;}
+    .editdiv .bj{font-size: .55rem;    width: 2rem;height: 1rem;line-height: 1rem;
+        border: 1px solid #BFC1CD;color: #1E1B1B;background: none;outline: none;border-radius: .1rem;}
+    .createnew{position: fixed;bottom: 0;left:0;width: 100%;background: #fff;margin-left: 0;}
+    .createnew a{border-radius: 0;background-color: #fff;color: #1E1B1B;}
+    .createnew a i{font-size:.6rem;color:#1E1B1B; padding-right: .2rem;vertical-align: 0;}
+</style>
+ <div class="address">
+    <!--地址-s-->
+    <volist name="lists" id="list">
+        <div class="jd_listaddless p">
+            <div class="maleri30">
+                <if condition="$Request.param.source eq 'cart2'">
+                <!--从确认订单页进来-->
+                <a href="{:U('/Mobile/Cart/cart2',array('address_id'=>$list['address_id'],'source'=>'cart2','goods_id'=>$Request.param.goods_id,'goods_num'=>$Request.param.goods_num,'item_id'=>$Request.param.item_id,'action'=>$Request.param.action))}">
+                    <div class="">
+                        <div class="name" style="display: inline-block;line-height: 1rem;">
+                            <h1>收货人:{$list[consignee]}</h1>
+                            <!--<if condition="$list[is_default] eq 1">-->
+                                <!--<span>默认</span>-->
+                            <!--</if>-->
+                        </div>
+                        <span class="number fr" style="line-height: 1rem;">{$list[mobile]}</span>
+                    </div>
+
+                    <div class="numberaddress">
+                        <span class="similars">收货地址:{$region_list[$list['province']]},{$region_list[$list['city']]},{$region_list[$list['district']]},{$region_list[$list['twon']]}{$list['address']}</span>
+                    </div>
+                </a>
+                <!--从确认订单页进来-->
+                <elseif condition="$Request.param.source eq 'pre_sell_cart'"/>
+                <!--从确认订单页进来-->
+                <a href="{:U('/Mobile/Cart/pre_sell_cart',array('address_id'=>$list['address_id'],'act_id'=>$Request.param.act_id,'goods_num'=>$Request.param.goods_num))}">
+                    <div class="clearfix">
+                        <div class="name fl">
+                            <h1>收货人:{$list[consignee]}</h1>
+                            <!--<if condition="$list[is_default] eq 1">-->
+                            <!--<span>默认</span>-->
+                            <!--</if>-->
+                        </div>
+                        <span class="number fr">{$list[mobile]}</span>
+                    </div>
+                    <div class="numberaddress">
+                        <span class="similars">{$region_list[$list['province']]},{$region_list[$list['city']]},{$region_list[$list['district']]},{$region_list[$list['twon']]}{$list['address']}</span>
+                    </div>
+                </a>
+                <!--从确认订单页进来-->
+                <elseif condition="$Request.param.source eq 'integral'"/>
+                <!--从确认订单页进来-->
+                <a href="{:U('/Mobile/Cart/integral',array('address_id'=>$list['address_id'],'goods_id'=>$Request.param.goods_id,'goods_num'=>$Request.param.goods_num,'item_id'=>$Request.param.item_id))}">
+                   <div class="clearfix">
+                        <div class="name fl">
+                            <h1>收货人:{$list[consignee]}</h1>
+                            <!--<if condition="$list[is_default] eq 1">-->
+                                <!--<span>默认</span>-->
+                            <!--</if>-->
+                        </div>
+                        <span class="number fr">{$list[mobile]}</span>
+                   </div>
+                    <div class="numberaddress">
+                        <span class="similars">{$region_list[$list['province']]},{$region_list[$list['city']]},{$region_list[$list['district']]},{$region_list[$list['twon']]}{$list['address']}</span>
+                    </div>
+                </a>
+                <elseif condition="$Request.param.source eq 'team'"/>
+                <!--从确认订单页进来-->
+                <a href="{:U('/Mobile/Team/order',array('address_id'=>$list['address_id'],'order_id'=>$Request.param.order_id))}">
+                    <div class="clearfix">
+                    <div class="name fl">
+                        <h1>收货人:{$list[consignee]}</h1>
+                        <!--<if condition="$list[is_default] eq 1">-->
+                            <!--<span>默认</span>-->
+                        <!--</if>-->
+                     </div>
+                        <span class="number fr">{$list[mobile]}</span>
+                     </div>
+                    <div class="numberaddress">
+                        <span class="similars">{$region_list[$list['province']]},{$region_list[$list['city']]},{$region_list[$list['district']]},{$region_list[$list['twon']]}{$list['address']}</span>
+                    </div>
+                </a>
+                <else/>
+                    <div class="clearfix">
+                    <div class="name fl">
+                        <h1>收货人:{$list[consignee]}</h1>
+                        <!--<if condition="$list[is_default] eq 1">-->
+                            <!--<span>默认</span>-->
+                        <!--</if>-->
+                    </div>
+                    <span class="number fr">{$list[mobile]}</span>
+                    </div>
+                    <div class="numberaddress">
+                        <span class="similars">{$region_list[$list['province']]},{$region_list[$list['city']]},{$region_list[$list['district']]},{$region_list[$list['twon']]}{$list['address']}</span>
+                    </div>
+                </if>
+                <div class="clearfix"  style="padding: .4rem 0">
+                    <if condition="$list[is_default] eq 1">
+                        <span class="fl default">默认</span>
+                    </if>
+                    <div class="editdiv fr">
+                        <if condition="$Request.param.source eq 'integral'">
+                            <a href="{:U('/Mobile/User/edit_address',array('id'=>$list[address_id],'source'=>$Request.param.source,'goods_id'=>$Request.param.goods_id,'goods_num'=>$Request.param.goods_num,'item_id'=>$Request.param.item_id))}">
+                                <!--<i class="eedit"></i>-->
+                                <button class="bj">编辑</button>
+                            </a>
+                            <else/>
+                            <a href="{:U('/Mobile/User/edit_address',array('id'=>$list[address_id],'source'=>$Request.param.source,'act_id'=>$Request.param.act_id,'goods_num'=>$Request.param.goods_num,'order_id'=>$Request.param.order_id,'goods_id'=>$Request.param.goods_id,'item_id'=>$Request.param.item_id))}">
+                                <!--<i class="eedit"></i>-->
+                                <button class="bj">编辑</button>
+                            </a>
+                        </if>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </volist>
+ </div>
+<!--地址-e-->
+    <div class="hek">
+        <div class="createnew">
+            <if condition="$Request.param.action eq 'buy_now'">
+                <a href="{:U('/Mobile/User/add_address',array('source'=>$Request.param.source,'action'=>$Request.param.action,'order_id'=>$Request.param.order_id,'goods_id'=>$Request.param.goods_id,'goods_num'=>$Request.param.goods_num,'item_id'=>$Request.param.item_id))}"><i class="iconfont">&#xe6be;</i>添加新地址</a>
+            <elseif condition="$Request.param.source eq 'integral'">
+                <a href="{:U('/Mobile/User/add_address',array('source'=>$Request.param.source,'order_id'=>$Request.param.order_id,'goods_id'=>$Request.param.goods_id,'goods_num'=>$Request.param.goods_num,'item_id'=>$Request.param.item_id))}"><i class="iconfont">&#xe6be;</i>添加新地址</a>
+            <else/>
+                <a href="{:U('/Mobile/User/add_address',array('source'=>$Request.param.source,'act_id'=>$Request.param.act_id,'goods_num'=>$Request.param.goods_num,'order_id'=>$Request.param.order_id))}"><i class="iconfont">&#xe6be;</i>添加新地址</a>
+            </if>
+        </div>
+    </div>
+</body>
+</html>

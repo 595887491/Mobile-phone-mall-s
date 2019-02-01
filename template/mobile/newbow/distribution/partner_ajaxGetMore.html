@@ -1,0 +1,49 @@
+<foreach name="$data['partner_list_data']"  item="v" key="k">
+    <div class="ranking_list">
+        <div class="ranking_list_left">
+            <div class="avatar fl">
+                <if condition='$v["rank"] eq 1'>
+                    <img src="__STATIC__/images/partner_01.png" class="avatar_img" style="width: 100%;height: 2.6rem" alt="第一名">
+                </if>
+                <if condition='$v["rank"] eq 2'>
+                    <img src="__STATIC__/images/partner_02.png" class="avatar_img"  style="width: 100%;height: 2.6rem" alt="第二名">
+                </if>
+                <if condition='$v["rank"] eq 3'>
+                    <img src="__STATIC__/images/partner_03.png" class="avatar_img"  style="width: 100%;height: 2.6rem" alt="第三名">
+                </if>
+                <if condition='$v["rank"] gt 3'>
+                    <img src="__STATIC__/images/partner_04.png" class="avatar_img"  style="width: 100%;height: 2.6rem" alt="第四名">
+                </if>
+                <img class="header_sec" src="{$v.head_pic}?x-oss-process=style/s150x150" style="z-index: -1" alt="用户头像">
+            </div>
+            <if condition='$v["rank"] eq 1'>
+                <div class="member_bf cf_member" >1</div>
+            </if>
+            <if condition='$v["rank"] eq 2'>
+                <div class="member_bf cf_member" >2</div>
+            </if>
+            <if condition='$v["rank"] eq 3'>
+                <div class="member_bf cf_member">3</div>
+            </if>
+            <if condition='$v["rank"] gt 3'>
+                <div class="member_bf cf_member">{$v["rank"]}</div>
+            </if>
+
+
+            <div class="msg fl">
+                <p class="clearfixs">
+                    <span class="c1">{$v.nickname}</span>
+                    <!--<span class="fr" style="font-size: .55rem;">一级收益</span>-->
+                </p>
+                <p>
+                    <span>订单成交金额: {$v.order_deal_success}</span>
+                    <span class="fr" style="font-size: .7rem;color:#1E1B1B">{$v.partner_kpi}</span>
+                </p>
+                <p>
+                    <span>一级会员: {$v.first_child_nums} </span>
+                    <!--<span class="fr" style="font-size: .72rem;color: #1E1B1B;">99.80</span>-->
+                </p>
+            </div>
+        </div>
+    </div>
+</foreach>

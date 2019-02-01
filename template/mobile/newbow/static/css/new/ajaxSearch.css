@@ -1,0 +1,31 @@
+body{background-color: #F3F5F7;}
+.classreturn{background-color: #fff;border: none;}
+.classlist .fr .branchList .tp-class-list ul li a p{padding-top: .1rem;height: 1.252rem;}
+.classlist .fl ul .red a{color: #FF407E;}
+.classreturn .content .search .sear-input i{top:.08rem;}
+.classlist .fl ul li:before{background-color: transparent;}
+.classlist,.classlist .fl ul li.cur{background-color: #F3F5F7;}
+.classlist .fl ul li:after{background-color: #F0F2F5;}
+.classlist .fr .branchList .tp-class-list ul li:nth-child(3n+1){margin-left: 0;}
+.classlist .fr .branchList .tp-class-list ul li{margin-left: 3%}
+.classreturn .content .search{width: 80%;}
+.classreturn .content .search .sear-input i{left: 1rem;}
+.classreturn .content .search .sear-input input{text-align: left;text-indent: 1.5rem;}
+.classreturn .content .return{z-index: 9;}
+.classreturn .content .menu{top: 0;}
+.classreturn .content .menu i{width: .85333rem;vertical-align: middle;font-size: 1rem;color: #5B5858;}
+.search_pl .search2 .le_inp input{width: 12rem;}
+.search_pl{padding: 0;margin: 0;padding-top: .1rem;}
+.content{margin-left: 1rem;}
+.search_pl .search2  a{font-size: .6rem;line-height: 1.8rem;float: right;}
+.cf_return{position: absolute;top:0.1rem;font-size: .6rem;color: #1E1B1B;display: block;right: .4rem;}
+.lb_showhide{background: transparent;}
+.lb_showhide ul li a{background-color: #FFFFFF;font-size: .6rem;}
+.near-le-ri img{ width: .52533rem;height: .52533rem;}
+li.ui-menu-item{heigh:1.5rem; font-size: 0.8rem; line-height: 1.5rem;}
+.ui-autocomplete{width:100%; left:0 !important; top: 1.9rem !important;}
+.ui-autocomplete li{border-top: 1px solid #EDEEF4; heigh:1.5rem;line-height: 1.5rem;font-size:0.62rem; }
+.ui-menu .ui-menu-item-wrapper{white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
+.ajax-data{position: absolute;top:2rem;width: 100%;background: #fff;font-size: .6rem;padding-bottom: 2rem;display: none;}
+.ajax-data a{display: block;border-bottom: 1px solid #EDEEF4;line-height: 1.8rem;color: #585858;text-align: left;padding: 0 .64rem;
+    white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}

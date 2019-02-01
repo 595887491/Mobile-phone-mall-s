@@ -1,0 +1,65 @@
+.classreturn .content .search span{font-size: .65rem;color: #1E1B1B;}
+.fetchcode{
+    background-color: #ec5151;
+    border-radius: 0.128rem;
+    color: white;
+    padding: 0.55467rem 0.21333rem;
+    vertical-align: middle;
+    font-size: 0.59733rem;
+}
+
+.lsu span{float: left;color: #1E1B1B;font-size: .7rem;}
+.loginsingup-input{padding: 0 .64rem;}
+.loginsingup-input .lsu{border-color: #F0F2F5;}
+.loginsingup-input .lsu  input{width: 12rem;}
+.loginsingup-input .lsu-submit{padding: 0;margin-top: 2rem;margin-bottom: 2rem}
+.loginsingup-input .lsu-submit input{background-color: #FF407E;font-size: .8rem;}
+.loginsingup-input .lsu-submit input, .btn-goto-login{
+    border-radius: .2rem;
+}
+.loginsignup{
+
+}
+.skin ul {
+    width: 13rem;
+    margin-left: 1rem;
+}
+.skin ul li{
+    list-style: none;
+    width: 5rem;
+    border: 1px solid #5B5858;
+    padding: .38rem .1rem;
+    font-size: .55rem;
+    color: #1E1B1B;
+    text-align: center;
+    float: left;
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+    border-radius: .1rem;
+}
+.activeLi{
+    border: 1px solid #FF407E;
+    color: #FF407E;
+}
+.normLi{
+    border: 1px solid #5B5858;
+    color: #1E1B1B;
+}
+.wrapper{padding: 0 9.5%;font-size: .67rem;color: #1E1B1B;}
+.wrapper .item-list{border-bottom: 1px solid #F0F2F5;margin-top: 1rem;padding: .3rem 0;}
+.wrapper .item-list::after{content: '';display:block;visibility: hidden;clear: both;height: 0;}
+.wrapper .item-list .name{margin-right: 1rem;}
+.pf_list{float: left;}
+.pf_list>div{margin-top: 1rem;}
+.pf_list>div:first-child{margin-top: 0;}
+.pf_list>div::after{content: '';display: block;clear: both;visibility: hidden;height: 0;}
+.pf_list>div ul li{border: 1px solid #5B5858;color: #1E1B1B;font-size: .55rem;float: left;height: 1.2rem;line-height: 1.2rem;
+    min-width: 5.2rem;text-align: center;
+    border-radius: .15rem;margin-top: .7rem;}
+.pf_list>div ul li:nth-child(even){margin-left: .6rem;}
+.pf_list>div ul li.checked{border-color: #FF407E;color:#FF407E; }
+.loginsignup{
+    position: fixed;
+    top: 0;
+    z-index: 999;
+}

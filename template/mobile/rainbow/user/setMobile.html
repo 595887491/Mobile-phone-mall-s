@@ -1,0 +1,142 @@
+<include file="public/header" title="实名认证" body=""/>
+<include file="public/header_nav" title="实名认证"  href="{:U('Mobile/User/userinfo')}"/>
+<style>
+	.classreturn .content .search span{font-size: .7rem;color: #1E1B1B;}
+  .cf_set button{
+	  width: 12rem;
+	  height: 1.8rem;
+	  background-color: #FF407E;
+	  border: none;
+	  color: white;
+	  border-radius: 1rem;
+	  margin-top: 2rem;
+  }
+	.lsu span{float: left;color: #1E1B1B;font-size: .7rem;}
+	.loginsingup-input{padding: 0 .64rem;}
+	.loginsingup-input .lsu{border-color: #F0F2F5;}
+	.loginsingup-input .lsu  input{width: 12rem;}
+	.cf_set button{width: 90%;display: block;font-size: .8rem;letter-spacing: .3rem;margin: 0 auto;margin-top: 5rem;}
+</style>
+		<div class="loginsingup-input">
+			<div class="lsu">
+				 <!--<span class="ico ico-user"></span>-->
+				<span>姓&nbsp;&nbsp;&nbsp;名:</span>
+                 <input type="text" id="cf_user_name" placeholder="请输入你的姓名 ">
+			</div>
+            <div class="lsu">
+				  <!--<span class="ico ico-telephone"></span>-->
+		    		<span>身份证:</span>
+                  <input type="number"  id='cf_user_num' maxlength="18"  placeholder="请输入你的身份证号">
+			</div>
+             <div class="cf_set" onclick="cf_validate()">
+                 <button>确定</button>
+             </div>
+		</div>
+<script>
+
+    //发送短信验证码
+//     function sendcode(obj){
+//         var tel = $.trim($('#tel').val());
+//         if(tel == ''){
+//             showErrorMsg('请输入您的号码！');
+//             return false;
+//         }
+//         $.ajax({
+// //            url:'/index.php?m=Mobile&c=User&a=send_validate_code&t='+Math.random(), //原获取短信验证码方法
+//             url : "/index.php?m=Home&c=Api&a=send_validate_code&scene=6&type=mobile&send="+tel,
+//             type:'post',
+//             dataType:'json',
+//             data:{type:$(obj).attr('rel'),send:tel},
+//             success:function(res){
+//                 if(res.status==1){
+//                     //成功
+//                     showErrorMsg(res.msg);
+//                     countdown(obj);
+//                 }else{
+//                     //失败
+//                     showErrorMsg(res.msg);
+//                     $(obj).text('请刷新再试！');
+//                     $(obj).attr('id','fetchcode');
+//                 }
+//             }
+//         })
+//     }
+
+
+    // //提交前验证表单
+    // function submitverify(obj){
+    //     var tel = $.trim($('#cf_user_name').val());
+    //     if(tel == ''){
+    //         showErrorMsg('请输入您的姓名！');
+    //         return false;
+    //     }
+    //     if($('#cf_user_num').val() == ''){
+    //         showErrorMsg('请输入您的身份号');
+    //         return false;
+    //     }
+    //     $(obj).submit();
+    // }
+    //
+    //获取cookie
+    function getCookie(cname){
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++) {
+            var c = ca[i].trim();
+            if (c.indexOf(name)==0) { return c.substring(name.length,c.length); }
+        }
+        return "";
+    }
+
+    var user_token  = getCookie('user_token');
+    // console.log(user_token)
+    function cf_validate() {
+        var tel = $.trim($('#cf_user_name').val());
+        var a = $('#cf_user_name').val()
+		var b = $('#cf_user_num').val()
+        // // console.log(a);
+        // console.log(b);
+        if(tel == ''){
+            showErrorMsg('请输入您的姓名！');
+            return false;
+        }
+        else if($('#cf_user_num').val() == ''){
+            showErrorMsg('请输入您的身份号');
+            return false;
+        }else {
+				$.ajax({
+				url : "/Mobile/api.Common/RealNameCertification",
+				type:'post',
+				dataType:'json',
+				data:{
+				    user_name:$('#cf_user_name').val(),
+					user_num:$('#cf_user_num').val(),
+					user_token:user_token
+				},
+				success:function(res){
+                    if(res.code==1){
+                    //成功
+                    showErrorMsg(res.msg);
+                    location.href = "{:U('Mobile/User/userinfo')}"
+                    }
+                    else{
+                    //失败
+                    showErrorMsg(res.msg);
+                    // $(obj).text('请刷新再试！');
+                    // $(obj).attr('id','fetchcode');
+                }
+				}
+			})
+		}
+
+    }
+    /**
+     * 提示弹窗
+     * @param msg
+     */
+    function showErrorMsg(msg){
+        layer.open({content:msg,time:2});
+    }
+</script>
+</body>
+</html>

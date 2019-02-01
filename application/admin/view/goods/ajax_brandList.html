@@ -1,0 +1,112 @@
+<table>
+    <tbody>
+    <volist name="brandList" id="list">
+        <tr data-id="{$list[id]}">
+            <td class="sign">
+                <div style="width: 24px;"><i class="ico-check"></i></div>
+            </td>
+            <td align="left" class="">
+                <div style="text-align: center; width: 80px;">{$list.id}</div>
+            </td>
+            <td align="left" class="">
+                <div style="text-align: left; width: 200px;">{$list.name}</div>
+            </td>
+            <td align="left" class="">
+                <div style="text-align: left; width: 160px;">{$list.name_en}</div>
+            </td>
+
+            <td align="center" class="">
+                <div style="text-align: center; width: 100px;height: 50px;">
+                    <i id="img_i"
+                       onMouseOver="layer.tips('<img width=120px src={$list.logo}?x-oss-process=style/s01>',this,{tips: [1, '#fff']});"
+                       onMouseOut="layer.closeAll();">
+                        <div style="width: 50px;height: 40px;">
+                            <img width="50px" src="{$list.logo}?x-oss-process=style/s01">
+                        </div>
+                    </i>
+                </div>
+            </td>
+            <td align="center" class="">
+                <div style="text-align: center; width: 160px;">{$list.country}</div>
+            </td>
+            <td align="center" class="">
+                <div style="text-align: center; width: 120px;">{$list.goodsNum}</div>
+            </td>
+            <td align="center" class="">
+                <div style="text-align: center; width: 160px;">
+                    <if $list.add_time != ''>{$list.add_time|date='Y-m-d H:i:s',###}</if>
+                </div>
+            </td>
+            <td align="center" class="">
+                <div style="text-align: center; width: 100px;">
+                    <if condition='$list[is_hot] eq 1'>
+                        <span class="yes" onClick="changeTableVal('brand','id','{$list.id}','is_hot',this)" ><i class="fa fa-check-circle"></i>是</span>
+                        <else />
+                        <span class="no" onClick="changeTableVal('brand','id','{$list.id}','is_hot',this)" ><i class="fa fa-ban"></i>否</span>
+                    </if>
+                </div>
+            </td>
+            <td align="center">
+                <div style="text-align: center; width: 100px;">
+                    <input type="text" onKeyUp="this.value=this.value.replace(/[^\d]/g,'')" onpaste="this.value=this.value.replace(/[^\d]/g,'')" onblur="changeTableVal('brand','id','{$list.id}','sort',this)" size="4" value="{$list.sort}" />
+                </div>
+            </td>
+
+            <td align="left" class="">
+                <div style="text-align: center; width: 100px;height: 50px;">
+                    <i id="img_i2"
+                       onMouseOver="layer.tips('<img width=100px src={$list.hot_logo}?x-oss-process=style/s01>',this,{tips: [1, '#fff']});"
+                       onMouseOut="layer.closeAll();">
+                        <div style="width: 50px;height: 40px;">
+                            <img width="50px" src="{$list.hot_logo}?x-oss-process=style/s01">
+                        </div>
+                    </i>
+                </div>
+            </td>
+            <td align="center" class="handle">
+                <div style="text-align: center; width: 100px;">
+                    <a class="btn red"  href="javascript:void(0)"  onclick="lianjie({$list[id]})" >品牌链接</a>
+                    <a href="{:U('Admin/goods/addEditBrand',array('id'=>$list['id'],'p'=>$_GET[p]))}" class="btn blue"><i class="fa fa-pencil-square-o"></i>编辑</a>
+                    <a class="btn red"  href="javascript:void(0)"  onclick="publicHandle('{$list[id]}','del')" ><i class="fa fa-trash-o"></i>删除</a>
+                </div>
+
+            </td>
+            <td align="" class="" style="width: 100%;">
+                <div>&nbsp;</div>
+            </td>
+        </tr>
+    </volist>
+    </tbody>
+</table>
+<!--分页位置--> {$show}
+
+<script>
+    // 点击分页触发的事件
+    $(".pagination  a").click(function(){
+        cur_page = $(this).data('p');
+        ajax_get_table('search-form2',cur_page);
+    });
+
+    function lianjie(id) {
+        layer.prompt({title: '输入品牌链接并确认', formType: 2}, function(pass, index){
+            layer.close(index);
+            $.ajax({
+                type : "POST",
+                url:"/index.php/Admin/Goods/editBrandUrl",//+tab,
+                data : {
+                    id:id,
+                    url:pass
+                },// 你的formid
+                success: function(data){
+                   if(data.data==1){
+                       layer.msg(data.msg,{icon:1})
+                   }
+                    if(data.data== -1){
+                        layer.msg(data.msg,{icon:2})
+                    }
+
+                }
+            });
+        });
+    }
+</script>

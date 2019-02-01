@@ -1,0 +1,157 @@
+<div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+    <table style="width: 100%;">
+        <tbody>
+        <if condition="empty($lists) eq true " >
+            <tr data-id="0">
+                <td class="no-data" align="center" axis="col0" colspan="50">
+                    <i class="fa fa-exclamation-circle"></i>没有符合条件的记录
+                </td>
+            </tr>
+            <else/>
+            <volist name="lists" id="list">
+                <tr data-order-id="{$list.found_id}">
+                    <td class="sign" axis="col0">
+                        <div style="width: 24px;"><i class="ico-check"></i></div>
+                    </td>
+                    <td align="left" abbr="order_sn" axis="col3" class="">
+                        <div style="text-align: center; width: 40px;" class="">{$list.found_id}</div>
+                    </td>
+                    <td align="center" abbr="article_time" axis="col6" class="">
+                        <div style="text-align: center; width: 50px;" class="">{$list.user_id}</div>
+                    </td>
+                    <td align="center" abbr="article_time" axis="col6" class="">
+                        <div style="text-align: center; width: 150px;height: 50px;overflow: hidden;clear: both;" class="">
+                            <img style="width: 34px;height:34px;border-radius: 50%;float: left;margin-top: 10px;" src="{$list.head_pic|default='http://cdn.cfo2o.com/data/avatar/1523631369812.jpg'}" alt="" class="">
+                            <div class="" style="float: left;width: 95px;text-align: left;line-height: normal;">
+                            <p>{$list.nickname}</p>
+                            <p>{$list.mobile}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td align="center" abbr="article_time" axis="col6" class="">
+                        <i id="img_i"
+                           onMouseOver="layer.tips('<img width=120px src={$list.my_photo}?x-oss-process=style/s01>',this,{tips: [1, '#fff']});"
+                           onMouseOut="layer.closeAll();">
+                            <div style="width: 60px;height: 50px;">
+                                <img width="50px" src="{$list.my_photo}?x-oss-process=style/s01">
+                            </div>
+                        </i>
+                    </td>
+                    <td align="center" abbr="article_time" axis="col6" class="">
+                        <div style="text-align: center; width: 90px;" class="">{$list.title}</div>
+                    </td>
+                    <td align="center" abbr="article_time" axis="col6" class="">
+                        <div style="text-align: center; width: 140px;" class="">{$list.slogan}</div>
+                    </td>
+                    <td align="center" abbr="article_time" axis="col6" class="">
+                        <div style="text-align: center; width: 50px;" class="">{$list.vote_number}</div>
+                    </td>
+                    <td align="center" abbr="article_time" axis="col6" class="">
+                        <div style="text-align: center; width: 60px;" class="">{$list.vote_users}</div>
+                    </td>
+                    <td align="center" abbr="article_time" axis="col6" class="">
+                        <if condition='$list[status] eq 1'>
+                            <div style="text-align: center; width: 50px;" class="">{$list.ranking}</div>
+                            <else/>
+                            <div style="text-align: center; width: 50px;" class="">-</div>
+                        </if>
+                    </td>
+                    <td align="center" abbr="article_time" axis="col6" class="">
+                            <div style="text-align: center; width: 110px;" class="">
+                                <if  condition='$list[found_time] neq 0'>
+                                    {$list.found_time|date='m-d H:i',###}
+                                </if>
+                            </div>
+                    </td>
+                    <td align="center" abbr="article_time" axis="col6" class="">
+                        <div style="text-align: center; width: 60px;height: 50px;" class="cqsz">
+                            <if condition='$list[status] eq 1'>
+                                <span class="yes" onClick="changeCfTableVal('{$list.found_id}',this,0)" ><i class="fa fa-check-circle"></i>是</span>
+                                <else />
+                                <span class="no" onClick="changeCfTableVal('{$list.found_id}',this,1)" ><i class="fa fa-ban"></i>否</span>
+                            </if>
+                        </div>
+                    </td>
+                    <td align="center" axis="col1" class="handle" align="center">
+                        <div style="text-align: center; margin-top: 14px;">
+                            <a class="btn green" onclick="votingRecord({$list.found_id},{$list.vote_number})"><i class="fa fa-list-alt"></i>投票记录</a>
+                            <a class="btn green" onclick="deletevote({$list.found_id})"><i class="fa fa-list-alt"></i>删除</a>
+                        </div>
+                    </td>
+                    <td align="" class="" style="width: 100%;">
+                        <div>&nbsp;</div>
+                    </td>
+                </tr>
+            </volist>
+        </if>
+        </tbody>
+    </table>
+</div>
+<div class="ftitle" style="float:left;line-height: 60px;">
+    <h5 ></h5>
+</div>
+<div class="partnerList">
+    {$page}
+</div>
+
+<script>
+    // 点击分页触发的事件
+    $(".pagination  a").click(function(){
+        cur_page = $(this).data('p');
+        ajax_get_table('search-form2',cur_page);
+    });
+    function search_agent(real_name) {
+        $('#identity').val(2);
+        $('#keywords').val(real_name);
+        ajax_get_table('search-form2',1);
+    }
+    $('.ftitle>h5').empty().html("共{$count}条记录");
+
+    function changeCfTableVal(id_value,obj,value) {
+        $.ajax({
+            url:"/index.php?m=Admin&c=Vote&a=changeCfTableVal&table="+"&id_value="+id_value+'&value='+value,
+            success: function(data){
+                if(data.status == 1){
+                    $(obj).closest('.cqsz').html("<span class=\"yes\" onClick=\"changeCfTableVal('{$list.found_id}',this,0)\" ><i class=\"fa fa-check-circle\"></i>是</span>");
+                }else {
+                    $(obj).closest('.cqsz').html("<span class=\"no\" onClick=\"changeCfTableVal('{$list.found_id}',this,1)\" ><i class=\"fa fa-ban\"></i>否</span>");
+                }
+                layer.alert('操作成功')
+            }
+        });
+    }
+    function deletevote(v) {
+        layer.confirm('确定要删除该参赛人员吗？该过程不可逆', {
+            btn: ['确认','取消'] //按钮
+        }, function(){
+            $.ajax({
+                url:"/index.php?m=Admin&c=Vote&a=delVoteUser&&found_id="+v,
+                success: function(data){
+                    if(data.code == 200){
+                        layer.msg(data.msg, {icon: 1});
+                        setTimeout(function () {
+                            location.reload();
+                        },2000)
+                    }else {
+                        layer.msg(data.msg, {icon: 1});
+                        setTimeout(function () {
+                            location.reload();
+                        },2000)
+                    }
+                }
+            });
+        });
+    }
+
+    function votingRecord(found_id,vote_number) {
+        //iframe层
+        layer.open({
+            type: 2,
+            title: "投票记录("+vote_number+')',
+            shadeClose: true,
+            shade: 0.8,
+            area: ['520px', '90%'],
+            content: "/index.php?m=Admin&c=Vote&a=votingRecord&found_id="+found_id //iframe的url
+        });
+    }
+</script>

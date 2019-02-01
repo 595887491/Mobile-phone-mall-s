@@ -1,0 +1,15 @@
+#cf_new_num{
+    width: 3.2rem;
+    height: 1.5rem;
+    background-color: #F54E78;
+    color: white;
+    font-size: .5rem;
+    line-height: 1.5rem;
+    margin-top: -1.2rem;
+    border-radius: .8rem;
+    text-align: center;
+}
+#sub{
+    background-color: #F54E78;
+    margin-top: 1.5rem;
+}

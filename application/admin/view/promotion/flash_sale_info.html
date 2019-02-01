@@ -1,0 +1,512 @@
+<include file="public/layout" />
+<style>
+    html, body {
+        overflow: visible;
+    }
+    dd.opt table{
+        width: 100%;
+    }
+    dd.opt tr{
+        border: 1px solid #f4f4f4;
+        padding: 8px;
+    }
+    dd.opt tr td{
+        border: 1px solid #f4f4f4;
+    }
+    .ys-btn-close {
+        position: relative;
+        top: -12px;
+        left: -16px;
+        width: 18px;
+        height: 18px;
+        border: 1px solid #ccc;
+        line-height: 18px;
+        text-align: center;
+        display: inline-block;
+        border-radius: 50%;
+        z-index: 1;
+        background-color: #fff;
+        cursor: pointer;
+    }
+    .selected-group-goods {
+        background-color: #FFF;
+        width: 162px;
+        padding: 9px;
+        margin-bottom: 10px;
+        border: solid 1px #E6E6E6;
+        box-shadow: 2px 2px 0 rgba(153,153,153,0.1);
+    }
+    .err{color:#F00; display:none;}
+    .clearfix{clear: both;overflow: hidden;}
+    .clearfix >div{position: relative;}
+    .clearfix >div span{position: absolute;}
+    .fl{float: left} .fr{float: right;}
+    input[type="text"]{width: 62px;}
+    .goods-name{line-height: 18px;min-height: 60px;}
+</style>
+<load href="__ROOT__/public/plugins/Ueditor/ueditor.config.js"/>
+<load href="__ROOT__/public/plugins/Ueditor/ueditor.all.min.js"/>
+<script type="text/javascript" charset="utf-8" src="__ROOT__/public/plugins/Ueditor/lang/zh-cn/zh-cn.js"></script>
+<script src="__ROOT__/public/static/js/layer/laydate/laydate.js"></script>
+
+<body style="background-color: #FFF; overflow: auto;">
+<div id="toolTipLayer" style="position: absolute; z-index: 9999; display: none; visibility: visible; left: 95px; top: 573px;"></div>
+<div id="append_parent"></div>
+<div id="ajaxwaitid"></div>
+<div class="page">
+    <div class="fixed-bar">
+        <div class="item-title"><a class="back" href="javascript:history.back();" title="返回列表"><i class="fa fa-arrow-circle-o-left"></i></a>
+            <div class="subject">
+                <h3>促销管理 - 编辑抢购</h3>
+                <h5>网站系统抢购活动详情页</h5>
+            </div>
+        </div>
+    </div>
+    <form class="form-horizontal" id="handleposition" method="post">
+        <div class="ncap-form-default">
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>抢购标题</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" name="title" id="title" value="{$info.title}" class="input-txt">
+                    <span class="err" id="err_title"></span>
+                    <p class="notic">请填写抢购标题</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>开始时间</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" id="start_time" name="start_time" value="{$info.start_time}"  class="input-txt">
+                    <span class="err" id="err_start_time"></span>
+                    <p class="notic">抢购开始时间</p>
+                    <p class="hint" style="color:red"><strong>重要:抢购时间是从凌晨0:00:00秒开始, 每隔2小时一个节点, 所以活动时间必须是两小时之内才有效, (例如今天是2017年1月1日下午2点场,<br/>那活动开始和结束时间必须是:2017-01-01 14:00:01 ~ 2017-01-01 15:59:59 时间范围内), 否则前端无法显示活动信息</strong></p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>结束时间</label>
+                </dt>
+                <dd class="opt">
+                    <input type="text" id="end_time" name="end_time" value="{$info.end_time}" class="input-txt">
+                    <span class="err" id="err_end_time"></span>
+                    <p class="notic">抢购结束时间</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label>活动描述</label>
+                </dt>
+                <dd class="opt">
+                    <textarea placeholder="请输入活动描述" name="flash_desc" rows="6" class="tarea">{$info.flash_desc}</textarea>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label><em>*</em>选择优惠商品</label>
+                </dt>
+                <dd class="opt">
+                    <span class="err" id="err_goods" style="color:#F00; display:none;">请添加优惠商品</span>
+                    <p class="notic">
+                        <a onclick="selectGoods()" class="ncap-btn"><i class="fa fa-search"></i>选择商品</a>
+                        <a class="ncap-btn">
+                            <label for="FileUpload">
+                                <i class="fa fa-share"></i>上传文件
+                                <input type="file" name="FileUpload" id="FileUpload" onchange="uploadFile();" accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" style="display: none;">
+                            </label>
+                        </a>
+                        <a href="{:U('admin/Promotion/downloadExcel')}">下载导入模版</a>
+                    </p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
+                    <label> </label>
+                </dt>
+                <dd class="opt">
+                    <div style="overflow: hidden;" id="selected_group_goods">
+                        <div class="flexigrid">
+                            <div class="hDiv">
+                                <div class="hDivBox">
+                                    <table cellspacing="0" cellpadding="0">
+                                        <thead>
+                                        <tr>
+                                            <th class="sign" axis="col0" onclick="checkAllSign(this)">
+                                                <div style="width: 24px;"><i class="ico-check"></i></div>
+                                            </th>
+                                            <th align="left" abbr="article_title" axis="col3" class="">
+                                                <div style="text-align: left; width: 50px;" class="">商品ID</div>
+                                            </th>
+                                            <th align="left" abbr="article_time" axis="col6" class="">
+                                                <div style="text-align: center; width: 60px;" class="">商品图片</div>
+                                            </th>
+                                            <th align="center" abbr="article_time" axis="col6" class="">
+                                                <div style="text-align: center; width: 200px;" class="">商品名称</div>
+                                            </th>
+                                            <th align="center" abbr="article_time" axis="col6" class="">
+                                                <div style="text-align: center; width: 80px;" class="">商城价</div>
+                                            </th>
+                                            <th align="center" abbr="article_time" axis="col6" class="">
+                                                <div style="text-align: center; width: 80px;" class="">库存</div>
+                                            </th>
+                                            <th align="center" abbr="article_time" axis="col6" class="">
+                                                <div style="text-align: center; width: 60px;" class="">秒杀价</div>
+                                            </th>
+                                            <th align="center" abbr="article_time" axis="col6" class="">
+                                                <div style="text-align: center; width: 60px;" class="">秒杀库存</div>
+                                            </th>
+                                            <th align="center" abbr="article_time" axis="col6" class="">
+                                                <div style="text-align: center; width: 60px;" class="">限购数量</div>
+                                            </th>
+                                            <th align="center" abbr="article_time" axis="col6" class="">
+                                                <div style="text-align: center; width:60px;" class="">排序</div>
+                                            </th>
+                                            <th align="left" axis="col1" class="handle">
+                                                <div style="text-align: center; width: 80px; max-width:300px;">操作</div>
+                                            </th>
+                                            <th style="width:100%" axis="col7">
+                                                <div></div>
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="bDiv" style="height: auto;">
+                                <div id="flexigrid" cellpadding="0" cellspacing="0" border="0">
+                                    <table>
+                                        <tbody id="tbody">
+                                        <foreach name="$goodsList" item="goods" key="key">
+                                            <if condition="$goods.item_id eq 0">
+                                            <tr id="tr_{$key}">
+                                                <input type="hidden" name="goods[{$key}][goods_id]" value="{$goods.goods_id}"/>
+                                                <input type="hidden" name="goods[{$key}][item_id]" value="{$goods.item_id}"/>
+                                                <input type="hidden" name="goods[{$key}][goods_name]" value="{$goods.goods_name}"/>
+                                                <input type="hidden" name="goods[{$key}][store_count]" value="{$goods.store_count}"/>
+                                                <td class="sign">
+                                                    <div style="width: 24px;"><i class="ico-check"></i></div>
+                                                </td>
+                                                <td align="left" class="">
+                                                    <div style="text-align: left; width: 50px;">{$goods.goods_id}</div>
+                                                </td>
+                                                <td align="left" class="">
+                                                    <div style="text-align: center; width: 60px; height: 40px;"><img width="40px" onmouseover="layer.tips('<img width=120px src={$goods.original_img}?x-oss-process=style/s01>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();" src="{$goods.original_img}?x-oss-process=style/s01"></div>
+                                                </td>
+                                                <td align="left" class="">
+                                                    <div style="text-align: center; width: 200px;">{$goods.goods_name}{$goods.key_name}</div>
+                                                </td>
+                                                <td align="left" class="">
+                                                    <div style="text-align: center; width: 80px;">{$goods.shop_price}</div>
+                                                </td>
+                                                <td align="left" class="">
+                                                    <div style="text-align: center; width: 80px;">{$goods.store_count}</div>
+                                                </td>
+                                                <td align="left" class="">
+                                                    <div style="text-align: center; width: 60px;"><input type="text" name="goods[{$key}][price]" value="{$goods.price}" style="text-align: left;width: 50px;"></div>
+                                                </td>
+                                                <td align="left" class="">
+                                                    <div style="text-align: center; width: 60px;"><input type="text" name="goods[{$key}][goods_num]" value="{$goods.goods_num}" style="text-align: left;width: 50px;"></div>
+                                                </td>
+                                                <td align="left" class="">
+                                                    <div style="text-align: center; width: 60px;"><input type="text" name="goods[{$key}][limit]" value="{$goods.buy_limit}" style="text-align: left;width: 50px;"></div>
+                                                </td>
+                                                <td align="left" class="">
+                                                    <div style="text-align: center; width: 60px;"><input type="text" name="goods[{$key}][flash_order]" value="{$goods.flash_order}" style="text-align: left;width: 50px;"></div>
+                                                </td>
+                                                <td align="left" class="handle">
+                                                    <div style="text-align: center; width: 80px; max-width:300px;">
+                                                        <a class="btn red" href="javascript:void(0)" onClick="delfun({$key})"><i class="fa fa-trash-o"></i>移除</a>
+                                                    </div>
+                                                </td>
+                                                <td align="" class="" style="width: 100%;">
+                                                    <div>&nbsp;</div>
+                                                </td>
+                                            </tr>
+                                            <else/>
+                                                <tr id="tr_{$key}">
+                                                    <input type="hidden" name="goods[{$key}][goods_id]" value="{$goods.goods_id}"/>
+                                                    <input type="hidden" name="goods[{$key}][item_id]" value="{$goods.item_id}"/>
+                                                    <input type="hidden" name="goods[{$key}][goods_name]" value="{$goods.goods_name}"/>
+                                                    <input type="hidden" name="goods[{$key}][store_count]" value="{$goods.spec_store_count}"/>
+                                                    <td class="sign">
+                                                        <div style="width: 24px;"><i class="ico-check"></i></div>
+                                                    </td>
+                                                    <td align="left" class="">
+                                                        <div style="text-align: left; width: 50px;">{$goods.goods_id}</div>
+                                                    </td>
+                                                    <td align="left" class="">
+                                                        <div style="text-align: center; width: 60px; height: 40px;"><img width="40px" onmouseover="layer.tips('<img width=120px src={$goods.original_img}?x-oss-process=style/s01>',this,{tips: [1, '#fff']});" onmouseout="layer.closeAll();" src="{$goods.original_img}?x-oss-process=style/s01"></div>
+                                                    </td>
+                                                    <td align="left" class="">
+                                                        <div style="text-align: center; width: 200px;height: 38px;">{$goods.goods_name}<br>{$goods.key_name}</div>
+                                                    </td>
+                                                    <td align="left" class="">
+                                                        <div style="text-align: center; width: 80px;">{$goods.spec_price}</div>
+                                                    </td>
+                                                    <td align="left" class="">
+                                                        <div style="text-align: center; width: 80px;">{$goods.spec_store_count}</div>
+                                                    </td>
+                                                    <td align="left" class="">
+                                                        <div style="text-align: center; width: 60px;"><input type="text" name="goods[{$key}][price]" value="{$goods.price}" style="text-align: left;width: 50px;"></div>
+                                                    </td>
+                                                    <td align="left" class="">
+                                                        <div style="text-align: center; width: 60px;"><input type="text" name="goods[{$key}][goods_num]" value="{$goods.goods_num}" style="text-align: left;width: 50px;"></div>
+                                                    </td>
+                                                    <td align="left" class="">
+                                                        <div style="text-align: center; width: 60px;"><input type="text" name="goods[{$key}][limit]" value="{$goods.buy_limit}" style="text-align: left;width: 50px;"></div>
+                                                    </td>
+                                                    <td align="left" class="">
+                                                        <div style="text-align: center; width: 60px;"><input type="text" name="goods[{$key}][flash_order]" value="{$goods.flash_order}" style="text-align: left;width: 50px;"></div>
+                                                    </td>
+                                                    <td align="left" class="handle">
+                                                        <div style="text-align: center; width: 80px; max-width:300px;">
+                                                            <a class="btn red" href="javascript:void(0)" onClick="delfun({$key})"><i class="fa fa-trash-o"></i>移除</a>
+                                                        </div>
+                                                    </td>
+                                                    <td align="" class="" style="width: 100%;">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                </tr>
+                                            </if>
+                                        </foreach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="iDiv" style="display: none;"></div>
+                            </div>
+                            <!--分页位置-->
+                            </div>
+                    </div>
+                    <p class="notic">
+                        <a onclick="delSelectGoods()" class="ncap-btn"><i class="fa fa-trash-o"></i>移除选中商品</a>
+                    </p>
+
+                </dd>
+            </dl>
+            <div class="bot"><a id="submit" onclick="verifyForm();" class="ncap-btn-big ncap-btn-green">确认提交</a></div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    var goodsIndex = {:count($goodsList)};
+    $(document).ready(function(){
+        $('#start_time').layDate();
+        $('#end_time').layDate();
+    })
+    $(document).ready(function(){
+        // 表格行点击选中切换
+        $('#flexigrid > table>tbody >tr').on('click',function(){
+            $(this).toggleClass('trSelected');
+        });
+
+        // 点击刷新数据
+        $('.fa-refresh').click(function(){
+            location.href = location.href;
+        });
+    });
+    var ajax_return_status = 1; // 标识ajax 请求是否已经回来 可以进行下一次请求
+    function verifyForm(){
+        $('span.err').hide();
+        if (ajax_return_status == 0) {
+            return false;
+        }
+        ajax_return_status = 0;
+        $.ajax({
+            type: "POST",
+            url: "{:U('Admin/Promotion/flash_sale_info')}",
+            data: $('#handleposition').serialize(),
+            dataType: "json",
+            error: function () {
+                layer.alert("服务器繁忙, 请联系管理员!");
+            },
+            success: function (data) {
+                if (data.status == 1) {
+                    layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+                        location.href = "{:U('Admin/Promotion/flash_sale')}";
+                    });
+                } else {
+                    layer.msg(data.msg, {icon: 2,time: 1000});
+                    $.each(data.result, function (index, item) {
+                        $('#err_' + index).text(item).show();
+                    });
+                    ajax_return_status = 1;
+                }
+            }
+        });
+    }
+    function call_back(goodsItem) {
+        console.log(goodsItem)
+        var html= '';
+        $.each(goodsItem, function (index, item) {
+            item.price      = typeof item.price == 'undefined' ? '' : item.price;
+            item.goods_num  = typeof item.goods_num == 'undefined' ? '' : item.goods_num;
+            item.buy_limit  = typeof item.buy_limit == 'undefined' ? '0' : item.buy_limit;
+            item.flash_order = typeof item.flash_order == 'undefined' ? '99' : item.flash_order;
+            if (item.spec != null) {
+                //有规格
+                $.each(item.spec, function (i, o) {
+                    goodsIndex++;
+                    html += '<tr id="tr_'+goodsIndex+'">\
+                    <input type="hidden" name="goods['+goodsIndex+'][goods_id]" value="'+item.goods_id+'"/>\
+                    <input type="hidden" name="goods['+goodsIndex+'][item_id]" value="'+o.item_id+'"/>\
+                    <input type="hidden" name="goods['+goodsIndex+'][goods_name]" value="'+item.goods_name+'"/>\
+                    <input type="hidden" name="goods['+goodsIndex+'][store_count]" value="'+o.store_count+'"/>\
+                    <td class="sign">\
+                        <div style="width: 24px;"><i class="ico-check"></i></div>\
+                    </td>\
+                    <td align="left" class="">\
+                        <div style="text-align: left; width: 50px;">'+item.goods_id+'</div>\
+                    </td>\
+                    <td align="left" class="">\
+                        <div style="text-align: center; width: 60px; height: 40px;"><img width="40px" onmouseover="layer.tips(\'<img width=120px src='+item.goods_image+'?x-oss-process=style/s01>\',this,{tips: [1, \'#fff\']});" onmouseout="layer.closeAll();" src="'+item.goods_image+'?x-oss-process=style/s01"></div>\
+                    </td>\
+                    <td align="left" class="">\
+                        <div style="text-align: center; width: 200px;height: 38px;">'+item.goods_name+'<br>'+o.key_name+'</div>\
+                    </td>\
+                    <td align="left" class="">\
+                        <div style="text-align: center; width: 80px;">'+o.price+'</div>\
+                    </td>\
+                    <td align="left" class="">\
+                        <div style="text-align: center; width: 80px;">'+o.store_count+'</div>\
+                    </td>\
+                    <td align="left" class="">\
+                        <div style="text-align: center; width: 60px;"><input type="text" name="goods['+goodsIndex+'][price]" value="'+item.price+'" style="text-align: left;width: 50px;"></div>\
+                    </td>\
+                    <td align="left" class="">\
+                        <div style="text-align: center; width: 60px;"><input type="text" name="goods['+goodsIndex+'][goods_num]" value="'+item.goods_num+'" style="text-align: left;width: 50px;"></div>\
+                    </td>\
+                    <td align="left" class="">\
+                        <div style="text-align: center; width: 60px;"><input type="text" name="goods['+goodsIndex+'][limit]" value="'+item.buy_limit+'" style="text-align: left;width: 50px;"></div>\
+                    </td>\
+                    <td align="left" class="">\
+                        <div style="text-align: center; width: 60px;"><input type="text" name="goods['+goodsIndex+'][flash_order]" value="'+item.flash_order+'" style="text-align: left;width: 50px;"></div>\
+                    </td>\
+                    <td align="left" class="handle">\
+                        <div style="text-align: center; width: 80px; max-width:300px;">\
+                    <a class="btn red" href="javascript:void(0)" onClick="delfun('+goodsIndex+')"><i class="fa fa-trash-o"></i>移除</a>\
+                    </div>\
+                    </td>\
+                    <td align="" class="" style="width: 100%;">\
+                    <div>&nbsp;</div>\
+                    </td>\
+                    </tr>';
+                });
+            } else {
+                goodsIndex++;
+                html += '<tr id="tr_'+goodsIndex+'">\
+                    <input type="hidden" name="goods['+goodsIndex+'][goods_id]" value="'+item.goods_id+'"/>\
+                    <input type="hidden" name="goods['+goodsIndex+'][item_id]" value=""/>\
+                    <input type="hidden" name="goods['+goodsIndex+'][goods_name]" value="'+item.goods_name+'"/>\
+                    <input type="hidden" name="goods['+goodsIndex+'][store_count]" value="'+item.store_count+'"/>\
+                    <td class="sign">\
+                        <div style="width: 24px;"><i class="ico-check"></i></div>\
+                    </td>\
+                    <td align="left" class="">\
+                        <div style="text-align: left; width: 50px;">'+item.goods_id+'</div>\
+                    </td>\
+                    <td align="left" class="">\
+                        <div style="text-align: center; width: 60px; height: 40px;"><img width="40px" onmouseover="layer.tips(\'<img width=120px src='+item.goods_image+'?x-oss-process=style/s01>\',this,{tips: [1, \'#fff\']});" onmouseout="layer.closeAll();" src="'+item.goods_image+'?x-oss-process=style/s01"></div>\
+                    </td>\
+                    <td align="left" class="">\
+                        <div style="text-align: center; width: 200px;">'+item.goods_name+'</div>\
+                    </td>\
+                    <td align="left" class="">\
+                        <div style="text-align: center; width: 80px;">'+item.goods_price+'</div>\
+                    </td>\
+                    <td align="left" class="">\
+                        <div style="text-align: center; width: 80px;">'+item.store_count+'</div>\
+                    </td>\
+                    <td align="left" class="">\
+                        <div style="text-align: center; width: 60px;"><input type="text" name="goods['+goodsIndex+'][price]" value="'+item.price+'" style="text-align: left;width: 50px;"></div>\
+                    </td>\
+                    <td align="left" class="">\
+                        <div style="text-align: center; width: 60px;"><input type="text" name="goods['+goodsIndex+'][goods_num]" value="'+item.goods_num+'" style="text-align: left;width: 50px;"></div>\
+                    </td>\
+                    <td align="left" class="">\
+                        <div style="text-align: center; width: 60px;"><input type="text" name="goods['+goodsIndex+'][limit]" value="'+item.buy_limit+'" style="text-align: left;width: 50px;"></div>\
+                    </td>\
+                    <td align="left" class="">\
+                        <div style="text-align: center; width: 60px;"><input type="text" name="goods['+goodsIndex+'][flash_order]" value="'+item.flash_order+'" style="text-align: left;width: 50px;"></div>\
+                    </td>\
+                    <td align="left" class="handle">\
+                        <div style="text-align: center; width: 80px; max-width:300px;">\
+                    <a class="btn red" href="javascript:void(0)" onClick="delfun('+goodsIndex+')"><i class="fa fa-trash-o"></i>移除</a>\
+                    </div>\
+                    </td>\
+                    <td align="" class="" style="width: 100%;">\
+                    <div>&nbsp;</div>\
+                    </td>\
+                    </tr>';
+            }
+        });
+        $("#tbody").append(html);
+        layer.closeAll();
+        $('#flexigrid > table>tbody >tr').on('click',function(){
+            $(this).toggleClass('trSelected');
+        });
+    }
+
+    function img_call_back(fileurl_tmp) {
+        $("#prom_img").val(fileurl_tmp);
+        $("#img_a").attr('href', fileurl_tmp);
+        $("#img_i").attr('onmouseover', "layer.tips('<img src="+fileurl_tmp+">',this,{tips: [1, '#fff']});");
+    }
+
+    function selectGoods(){
+        var url = "{:U('Promotion/search_goods',array('prom_type'=>1,'start_time'=>urlencode($info[start_time])))}";
+        layer.open({
+            type: 2,
+            title: '选择商品',
+            shadeClose: true,
+            maxmin:true,
+            shade: 0.3,
+            area: ['90%', '90%'],
+            content: url,
+        });
+    }
+
+    function uploadFile(e){
+        var fileObj = document.getElementById("FileUpload").files[0]; // js 获取文件对象
+        if (typeof (fileObj) == "undefined" || fileObj.size <= 0) {
+            return;
+        }
+        var formFile = new FormData();
+        formFile.append("file", fileObj); //加入文件对象
+        var data = formFile;
+        document.getElementById("FileUpload").value = '';//选择相同文件无法触发change事件的问题
+        $.ajax({
+            url: "{:U('admin/Promotion/dealFlashFile')}",
+            data: data,
+            type: "post",
+            dataType: "json",
+            cache: false,//上传文件无需缓存
+            processData: false,//用于对data参数进行序列化处理 这里必须false
+            contentType: false, //必须
+            success: function (result) {
+                if (result.status == 1) {
+                    call_back(result.data);
+                }
+            }
+        })
+    }
+    function  delfun(key) {
+        layer.confirm('确定要移除该商品？',{
+            btn: ['确定', '取消'] //按钮
+        },function () {
+            $("#tr_"+key).remove();
+            layer.closeAll();
+        });
+    }
+    function delSelectGoods() {
+        layer.confirm('确定要移除该选中项吗？',{
+            btn: ['确定', '取消'] //按钮
+        },function () {
+            $("tr.trSelected").remove();
+            layer.closeAll();
+        });
+    }
+</script>
+</body>
+</html>

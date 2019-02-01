@@ -1,0 +1,221 @@
+.cf_nickstaut{
+    display: inline-block;
+    font-size: .5rem;
+    margin-top: .4rem;
+    width: 2.5rem;
+    height: .8rem;
+    line-height: .7rem;
+    text-align: center;
+    border-radius: .5rem;
+    /*opacity: .5;*/
+    border: 2px solid #fff;
+}
+.Mright{
+    opacity: .45;
+}
+.cf_user_set{
+    float: left;
+    margin-left: .5rem;
+}
+.cf_user_code{
+    position: absolute;
+    right: 0;
+    top: 2.6rem;
+}
+.my .content .floor_order ul li {
+    width: 25%;
+}
+.cf_order_list{
+    background-color: white;
+    margin-top: .5rem;
+    height: 7.4rem;
+    padding-top: .8rem;
+    overflow: hidden;
+}
+.cf_order_list ul {
+    list-style: none;
+}
+.cf_order_list ul li {
+    width: 25%;
+    float: left;
+    text-align: center;
+}
+.cf_order_list ul li img{
+    width: 1rem;
+    height: 1rem;
+}
+.cf_order_list ul li span{
+    font-size: .6rem;
+    color: #1E1B1B;
+}
+.cf_floor_ul li a img{
+    width: 1rem;
+    height: 1rem;
+}
+
+.guesslike ul li:nth-child(2n) .similer-product,.guesslike ul li:nth-child(2n+1) .similer-product{
+    float: none;
+    padding: 0;
+    margin-left: 0;
+    margin-right: 0;
+}
+.guesslike ul{
+    -moz-column-count:2; /* Firefox */
+    -webkit-column-count:2; /* Safari 和 Chrome */
+    column-count:2;
+    -moz-column-gap: 1em;
+    -webkit-column-gap: 1em;
+    column-gap: 1em;
+}
+.guesslike ul li{
+    width: 49.5%;
+    float: none;
+    position: static;
+    margin: 0 0 1em 0;
+    -moz-page-break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+    break-inside: avoid;
+    background-color: white;
+    border-radius: .4rem;
+    overflow: hidden;
+}
+.products_kuang{
+    position: relative;
+}
+.cf_span_pre{
+    display: inline-block;
+    width: 1.6rem;
+    background: #ED1E31;
+    height: .8rem;
+    font-size: .5rem;
+    color: white;
+    text-align: center;
+    line-height: .8rem;
+    border-radius: .5rem;
+    margin-left: .2rem;
+    /*top: 7.2rem;*/
+    margin-top: .2rem;
+    margin-bottom: .2rem;
+}
+.guesslike .likeshop ul li .similer-product .similar-product-text {
+    line-height: .7rem;
+    padding-left: .3rem;
+}
+.cf_span_comment {
+    font-size: .6rem;
+    color: #676464;
+    line-height: .75rem;
+    word-wrap: break-word;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    height: 1.4rem;
+    display: inline-block;
+    width: 7rem;
+    /*margin-top: .5rem;*/
+    padding-left: .3rem;
+}
+.similar-product-price .big-price {
+    font-size: .65rem;
+    margin-left: .1rem;
+}
+.similar-product-price .guess-button {
+    width: 2rem;
+    height: .9rem;
+    line-height: .9rem;
+    color: #FF407E;
+    border: 1px solid #FF407E;
+    border-radius: .5rem;
+    font-size: .45rem;
+    /* margin-top: -.05rem; */
+}
+.similar-product-price {
+    color: #F22256;
+    font-size: .42667rem;
+    display: block;
+    padding: 0 .21333rem;
+    position: relative;
+    top: .5rem;
+    height: .55467rem;
+    line-height: .55467rem;
+    padding-bottom: 1.8rem;
+}
+.guesslike ul li .similer-product img {
+    width: 100%;
+    /*width: 7.3rem;*/
+    height: 7.3rem;
+}
+.similar-product-text {
+    display: block;
+    /*display: -webkit-box;*/
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    height: .64rem;
+    font-size: .51000rem;
+    overflow: hidden;
+    color: #232326;
+    /* margin-top: .34133rem; */
+    line-height: .64rem;
+    padding: 0 .1rem;
+    margin-bottom: .34133rem;
+    margin-top: .1rem;
+}
+.my{
+    margin-bottom: 0;
+}
+.myorder .order .fl img{
+    width: .15rem;
+    height: .55rem;
+}
+.my .content .floor_order ul li{
+    width: 20%;
+}
+.my .content .floor li>a>span {
+    box-sizing: content-box;
+    background-color: #FF407E;
+    border-radius: .35rem;
+    font-size: .469333rem;
+    min-width: .4rem;
+    max-width: .8rem;
+    height: .67rem;
+    padding: 0 .128rem;
+    line-height: .655rem;
+    position: absolute;
+    left: 1.9rem;
+    top: .2rem;
+    color: white;
+    overflow: hidden;
+}
+.my .content .floor ul li a p{
+    margin-top: .4rem;
+}
+.notice{
+    position: absolute;
+    display: inline-block;
+    width: .7rem;
+    height: .7rem;
+    background-color:#ED1E31;
+    color: #fff;
+    border-radius: 50%;
+    line-height: .7rem;
+    text-align: center;
+    font-size: .4rem;
+    top: -.2rem;
+    right:1.2rem;
+}
+.myhearder .person .lors{
+    margin-top: .3rem;
+}
+.Easy{background-color: #fff;padding:0 .64rem;font-size: .62rem;color: #5B5858;line-height: 1.7rem;}
+.Easy::after{content: '';display: block;visibility: hidden;height: 0;font-size: 0;clear: both;}
+.Easy a{display: block;width: 3rem;font-size: .6rem;border: 2px solid #FF407E;color: #FF407E;text-align: center;height: 1rem;line-height: 1rem;
+    margin-right: .6rem;margin-top: .35rem;border-radius: .1rem;}
+.Easy img{width: .6rem;}
+.rankActive{
+    width: 100%;
+    height:3.2rem;
+    margin-top: .3rem;
+}
+.rankActive img{
+    width: 100%;
+    height: 3.2rem;
+}

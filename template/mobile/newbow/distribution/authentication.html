@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>实名认证</title>
+    <link rel="stylesheet" href="__STATIC__/css/style.css">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/categoryList.css"/>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/mobile-util.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
+</head>
+<include file="public/header_nav" title="实名认证" href="javascript:history.back()"/>
+<link rel="stylesheet" href="__STATIC__/css/new/authentication.css">
+<body>
+<!--<div class="header">实名认证</div>-->
+<div class="phone">
+    <p>注册手机号</p>
+    <span id="cf_phones">{$mobile}</span>
+</div>
+<if condition="$is_auth neq 1">
+    <div  class="form">
+        <div>
+            <p>姓名</p>
+            <input type="text" placeholder="请输入您的真实姓名" class="user_name" onkeyup="key(event)"
+                   pattern="^[\u4E00-\u9FA5A-Za-z]+$">
+        </div>
+        <div>
+            <p>身份证</p>
+            <input type="text" placeholder="请输入您的真实的证件号" class="ID" onkeyup="key(event)"
+                   pattern ="^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|[x,X])$">
+        </div>
+        <!--<input type="button" value="提交认证" class="submit-btn" onclick="foo()">-->
+    </div>
+
+<!--已认证-e-->
+
+<!--未认证-s-->
+ <else/>
+<!--已认证-s-->
+    <div class="is_accepted">
+        <div>
+            <p style="margin-bottom: .5rem;">姓名</p>
+            <div class="as">{$id_card_name}</div>
+        </div>
+        <div style="margin: 1.5rem 0;margin-bottom: 2rem;">
+            <p style="margin-bottom: .5rem;">身份证</p>
+            <div class="as">{$id_card_num}</div>
+        </div>
+    </div>
+</if>
+<!--已认证-e-->
+
+<div class="hint">
+    <p style="padding-bottom: .5rem;">温馨提示</p>
+    <p>真实姓名一旦认证无法修改，认证通过后，您提现时绑定的银行开户人必须同认证姓名一致，否则无法完成提现！</p>
+</div>
+<if condition="$is_auth neq 1">
+<input type="button" value="提交认证" class="submit-btn" onclick="foo()">
+</if>
+<div class="success_box">
+    <div class="success">
+        <!--<i class="iconfont">&#xa94c;</i>-->
+        <img src="__STATIC__/images/cf_approve_success.png" alt="">
+        <p>认证成功！</p>
+        <div class="btn">
+            <if condition="$Request.param.source eq 'apply_partner'">
+                <a href="{:U('distribution/selectAddress')}">朕知道了</a>
+            <else/>
+                <a href="javascript:history.back();">朕知道了</a>
+            </if>
+        </div>
+
+    </div>
+</div>
+
+</body>
+<script>
+   function foo() {
+       var divs = $('.form>div');
+       var alt = '<p class="wrong"></p>';
+       for(var i = 0; i< divs.length ; i++){
+           if(divs.eq(i).find('input[type="text"]').val() == '') {
+               divs.eq(i).append(alt)
+               i== 0 ?  divs.eq(i).find('.wrong').html( '请输入姓名') : divs.eq(i).find('.wrong').html('请输入身份证号码');
+               divs.eq(i).find('input[type="text"]').css('border-color','red');
+               if( divs.eq(i).find('.wrong').length >1) {
+                   // console.log(divs.eq(i).find('.wrong').length)
+                   divs.eq(i).find('.wrong:last-of-type').remove();
+               }
+
+           }
+          else {
+               var txt = divs.eq(i).find('input[type="text"]');
+               var reg  =txt.attr('pattern');
+               var regExp = new RegExp(reg);
+               var v = txt.val()
+               if(! regExp.test(v)) {
+                   divs.eq(i).append(alt)
+                   i== 0 ?  divs.eq(i).find('.wrong').html( '请输入正确的姓名') : divs.eq(i).find('.wrong').html('请输入正确的身份证号码');
+                   if( divs.eq(i).find('.wrong').length >1) {
+                       // console.log(divs.eq(i).find('.wrong').length)
+                       divs.eq(i).find('.wrong:last-of-type').remove();
+                   }
+               }
+           }
+       }
+       if($('.form').find('.wrong').length ==0 ) {
+           $.ajax({
+               url : "{:U('Api/User/RealNameCertification')}",
+               type:'post',
+               dataType:'json',
+               data:{
+                   user_name: $('.user_name').val(),
+                   user_num: $('.ID').val(),
+                   // user_token:user_token
+               },
+               success:function(res){
+                   if(res.code==1){
+                       //成功
+                       // showErrorMsg(res.msg);
+                       $('.success_box').show()
+                       // location.href = "{:U('Mobile/User/userinfo')}"
+                   }
+                   else{
+                       //失败
+                       showErrorMsg(res.msg);
+                   }
+               }
+           })
+       }
+   }
+   function key(event) {
+       var inp = $(event.target);
+       inp.css('border-color','#5B5858')
+       inp.parent().find('.wrong').remove();
+   }
+</script>
+</html>

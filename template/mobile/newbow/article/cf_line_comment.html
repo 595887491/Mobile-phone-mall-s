@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{$title}</title>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <meta name="viewport" content="maximum-scale=1.0, width=device-width, initial-scale=1.0, user-scalable=0" />
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/cf_line_comment.css"/>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <!--<link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>-->
+</head>
+
+<body>
+<div class="content">
+    <a onclick="goBack()" style="position: absolute;left: .5rem;top:.6rem;"><img src="__STATIC__/images/return.png" style="width: .5rem;height: 1rem;margin-top: .1rem;" alt="返回"></a>
+    <div style="text-align: center;height: 2.4rem;line-height: 2.4rem">
+        <span style="font-size: .9rem;color: #1E1B1B;">{$article_cate}</span>
+    </div>
+</div>
+<div class="cf-content">
+    <if condition="$article_detail.title == '用户注册协议'">
+
+     <else />
+        <div class="cf_title">
+            <p style="font-size: 1.2rem">{$article_detail.title}</p>
+            <span>{:date('Y.m.d',$article_detail.publish_time)}</span>
+            <span>浏览数量:{$article_detail.click}</span>
+        </div>
+    </if>
+    <div>
+        <div class="editor_comment">
+            {$article_detail.content}
+        </div>
+    </div>
+</div>
+<if condition="$goods_list_info">
+    <div class="good_info">
+        <ul>
+            <foreach name="goods_list_info" item="vo" key="k">
+                <a href="{:U('Mobile/Goods/goodsInfo', array('id'=>$vo.goods_id))}">
+                <li class="clearfix">
+                    <img src="{$vo.original_img}" alt="" class="fl goods_info_img">
+                    <div class="fr goods_info_right">
+                        <div class="commentTop">
+                            <p>{$vo.goods_name}</p>
+                        </div>
+                        <div class="commentBottom">
+                            <div class="fl">
+                                <p class="money">¥ {$vo.shop_price}</p>
+                                <p class="oldMoney">市场价 ¥ {$vo.market_price}</p>
+                            </div>
+                            <div class="fr">
+                                <a href="{:U('Mobile/Goods/goodsInfo', array('id'=>$vo.goods_id))}" class="goBuy">立即购买</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                </a>
+            </foreach>
+        </ul>
+    </div>
+</if>
+
+<script>
+    var ShareImgUrl = "{$article_detail['thumb']}"; //分享图标
+    var ShareTitle = "{$article_detail['title']}"; //分享标题
+    var ShareDesc = "[尚美缤纷]这篇内容有很多达人美妆小知识哦!快去看看吧!"; //分享描述
+    var ShareLink = "http://{$_SERVER[HTTP_HOST]}/index.php/mobile/article/articleDetail/article_id/{$article_id}"; //分享链接
+</script>
+<!-- 微信浏览器 调用微信 分享js-->
+<include file="public/wx_share"/>
+<!-- 微信浏览器 调用微信 分享js  end-->
+<script>
+    // 分享后 判断是否有上一级页面
+    function goBack(){
+        var his = document.referrer;
+        if(his) {
+            history.back(-1)
+        }else {
+            window.location.href = "{:U('Mobile/Index/index')}";
+        }
+    }
+</script>
+</body>
+</html>

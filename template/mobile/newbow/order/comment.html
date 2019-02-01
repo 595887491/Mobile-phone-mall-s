@@ -1,0 +1,161 @@
+<include file="public/header" title="我的评价" body="f3"/>
+<include file="public/header_nav" title="我的评价" href="{:U('/Mobile/User/index')}"/>
+<style>
+    .similar-product-text a{
+        color: #1E1B1B;
+        font-size: .62rem;
+        line-height: .43867rem;
+    }
+    .pall0{
+        color: #BFC1CD;
+        font-size: .55rem;
+        padding: 0;
+        width: 7rem;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+    .dapco .cf_check_m{
+        border: 1px solid #FF407E;
+        color: #FF407E;
+        font-size: .6rem;
+        width: 3rem;height: 1.2rem;
+        line-height: 1.2rem;
+        text-align: center;
+        padding:0;
+        border-radius: .2rem;
+        margin: 0;
+        position: absolute;
+        right: 0;
+        bottom:0;
+        top: 2.1rem;
+    }
+    .bg_white .fukcuid{
+        padding-bottom: 1.5rem;
+    }
+    .shopprice{
+        background-color: #fff;
+        margin-top: .4rem;
+        padding: .5rem .64rem;
+    }
+    .quedbox{
+        margin: 0;
+    }
+    /*.quedbox.bg_white .img_or img{ width: 2.13333rem;height: 2.13333rem;}*/
+    .bg_white .fukcuid .fon_or h2{height: auto;}
+    .shopprice .img_or{margin: 0;}
+    .shopprice .img_or img{width: 3.13333rem;height: 3.13333rem;}
+    .mae .shopprice .fon_or{width: 11.16rem; position: relative;margin-top: 0;min-height: 3rem;}
+    .nonenothing img {
+        width: 3.60533rem;
+        height: 2.58667rem;
+    }
+    .pjiscion ul .red{color: #FF407E;border: none;padding-bottom: 0;}
+    .nonenothing{margin-top: 2rem;width: 65%;}
+    .nonenothing a {
+        border: 1px solid #BFC1CD;
+        width: 5rem;
+        font-size: .6rem;
+        display: inline-block;
+        padding: 0;
+        line-height: 1.3rem;
+        border-radius: .6rem;
+    }
+    .nonenothing p{font-size: .6rem;}
+    .after-set-li ul li div{width: 2.8rem;height: 1.3rem;margin: 0 auto;}
+    .pjiscion ul .red div{ border-bottom: 2px solid #FF407E;line-height: .85333rem;}
+
+</style>
+<div class="pjiscion p after-set-li">
+    <ul>
+        <a href="{:U('Mobile/Order/comment',array('status'=>-1))}">
+            <li <if condition='$Request.param.status eq -1'>class="red"</if>>
+                <div><p>全部评价</p><p></p></div>
+            </li>
+        </a>
+        <a href="{:U('Mobile/Order/comment',array('status'=>0))}" >
+            <li <if condition='$Request.param.status eq 0'>class="red"</if>>
+                <div><p>待评价</p><p></p></div>
+            </li>
+        </a>
+        <a href="{:U('Mobile/Order/comment',array('status'=>1))}">
+            <li <if condition='$Request.param.status eq 1'>class="red"</if>>
+                <div><p>已评价</p><p></p>  </div>
+            </li>
+        </a>
+    </ul>
+</div>
+<div class="quedbox bg_white">
+    <!--<div class="sonfbst">-->
+        <!--<div class="maleri30">-->
+            <!--<span><i class="fbs"></i>立即发表评价晒图，最多可获得50积分</span>-->
+        <!--</div>-->
+    <!--</div>-->
+    <if condition="empty($comment_list)">
+            <div class="nonenothing">
+                <!--<img src="__STATIC__/images/nothing.png"/>-->
+                <!--<p>暂无评价</p>-->
+                <!--<a href="{:U('Mobile/Index/index')}">去逛逛</a>-->
+                <img src="__STATIC__/images/no-order-logo.png" style="width: 100%;height: auto;pointer-events: none;"/>
+                <p>客官大大! 暂无相关信息</p>
+            </div>
+    <else/>
+    <div class="fukcuid mae">
+        <!--<div class="maleri30">-->
+            <foreach name="comment_list" item="v1">
+                <div class="shopprice dapco p" style="">
+                    <div class="img_or fl">
+                        <a href="{:U('Goods/goodsInfo',array('id'=>$v1[goods_id]))}"><img src="{$v1['original_img']|default='http://cdn.cfo2o.com/data/avatar/goods_list_default.png'}?x-oss-process=image/resize,m_fixed,h_200,w_200">
+                        </a>
+                    </div>
+                    <div class="fon_or fl">
+                        <h2 class="similar-product-text">
+                            <a href="{:U('Goods/goodsInfo',array('id'=>$v1[goods_id]))}">{$v1[goods_name]}</a>
+                        </h2>
+                        <p class="pall0" style="margin-bottom: .5rem;">{$v1[spec_key_name]}</p>
+                        <p class="pall0">{$v1.add_time|date='Y-m-d H:i',###}</p>
+                        <!--<div class="dyeai">-->
+                            <if condition="$v1[is_comment] eq 0">
+                                <a class="compj cf_check_m" href="{:U('Mobile/Order/add_comment',array('rec_id'=>$v1[rec_id]))}">去评价</a>
+                                <else/>
+                                <a class="compj nomar cf_check_m"  href="{:U('Mobile/Order/comment_info',array('comment_id'=>$v1[comment_id]))}">查看评价</a>
+                            </if>
+                        <!--</div>-->
+                    </div>
+                    <!--<div class="dyeai">-->
+                    <!--<if condition="$v1[is_comment] eq 0">-->
+                        <!--<a class="compj" href="{:U('Mobile/Order/add_comment',array('rec_id'=>$v1[rec_id]))}"><i class="said"></i>评价订单</a>-->
+                        <!--<else/>-->
+                        <!--<a class="compj nomar" id="cf_check_m" href="{:U('Mobile/Order/comment_info',array('comment_id'=>$v1[comment_id]))}">查看评价</a>-->
+                    <!--</if>-->
+                    <!--</div>-->
+                </div>
+            </foreach>
+        <!--</div>-->
+    </div>
+    </if>
+</div>
+<script type="text/javascript" src="__STATIC__/js/sourch_submit.js"></script>
+<script type="text/javascript">
+    /**
+     * ajax加载更多商品
+     */
+    var  page = 1;
+    function ajax_sourch_submit()
+    {
+        ++page;
+        $.ajax({
+            type : "GET",
+            url:"/index.php?m=Mobile&c=Order&a=comment&is_ajax=1&status={$Request.param.status}&p="+page,
+            success: function(data) {
+                if ($.trim(data) == '') {
+                    $('#getmore').hide();
+                    return false;
+                } else {
+                    $('.maleri30').append(data);
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>

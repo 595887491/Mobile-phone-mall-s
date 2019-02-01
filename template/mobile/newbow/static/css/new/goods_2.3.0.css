@@ -1,0 +1,103 @@
+.goods_money{background-color: #fff;font-size: .6rem;}
+.goods_money .scunde {border-bottom: 1px solid #EDEEF4;padding: .54rem .64rem;}
+.cf_discounts p >span{background-color: #fff;border: 1px solid #D50D16;color: #D50D16;}
+.cf_discounts{font-size: .58rem;}
+.detailsfloo .myorder .order .fl .firde{font-size: .56rem;color: #5B5858;}
+@font-face {
+    font-family: 'iconfont';  /* project id 606850 */
+    src: url('//at.alicdn.com/t/font_606850_bv56l0gl3k.eot');
+    src: url('//at.alicdn.com/t/font_606850_bv56l0gl3k.eot?#iefix') format('embedded-opentype'),
+    url('//at.alicdn.com/t/font_606850_bv56l0gl3k.woff') format('woff'),
+    url('//at.alicdn.com/t/font_606850_bv56l0gl3k.ttf') format('truetype'),
+    url('//at.alicdn.com/t/font_606850_bv56l0gl3k.svg#iconfont') format('svg');
+}
+.myhearders .descgz ul li a p{color: #5B5858;}
+.myhearders .minlogo{font-weight: bold;}
+.myorder .order .fr span{font-size: .54rem;}
+.detailsfloo .myorder .order .fr span i{color: #FF407E;}
+.cf_tab-con-wrapper .cf_assess-flat .user-name{font-size: .62rem;}
+.cf_tab-con-wrapper .assess-date{font-size: .5rem;}
+.user-portrait img{width: 1.452rem;height: 1.452rem;}
+.cf_tab-con-wrapper .assess-date{margin-top: .2rem;}
+.product-img-module{padding-left: 12%;}
+.assess-bottom .assess-content{padding-left: 12%;}
+.product-imgs-li{width: 25%;margin-left: 0;}
+.product-imgs-li img{height: 3rem;width: 3rem;}
+.parameter{background-color: #fff;margin-top: .3rem;padding: 0 .64rem;padding-bottom: .5rem;}
+.parameter ._title{padding:.55rem  0;border: none;}
+.parameter ._title >img{width:3.6rem;display: block;margin: 0 auto;}
+.de_table tr td{font-size:.54rem;}
+.de_table tr td:nth-child(1){background-color: #fff;width: 4.2rem;color: #5B5858;}
+.de_table tr td:nth-child(2){color: #8C8C8C;line-height: 1.4;}
+.parameter .details_img img{width: 100%;}
+.parameter .swiper-container{font-size: 0;padding-bottom: 1rem;}
+.parameter .swiper-container .similer-product{display: inline-block;width: 30%;margin-left: 5%;}
+.parameter .swiper-container a:first-of-type .similer-product{margin-left: 0;}
+.parameter .swiper-container .similer-product img{width: 100%;border: 1px solid #F2F2F2;border-radius: .03rem;}
+.similar-product-text,.similar-product-price{height: auto;}
+.similar-product-price .big-price{font-weight: bold;font-size:.7rem;}
+.parameter .swiper-pagination{padding-bottom: .5rem;}
+.swiper-pagination-bullet{width: .3rem;height: .3rem;border-radius: .3rem;}
+.swiper-container-horizontal>.swiper-pagination-bullets .swiper-pagination-bullet{margin:0 .3rem;}
+.swiper-pagination-bullet-active{background-color: #FF407E;}
+.podee .cart-concert-btm{box-shadow: 0 0 .4rem .05rem #E4E8EA;}
+
+
+#top{position: fixed;top:0;width: 100%;z-index: 99;transition:.3s;
+    left: 0;height: 1.88rem;text-align: center;}
+#top ul li{display: inline-block;font-size: .65rem;color:#1E1B1B;line-height: 1.82rem;
+    margin: 0 .8rem;border-bottom: .12rem solid transparent;}
+#top::after,.price::after,.promise::after,.item::after,.assess-flat::after,.content-right .top::after
+,.specification_popup .top::after,.specification_popup .list_type ul::after,.specification_popup .buy_num::after
+,.comment-img::after
+{display: block;content: '';clear: both;visibility: hidden;height: 0;}
+#top .fl{position: absolute;left: 0;top: 0;padding: .15rem .64rem;}
+#top .top_nav li{transition:all .5s}
+#top .top_nav li.checked{border-color: #FF407E;color: #FF407E;}
+.return_btn1{width: 1rem;height: 1rem;margin-top: .2rem;}
+.return_btn{width: .5rem;margin-top: .4rem;}
+#top .fr{position: absolute;background-color: #FED100;padding: .2rem;border-radius: .5rem 0 0 .5rem;
+    color: #D50D16;font-size: .45rem;top: .42rem;right: 0;}
+#top .fr i{font-size: .5rem;}
+.podee .cart-concert-btm .fl{width: 42%;}
+.podee .cart-concert-btm .fr{width: 58%;}
+.podee .cart-concert-btm .fl ul li{width: 33.33%;}
+.de_font .keep{
+    text-align: center;
+    overflow: hidden;
+    cursor: pointer;}
+#goods_collect {
+    background-image: url(../../images/heart.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: .96rem;
+    height: .85333rem;
+    display: block;
+    margin: 0 auto;
+    background-position-x: 0;
+}
+.podee .cart-concert-btm .fl ul li a p{font-size: .42rem;color: #5B5858; padding-top: .1rem;}
+.de_font .keep #goods_collect.red{background-position-x: -1rem;}
+.assess-bottom{padding-bottom: 0.1rem;}
+.choose_shop_aready .shopprice .img_or img{border-radius: .2rem;border:2px solid #F2F2F2;}
+.choose_shop_aready .shopprice .fon_or{margin-left: .2rem;}
+.choose_shop_aready .shopprice .fon_or .price_or{margin-top: 0.2rem;}
+.choose_shop_aready .shopprice .fon_or .similar-product-text{height: auto;font-size: .54rem;color: #8C8C8C;margin-top: .4rem;}
+.plusshopcar-buy .pb_buy{float: none;width: 100%;border-radius: .1rem;}
+.plusshopcar-buy{padding: .22667rem .64rem;box-shadow: 0 0 .2rem .1rem #eee;background-color: #fff;}
+.timeafter .confinetime, .team-pies .confinetime{background:#F13254;}
+._goods_msg{color: #fff;font-size: .5rem;margin-left: .2rem;vertical-align: -.1rem;}
+.myhearders .descgz ul li{ margin-left: 12%;}
+.myorder{border-color: #edeef4;}
+.Mright{background: url("../../images/cf_right_more1.png")no-repeat;background-size: 100% 100%;width: .3133rem;height: .49733rem;}
+.myhearders .descgz ul li a .icon_promise{width: .55rem;height: .55rem;display: inline-block;vertical-align: -.1rem;
+    margin-right: .05rem;}
+.plusshopcar-buy .pb_plusshopcar{background-color: #FF407E;width: 100%;}
+
+
+
+
+
+
+
+

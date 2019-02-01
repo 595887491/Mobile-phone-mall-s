@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>休闲体验</title>
+    <link rel="stylesheet" href="__STATIC__/css/style.css">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/css/iconfont.css"/>
+    <script src="__STATIC__/js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__STATIC__/js/mobile-util.js" type="text/javascript" charset="utf-8"></script>
+    <script src="__PUBLIC__/js/global.js"></script>
+    <script src="__STATIC__/js/layer.js"  type="text/javascript" ></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{$tpshop_config.shop_info_store_ico|default='/public/static/images/logo/storeico_default.png'}" media="screen"/>
+</head>
+<include file="public/header_nav" title="休闲体验" href="javascript:history.back(-1)"/>
+<style>.classreturn{position: fixed;top: 0;z-index: 99;}</style>
+<body>
+<div style="margin-top: 1.8rem">
+     <img src="http://cdn.cfo2o.com/public/upload/other/leisureExperience.png/s01" style="pointer-events: none;width: 100%;" alt="">
+</div>
+
+<script>
+    var ShareImgUrl = "https://{$_SERVER[HTTP_HOST]}__STATIC__/images/logo_share.png"; //分享图标
+    var ShareTitle = "休闲体验"; //分享标题
+    var ShareDesc = "各种免费体验券，乐趣无穷！今天的我也元气满满~你也试试吧！"; //分享描述
+    var ShareLink = "http://{$_SERVER[HTTP_HOST]}index.php/mobile/Goods/leisureExperience";//链接地址
+</script>
+<!-- 微信浏览器 调用微信 分享js-->
+<include file="public/wx_share"/>
+<!--<!-'- 微信浏览器 调用微信 分享js  end&ndash;&gt;-->
+</body>
+</html>

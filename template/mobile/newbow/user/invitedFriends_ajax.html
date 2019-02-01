@@ -1,0 +1,58 @@
+<if condition="$type eq 3">
+    <foreach name="$list" item="v">
+        <if condition="$v['status'] eq 0">
+            <div class="inviteCard">
+                <div class="fl inviteCardOne">
+                    <p>优惠券</p>
+                    <p class="inviteCardOneMoney"><span>¥</span><span>{$v['money']}</span></p>
+                </div>
+                <div class="fl inviteCardTwo">
+                    <p>{$v['coupon_name']}</p>
+                    <div><span>{$v['condition']}</span><span>（秒杀、拼团商品不可用）</span></div>
+                    <p>{$v['use_start_time']}至{$v['use_end_time']}</p>
+                </div>
+                <div class="fr inviteCardThree">
+                    <a href="{:U('Mobile/Index/index')}">
+                        <button>立即使用</button>
+                    </a>
+                </div>
+            </div>
+            <else />
+            <div class="inviteCardOverdue">
+                <div class="fl inviteCardOne">
+                    <p>优惠券</p>
+                    <p class="inviteCardOneMoney"><span>¥</span><span>{$v['money']}</span></p>
+                </div>
+                <div class="fl inviteCardTwo">
+                    <p>{$v['coupon_name']}</p>
+                    <div><span>{$v['condition']}</span><span>（秒杀、拼团商品不可用）</span></div>
+                    <p>{$v['use_start_time']}至{$v['use_end_time']}</p>
+                </div>
+                <!--已使用-->
+                <if condition="$v['status'] eq 1">
+                    <div class="inviteLable">
+                        <img src="__STATIC__/images/useLabels.png" alt="">
+                    </div>
+                </if>
+                <!--已过期-->
+                <if condition="$v['status'] eq 2">
+                    <div class="inviteLable">
+                        <img src="__STATIC__/images/useLabelsTwo.png" alt="">
+                    </div>
+                </if>
+            </div>
+        </if>
+    </foreach>
+<else />
+    <foreach name="$list" item="v">
+        <div class="inviteCom">
+            <div class="fl invitePortrait"><img src="{$v['user']['head_pic']|default='http://cdn.cfo2o.com/data/avatar/user_head_default.png'}?x-oss-process=style/s150x150" alt=""></div>
+            <div class="fl inviteDescribe"><p>{$v['user']['nickname']}</p><p>注册{$v['be_user_start']}</p></div>
+            <if condition="$v['type'] eq 1">
+                <div class="fr inviteState"><p>已注册</p></div>
+                <else />
+                <div class="fr inviteState"><p>下单成功</p><p class="inviteStateTime">首单{$v['first_order_time']}</p></div>
+            </if>
+        </div>
+    </foreach>
+</if>

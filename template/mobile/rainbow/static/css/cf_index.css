@@ -1,0 +1,96 @@
+.cf_search{
+    width: 100%;
+    /*margin-left: 1rem;*/
+}
+.cf_heard_input{
+    margin-left:2rem;
+}
+.cf_bt{
+   position: relative;
+    left: 2.4rem;
+}
+.cf_add{
+    color: #333;
+    font-size: 1rem;
+}
+.cd_red{
+    color: #F22256;
+    font-size: .6rem;
+}
+#cf_more{
+    margin-left: -1rem;
+    width: .7rem;
+    height: .7rem;
+}
+.cf_back_top{
+    position: fixed;
+    right: .5rem;
+    bottom: 5rem;
+    width: 1.4rem;
+    height: 1.4rem;
+}
+.cf_back_top img{
+    width: 100%;
+}
+.cf_follow_me{
+    position: fixed;
+    right: .5rem;
+    bottom: 7rem;
+    width: 1.4rem;
+    height: 1.4rem;
+}
+.cf_follow_me img{
+    width: 100%;
+}
+#cf_shop{
+    border-bottom: 1px solid #ccc;
+    padding-bottom: .5rem;
+}
+#cf_shop_show{
+    margin-top: .7rem;
+}
+
+#cf_price{
+    margin-top: .3rem;
+    color: #FF407E;
+    position: relative;
+    margin-left: -2rem;
+    font-size: .5rem;
+
+}
+#cf_shop_price{
+    margin-left: 2.1rem;
+    position: relative;
+    top: -.5rem;
+    font-size: .5rem;
+    color: #BFC1CD;
+    text-decoration:line-through;
+
+}
+.similar-product-price .guess-button {
+    width: 2.3rem;
+    height: .9rem;
+    line-height: .9rem;
+    color: #FF407E;
+    border: 1px solid #FF407E;
+    border-radius: .5rem;
+    font-size: .5rem;
+    margin-top: -.05rem;
+}
+.similar-product-price{
+    margin-top: .5rem;
+    color: #FF407E;
+
+}
+.similar-product-text{
+    /*margin-left: .4rem;*/
+    color: #1E1B1B;
+    font-size: .6rem;
+    margin-top: .5rem;
+    margin-bottom: 0;
+    /*padding-left: .4rem;*/
+}
+.cf_all_style{
+    margin-top: .3rem;
+    color: #999999;
+}

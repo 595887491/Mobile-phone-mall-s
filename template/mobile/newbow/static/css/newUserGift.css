@@ -1,0 +1,221 @@
+body{
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+    width: 100%;
+    background-color: #f1f5f8;
+    font-family:'微软雅黑','PingFang SC';
+}
+.fr{
+    float: right;
+}
+.fl{
+    float: left;
+}
+.clearFix{
+    clear: both;
+}
+ul,p{
+    padding: 0;
+    margin: 0;
+}
+.headerRank{
+    width: 100%;
+    height: .88rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    background: white;
+}
+.headerRankCon{
+    width: 100%;
+    height: .88rem;
+    line-height: .88rem;
+    position: relative;
+}
+.tex{
+    text-align: center;
+}
+.tex span{
+    font-size: .31rem;
+    color: #1E1B1B;
+}
+.texFl{
+    margin-top: .3rem;
+    position: absolute;
+    left: .24rem;
+}
+.texFl a{
+    /*display: inline-block;*/
+    width: .5rem;
+    height: .5rem;
+}
+.texFl a img{
+    width: .2rem;
+    height: .32rem;
+}
+.giftBg{
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.3);
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    display: none;
+}
+.giftCom{
+    width: 5.1rem;
+    height: 3.1rem;
+    display: inline-block;
+    background-color: #fff;
+    font-size: .24rem;
+    border-radius: .08rem;
+    position: relative;
+    top: 50%;
+    margin-top: -1.5rem;
+}
+.giftCom p:first-child{
+    font-size: .3rem;
+    color: #1E1B1B;
+    margin-top: .2rem;
+}
+.giftP{
+    font-size: .26rem;
+    color: #5B5858;
+    margin-top: .5rem;
+}
+.giftCom div button{
+    width: 1.8rem;
+    height: .67rem;
+    font-size: .26rem;
+    margin-top: .7rem;
+    border-radius: .08rem;
+}
+.giftCom div button:first-child{
+    border: 1px solid #57369D;
+    color: #57369D;
+    background-color: #fff;
+    margin-left: .4rem;
+}
+.giftCom div button:last-child{
+    border: 1px solid #57369D;
+    color: #fff;
+    background-color: #57369D;
+    margin-right: .4rem;
+}
+.giftBanner{
+    margin-top: .9rem;
+}
+.giftBanner img{
+    width: 100%;
+    height: 5.3rem;
+}
+.newGift{
+    position: relative;
+    text-align: center;
+}
+.newGiftImg{
+    width: 100%;
+    height: 5rem;
+}
+.activeCom img{
+    width: 100%;
+    height: 4.8rem;
+}
+.giftBtn{
+    width: 100%;
+    position: absolute;
+    bottom: .4rem;
+    left: 0;
+}
+.giftBtn img{
+    height: .84rem;
+}
+.giftBtnTwo {
+    position: absolute;
+    bottom: .4rem;
+    width: 100%;
+    /*left: .5rem;*/
+}
+.giftBtnTwo a{
+    font-size: .26rem;
+    color: #FFFFFF;
+    display: block;
+    margin-top: .2rem;
+    text-decoration: none;
+}
+.giftBtnTwo img{
+    /*width: 100%;*/
+    height: .84rem;
+}
+.already{
+    position: absolute;
+    top: .7rem;
+    width: 100%;
+    /*left: 2.5rem;*/
+    text-align: center;
+}
+.already img{
+    width: 2.35rem;
+    height: 2.11rem;
+}
+.successGift{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    display: none;
+}
+.successGift div,.failGift div{
+    text-align: center;
+    background-color: #000;
+    display: inline-block;
+    opacity: .7;
+    width: 2.2rem;
+    height: .8rem;
+    font-size: .26rem;
+    color: #fff;
+    position: relative;
+    top: 50%;
+    line-height: .8rem;
+    border-radius: .05rem;
+}
+.successGift div img,.failGift div img{
+    vertical-align: middle;
+}
+.failGift{
+     position: fixed;
+     top: 0;
+     left: 0;
+     z-index: 999;
+     width: 100%;
+     height: 100%;
+     text-align: center;
+     display: none;
+ }
+.failGift div{
+    text-align: center;
+    background-color: #000;
+    display: inline-block;
+    opacity: .7;
+    width: 2.2rem;
+    height: .8rem;
+    font-size: .26rem;
+    color: #fff;
+    position: relative;
+    top: 50%;
+    line-height: .8rem;
+    border-radius: .05rem;
+}
+.failGift div img {
+    vertical-align: middle;
+}
+.layui-m-layercont{
+    font-size: .26rem;
+    color: #fff;
+}
